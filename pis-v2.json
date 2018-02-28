@@ -1,0 +1,693 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Open Banking API",
+    "version": "2.1",
+    "title": "Nordea Open Banking API",
+    "contact": {
+      "name": "Open Banking team"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "host": "localhost:8080",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "payments-v2",
+      "description": "Payment initiation and confirmation"
+    }
+  ],
+  "paths": {
+    "/v2/payments/sepa": {
+      "get": {
+        "tags": [
+          "payments-v2"
+        ],
+        "summary": "Get all payments",
+        "description": "Get a list of all payments created for the user",
+        "operationId": "getPayments",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/PaymentListResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized with failure code:\n* error.apikey.missing = Missing API key. This operation requires API key, but it was missing.\n* error.token = Unspecified error with supplied token.\n* error.token.invalid = Missing access token or token did not authorized requested operation. This operation requires valid access token, but it was missing.\n* error.token.expired = Access token has expired.",
+            "schema": {
+              "$ref": "#/definitions/ExternalErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden with failure code:\n* error.resource.denied = Requested resource is not authorized by access token.",
+            "schema": {
+              "$ref": "#/definitions/ExternalErrorResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "api"
+            ],
+            "clientId": []
+          }
+        ],
+        "x-availabilityStatus": "Draft"
+      },
+      "post": {
+        "tags": [
+          "payments-v2"
+        ],
+        "summary": "Initiate payment",
+        "description": "Initiate payment",
+        "operationId": "paymentInitiate",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "createPaymentRequestV2",
+            "description": "Request to create a new payment",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreatePaymentRequest"
+            },
+            "x-availabilityStatus": "Draft"
+          },
+          {
+            "in": "header",
+            "name": "X-Response-Scenarios",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "AuthorizationSkipAccessControl"
+            ],
+            "x-availabilityStatus": "SandboxOnly"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "schema": {
+              "$ref": "#/definitions/PaymentResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized with failure code:\n* error.apikey.missing = Missing API key. This operation requires API key, but it was missing.\n* error.token = Unspecified error with supplied token.\n* error.token.invalid = Missing access token or token did not authorized requested operation. This operation requires valid access token, but it was missing.\n* error.token.expired = Access token has expired.",
+            "schema": {
+              "$ref": "#/definitions/ExternalErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden with failure code:\n* error.resource.denied = Requested resource is not authorized by access token.",
+            "schema": {
+              "$ref": "#/definitions/ExternalErrorResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "api"
+            ],
+            "clientId": []
+          }
+        ],
+        "x-availabilityStatus": "Draft"
+      }
+    },
+    "/v2/payments/sepa/{paymentId}": {
+      "get": {
+        "tags": [
+          "payments-v2"
+        ],
+        "summary": "Get payment",
+        "description": "Get payment by payment id",
+        "operationId": "getPayment",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "paymentId",
+            "description": "Payment id of the payment to get",
+            "required": true,
+            "type": "string",
+            "x-availabilityStatus": "Draft"
+          },
+          {
+            "in": "header",
+            "name": "X-Response-Scenarios",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "AuthorizationSkipAccessControl"
+            ],
+            "x-availabilityStatus": "SandboxOnly"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/PaymentResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized with failure code:\n* error.apikey.missing = Missing API key. This operation requires API key, but it was missing.\n* error.token = Unspecified error with supplied token.\n* error.token.invalid = Missing access token or token did not authorized requested operation. This operation requires valid access token, but it was missing.\n* error.token.expired = Access token has expired.",
+            "schema": {
+              "$ref": "#/definitions/ExternalErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden with failure code:\n* error.resource.denied = Requested resource is not authorized by access token.",
+            "schema": {
+              "$ref": "#/definitions/ExternalErrorResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "api"
+            ],
+            "clientId": []
+          }
+        ],
+        "x-availabilityStatus": "Draft"
+      }
+    },
+    "/v2/payments/sepa/{paymentId}/confirm": {
+      "put": {
+        "tags": [
+          "payments-v2"
+        ],
+        "summary": "Confirm payment",
+        "description": "Start the payment confirmation flow for a payment by payment id",
+        "operationId": "paymentConfirm",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "paymentId",
+            "description": "Payment id of the payment to confirm",
+            "required": true,
+            "type": "string",
+            "x-availabilityStatus": "Draft"
+          },
+          {
+            "in": "header",
+            "name": "X-Response-Scenarios",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "AuthorizationSkipAccessControl",
+              "PaymentSigningExpires",
+              "PaymentMissingFunds",
+              "PaymentOnHold"
+            ],
+            "x-availabilityStatus": "SandboxOnly"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/PaymentResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized with failure code:\n* error.apikey.missing = Missing API key. This operation requires API key, but it was missing.\n* error.token = Unspecified error with supplied token.\n* error.token.invalid = Missing access token or token did not authorized requested operation. This operation requires valid access token, but it was missing.\n* error.token.expired = Access token has expired.",
+            "schema": {
+              "$ref": "#/definitions/ExternalErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden with failure code:\n* error.resource.denied = Requested resource is not authorized by access token.",
+            "schema": {
+              "$ref": "#/definitions/ExternalErrorResponse"
+            }
+          },
+          "409": {
+            "description": "${pis.paymentConfirm.error.409.description}",
+            "schema": {
+              "$ref": "#/definitions/ExternalErrorResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "api"
+            ],
+            "clientId": []
+          }
+        ],
+        "x-availabilityStatus": "Draft"
+      }
+    }
+  },
+  "securityDefinitions": {
+    "oauth2": {
+      "type": "oauth2",
+      "authorizationUrl": "/v1/authentication",
+      "tokenUrl": "/v1/authentication/access_token",
+      "flow": "accessCode",
+      "scopes": {
+        "api": "Open Banking API"
+      }
+    },
+    "clientId": {
+      "type": "apiKey",
+      "name": "X-IBM-Client-Id",
+      "in": "header"
+    }
+  },
+  "definitions": {
+    "PaymentListResponse": {
+      "type": "object",
+      "properties": {
+        "groupHeader": {
+          "$ref": "#/definitions/ExternalResponseHeader",
+          "x-availabilityStatus": "Beta"
+        },
+        "response": {
+          "$ref": "#/definitions/PaymentList",
+          "x-availabilityStatus": "Beta"
+        }
+      },
+      "description": "Get list of payments",
+      "x-availabilityStatus": "Beta"
+    },
+    "ExternalResponseHeader": {
+      "type": "object",
+      "properties": {
+        "creationDateTime": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2017-05-19T09:01:17.448Z",
+          "x-availabilityStatus": "Stable"
+        },
+        "httpCode": {
+          "type": "integer",
+          "format": "int32",
+          "example": 12345,
+          "x-availabilityStatus": "Stable"
+        },
+        "messageIdentification": {
+          "type": "string",
+          "x-availabilityStatus": "Stable"
+        },
+        "messagePagination": {
+          "$ref": "#/definitions/Pagination",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "x-availabilityStatus": "Stable"
+    },
+    "Pagination": {
+      "type": "object",
+      "properties": {
+        "continuationKey": {
+          "description": "Resource listing may return a continuationKey if there's more results available. Request may be retried with the continuationKey, but otherwise same parameters, in order to get more results.",
+          "type": "string",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "x-availabilityStatus": "Stable"
+    },
+    "PaymentList": {
+      "type": "object",
+      "properties": {
+        "payments": {
+          "description": "List of payments",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Payment"
+          },
+          "x-availabilityStatus": "Beta"
+        }
+      },
+      "description": "List of payments",
+      "x-availabilityStatus": "Beta"
+    },
+    "Payment": {
+      "type": "object",
+      "required": [
+        "_id",
+        "amount",
+        "creditor",
+        "currency",
+        "debtor",
+        "timestamp"
+      ],
+      "properties": {
+        "_id": {
+          "description": "Unique payment identifier assigned for new payment",
+          "type": "string",
+          "x-availabilityStatus": "Beta"
+        },
+        "_links": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Link"
+          },
+          "x-availabilityStatus": "Beta"
+        },
+        "amount": {
+          "description": "Monetary amount of the payment",
+          "type": "string",
+          "format": "decimal",
+          "example": "123.45",
+          "x-minimum": "0",
+          "x-availabilityStatus": "Beta",
+          "x-exclusiveMinimum": true
+        },
+        "creditor": {
+          "description": "Creditor of the payment",
+          "$ref": "#/definitions/PaymentCreditor",
+          "x-availabilityStatus": "Beta"
+        },
+        "currency": {
+          "description": "Currency code according to ISO 4217",
+          "type": "string",
+          "example": "EUR",
+          "x-availabilityStatus": "Beta"
+        },
+        "debtor": {
+          "description": "Debtor of the payment",
+          "$ref": "#/definitions/PaymentDebtor",
+          "x-availabilityStatus": "Beta"
+        },
+        "externalId": {
+          "description": "Unique identification as assigned by a partner to identify the payment.",
+          "type": "string",
+          "x-availabilityStatus": "Beta"
+        },
+        "paymentStatus": {
+          "description": "Status of the payment",
+          "type": "string",
+          "example": "PendingConfirmation",
+          "enum": [
+            "PendingConfirmation",
+            "PendingUserApproval",
+            "OnHold",
+            "Confirmed",
+            "Rejected",
+            "Paid",
+            "InsufficientFunds",
+            "LimitExceeded",
+            "UserApprovalFailed",
+            "UserApprovalTimeout",
+            "UserApprovalCancelled",
+            "Unknown"
+          ],
+          "x-availabilityStatus": "Beta"
+        },
+        "timestamp": {
+          "description": "Timestamp of payment creation",
+          "type": "string",
+          "format": "date-time",
+          "example": "2017-05-19T09:01:17.448Z",
+          "x-availabilityStatus": "Beta"
+        }
+      },
+      "description": "Payment information",
+      "x-availabilityStatus": "Beta"
+    },
+    "Link": {
+      "type": "object",
+      "required": [
+        "href",
+        "rel"
+      ],
+      "properties": {
+        "href": {
+          "description": "Relative path to the linked resource",
+          "type": "string",
+          "x-availabilityStatus": "Stable"
+        },
+        "rel": {
+          "description": "Describes the nature of the link, e.g. 'details' for a link to the detailed information of a listed resource.",
+          "type": "string",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "description": "Context specific link (only GET supported)",
+      "x-availabilityStatus": "Stable"
+    },
+    "PaymentCreditor": {
+      "type": "object",
+      "required": [
+        "account"
+      ],
+      "properties": {
+        "account": {
+          "description": "Account of the creditor",
+          "$ref": "#/definitions/AccountNumber",
+          "x-availabilityStatus": "Beta"
+        },
+        "message": {
+          "description": "Message for the creditor to appear on their transaction",
+          "type": "string",
+          "example": "Message for the beneficiary",
+          "x-availabilityStatus": "Beta"
+        },
+        "name": {
+          "description": "Name of the creditor",
+          "type": "string",
+          "example": "Beneficiary name",
+          "x-availabilityStatus": "Beta"
+        },
+        "reference": {
+          "description": "Reference for the creditor to appear on their transaction",
+          "$ref": "#/definitions/Reference",
+          "x-availabilityStatus": "Beta"
+        }
+      },
+      "description": "Creditor of the payment",
+      "x-availabilityStatus": "Beta"
+    },
+    "AccountNumber": {
+      "type": "object",
+      "required": [
+        "_type",
+        "value"
+      ],
+      "properties": {
+        "_type": {
+          "description": "Type of account number",
+          "type": "string",
+          "example": "IBAN",
+          "enum": [
+            "IBAN",
+            "BBAN_SE"
+          ],
+          "x-availabilityStatus": "Beta"
+        },
+        "value": {
+          "description": "Actual account number",
+          "type": "string",
+          "example": "FI1350001520000081",
+          "x-availabilityStatus": "Beta"
+        }
+      },
+      "description": "Account number",
+      "x-availabilityStatus": "Beta"
+    },
+    "Reference": {
+      "type": "object",
+      "required": [
+        "_type",
+        "value"
+      ],
+      "properties": {
+        "_type": {
+          "description": "Type of the reference number, e.g. RF",
+          "type": "string",
+          "example": "RF",
+          "enum": [
+            "RF",
+            "INVOICE"
+          ],
+          "x-availabilityStatus": "Beta"
+        },
+        "value": {
+          "description": "Actual reference number",
+          "type": "string",
+          "example": "RF18539007547034",
+          "x-availabilityStatus": "Beta"
+        }
+      },
+      "description": "Creditor reference number",
+      "x-availabilityStatus": "Beta"
+    },
+    "PaymentDebtor": {
+      "type": "object",
+      "properties": {
+        "_accountId": {
+          "description": "Internal, technical account identifier",
+          "type": "string",
+          "example": "FI6593857450293470-EUR",
+          "x-availabilityStatus": "Beta"
+        },
+        "account": {
+          "$ref": "#/definitions/AccountNumber",
+          "x-availabilityStatus": "Beta"
+        }
+      },
+      "description": "Debtor of the payment",
+      "x-availabilityStatus": "Beta"
+    },
+    "ExternalErrorResponse": {
+      "type": "object",
+      "properties": {
+        "groupHeader": {
+          "$ref": "#/definitions/ExternalResponseHeader",
+          "x-availabilityStatus": "Stable"
+        },
+        "response": {
+          "$ref": "#/definitions/ExternalError",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "x-availabilityStatus": "Stable"
+    },
+    "ExternalError": {
+      "type": "object",
+      "properties": {
+        "failures": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ExternalFailure"
+          },
+          "x-availabilityStatus": "Stable"
+        },
+        "httpCode": {
+          "type": "integer",
+          "format": "int32",
+          "example": 12345,
+          "x-availabilityStatus": "Stable"
+        },
+        "request": {
+          "$ref": "#/definitions/ExternalRequestEcho",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "x-availabilityStatus": "Stable"
+    },
+    "ExternalFailure": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "x-availabilityStatus": "Stable"
+        },
+        "description": {
+          "type": "string",
+          "x-availabilityStatus": "Stable"
+        },
+        "path": {
+          "type": "string",
+          "x-availabilityStatus": "Stable"
+        },
+        "type": {
+          "type": "string",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "x-availabilityStatus": "Stable"
+    },
+    "ExternalRequestEcho": {
+      "type": "object",
+      "required": [
+        "messageIdentifier"
+      ],
+      "properties": {
+        "messageIdentifier": {
+          "type": "string",
+          "x-availabilityStatus": "Stable"
+        },
+        "url": {
+          "type": "string",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "x-availabilityStatus": "Stable"
+    },
+    "PaymentResponse": {
+      "type": "object",
+      "properties": {
+        "groupHeader": {
+          "$ref": "#/definitions/ExternalResponseHeader",
+          "x-availabilityStatus": "Beta"
+        },
+        "response": {
+          "description": "Payment information",
+          "$ref": "#/definitions/Payment",
+          "x-availabilityStatus": "Beta"
+        }
+      },
+      "description": "Payment information response",
+      "x-availabilityStatus": "Beta"
+    },
+    "CreatePaymentRequest": {
+      "type": "object",
+      "required": [
+        "amount",
+        "creditor",
+        "currency",
+        "debtor"
+      ],
+      "properties": {
+        "amount": {
+          "description": "Monetary amount of the payment",
+          "type": "string",
+          "format": "decimal",
+          "example": "123.45",
+          "x-minimum": "0",
+          "x-availabilityStatus": "Beta",
+          "x-exclusiveMinimum": true
+        },
+        "creditor": {
+          "description": "Creditor of the payment",
+          "$ref": "#/definitions/PaymentCreditor",
+          "x-availabilityStatus": "Beta"
+        },
+        "currency": {
+          "description": "Currency code according to ISO 4217",
+          "type": "string",
+          "example": "EUR",
+          "x-availabilityStatus": "Beta"
+        },
+        "debtor": {
+          "description": "Debtor of the payment",
+          "$ref": "#/definitions/PaymentDebtor",
+          "x-availabilityStatus": "Beta"
+        },
+        "externalId": {
+          "description": "Unique identification as assigned by a partner to identify the payment.",
+          "type": "string",
+          "x-availabilityStatus": "Beta"
+        }
+      },
+      "description": "Payment to create",
+      "x-availabilityStatus": "Beta"
+    }
+  }
+}

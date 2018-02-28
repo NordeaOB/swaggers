@@ -1,0 +1,492 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Open Banking API",
+    "version": "1.1",
+    "title": "Nordea Common Open Banking API",
+    "contact": {
+      "name": "Open Banking team"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "host": "localhost:8080",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "api-info",
+      "description": "API entry point"
+    },
+    {
+      "name": "authentication",
+      "description": "OAuth 2.0 authentication"
+    },
+    {
+      "name": "assets",
+      "description": "Customer assets"
+    }
+  ],
+  "paths": {
+    "/v1": {
+      "get": {
+        "tags": [
+          "api-info"
+        ],
+        "summary": "Get API info",
+        "operationId": "apiInfo",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Info"
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "api"
+            ],
+            "clientId": []
+          }
+        ],
+        "x-availabilityStatus": "Stable"
+      }
+    },
+    "/v1/authentication": {
+      "get": {
+        "tags": [
+          "authentication"
+        ],
+        "summary": "Start OAuth authentication",
+        "operationId": "startAuthentication",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "state",
+            "required": true,
+            "type": "string",
+            "x-availabilityStatus": "Stable"
+          },
+          {
+            "in": "query",
+            "name": "client_id",
+            "required": true,
+            "type": "string",
+            "x-availabilityStatus": "Stable"
+          },
+          {
+            "in": "query",
+            "name": "redirect_uri",
+            "required": true,
+            "type": "string",
+            "x-availabilityStatus": "Stable"
+          },
+          {
+            "in": "query",
+            "name": "X-Response-Scenarios",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "AuthenticationSkipUI",
+              "AuthenticationWithUI"
+            ],
+            "x-example": "AuthenticationSkipUI",
+            "x-availabilityStatus": "SandboxOnly"
+          },
+          {
+            "in": "header",
+            "name": "X-Response-Scenarios",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "AuthenticationSkipUI",
+              "AuthenticationWithUI"
+            ],
+            "x-availabilityStatus": "SandboxOnly"
+          }
+        ],
+        "responses": {
+          "302": {
+            "description": "Redirect to OAuth provider",
+            "schema": {
+              "$ref": "#/definitions/ExternalErrorResponse"
+            }
+          }
+        },
+        "x-availabilityStatus": "Stable"
+      }
+    },
+    "/v1/authentication/access_token": {
+      "post": {
+        "tags": [
+          "authentication"
+        ],
+        "summary": "Get access token with access code",
+        "operationId": "accessToken",
+        "consumes": [
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "formData",
+            "name": "code",
+            "required": true,
+            "type": "string",
+            "x-availabilityStatus": "Stable"
+          },
+          {
+            "in": "formData",
+            "name": "redirect_uri",
+            "required": true,
+            "type": "string",
+            "x-availabilityStatus": "Stable"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Token"
+            }
+          }
+        },
+        "x-availabilityStatus": "Stable"
+      }
+    },
+    "/v1/assets": {
+      "get": {
+        "tags": [
+          "assets"
+        ],
+        "summary": "List users assets",
+        "operationId": "getAssets",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/AssetResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "api"
+            ],
+            "clientId": []
+          }
+        ],
+        "x-availabilityStatus": "Stable"
+      }
+    }
+  },
+  "securityDefinitions": {
+    "oauth2": {
+      "type": "oauth2",
+      "authorizationUrl": "/v1/authentication",
+      "tokenUrl": "/v1/authentication/access_token",
+      "flow": "accessCode",
+      "scopes": {
+        "api": "Open Banking API"
+      }
+    },
+    "clientId": {
+      "type": "apiKey",
+      "name": "X-IBM-Client-Id",
+      "in": "header"
+    }
+  },
+  "definitions": {
+    "Info": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string",
+          "x-availabilityStatus": "Stable"
+        },
+        "links": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Link"
+          },
+          "x-availabilityStatus": "Stable"
+        },
+        "version": {
+          "type": "string",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "x-availabilityStatus": "Stable"
+    },
+    "Link": {
+      "type": "object",
+      "required": [
+        "href",
+        "rel"
+      ],
+      "properties": {
+        "href": {
+          "description": "Relative path to the linked resource",
+          "type": "string",
+          "x-availabilityStatus": "Stable"
+        },
+        "rel": {
+          "description": "Describes the nature of the link, e.g. 'details' for a link to the detailed information of a listed resource.",
+          "type": "string",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "description": "Context specific link (only GET supported)",
+      "x-availabilityStatus": "Stable"
+    },
+    "ExternalErrorResponse": {
+      "type": "object",
+      "properties": {
+        "groupHeader": {
+          "$ref": "#/definitions/ExternalResponseHeader",
+          "x-availabilityStatus": "Stable"
+        },
+        "response": {
+          "$ref": "#/definitions/ExternalError",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "x-availabilityStatus": "Stable"
+    },
+    "ExternalResponseHeader": {
+      "type": "object",
+      "properties": {
+        "creationDateTime": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2017-05-19T09:01:17.448Z",
+          "x-availabilityStatus": "Stable"
+        },
+        "httpCode": {
+          "type": "integer",
+          "format": "int32",
+          "example": 12345,
+          "x-availabilityStatus": "Stable"
+        },
+        "messageIdentification": {
+          "type": "string",
+          "x-availabilityStatus": "Stable"
+        },
+        "messagePagination": {
+          "$ref": "#/definitions/Pagination-1",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "x-availabilityStatus": "Stable"
+    },
+    "Pagination-1": {
+      "type": "object",
+      "properties": {
+        "continuationKey": {
+          "type": "string",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "x-availabilityStatus": "Stable"
+    },
+    "ExternalError": {
+      "type": "object",
+      "properties": {
+        "failures": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ExternalFailure"
+          },
+          "x-availabilityStatus": "Stable"
+        },
+        "httpCode": {
+          "type": "integer",
+          "format": "int32",
+          "example": 12345,
+          "x-availabilityStatus": "Stable"
+        },
+        "request": {
+          "$ref": "#/definitions/ExternalRequestEcho",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "x-availabilityStatus": "Stable"
+    },
+    "ExternalFailure": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "x-availabilityStatus": "Stable"
+        },
+        "description": {
+          "type": "string",
+          "x-availabilityStatus": "Stable"
+        },
+        "path": {
+          "type": "string",
+          "x-availabilityStatus": "Stable"
+        },
+        "type": {
+          "type": "string",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "x-availabilityStatus": "Stable"
+    },
+    "ExternalRequestEcho": {
+      "type": "object",
+      "required": [
+        "messageIdentifier"
+      ],
+      "properties": {
+        "messageIdentifier": {
+          "type": "string",
+          "x-availabilityStatus": "Stable"
+        },
+        "url": {
+          "type": "string",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "x-availabilityStatus": "Stable"
+    },
+    "Token": {
+      "type": "object",
+      "properties": {
+        "access_token": {
+          "description": "Access token",
+          "type": "string",
+          "example": "eyJjdHkiOiJKV1QiLCJlbmMiOiJBMTI4R0NNIiwiYWxnIjoiZGlyIn0..EM2YgJGre7OTIpmA.8GmpStB05uh4u_1wrEpyVCV_P5XwTcbL7zF_NsZJaMcZvo3B78gqhDR2lCCGLbTTImM4ILGHEQXO5Q7-obmdacIk9jcRr2eg5lTj_MBk9ch9yCMGh1NLEtXfOuHO1WzLoR6njQLDHdvvA2M3MEnVToqF6NdRI5f1hpWwC75TwUJWG50YTTYUBJskGPuRMLPfuTH-sncyVpI5Pj-XwXgcwOuXq8mz87DE1ZCCxPollReFZFsriQO3FeAqdgKigLaDH_WsoromxG2RAz6u4de-IYwXeWhsyq81SvOICE29kLMl9uxCvp6frYzOHoe7rfSaJiPhWGLn4_l29GimVNepQi1BadFqvHUyr7pUtO4Nx8e3piN7RV4DpMu1mf8_BYJaNUMyaeismu7RS9CmXm8wiEwgxK6f6vSOZxK6X8k7EHNKmZJZyR0q5ZRtFMzNa27tFah5_CybeJ86dJYIoaS1yG4rwBhokM06lVwAUAnpjXSRdoD7VUeNeg70DvTS2rtLa_w0_RLpva-iGkup-GIQyURK_jDZF2dVlRIanA8cwF6PZTA4cVslCd6EScJx9AHG87MmiWs6j0KOLZRyun3N3BEeRrjjcPk_lc3zcd8E2MZB4l-4o69cYvgAk1DpkxB__3IyuVkTEGwxlvT04anjsGLXEiunvQnDlAyEApr4xBeIGA2tAU8sstOQgGQffRj17iXWFgh4n5uHP77wrA4_d1tydAGCBhEVk6tsUVA81cavlwEfF53Yn1SK9bVofKv412tzU8fzNecni0IAsuWsCLGX.z3MMhpzmMp-GwdbTSl2rWQ",
+          "x-availabilityStatus": "Stable"
+        },
+        "expires_in": {
+          "description": "Token expiration time",
+          "type": "integer",
+          "format": "int64",
+          "example": 1209599,
+          "x-availabilityStatus": "Stable"
+        },
+        "token_type": {
+          "description": "Token type",
+          "type": "string",
+          "example": "Bearer",
+          "enum": [
+            "BEARER"
+          ],
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "x-availabilityStatus": "Stable"
+    },
+    "AssetResponse": {
+      "type": "object",
+      "properties": {
+        "groupHeader": {
+          "$ref": "#/definitions/ResponseHeader",
+          "x-availabilityStatus": "Stable"
+        },
+        "response": {
+          "$ref": "#/definitions/AssetsPayload",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "x-availabilityStatus": "Stable"
+    },
+    "ResponseHeader": {
+      "type": "object",
+      "properties": {
+        "creationDateTime": {
+          "description": "Date and time at which the message was created.",
+          "type": "string",
+          "format": "date-time",
+          "example": "2017-05-19T09:01:17.448Z",
+          "x-availabilityStatus": "Stable"
+        },
+        "httpCode": {
+          "description": "HTTP status code of the result.",
+          "type": "integer",
+          "format": "int32",
+          "example": 12345,
+          "x-availabilityStatus": "Stable"
+        },
+        "messageIdentification": {
+          "description": "Point to point reference, as assigned by the account servicing institution, and sent to the account owner or the party authorised to receive the message, to unambiguously identify the message. Usage: The account servicing institution has to make sure that MessageIdentification is unique per account owner for a pre-agreed period.",
+          "type": "string",
+          "x-availabilityStatus": "Stable"
+        },
+        "messagePagination": {
+          "$ref": "#/definitions/Pagination-2",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "description": "Common information for the message.",
+      "x-availabilityStatus": "Stable"
+    },
+    "Pagination-2": {
+      "type": "object",
+      "properties": {
+        "continuationKey": {
+          "type": "string",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "x-availabilityStatus": "Stable"
+    },
+    "AssetsPayload": {
+      "type": "object",
+      "properties": {
+        "accounts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/AccountPayload"
+          },
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "x-availabilityStatus": "Stable"
+    },
+    "AccountPayload": {
+      "type": "object",
+      "properties": {
+        "accountId": {
+          "type": "string",
+          "x-availabilityStatus": "Stable"
+        },
+        "accountNumber": {
+          "type": "string",
+          "x-availabilityStatus": "Stable"
+        },
+        "currency": {
+          "description": "Currency code according to ISO 4217",
+          "type": "string",
+          "example": "EUR",
+          "x-availabilityStatus": "Stable"
+        },
+        "permissions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "x-availabilityStatus": "Stable"
+    }
+  }
+}

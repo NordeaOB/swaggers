@@ -1,0 +1,479 @@
+{
+  "variables": [],
+  "info": {
+    "name": "Nordea OpenBanking API Example",
+    "_postman_id": "0d0a6f01-442a-996b-9445-99ee18be11a8",
+    "description": "",
+    "schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Start oauth",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "",
+              "var location = postman.getResponseHeader(\"Location\");",
+              "var index = location.indexOf(\"code=\");",
+              "var end = location.indexOf(\"&sta\")",
+              "console.log(index);",
+              "",
+              "postman.setEnvironmentVariable(\"code\",location.substring(index+5,end));",
+              ""
+            ]
+          }
+        }
+      ],
+      "request": {
+        "url": {
+          "raw": "https://api.eu.apiconnect.ibmcloud.com/obi-dev/development/v1/authentication?client_id={{X-IBM-Client-ID}}&state=102092&redirect_uri=http://httpbin.org/post",
+          "protocol": "https",
+          "host": [
+            "api",
+            "eu",
+            "apiconnect",
+            "ibmcloud",
+            "com"
+          ],
+          "path": [
+            "obi-dev",
+            "development",
+            "v1",
+            "authentication"
+          ],
+          "query": [
+            {
+              "key": "client_id",
+              "value": "{{X-IBM-Client-ID}}",
+              "equals": true,
+              "description": ""
+            },
+            {
+              "key": "state",
+              "value": "102092",
+              "equals": true,
+              "description": ""
+            },
+            {
+              "key": "redirect_uri",
+              "value": "http://httpbin.org/post",
+              "equals": true,
+              "description": ""
+            }
+          ],
+          "variable": []
+        },
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{  \r\n    \"amount\": {\r\n        \"value\": \"123.12\",\r\n        \"currency\": \"EUR\"\r\n    },\r\n    \r\n    \"debtor\": {\r\n        \"accountId\": \"FI6593857450293470-EUR\"\r\n    },\r\n    \"creditor\": { \r\n        \"account\": {\r\n            \"value\": \"FI1350001520000081\",\r\n            \"type\": \"IBAN\"\r\n        },\r\n        \"name\": \"Jussi's Construction\",\r\n        \"message\": \"Thanks for the renovation\",\r\n        \"reference\": {\r\n            \"value\": \"RF1232\",\r\n            \"type\": \"RF\"\r\n        }\r\n    }\r\n}"
+        },
+        "description": ""
+      },
+      "response": []
+    },
+    {
+      "name": "Exchange token",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "var jsonData = JSON.parse(responseBody);",
+              "",
+              "postman.setEnvironmentVariable(\"access_token\", jsonData.access_token);",
+              "",
+              ""
+            ]
+          }
+        }
+      ],
+      "request": {
+        "url": "https://api.eu.apiconnect.ibmcloud.com/obi-dev/development/v1/authentication/access_token",
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/x-www-form-urlencoded",
+            "description": ""
+          },
+          {
+            "key": "X-IBM-Client-ID",
+            "value": "{{X-IBM-Client-ID}}",
+            "description": ""
+          },
+          {
+            "key": "X-IBM-Client-Secret",
+            "value": "{{X-IBM-Client-Secret}}",
+            "description": ""
+          }
+        ],
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            {
+              "key": "code",
+              "value": "{{code}}",
+              "description": "",
+              "type": "text"
+            },
+            {
+              "key": "redirect_uri",
+              "value": "http://httpbin.org/post",
+              "description": "",
+              "type": "text"
+            }
+          ]
+        },
+        "description": ""
+      },
+      "response": []
+    },
+    {
+      "name": "Get assets",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "var jsonData = JSON.parse(responseBody);",
+              "",
+              "postman.setEnvironmentVariable(\"account-id\", ",
+              "    jsonData.response.accounts[0]._id);",
+              ""
+            ]
+          }
+        }
+      ],
+      "request": {
+        "url": "https://api.eu.apiconnect.ibmcloud.com/obi-dev/development/v1/assets",
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{access_token}}",
+            "description": ""
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "description": ""
+          },
+          {
+            "key": "X-IBM-Client-ID",
+            "value": "{{X-IBM-Client-ID}}",
+            "description": ""
+          },
+          {
+            "key": "X-IBM-Client-Secret",
+            "value": "{{X-IBM-Client-Secret}}",
+            "description": ""
+          },
+          {
+            "key": "X-Response-Scenarios",
+            "value": "AuthorizationSkipAccessControl",
+            "description": "",
+            "disabled": true
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{  \r\n    \"amount\": {\r\n        \"value\": \"123.12\",\r\n        \"currency\": \"EUR\"\r\n    },\r\n    \r\n    \"debtor\": {\r\n        \"accountId\": \"FI6593857450293470-EUR\"\r\n    },\r\n    \"creditor\": { \r\n        \"account\": {\r\n            \"value\": \"FI1350001520000081\",\r\n            \"type\": \"IBAN\"\r\n        },\r\n        \"name\": \"Jussi's Construction\",\r\n        \"message\": \"Thanks for the renovation\",\r\n        \"reference\": {\r\n            \"value\": \"RF1232\",\r\n            \"type\": \"RF\"\r\n        }\r\n    }\r\n}"
+        },
+        "description": ""
+      },
+      "response": []
+    },
+    {
+      "name": "Get accounts",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "var jsonData = JSON.parse(responseBody);",
+              "",
+              "postman.setEnvironmentVariable(\"account-id\", ",
+              "    jsonData.response.accounts[0]._id);",
+              ""
+            ]
+          }
+        }
+      ],
+      "request": {
+        "url": "https://api.eu.apiconnect.ibmcloud.com/obi-dev/development/v2/accounts",
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{access_token}}",
+            "description": ""
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "description": ""
+          },
+          {
+            "key": "X-IBM-Client-ID",
+            "value": "{{X-IBM-Client-ID}}",
+            "description": ""
+          },
+          {
+            "key": "X-IBM-Client-Secret",
+            "value": "{{X-IBM-Client-Secret}}",
+            "description": ""
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{  \r\n    \"amount\": {\r\n        \"value\": \"123.12\",\r\n        \"currency\": \"EUR\"\r\n    },\r\n    \r\n    \"debtor\": {\r\n        \"accountId\": \"FI6593857450293470-EUR\"\r\n    },\r\n    \"creditor\": { \r\n        \"account\": {\r\n            \"value\": \"FI1350001520000081\",\r\n            \"type\": \"IBAN\"\r\n        },\r\n        \"name\": \"Jussi's Construction\",\r\n        \"message\": \"Thanks for the renovation\",\r\n        \"reference\": {\r\n            \"value\": \"RF1232\",\r\n            \"type\": \"RF\"\r\n        }\r\n    }\r\n}"
+        },
+        "description": ""
+      },
+      "response": []
+    },
+    {
+      "name": "Get transactions",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "var jsonData = JSON.parse(responseBody);",
+              "",
+              "postman.setEnvironmentVariable(\"payment-id\", ",
+              "    jsonData.response._id);",
+              ""
+            ]
+          }
+        }
+      ],
+      "request": {
+        "url": "https://api.eu.apiconnect.ibmcloud.com/obi-dev/development/v2/accounts/{{account-id}}/transactions",
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{access_token}}",
+            "description": ""
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "description": ""
+          },
+          {
+            "key": "X-IBM-Client-ID",
+            "value": "{{X-IBM-Client-ID}}",
+            "description": ""
+          },
+          {
+            "key": "X-IBM-Client-Secret",
+            "value": "{{X-IBM-Client-Secret}}",
+            "description": ""
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{  \r\n    \"amount\":  \"123.12\",\r\n        \"currency\": \"EUR\"\r\n,    \r\n    \"debtor\": {\r\n        \"accountId\": \"FI6593857450293470-EUR\"\r\n    },\r\n    \"creditor\": { \r\n        \"account\": {\r\n            \"value\": \"FI1350001520000081\",\r\n            \"type\": \"IBAN\"\r\n        },\r\n        \"name\": \"Jussi's Construction\",\r\n        \"message\": \"Thanks for the renovation\",\r\n        \"reference\": {\r\n            \"value\": \"RF1232\",\r\n            \"type\": \"RF\"\r\n        }\r\n    }\r\n}"
+        },
+        "description": ""
+      },
+      "response": []
+    },
+    {
+      "name": "Create payment",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "var jsonData = JSON.parse(responseBody);",
+              "",
+              "postman.setEnvironmentVariable(\"payment-id\", ",
+              "    jsonData.response._id);",
+              ""
+            ]
+          }
+        }
+      ],
+      "request": {
+        "url": "https://api.eu.apiconnect.ibmcloud.com/obi-dev/development/v2/payments/sepa",
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{access_token}}",
+            "description": ""
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "description": ""
+          },
+          {
+            "key": "X-IBM-Client-ID",
+            "value": "{{X-IBM-Client-ID}}",
+            "description": ""
+          },
+          {
+            "key": "X-IBM-Client-Secret",
+            "value": "{{X-IBM-Client-Secret}}",
+            "description": ""
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{  \r\n    \"amount\":  \"123.12\",\r\n        \"currency\": \"EUR\"\r\n,    \r\n    \"debtor\": {\r\n        \"_accountId\": \"FI6593857450293470-EUR\"\r\n    },\r\n    \"creditor\": { \r\n        \"account\": {\r\n            \"value\": \"FI1350001520000081\",\r\n            \"_type\": \"IBAN\"\r\n        },\r\n        \"name\": \"Jussi's Construction\",\r\n        \"message\": \"Thanks for the renovation\",\r\n        \"reference\": {\r\n            \"value\": \"RF1232\",\r\n            \"_type\": \"RF\"\r\n        }\r\n    }\r\n}"
+        },
+        "description": ""
+      },
+      "response": []
+    },
+    {
+      "name": "Get payment",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "var jsonData = JSON.parse(responseBody);",
+              "",
+              "postman.setEnvironmentVariable(\"payment-id\", ",
+              "    jsonData.response._id);",
+              ""
+            ]
+          }
+        }
+      ],
+      "request": {
+        "url": "https://api.eu.apiconnect.ibmcloud.com/obi-dev/development/v2/payments/sepa/{{payment-id}}",
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{access_token}}",
+            "description": ""
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "description": ""
+          },
+          {
+            "key": "X-IBM-Client-ID",
+            "value": "{{X-IBM-Client-ID}}",
+            "description": ""
+          },
+          {
+            "key": "X-IBM-Client-Secret",
+            "value": "{{X-IBM-Client-Secret}}",
+            "description": ""
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"amount\": {\r\n        \"value\": \"123.12\",\r\n        \"currency\": \"EUR\"\r\n    },\r\n    \"debtor\": {\r\n        \"accountId\": \"FI7473834510057469-EUR\"\r\n    },\r\n    \"creditor\": {\r\n        \"account\": {\r\n            \"value\": \"FI1350001520000081\",\r\n            \"type\": \"IBAN\"\r\n        },\r\n        \"name\": \"Jussi's Construction\",\r\n        \"message\": \"Thanks for the renovation\",\r\n        \"reference\": {\r\n            \"value\": \"RF1232\",\r\n            \"type\": \"RF\"\r\n        }\r\n    }\r\n}"
+        },
+        "description": ""
+      },
+      "response": []
+    },
+    {
+      "name": "Get payments",
+      "request": {
+        "url": "https://api.eu.apiconnect.ibmcloud.com/obi-dev/development/v2/payments/sepa",
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{access_token}}",
+            "description": ""
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "description": ""
+          },
+          {
+            "key": "X-IBM-Client-ID",
+            "value": "{{X-IBM-Client-ID}}",
+            "description": ""
+          },
+          {
+            "key": "X-IBM-Client-Secret",
+            "value": "{{X-IBM-Client-Secret}}",
+            "description": ""
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"amount\": {\r\n        \"value\": \"123.12\",\r\n        \"currency\": \"EUR\"\r\n    },\r\n    \"debtor\": {\r\n        \"accountId\": \"FI7473834510057469-EUR\"\r\n    },\r\n    \"creditor\": {\r\n        \"account\": {\r\n            \"value\": \"FI1350001520000081\",\r\n            \"type\": \"IBAN\"\r\n        },\r\n        \"name\": \"Jussi's Construction\",\r\n        \"message\": \"Thanks for the renovation\",\r\n        \"reference\": {\r\n            \"value\": \"RF1232\",\r\n            \"type\": \"RF\"\r\n        }\r\n    }\r\n}"
+        },
+        "description": ""
+      },
+      "response": []
+    },
+    {
+      "name": "Confirm payment",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "var jsonData = JSON.parse(responseBody);",
+              "",
+              "postman.setEnvironmentVariable(\"payment-id\", ",
+              "    jsonData.response._id);",
+              ""
+            ]
+          }
+        }
+      ],
+      "request": {
+        "url": "https://api.eu.apiconnect.ibmcloud.com/obi-dev/development/v2/payments/sepa/{{payment-id}}/confirm",
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{access_token}}",
+            "description": ""
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "description": ""
+          },
+          {
+            "key": "X-IBM-Client-ID",
+            "value": "{{X-IBM-Client-ID}}",
+            "description": ""
+          },
+          {
+            "key": "X-IBM-Client-Secret",
+            "value": "{{X-IBM-Client-Secret}}",
+            "description": ""
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": ""
+        },
+        "description": ""
+      },
+      "response": []
+    }
+  ]
+}
