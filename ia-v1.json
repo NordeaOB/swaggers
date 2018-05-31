@@ -2,7 +2,7 @@
   "swagger": "2.0",
   "info": {
     "description": "Open Banking API",
-    "version": "1.1",
+    "version": "1.2",
     "title": "Nordea Common Open Banking API",
     "contact": {
       "name": "Open Banking team"
@@ -100,6 +100,14 @@
               "AuthenticationWithUI"
             ],
             "x-example": "AuthenticationSkipUI",
+            "x-availabilityStatus": "SandboxOnly"
+          },
+          {
+            "in": "query",
+            "name": "uid",
+            "description": "Define the net bank user id of the user to authenticate (default 29187251). This allows to choose the user while skipping the authentication UI.",
+            "required": false,
+            "type": "string",
             "x-availabilityStatus": "SandboxOnly"
           },
           {
@@ -258,40 +266,48 @@
       "type": "object",
       "properties": {
         "groupHeader": {
+          "description": "Standard format response header",
           "$ref": "#/definitions/ExternalResponseHeader",
           "x-availabilityStatus": "Stable"
         },
         "response": {
+          "description": "Error details",
           "$ref": "#/definitions/ExternalError",
           "x-availabilityStatus": "Stable"
         }
       },
+      "description": "Error response",
       "x-availabilityStatus": "Stable"
     },
     "ExternalResponseHeader": {
       "type": "object",
       "properties": {
         "creationDateTime": {
+          "description": "Response creation time",
           "type": "string",
           "format": "date-time",
           "example": "2017-05-19T09:01:17.448Z",
           "x-availabilityStatus": "Stable"
         },
         "httpCode": {
+          "description": "HTTP code for response",
           "type": "integer",
           "format": "int32",
           "example": 12345,
           "x-availabilityStatus": "Stable"
         },
         "messageIdentification": {
+          "description": "Original request id for correlation purposes",
           "type": "string",
           "x-availabilityStatus": "Stable"
         },
         "messagePagination": {
+          "description": "Details of paginated response",
           "$ref": "#/definitions/Pagination-1",
           "x-availabilityStatus": "Stable"
         }
       },
+      "description": "External response header",
       "x-availabilityStatus": "Stable"
     },
     "Pagination-1": {
@@ -308,6 +324,7 @@
       "type": "object",
       "properties": {
         "failures": {
+          "description": "More details on the occurred error",
           "type": "array",
           "items": {
             "$ref": "#/definitions/ExternalFailure"
@@ -315,38 +332,46 @@
           "x-availabilityStatus": "Stable"
         },
         "httpCode": {
+          "description": "HTTP error for response",
           "type": "integer",
           "format": "int32",
           "example": 12345,
           "x-availabilityStatus": "Stable"
         },
         "request": {
+          "description": "Error details",
           "$ref": "#/definitions/ExternalRequestEcho",
           "x-availabilityStatus": "Stable"
         }
       },
+      "description": "Error information",
       "x-availabilityStatus": "Stable"
     },
     "ExternalFailure": {
       "type": "object",
       "properties": {
         "code": {
+          "description": "Failure code",
           "type": "string",
           "x-availabilityStatus": "Stable"
         },
         "description": {
+          "description": "Failure description",
           "type": "string",
           "x-availabilityStatus": "Stable"
         },
         "path": {
+          "description": "The failed component path",
           "type": "string",
           "x-availabilityStatus": "Stable"
         },
         "type": {
+          "description": "Failure type",
           "type": "string",
           "x-availabilityStatus": "Stable"
         }
       },
+      "description": "Failure description",
       "x-availabilityStatus": "Stable"
     },
     "ExternalRequestEcho": {
@@ -356,14 +381,17 @@
       ],
       "properties": {
         "messageIdentifier": {
+          "description": "Original request id for correlation purposes",
           "type": "string",
           "x-availabilityStatus": "Stable"
         },
         "url": {
+          "description": "Original request url",
           "type": "string",
           "x-availabilityStatus": "Stable"
         }
       },
+      "description": "Original request information",
       "x-availabilityStatus": "Stable"
     },
     "Token": {
@@ -412,7 +440,6 @@
       "type": "object",
       "properties": {
         "creationDateTime": {
-          "description": "Date and time at which the message was created.",
           "type": "string",
           "format": "date-time",
           "example": "2017-05-19T09:01:17.448Z",
@@ -426,7 +453,6 @@
           "x-availabilityStatus": "Stable"
         },
         "messageIdentification": {
-          "description": "Point to point reference, as assigned by the account servicing institution, and sent to the account owner or the party authorised to receive the message, to unambiguously identify the message. Usage: The account servicing institution has to make sure that MessageIdentification is unique per account owner for a pre-agreed period.",
           "type": "string",
           "x-availabilityStatus": "Stable"
         },
@@ -435,7 +461,6 @@
           "x-availabilityStatus": "Stable"
         }
       },
-      "description": "Common information for the message.",
       "x-availabilityStatus": "Stable"
     },
     "Pagination-2": {

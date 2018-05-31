@@ -2,7 +2,7 @@
   "swagger": "2.0",
   "info": {
     "description": "Open Banking API",
-    "version": "2.1",
+    "version": "2.2",
     "title": "Nordea Open Banking API",
     "contact": {
       "name": "Open Banking team"
@@ -284,11 +284,11 @@
       "properties": {
         "groupHeader": {
           "$ref": "#/definitions/ExternalResponseHeader",
-          "x-availabilityStatus": "Beta"
+          "x-availabilityStatus": "Stable"
         },
         "response": {
           "$ref": "#/definitions/PaymentList",
-          "x-availabilityStatus": "Beta"
+          "x-availabilityStatus": "Stable"
         }
       },
       "description": "Get list of payments",
@@ -298,26 +298,31 @@
       "type": "object",
       "properties": {
         "creationDateTime": {
+          "description": "Response creation time",
           "type": "string",
           "format": "date-time",
           "example": "2017-05-19T09:01:17.448Z",
           "x-availabilityStatus": "Stable"
         },
         "httpCode": {
+          "description": "HTTP code for response",
           "type": "integer",
           "format": "int32",
           "example": 12345,
           "x-availabilityStatus": "Stable"
         },
         "messageIdentification": {
+          "description": "Original request id for correlation purposes",
           "type": "string",
           "x-availabilityStatus": "Stable"
         },
         "messagePagination": {
+          "description": "Details of paginated response",
           "$ref": "#/definitions/Pagination",
           "x-availabilityStatus": "Stable"
         }
       },
+      "description": "External response header",
       "x-availabilityStatus": "Stable"
     },
     "Pagination": {
@@ -329,6 +334,7 @@
           "x-availabilityStatus": "Stable"
         }
       },
+      "description": "Details of paginated response",
       "x-availabilityStatus": "Stable"
     },
     "PaymentList": {
@@ -375,7 +381,9 @@
           "format": "decimal",
           "example": "123.45",
           "x-minimum": "0",
+          "x-exclusiveMaximum": false,
           "x-availabilityStatus": "Beta",
+          "x-maximum": "250000",
           "x-exclusiveMinimum": true
         },
         "creditor": {
@@ -500,6 +508,12 @@
           ],
           "x-availabilityStatus": "Beta"
         },
+        "currency": {
+          "description": "Currency of the payment",
+          "type": "string",
+          "example": "EUR",
+          "x-availabilityStatus": "Beta"
+        },
         "value": {
           "description": "Actual account number",
           "type": "string",
@@ -544,10 +558,19 @@
           "description": "Internal, technical account identifier",
           "type": "string",
           "example": "FI6593857450293470-EUR",
-          "x-availabilityStatus": "Beta"
+          "x-removalInfo": " ",
+          "x-deprecationInfo": "V2.2",
+          "x-availabilityStatus": "Deprecated"
         },
         "account": {
+          "description": "Account number",
           "$ref": "#/definitions/AccountNumber",
+          "x-availabilityStatus": "Beta"
+        },
+        "message": {
+          "description": "This field is not supported for SEPA payments and will be ignored.",
+          "type": "string",
+          "example": "Own message",
           "x-availabilityStatus": "Beta"
         }
       },
@@ -558,20 +581,24 @@
       "type": "object",
       "properties": {
         "groupHeader": {
+          "description": "Standard format response header",
           "$ref": "#/definitions/ExternalResponseHeader",
           "x-availabilityStatus": "Stable"
         },
         "response": {
+          "description": "Error details",
           "$ref": "#/definitions/ExternalError",
           "x-availabilityStatus": "Stable"
         }
       },
+      "description": "Error response",
       "x-availabilityStatus": "Stable"
     },
     "ExternalError": {
       "type": "object",
       "properties": {
         "failures": {
+          "description": "More details on the occurred error",
           "type": "array",
           "items": {
             "$ref": "#/definitions/ExternalFailure"
@@ -579,38 +606,46 @@
           "x-availabilityStatus": "Stable"
         },
         "httpCode": {
+          "description": "HTTP error for response",
           "type": "integer",
           "format": "int32",
           "example": 12345,
           "x-availabilityStatus": "Stable"
         },
         "request": {
+          "description": "Error details",
           "$ref": "#/definitions/ExternalRequestEcho",
           "x-availabilityStatus": "Stable"
         }
       },
+      "description": "Error information",
       "x-availabilityStatus": "Stable"
     },
     "ExternalFailure": {
       "type": "object",
       "properties": {
         "code": {
+          "description": "Failure code",
           "type": "string",
           "x-availabilityStatus": "Stable"
         },
         "description": {
+          "description": "Failure description",
           "type": "string",
           "x-availabilityStatus": "Stable"
         },
         "path": {
+          "description": "The failed component path",
           "type": "string",
           "x-availabilityStatus": "Stable"
         },
         "type": {
+          "description": "Failure type",
           "type": "string",
           "x-availabilityStatus": "Stable"
         }
       },
+      "description": "Failure description",
       "x-availabilityStatus": "Stable"
     },
     "ExternalRequestEcho": {
@@ -620,14 +655,17 @@
       ],
       "properties": {
         "messageIdentifier": {
+          "description": "Original request id for correlation purposes",
           "type": "string",
           "x-availabilityStatus": "Stable"
         },
         "url": {
+          "description": "Original request url",
           "type": "string",
           "x-availabilityStatus": "Stable"
         }
       },
+      "description": "Original request information",
       "x-availabilityStatus": "Stable"
     },
     "PaymentResponse": {
@@ -635,12 +673,12 @@
       "properties": {
         "groupHeader": {
           "$ref": "#/definitions/ExternalResponseHeader",
-          "x-availabilityStatus": "Beta"
+          "x-availabilityStatus": "Stable"
         },
         "response": {
           "description": "Payment information",
           "$ref": "#/definitions/Payment",
-          "x-availabilityStatus": "Beta"
+          "x-availabilityStatus": "Stable"
         }
       },
       "description": "Payment information response",
@@ -661,7 +699,9 @@
           "format": "decimal",
           "example": "123.45",
           "x-minimum": "0",
+          "x-exclusiveMaximum": false,
           "x-availabilityStatus": "Beta",
+          "x-maximum": "250000",
           "x-exclusiveMinimum": true
         },
         "creditor": {

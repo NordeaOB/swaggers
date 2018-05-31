@@ -2,7 +2,7 @@
   "swagger": "2.0",
   "info": {
     "description": "Open Banking API",
-    "version": "2.1",
+    "version": "2.2",
     "title": "Nordea Open Banking API",
     "contact": {
       "name": "Open Banking team"
@@ -27,6 +27,7 @@
           "accounts-v2"
         ],
         "summary": "List accounts",
+        "description": "List of accounts and their details",
         "operationId": "accountList",
         "produces": [
           "application/json"
@@ -59,7 +60,60 @@
             "clientId": []
           }
         ],
-        "x-availabilityStatus": "Beta"
+        "x-availabilityStatus": "Stable"
+      },
+      "post": {
+        "tags": [
+          "accounts-v2"
+        ],
+        "summary": "Sandbox: Create an account",
+        "operationId": "createAccountV2",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "mockAccountDetailsV2",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AccountDetails-2"
+            },
+            "x-availabilityStatus": "SandboxOnly"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/AccountDetails-2",
+              "x-availabilityStatus": "SandboxOnly"
+            }
+          },
+          "401": {
+            "description": "Unauthorized with failure code:\n* error.apikey.missing = Missing API key. This operation requires API key, but it was missing.\n* error.token = Unspecified error with supplied token.\n* error.token.invalid = Missing access token or token did not authorized requested operation. This operation requires valid access token, but it was missing.\n* error.token.expired = Access token has expired.",
+            "schema": {
+              "$ref": "#/definitions/ExternalErrorResponse",
+              "x-availabilityStatus": "SandboxOnly"
+            }
+          },
+          "403": {
+            "description": "Forbidden with failure code:\n* error.resource.denied = Requested resource is not authorized by access token.",
+            "schema": {
+              "$ref": "#/definitions/ExternalErrorResponse",
+              "x-availabilityStatus": "SandboxOnly"
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "api"
+            ],
+            "clientId": []
+          }
+        ],
+        "x-availabilityStatus": "SandboxOnly"
       }
     },
     "/v2/accounts/{accountId}": {
@@ -68,6 +122,7 @@
           "accounts-v2"
         ],
         "summary": "Get account details by account id",
+        "description": "Details of specified account",
         "operationId": "accountDetails",
         "produces": [
           "application/json"
@@ -79,7 +134,7 @@
             "description": "Internal, technical account identifier",
             "required": true,
             "type": "string",
-            "x-availabilityStatus": "Beta"
+            "x-availabilityStatus": "Stable"
           }
         ],
         "responses": {
@@ -110,7 +165,43 @@
             "clientId": []
           }
         ],
-        "x-availabilityStatus": "Beta"
+        "x-availabilityStatus": "Stable"
+      },
+      "delete": {
+        "tags": [
+          "accounts-v2"
+        ],
+        "summary": "Sandbox: Delete a created account",
+        "operationId": "deleteUserdefinedAccount",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "accountId",
+            "required": true,
+            "type": "string",
+            "x-availabilityStatus": "SandboxOnly"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/AccountDetails-2"
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "api"
+            ],
+            "clientId": []
+          }
+        ],
+        "x-availabilityStatus": "SandboxOnly"
       }
     },
     "/v2/accounts/{accountId}/transactions": {
@@ -119,6 +210,7 @@
           "accounts-v2"
         ],
         "summary": "Get account transactions",
+        "description": "Detailed transaction history for specified account",
         "operationId": "transactionsList",
         "produces": [
           "application/json"
@@ -130,7 +222,7 @@
             "description": "Internal, technical account identifier",
             "required": true,
             "type": "string",
-            "x-availabilityStatus": "Beta"
+            "x-availabilityStatus": "Stable"
           },
           {
             "in": "query",
@@ -140,7 +232,7 @@
             "type": "string",
             "format": "date",
             "x-example": "2017-06-01",
-            "x-availabilityStatus": "Beta"
+            "x-availabilityStatus": "Stable"
           },
           {
             "in": "query",
@@ -150,7 +242,7 @@
             "type": "string",
             "format": "date",
             "x-example": "2017-06-01",
-            "x-availabilityStatus": "Beta"
+            "x-availabilityStatus": "Stable"
           },
           {
             "in": "query",
@@ -158,15 +250,15 @@
             "description": "Preferred language for textual values",
             "required": false,
             "type": "string",
-            "x-availabilityStatus": "Beta"
+            "x-availabilityStatus": "Stable"
           },
           {
             "in": "query",
             "name": "continuationKey",
-            "description": "Resource listing may return a continuationKey if there's more results available. Request may be retried with the continuationKey, but otherwise same parameters, in order to get more results.",
+            "description": "Key to subsequent page of transaction history",
             "required": false,
             "type": "string",
-            "x-availabilityStatus": "Beta"
+            "x-availabilityStatus": "Stable"
           }
         ],
         "responses": {
@@ -197,7 +289,67 @@
             "clientId": []
           }
         ],
-        "x-availabilityStatus": "Beta"
+        "x-availabilityStatus": "Stable"
+      },
+      "post": {
+        "tags": [
+          "accounts-v2"
+        ],
+        "summary": "Sandbox: Create a transaction linked to a created account",
+        "operationId": "createTransaction",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "accountId",
+            "required": true,
+            "type": "string",
+            "x-availabilityStatus": "SandboxOnly"
+          },
+          {
+            "in": "body",
+            "name": "transactionV2",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Transaction"
+            },
+            "x-availabilityStatus": "SandboxOnly"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Transaction",
+              "x-availabilityStatus": "SandboxOnly"
+            }
+          },
+          "401": {
+            "description": "Unauthorized with failure code:\n* error.apikey.missing = Missing API key. This operation requires API key, but it was missing.\n* error.token = Unspecified error with supplied token.\n* error.token.invalid = Missing access token or token did not authorized requested operation. This operation requires valid access token, but it was missing.\n* error.token.expired = Access token has expired.",
+            "schema": {
+              "$ref": "#/definitions/ExternalErrorResponse",
+              "x-availabilityStatus": "SandboxOnly"
+            }
+          },
+          "403": {
+            "description": "Forbidden with failure code:\n* error.resource.denied = Requested resource is not authorized by access token.",
+            "schema": {
+              "$ref": "#/definitions/ExternalErrorResponse",
+              "x-availabilityStatus": "SandboxOnly"
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "api"
+            ],
+            "clientId": []
+          }
+        ],
+        "x-availabilityStatus": "SandboxOnly"
       }
     }
   },
@@ -222,41 +374,49 @@
       "type": "object",
       "properties": {
         "groupHeader": {
+          "description": "Standard format response header structure",
           "$ref": "#/definitions/ExternalResponseHeader",
-          "x-availabilityStatus": "Beta"
+          "x-availabilityStatus": "Stable"
         },
         "response": {
+          "description": "Listed accounts",
           "$ref": "#/definitions/AccountList",
-          "x-availabilityStatus": "Beta"
+          "x-availabilityStatus": "Stable"
         }
       },
-      "x-availabilityStatus": "Beta",
-      "x-availabilityInfo": "V2 API is WIP"
+      "description": "Account list response",
+      "x-availabilityStatus": "Stable",
+      "x-availabilityInfo": " "
     },
     "ExternalResponseHeader": {
       "type": "object",
       "properties": {
         "creationDateTime": {
+          "description": "Response creation time",
           "type": "string",
           "format": "date-time",
           "example": "2017-05-19T09:01:17.448Z",
           "x-availabilityStatus": "Stable"
         },
         "httpCode": {
+          "description": "HTTP code for response",
           "type": "integer",
           "format": "int32",
           "example": 12345,
           "x-availabilityStatus": "Stable"
         },
         "messageIdentification": {
+          "description": "Original request id for correlation purposes",
           "type": "string",
           "x-availabilityStatus": "Stable"
         },
         "messagePagination": {
+          "description": "Details of paginated response",
           "$ref": "#/definitions/Pagination",
           "x-availabilityStatus": "Stable"
         }
       },
+      "description": "External response header",
       "x-availabilityStatus": "Stable"
     },
     "Pagination": {
@@ -268,106 +428,33 @@
           "x-availabilityStatus": "Stable"
         }
       },
+      "description": "Details of paginated response",
       "x-availabilityStatus": "Stable"
     },
     "AccountList": {
       "type": "object",
       "properties": {
-        "accounts": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/AccountInfo"
-          },
-          "x-availabilityStatus": "Beta"
-        }
-      },
-      "x-availabilityStatus": "Beta",
-      "x-availabilityInfo": "V2 API is WIP"
-    },
-    "AccountInfo": {
-      "type": "object",
-      "required": [
-        "_id",
-        "accountNumber",
-        "accountType",
-        "availableBalance",
-        "bookedBalance",
-        "currency",
-        "product"
-      ],
-      "properties": {
-        "_id": {
-          "description": "Internal, technical account identifier",
-          "type": "string",
-          "x-availabilityStatus": "Beta"
-        },
         "_links": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/Link"
+            "$ref": "#/definitions/Link",
+            "x-availabilityStatus": "Stable"
           },
-          "x-availabilityStatus": "Beta"
+          "x-availabilityStatus": "Stable"
         },
-        "accountNumber": {
-          "description": "Account number",
-          "$ref": "#/definitions/AccountNumber",
-          "x-availabilityStatus": "Beta"
-        },
-        "accountType": {
-          "description": "Account type",
-          "type": "string",
-          "example": "Current",
-          "enum": [
-            "Current"
-          ],
-          "x-availabilityStatus": "Beta"
-        },
-        "availableBalance": {
-          "description": "Available balance indicates the funds which are available to the account holder at the time of the query",
-          "type": "string",
-          "format": "decimal",
-          "example": "123.45",
-          "x-availabilityStatus": "Beta"
-        },
-        "bookedBalance": {
-          "description": "Booked balance includes all transactions entered on the account at the time of the query",
-          "type": "string",
-          "format": "decimal",
-          "example": "123.45",
-          "x-availabilityStatus": "Beta"
-        },
-        "country": {
-          "description": "Country code where the account is held according to ISO ALPHA-2",
-          "type": "string",
-          "example": "FI",
-          "x-availabilityStatus": "Beta"
-        },
-        "currency": {
-          "description": "Currency code according to ISO 4217",
-          "type": "string",
-          "example": "EUR",
-          "x-availabilityStatus": "Beta"
-        },
-        "ownerName": {
-          "type": "string",
-          "x-availabilityStatus": "Beta"
-        },
-        "product": {
-          "description": "Name of the banking product delivered by this account",
-          "type": "string",
-          "x-availabilityStatus": "Beta"
-        },
-        "valueDatedBalance": {
-          "description": "Value dated balance is the balance on the basis of which interest is calculated on the account",
-          "type": "string",
-          "format": "decimal",
-          "example": "123.45",
-          "x-availabilityStatus": "Beta"
+        "accounts": {
+          "description": "List of accounts",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/AccountInfo",
+            "x-availabilityStatus": "Stable"
+          },
+          "x-availabilityStatus": "Stable"
         }
       },
-      "description": "Basic account information",
-      "x-availabilityStatus": "Beta",
-      "x-availabilityInfo": "V2 API is WIP"
+      "description": "List of accounts",
+      "x-availabilityStatus": "Stable",
+      "x-availabilityInfo": " "
     },
     "Link": {
       "type": "object",
@@ -389,6 +476,114 @@
       },
       "description": "Context specific link (only GET supported)",
       "x-availabilityStatus": "Stable"
+    },
+    "AccountInfo": {
+      "type": "object",
+      "required": [
+        "_id",
+        "accountName",
+        "accountNumber",
+        "accountNumbers",
+        "accountType",
+        "availableBalance",
+        "bookedBalance",
+        "currency",
+        "product"
+      ],
+      "properties": {
+        "_id": {
+          "description": "Internal, technical account identifier",
+          "type": "string",
+          "x-availabilityStatus": "Stable"
+        },
+        "_links": {
+          "description": "HATEOAS inspired links",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Link",
+            "x-availabilityStatus": "Stable"
+          },
+          "x-availabilityStatus": "Stable"
+        },
+        "accountName": {
+          "description": "Account name",
+          "type": "string",
+          "x-availabilityStatus": "Beta"
+        },
+        "accountNumber": {
+          "description": "Account number",
+          "$ref": "#/definitions/AccountNumber",
+          "x-removalInfo": " ",
+          "x-deprecationInfo": "V2.2",
+          "x-availabilityStatus": "Deprecated"
+        },
+        "accountNumbers": {
+          "description": "Account numbers",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/AccountNumber",
+            "x-availabilityStatus": "Beta"
+          },
+          "x-availabilityStatus": "Beta"
+        },
+        "accountType": {
+          "description": "Account type",
+          "type": "string",
+          "example": "Current",
+          "enum": [
+            "Current"
+          ],
+          "x-availabilityStatus": "Stable"
+        },
+        "availableBalance": {
+          "description": "Available balance indicates the funds which are available to the account holder at the time of the query",
+          "type": "string",
+          "format": "decimal",
+          "example": "123.45",
+          "x-availabilityStatus": "Stable"
+        },
+        "bookedBalance": {
+          "description": "Booked balance includes all transactions entered on the account at the time of the query",
+          "type": "string",
+          "format": "decimal",
+          "example": "123.45",
+          "x-availabilityStatus": "Stable"
+        },
+        "country": {
+          "description": "Country code where the account is held according to ISO ALPHA-2",
+          "type": "string",
+          "example": "FI",
+          "x-availabilityStatus": "Stable"
+        },
+        "currency": {
+          "description": "Currency code according to ISO 4217",
+          "type": "string",
+          "example": "EUR",
+          "x-availabilityStatus": "Stable"
+        },
+        "ownerName": {
+          "description": "OwnerName is going to be deprecated ",
+          "type": "string",
+          "x-removalInfo": " ",
+          "x-deprecationInfo": "V2.2",
+          "x-availabilityStatus": "Deprecated"
+        },
+        "product": {
+          "description": "Name of the banking product delivered by this account",
+          "type": "string",
+          "x-availabilityStatus": "Stable"
+        },
+        "valueDatedBalance": {
+          "description": "Value dated balance is the balance on the basis of which interest is calculated on the account",
+          "type": "string",
+          "format": "decimal",
+          "example": "123.45",
+          "x-availabilityStatus": "Beta"
+        }
+      },
+      "description": "Basic account information",
+      "x-availabilityStatus": "Stable",
+      "x-availabilityInfo": " "
     },
     "AccountNumber": {
       "type": "object",
@@ -421,20 +616,24 @@
       "type": "object",
       "properties": {
         "groupHeader": {
+          "description": "Standard format response header",
           "$ref": "#/definitions/ExternalResponseHeader",
           "x-availabilityStatus": "Stable"
         },
         "response": {
+          "description": "Error details",
           "$ref": "#/definitions/ExternalError",
           "x-availabilityStatus": "Stable"
         }
       },
+      "description": "Error response",
       "x-availabilityStatus": "Stable"
     },
     "ExternalError": {
       "type": "object",
       "properties": {
         "failures": {
+          "description": "More details on the occurred error",
           "type": "array",
           "items": {
             "$ref": "#/definitions/ExternalFailure"
@@ -442,38 +641,46 @@
           "x-availabilityStatus": "Stable"
         },
         "httpCode": {
+          "description": "HTTP error for response",
           "type": "integer",
           "format": "int32",
           "example": 12345,
           "x-availabilityStatus": "Stable"
         },
         "request": {
+          "description": "Error details",
           "$ref": "#/definitions/ExternalRequestEcho",
           "x-availabilityStatus": "Stable"
         }
       },
+      "description": "Error information",
       "x-availabilityStatus": "Stable"
     },
     "ExternalFailure": {
       "type": "object",
       "properties": {
         "code": {
+          "description": "Failure code",
           "type": "string",
           "x-availabilityStatus": "Stable"
         },
         "description": {
+          "description": "Failure description",
           "type": "string",
           "x-availabilityStatus": "Stable"
         },
         "path": {
+          "description": "The failed component path",
           "type": "string",
           "x-availabilityStatus": "Stable"
         },
         "type": {
+          "description": "Failure type",
           "type": "string",
           "x-availabilityStatus": "Stable"
         }
       },
+      "description": "Failure description",
       "x-availabilityStatus": "Stable"
     },
     "ExternalRequestEcho": {
@@ -483,36 +690,44 @@
       ],
       "properties": {
         "messageIdentifier": {
+          "description": "Original request id for correlation purposes",
           "type": "string",
           "x-availabilityStatus": "Stable"
         },
         "url": {
+          "description": "Original request url",
           "type": "string",
           "x-availabilityStatus": "Stable"
         }
       },
+      "description": "Original request information",
       "x-availabilityStatus": "Stable"
     },
     "AccountDetailsResponse": {
       "type": "object",
       "properties": {
         "groupHeader": {
+          "description": "Standard format response header",
           "$ref": "#/definitions/ExternalResponseHeader",
-          "x-availabilityStatus": "Beta"
+          "x-availabilityStatus": "Stable"
         },
         "response": {
-          "$ref": "#/definitions/AccountDetails",
-          "x-availabilityStatus": "Beta"
+          "description": "Account details",
+          "$ref": "#/definitions/AccountDetails-1",
+          "x-availabilityStatus": "Stable"
         }
       },
-      "x-availabilityStatus": "Beta",
-      "x-availabilityInfo": "V2 API is WIP"
+      "description": "Error details",
+      "x-availabilityStatus": "Stable",
+      "x-availabilityInfo": " "
     },
-    "AccountDetails": {
+    "AccountDetails-1": {
       "type": "object",
       "required": [
         "_id",
+        "accountName",
         "accountNumber",
+        "accountNumbers",
         "accountType",
         "availableBalance",
         "bank",
@@ -523,57 +738,66 @@
       ],
       "properties": {
         "_id": {
-          "description": "Internal, technical account identifier",
           "type": "string",
-          "x-availabilityStatus": "Beta"
+          "x-availabilityStatus": "Stable"
         },
         "_links": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/Link"
+            "$ref": "#/definitions/Link",
+            "x-availabilityStatus": "Stable"
           },
+          "x-availabilityStatus": "Stable"
+        },
+        "accountName": {
+          "type": "string",
           "x-availabilityStatus": "Beta"
         },
         "accountNumber": {
-          "description": "Account number",
           "$ref": "#/definitions/AccountNumber",
+          "x-removalInfo": " ",
+          "x-deprecationInfo": "V2.2",
+          "x-availabilityStatus": "Deprecated"
+        },
+        "accountNumbers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/AccountNumber",
+            "x-availabilityStatus": "Beta"
+          },
           "x-availabilityStatus": "Beta"
         },
         "accountType": {
-          "description": "Account type",
           "type": "string",
           "example": "Current",
           "enum": [
             "Current"
           ],
-          "x-availabilityStatus": "Beta"
+          "x-availabilityStatus": "Stable"
         },
         "availableBalance": {
-          "description": "Available balance indicates the funds which are available to the account holder at the time of the query",
           "type": "string",
           "format": "decimal",
           "example": "123.45",
-          "x-availabilityStatus": "Beta"
+          "x-availabilityStatus": "Stable"
         },
         "bank": {
           "$ref": "#/definitions/BankInfo",
-          "x-availabilityStatus": "Draft"
+          "x-availabilityStatus": "Beta"
         },
         "bookedBalance": {
-          "description": "Booked balance includes all transactions entered on the account at the time of the query",
           "type": "string",
           "format": "decimal",
           "example": "123.45",
-          "x-availabilityStatus": "Beta"
+          "x-availabilityStatus": "Stable"
         },
         "country": {
           "description": "Country code where the account is held according to ISO ALPHA-2",
           "type": "string",
           "example": "FI",
-          "x-availabilityStatus": "Beta"
+          "x-availabilityStatus": "Stable"
         },
         "creditLimit": {
-          "description": "Amount of credit extended to account holder beyond account booked balance",
           "type": "string",
           "format": "decimal",
           "example": "123.45",
@@ -583,40 +807,42 @@
           "description": "Currency code according to ISO 4217",
           "type": "string",
           "example": "EUR",
-          "x-availabilityStatus": "Beta"
+          "x-availabilityStatus": "Stable"
         },
         "latestTransactionBookingDate": {
-          "description": "Date of last transaction booked to the account",
           "type": "string",
           "format": "date",
           "example": "2017-06-01",
-          "x-availabilityStatus": "Beta"
+          "x-availabilityStatus": "Stable"
         },
         "ownerName": {
           "type": "string",
-          "x-availabilityStatus": "Beta"
+          "x-removalInfo": " ",
+          "x-deprecationInfo": "V2.2",
+          "x-availabilityStatus": "Deprecated"
         },
         "product": {
-          "description": "Name of the banking product delivered by this account",
           "type": "string",
-          "x-availabilityStatus": "Beta"
+          "x-availabilityStatus": "Stable"
         },
         "status": {
-          "description": "Status of account",
           "type": "string",
+          "example": "OPEN",
+          "enum": [
+            "OPEN",
+            "CLOSED"
+          ],
           "x-availabilityStatus": "Beta"
         },
         "valueDatedBalance": {
-          "description": "Value dated balance is the balance on the basis of which interest is calculated on the account",
           "type": "string",
           "format": "decimal",
           "example": "123.45",
           "x-availabilityStatus": "Beta"
         }
       },
-      "description": "Detailed account information",
-      "x-availabilityStatus": "Beta",
-      "x-availabilityInfo": "V2 API is WIP"
+      "x-availabilityStatus": "Stable",
+      "x-availabilityInfo": " "
     },
     "BankInfo": {
       "type": "object",
@@ -650,42 +876,50 @@
       "type": "object",
       "properties": {
         "groupHeader": {
+          "description": "Standard format response header structure",
           "$ref": "#/definitions/ExternalResponseHeader",
-          "x-availabilityStatus": "Beta"
+          "x-availabilityStatus": "Stable"
         },
         "response": {
+          "description": "Transaction history",
           "$ref": "#/definitions/TransactionList",
-          "x-availabilityStatus": "Beta"
+          "x-availabilityStatus": "Stable"
         }
       },
-      "x-availabilityStatus": "Beta",
-      "x-availabilityInfo": "V2 API is WIP"
+      "description": "Transaction history response",
+      "x-availabilityStatus": "Stable",
+      "x-availabilityInfo": " "
     },
     "TransactionList": {
       "type": "object",
       "properties": {
         "_continuationKey": {
+          "description": "Key to subsequent page of transaction history",
           "type": "string",
-          "x-availabilityStatus": "Beta"
+          "x-availabilityStatus": "Stable"
         },
         "_links": {
+          "description": "Links to next page (if available) and self to restart the search",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/Link"
+            "$ref": "#/definitions/Link",
+            "x-availabilityStatus": "Stable"
           },
-          "x-availabilityStatus": "Beta"
+          "x-availabilityStatus": "Stable"
         },
         "transactions": {
+          "description": "Listed transactions",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/Transaction"
+            "$ref": "#/definitions/Transaction",
+            "x-availabilityStatus": "Stable"
           },
-          "x-availabilityStatus": "Beta"
+          "x-availabilityStatus": "Stable"
         }
       },
       "description": "List of transactions",
-      "x-availabilityStatus": "Beta",
-      "x-availabilityInfo": "V2 API is WIP"
+      "x-availabilityStatus": "Stable",
+      "x-availabilityInfo": " "
     },
     "Transaction": {
       "type": "object",
@@ -693,6 +927,7 @@
         "_type",
         "bookingDate",
         "currency",
+        "status",
         "transactionId"
       ],
       "discriminator": "_type",
@@ -705,58 +940,87 @@
             "CreditTransaction",
             "DebitTransaction"
           ],
-          "x-availabilityStatus": "Beta"
+          "x-availabilityStatus": "Stable"
         },
         "amount": {
+          "description": "Transaction value",
           "type": "string",
           "format": "decimal",
           "example": "123.45",
-          "x-availabilityStatus": "Beta"
+          "x-availabilityStatus": "Stable"
         },
         "bookingDate": {
           "description": "Date transaction was booked to the account ledger",
           "type": "string",
           "format": "date",
           "example": "2017-06-01",
+          "x-availabilityStatus": "Stable"
+        },
+        "counterpartyName": {
+          "description": "Counterparty name",
+          "type": "string",
           "x-availabilityStatus": "Beta"
         },
         "currency": {
           "description": "Currency code according to ISO 4217",
           "type": "string",
           "example": "EUR",
-          "x-availabilityStatus": "Beta"
+          "x-availabilityStatus": "Stable"
         },
         "message": {
           "description": "Message from remitter to beneficiary. In Finland this may alternatively include a short description of the transaction e.g. 'Automaattiotto'",
           "type": "string",
           "x-availabilityStatus": "Beta"
         },
+        "narrative": {
+          "description": "Transaction narrative (customer custom message)",
+          "type": "string",
+          "x-availabilityStatus": "Beta"
+        },
+        "ownMessage": {
+          "description": "Text message for the account holder's own use",
+          "type": "string",
+          "x-availabilityStatus": "Beta"
+        },
         "reference": {
           "description": "Reference number",
-          "$ref": "#/definitions/Reference",
-          "x-availabilityStatus": "Draft"
+          "type": "string",
+          "x-availabilityStatus": "Beta"
+        },
+        "status": {
+          "description": "Status of the transaction",
+          "type": "string",
+          "x-availabilityStatus": "Beta"
+        },
+        "transactionDate": {
+          "description": "Date on which transaction was enacted",
+          "type": "string",
+          "format": "date",
+          "example": "2017-06-01",
+          "x-availabilityStatus": "Beta"
         },
         "transactionId": {
           "description": "Unique transaction identifier as defined by the bank",
           "type": "string",
-          "x-availabilityStatus": "Beta"
+          "x-availabilityStatus": "Stable"
         },
         "typeDescription": {
           "description": "Description of the type of transaction, e.g. Cash withdrawal, Account transfer, etc. (localized)",
           "type": "string",
           "example": "ATM Cash Withdrawal",
-          "x-availabilityStatus": "Beta"
+          "x-availabilityStatus": "Stable"
         },
         "valueDate": {
           "description": "Value date of the transaction, used for interest calculation",
           "type": "string",
           "format": "date",
           "example": "2017-06-01",
-          "x-availabilityStatus": "Beta"
+          "x-availabilityStatus": "Stable"
         }
       },
-      "x-availabilityStatus": "Beta",
-      "x-availabilityInfo": "V2 API is WIP"
+      "description": "Transaction details",
+      "x-availabilityStatus": "Stable",
+      "x-availabilityInfo": " "
     },
     "CreditTransaction": {
       "description": "Credit transaction with positive (or zero) amount",
@@ -770,40 +1034,16 @@
             "debtorName": {
               "description": "Payer name",
               "type": "string",
-              "x-availabilityStatus": "Beta"
+              "x-removalInfo": " ",
+              "x-deprecationInfo": "V2.2",
+              "x-availabilityStatus": "Deprecated"
             }
           }
         }
       ],
-      "x-availabilityStatus": "Beta",
-      "x-availabilityInfo": "V2 API is WIP"
-    },
-    "Reference": {
-      "type": "object",
-      "required": [
-        "_type",
-        "value"
-      ],
-      "properties": {
-        "_type": {
-          "description": "Type of the reference number, e.g. RF",
-          "type": "string",
-          "example": "RF",
-          "enum": [
-            "RF",
-            "INVOICE"
-          ],
-          "x-availabilityStatus": "Beta"
-        },
-        "value": {
-          "description": "Actual reference number",
-          "type": "string",
-          "example": "RF18539007547034",
-          "x-availabilityStatus": "Beta"
-        }
-      },
-      "description": "Creditor reference number",
-      "x-availabilityStatus": "Beta"
+      "x-availabilityStatus": "Deprecated",
+      "x-deprecationInfo": "V2.2",
+      "x-removalInfo": " "
     },
     "DebitTransaction": {
       "description": "Debit transaction with negative amount",
@@ -814,27 +1054,147 @@
         {
           "type": "object",
           "properties": {
-            "creditorAccount": {
-              "description": "Payee account number",
-              "$ref": "#/definitions/AccountNumber",
-              "x-availabilityStatus": "Draft"
-            },
             "creditorName": {
               "description": "Name of the payee",
               "type": "string",
-              "x-availabilityStatus": "Beta"
-            },
-            "debtorMessage": {
-              "description": "Placeholder for DK own message",
-              "type": "string",
-              "x-availabilityStatus": "Draft",
-              "x-availabilityInfo": "Placeholder for Danish own message"
+              "x-removalInfo": " ",
+              "x-deprecationInfo": "V2.2",
+              "x-availabilityStatus": "Deprecated"
             }
           }
         }
       ],
-      "x-availabilityStatus": "Beta",
-      "x-availabilityInfo": "V2 API is WIP"
+      "x-availabilityStatus": "Deprecated",
+      "x-deprecationInfo": "V2.2",
+      "x-removalInfo": " "
+    },
+    "AccountDetails-2": {
+      "type": "object",
+      "required": [
+        "_id",
+        "accountName",
+        "accountNumber",
+        "accountNumbers",
+        "accountType",
+        "availableBalance",
+        "bank",
+        "bookedBalance",
+        "currency",
+        "product",
+        "status"
+      ],
+      "properties": {
+        "_id": {
+          "type": "string",
+          "x-availabilityStatus": "Stable"
+        },
+        "_links": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Link",
+            "x-availabilityStatus": "Stable"
+          },
+          "x-availabilityStatus": "Stable"
+        },
+        "accountName": {
+          "type": "string",
+          "x-availabilityStatus": "Beta"
+        },
+        "accountNumber": {
+          "$ref": "#/definitions/AccountNumber",
+          "x-removalInfo": " ",
+          "x-deprecationInfo": "V2.2",
+          "x-availabilityStatus": "Deprecated"
+        },
+        "accountNumbers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/AccountNumber",
+            "x-availabilityStatus": "Beta"
+          },
+          "x-availabilityStatus": "Beta"
+        },
+        "accountType": {
+          "type": "string",
+          "example": "Current",
+          "enum": [
+            "Current"
+          ],
+          "x-availabilityStatus": "Stable"
+        },
+        "availableBalance": {
+          "type": "string",
+          "format": "decimal",
+          "example": "123.45",
+          "x-availabilityStatus": "Stable"
+        },
+        "bank": {
+          "$ref": "#/definitions/BankInfo",
+          "x-availabilityStatus": "Beta"
+        },
+        "bookedBalance": {
+          "type": "string",
+          "format": "decimal",
+          "example": "123.45",
+          "x-availabilityStatus": "Stable"
+        },
+        "country": {
+          "description": "Country code where the account is held according to ISO ALPHA-2",
+          "type": "string",
+          "example": "FI",
+          "x-availabilityStatus": "Stable"
+        },
+        "created": {
+          "type": "string",
+          "format": "date",
+          "example": "2017-06-01",
+          "x-availabilityStatus": "Stable"
+        },
+        "creditLimit": {
+          "type": "string",
+          "format": "decimal",
+          "example": "123.45",
+          "x-availabilityStatus": "Beta"
+        },
+        "currency": {
+          "description": "Currency code according to ISO 4217",
+          "type": "string",
+          "example": "EUR",
+          "x-availabilityStatus": "Stable"
+        },
+        "latestTransactionBookingDate": {
+          "type": "string",
+          "format": "date",
+          "example": "2017-06-01",
+          "x-availabilityStatus": "Stable"
+        },
+        "ownerName": {
+          "type": "string",
+          "x-removalInfo": " ",
+          "x-deprecationInfo": "V2.2",
+          "x-availabilityStatus": "Deprecated"
+        },
+        "product": {
+          "type": "string",
+          "x-availabilityStatus": "Stable"
+        },
+        "status": {
+          "type": "string",
+          "example": "OPEN",
+          "enum": [
+            "OPEN",
+            "CLOSED"
+          ],
+          "x-availabilityStatus": "Beta"
+        },
+        "valueDatedBalance": {
+          "type": "string",
+          "format": "decimal",
+          "example": "123.45",
+          "x-availabilityStatus": "Beta"
+        }
+      },
+      "x-availabilityStatus": "Stable"
     }
   }
 }
