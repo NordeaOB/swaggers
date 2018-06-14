@@ -158,8 +158,7 @@
 					"query": [
 						{
 							"key": "code",
-							"value": "ZXlKbGJtTWlPaUpCTVRJNFIwTk5JaXdpWVd4bklqb2laR2x5SW4wLi5ZeGJSVDZ2RkdxeUVNb0xtLjg4cFo3eXl1cHlISnk5RHNYWnZTQzBIRTJJTWZ4c1AtcVFrRF9lNlRzdG5VVncwNVlQckx0UGtjMk5SMzAtRVJaRFB5YmNLSk8wTnpXSVBxUTBYMFhsNVZoYWh6Q1pYYVY3U1ByMTF6bVQ0ck5mdmRaampTeFdFaWhSay1PaUs1WXNlUGtVRUUyc2o2WTFzYk42Z0U4alJvNHp6RUVkRmFTcGh1Y3Ricjh1UWJtejdhYnl4aHZRdnpGQ3RRUVg2NVdPT1VYRjNBR2J0dmNEZUJZS1lCN0dxaGNwd2dwYi14S3VDUmxaUjFJSllKUklvR3U1MUh4T2pac3FRQjdTcHNKa2FvaXlyNnEtbW1COWJ2LWtGMGVxYU9vODQzMTR0ODVrVzRNMHFZcFJvcDBZUG1kZUpYaDZnQUdlRmxsZm8tZHQxRWFWMUlIWlBVaVAtaFlLTDhSaDEyWkY3LS5KeU1oMFR4Mk1nUkRfVVdJWm04ODhB",
-							"equals": true
+							"value": "{{code}}"
 						},
 						{
 							"key": "redirect_uri",
