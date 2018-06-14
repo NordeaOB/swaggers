@@ -99,7 +99,7 @@
 				],
 				"body": {},
 				"url": {
-					"raw": "https://api.nordeaopenbanking.com/v1/authentication/access_token?code=ZXlKbGJtTWlPaUpCTVRJNFIwTk5JaXdpWVd4bklqb2laR2x5SW4wLi5ZeGJSVDZ2RkdxeUVNb0xtLjg4cFo3eXl1cHlISnk5RHNYWnZTQzBIRTJJTWZ4c1AtcVFrRF9lNlRzdG5VVncwNVlQckx0UGtjMk5SMzAtRVJaRFB5YmNLSk8wTnpXSVBxUTBYMFhsNVZoYWh6Q1pYYVY3U1ByMTF6bVQ0ck5mdmRaampTeFdFaWhSay1PaUs1WXNlUGtVRUUyc2o2WTFzYk42Z0U4alJvNHp6RUVkRmFTcGh1Y3Ricjh1UWJtejdhYnl4aHZRdnpGQ3RRUVg2NVdPT1VYRjNBR2J0dmNEZUJZS1lCN0dxaGNwd2dwYi14S3VDUmxaUjFJSllKUklvR3U1MUh4T2pac3FRQjdTcHNKa2FvaXlyNnEtbW1COWJ2LWtGMGVxYU9vODQzMTR0ODVrVzRNMHFZcFJvcDBZUG1kZUpYaDZnQUdlRmxsZm8tZHQxRWFWMUlIWlBVaVAtaFlLTDhSaDEyWkY3LS5KeU1oMFR4Mk1nUkRfVVdJWm04ODhB&redirect_uri=http://httpbin.org/post",
+					"raw": "https://api.nordeaopenbanking.com/v1/authentication/access_token?code={{code}}&redirect_uri=http://httpbin.org/post",
 					"protocol": "https",
 					"host": [
 						"api",
@@ -194,10 +194,7 @@
 					"script": {
 						"type": "text/javascript",
 						"exec": [
-							"var jsonData = JSON.parse(responseBody);\r",
-							"\r",
-							"postman.setEnvironmentVariable(\"paymentId\", \r",
-							"    jsonData.response.id);"
+							""
 						]
 					}
 				}
@@ -343,11 +340,6 @@
 					"script": {
 						"type": "text/javascript",
 						"exec": [
-							"var jsonData = JSON.parse(responseBody);\r",
-							"\r",
-							"postman.setEnvironmentVariable(\"paymentId\", \r",
-							"    jsonData.response._id);\r",
-							"\r",
 							""
 						]
 					}
@@ -408,10 +400,7 @@
 					"script": {
 						"type": "text/javascript",
 						"exec": [
-							"var jsonData = JSON.parse(responseBody);\r",
-							"\r",
-							"postman.setEnvironmentVariable(\"paymentId\", \r",
-							"    jsonData.response.id);"
+							""
 						]
 					}
 				}
@@ -466,10 +455,6 @@
 					"script": {
 						"type": "text/javascript",
 						"exec": [
-							"var jsonData = JSON.parse(responseBody);",
-							"",
-							"postman.setEnvironmentVariable(\"payment-id\", ",
-							"    jsonData.response._id);",
 							""
 						]
 					}
@@ -525,10 +510,6 @@
 					"script": {
 						"type": "text/javascript",
 						"exec": [
-							"var jsonData = JSON.parse(responseBody);",
-							"",
-							"postman.setEnvironmentVariable(\"payment-id\", ",
-							"    jsonData.response._id);",
 							""
 						]
 					}
