@@ -68,50 +68,6 @@
 			"response": []
 		},
 		{
-			"name": "List User Assets",
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Bearer {{access_token}}"
-					},
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					},
-					{
-						"key": "X-IBM-Client-ID",
-						"value": "{{X-IBM-Client-ID}}"
-					},
-					{
-						"key": "X-IBM-Client-Secret",
-						"value": "{{X-IBM-Client-Secret}}"
-					},
-					{
-						"key": "X-Response-Scenarios",
-						"value": "AuthorizationSkipAccessControl"
-					}
-				],
-				"body": {},
-				"url": {
-					"raw": "https://api.nordeaopenbanking.com/v1/assets",
-					"protocol": "https",
-					"host": [
-						"api",
-						"nordeaopenbanking",
-						"com"
-					],
-					"path": [
-						"v1",
-						"assets"
-					]
-				},
-				"description": ""
-			},
-			"response": []
-		},
-		{
 			"name": "Exchange Token",
 			"event": [
 				{
@@ -171,6 +127,65 @@
 			},
 			"response": []
 		},
+		{
+			"name": "List User Assets",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "7f1d6303-a8e3-4096-a4d9-e15a12494196",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Request Passes\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "X-IBM-Client-ID",
+						"value": "{{X-IBM-Client-ID}}"
+					},
+					{
+						"key": "X-IBM-Client-Secret",
+						"value": "{{X-IBM-Client-Secret}}"
+					},
+					{
+						"key": "X-Response-Scenarios",
+						"value": "AuthorizationSkipAccessControl"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "https://api.nordeaopenbanking.com/v1/assets",
+					"protocol": "https",
+					"host": [
+						"api",
+						"nordeaopenbanking",
+						"com"
+					],
+					"path": [
+						"v1",
+						"assets"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		
 		{
 			"name": "Get Account",
 			"event": [
