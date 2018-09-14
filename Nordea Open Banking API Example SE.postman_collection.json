@@ -1,0 +1,587 @@
+{
+	"info": {
+		"name": "Nordea Open Banking API Example SE",
+		"_postman_id": "b7a09e58-ec83-0a21-9fdb-855b8e97721d",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Start Auth",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"postman.setEnvironmentVariable(\"order_ref\", jsonData.response.order_ref);",
+							"postman.setEnvironmentVariable(\"tpp_token\", jsonData.response.tpp_token);"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "X-IBM-Client-Id",
+						"value": "{{X-IBM-Client-ID}}"
+					},
+					{
+						"key": "X-IBM-Client-Secret",
+						"value": "{{X-IBM-Client-Secret}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \r\n  \"response_type\": \"nordea_code\",\r\n  \"psu_id\": \"193805010844\",\r\n  \"scope\": [\"ACCOUNTS_BASIC\",\"PAYMENTS_MULTIPLE\",\"ACCOUNTS_TRANSACTIONS\",\"ACCOUNTS_DETAILS\",\"ACCOUNTS_BALANCES\"],\r\n  \"language\": \"SE\",\r\n  \"redirect_uri\": \"https://httpbin.org/get\",\r\n  \"account_list\": [\"41770042136\"],\r\n  \"duration\": 129600,\r\n  \"state\": \"some id\"\r\n}"
+				},
+				"url": {
+					"raw": "https://api.nordeaopenbanking.com/v2/authorize-decoupled",
+					"protocol": "https",
+					"host": [
+						"api",
+						"nordeaopenbanking",
+						"com"
+					],
+					"path": [
+						"v2",
+						"authorize-decoupled"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Polling for Auth Code",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"postman.setEnvironmentVariable(\"code\", jsonData.response.code);"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{tpp_token}}"
+					},
+					{
+						"key": "X-IBM-Client-Id",
+						"value": "{{X-IBM-Client-ID}}"
+					},
+					{
+						"key": "X-IBM-Client-Secret",
+						"value": "{{X-IBM-Client-Secret}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"client_id\": \"myApp\",\n\t\"nordea_id\": \"193805010844\",\n\t\"scopes\": [ \"BasicAccounts\" ]\n}"
+				},
+				"url": {
+					"raw": "https://api.nordeaopenbanking.com/v2/authorize-decoupled/{{order_ref}}",
+					"protocol": "https",
+					"host": [
+						"api",
+						"nordeaopenbanking",
+						"com"
+					],
+					"path": [
+						"v2",
+						"authorize-decoupled",
+						"{{order_ref}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Retrieving Access Token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"postman.setEnvironmentVariable(\"access_token\", jsonData.access_token);"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{tpp_token}}"
+					},
+					{
+						"key": "X-IBM-Client-Id",
+						"value": "{{X-IBM-Client-ID}}"
+					},
+					{
+						"key": "X-IBM-Client-Secret",
+						"value": "{{X-IBM-Client-Secret}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"grant_type\": \"authorization_code\",\n\t\"code\": \"{{code}}\",\n\t\"redirect_uri\": \"https://httpbin.org/get\"\n}"
+				},
+				"url": {
+					"raw": "https://api.nordeaopenbanking.com/v2/authorize-decoupled/token",
+					"protocol": "https",
+					"host": [
+						"api",
+						"nordeaopenbanking",
+						"com"
+					],
+					"path": [
+						"v2",
+						"authorize-decoupled",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Accounts",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"postman.setEnvironmentVariable(\"account_id\", ",
+							"    jsonData.response.accounts[0]._id);",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "X-IBM-Client-ID",
+						"value": "{{X-IBM-Client-ID}}"
+					},
+					{
+						"key": "X-IBM-Client-Secret",
+						"value": "{{X-IBM-Client-Secret}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{  \r\n    \"amount\": {\r\n        \"value\": \"123.12\",\r\n        \"currency\": \"EUR\"\r\n    },\r\n    \r\n    \"debtor\": {\r\n        \"accountId\": \"FI6593857450293470-EUR\"\r\n    },\r\n    \"creditor\": { \r\n        \"account\": {\r\n            \"value\": \"FI1350001520000081\",\r\n            \"type\": \"IBAN\"\r\n        },\r\n        \"name\": \"Jussi's Construction\",\r\n        \"message\": \"Thanks for the renovation\",\r\n        \"reference\": {\r\n            \"value\": \"RF1232\",\r\n            \"type\": \"RF\"\r\n        }\r\n    }\r\n}"
+				},
+				"url": {
+					"raw": "https://api.nordeaopenbanking.com/v2/accounts",
+					"protocol": "https",
+					"host": [
+						"api",
+						"nordeaopenbanking",
+						"com"
+					],
+					"path": [
+						"v2",
+						"accounts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Account Details by Account ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"\r",
+							"postman.setEnvironmentVariable(\"paymentId\", \r",
+							"    jsonData.response.id);"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "X-IBM-Client-ID",
+						"value": "{{X-IBM-Client-ID}}"
+					},
+					{
+						"key": "X-IBM-Client-Secret",
+						"value": "{{X-IBM-Client-Secret}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \r\n\t\"_type\": \"CreditTransaction\",\r\n\t\"transactionId\": \"1234\",\r\n\t\"currency\": \"EUR\",\r\n\t\"bookingDate\": \"2017-11-17\", \r\n\t\"creditorMessage\": \"message\",\r\n\t\"creditorAccount\": {\r\n\t\t\"value\": \"FI2112345600000785-EUR\",\r\n\t\t\"_type\": \"IBAN\"\r\n\t},\r\n\t\"country\": \"FI\",\r\n\t\"amount\": 23.27,\r\n\t\"product\": \"someProduct\",\r\n\t\"availableBalance\": 200,\r\n\t\"bookedBalance\": 200,\r\n\t\"accountName\": \"Test Account\",\r\n\t\"accountType\": \"Current\",\r\n\t\"accountNumber\": {\r\n\t\t\t\"value\": \"FI2112345600000785\",\r\n\t\t\t\"_type\": \"IBAN\"\r\n\t},\r\n\t\"_id\": \"internal id wtf\",\r\n\t\"status\": \"OPEN\",\r\n\t\"bank\": {\r\n\t\t\"name\": \"Nordea\",\r\n\t\t\"BIC\": {\r\n\t\t\t\"bic\": \"NDEAFIHH\"\r\n\t\t},\r\n\t\t\"country\": \"FI\"\r\n\t},\r\n\t\"accountNumbers\": [\r\n\t\t{\r\n\t\t\t\"value\": \"FI2112345600000785\",\r\n\t\t\t\"_type\": \"IBAN\"\r\n\t\t}\r\n\t]\r\n}"
+				},
+				"url": {
+					"raw": "https://api.nordeaopenbanking.com/v2/accounts/{{account_id}}",
+					"protocol": "https",
+					"host": [
+						"api",
+						"nordeaopenbanking",
+						"com"
+					],
+					"path": [
+						"v2",
+						"accounts",
+						"{{account_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Transactions",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"postman.setEnvironmentVariable(\"payment-id\", ",
+							"    jsonData.response._id);",
+							"postman.setEnvironmentVariable(\"continuation_key\",jsonData.response._continuationKey)",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "X-IBM-Client-ID",
+						"value": "{{X-IBM-Client-ID}}"
+					},
+					{
+						"key": "X-IBM-Client-Secret",
+						"value": "{{X-IBM-Client-Secret}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{  \r\n    \"amount\":  \"123.12\",\r\n        \"currency\": \"EUR\"\r\n,    \r\n    \"debtor\": {\r\n        \"accountId\": \"FI6593857450293470-EUR\"\r\n    },\r\n    \"creditor\": { \r\n        \"account\": {\r\n            \"value\": \"FI1350001520000081\",\r\n            \"type\": \"IBAN\"\r\n        },\r\n        \"name\": \"Jussi's Construction\",\r\n        \"message\": \"Thanks for the renovation\",\r\n        \"reference\": {\r\n            \"value\": \"RF1232\",\r\n            \"type\": \"RF\"\r\n        }\r\n    }\r\n}"
+				},
+				"url": {
+					"raw": "https://api.nordeaopenbanking.com/v2/accounts/{{account_id}}/transactions",
+					"protocol": "https",
+					"host": [
+						"api",
+						"nordeaopenbanking",
+						"com"
+					],
+					"path": [
+						"v2",
+						"accounts",
+						"{{account_id}}",
+						"transactions"
+					],
+					"query": [
+						{
+							"key": "continuationKey",
+							"value": "{{continuation_key}}",
+							"equals": true,
+							"description": "Optional",
+							"disabled": true
+						},
+						{
+							"key": "language",
+							"value": "SE",
+							"type": "text",
+							"description": "Optional",
+							"disabled": true
+						},
+						{
+							"key": "fromDate",
+							"value": "",
+							"type": "text",
+							"description": "Optional",
+							"disabled": true
+						},
+						{
+							"key": "toDate",
+							"value": "",
+							"type": "text",
+							"description": "Optional",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Payments",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}"
+					},
+					{
+						"key": "X-IBM-Client-Id",
+						"value": "{{X-IBM-Client-ID}}"
+					},
+					{
+						"key": "X-IBM-Client-Secret",
+						"value": "{{X-IBM-Client-Secret}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://api.nordeaopenbanking.com/v2/payments/domestic",
+					"protocol": "https",
+					"host": [
+						"api",
+						"nordeaopenbanking",
+						"com"
+					],
+					"path": [
+						"v2",
+						"payments",
+						"domestic"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Initiate Payment",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"\r",
+							"postman.setEnvironmentVariable(\"payment_id\", \r",
+							"    jsonData.response._id);"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}"
+					},
+					{
+						"key": "X-IBM-Client-Id",
+						"value": "{{X-IBM-Client-ID}}"
+					},
+					{
+						"key": "X-IBM-Client-Secret",
+						"value": "{{X-IBM-Client-Secret}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"amount\": \"1.13\",\r\n  \"creditor\": {\r\n    \"account\": {\r\n      \"_type\": \"BBAN_SE\",\r\n      \"currency\": \"SEK\",\r\n      \"value\": \"13370233835\"\r\n    },\r\n    \"message\": \"Another\",\r\n    \"name\": \"Beneficiary name\"\r\n  },\r\n  \"currency\": \"SEK\",\r\n  \"debtor\": {\r\n    \"account\": {\r\n      \"_type\": \"BBAN_SE\",\r\n      \"currency\": \"SEK\",\r\n      \"value\": \"41770042136\"\r\n    },\r\n    \"message\": \"Own message\"\r\n  },\r\n  \"externalId\": \"string\"\r\n} "
+				},
+				"url": {
+					"raw": "https://api.nordeaopenbanking.com/v2/payments/domestic",
+					"protocol": "https",
+					"host": [
+						"api",
+						"nordeaopenbanking",
+						"com"
+					],
+					"path": [
+						"v2",
+						"payments",
+						"domestic"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get payment",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "X-IBM-Client-ID",
+						"value": "{{X-IBM-Client-ID}}"
+					},
+					{
+						"key": "X-IBM-Client-Secret",
+						"value": "{{X-IBM-Client-Secret}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"amount\": {\r\n        \"value\": \"123.12\",\r\n        \"currency\": \"EUR\"\r\n    },\r\n    \"debtor\": {\r\n        \"accountId\": \"FI7473834510057469-EUR\"\r\n    },\r\n    \"creditor\": {\r\n        \"account\": {\r\n            \"value\": \"FI1350001520000081\",\r\n            \"type\": \"IBAN\"\r\n        },\r\n        \"name\": \"Jussi's Construction\",\r\n        \"message\": \"Thanks for the renovation\",\r\n        \"reference\": {\r\n            \"value\": \"RF1232\",\r\n            \"type\": \"RF\"\r\n        }\r\n    }\r\n}"
+				},
+				"url": {
+					"raw": "https://api.nordeaopenbanking.com/v2/payments/domestic/{{payment_id}}",
+					"protocol": "https",
+					"host": [
+						"api",
+						"nordeaopenbanking",
+						"com"
+					],
+					"path": [
+						"v2",
+						"payments",
+						"domestic",
+						"{{payment_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Confirm Payment",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "X-IBM-Client-ID",
+						"value": "{{X-IBM-Client-ID}}"
+					},
+					{
+						"key": "X-IBM-Client-Secret",
+						"value": "{{X-IBM-Client-Secret}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://api.nordeaopenbanking.com/v2/payments/domestic/{{payment_id}}/confirm",
+					"protocol": "https",
+					"host": [
+						"api",
+						"nordeaopenbanking",
+						"com"
+					],
+					"path": [
+						"v2",
+						"payments",
+						"domestic",
+						"{{payment_id}}",
+						"confirm"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
