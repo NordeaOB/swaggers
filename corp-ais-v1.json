@@ -1,0 +1,903 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "Business Accounts API",
+        "version": "1.0",
+        "title": "Business Accounts API",
+        "contact": {
+            "name": "Open Banking team",
+            "url": "https://nordeaopenbanking.com",
+            "email": "support@nordeaopenbanking.com"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "x-ibm-name": "business-ais-v1",
+        "x-version": "1.0"
+    },
+    "host": "",
+    "basePath": "/",
+    "tags": [
+        {
+            "name": "accounts-v1",
+            "description": "Customer accounts"
+        }
+    ],
+    "paths": {
+        "/v1/accounts": {
+            "get": {
+                "tags": [
+                    "accounts-v1"
+                ],
+                "summary": "List Accounts",
+                "operationId": "getAccountsListUsingGET",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "continuation_key",
+                        "in": "query",
+                        "description": "Resource listing may return a continuationKey if there's more results available. Request may be retried with the continuationKey, but otherwise same parameters, in order to get more results.",
+                        "required": false,
+                        "type": "string",
+                        "x-availabilityStatus": "Beta"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of accounts",
+                        "schema": {
+                            "$ref": "#/definitions/AccountListResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized with failure code:\n* error.apikey.missing = Missing API key. This operation requires API key, but it was missing.\n* error.token = Unspecified error with supplied token.\n* error.token.invalid = Missing access token or token did not authorized requested operation. This operation requires valid access token, but it was missing.\n* error.token.expired = Access token has expired.",
+                        "schema": {
+                            "$ref": "#/definitions/ExternalErrorResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Login failure",
+                        "schema": {
+                            "$ref": "#/definitions/ExternalErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Resource not found",
+                        "schema": {
+                            "$ref": "#/definitions/ExternalErrorResponse"
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "oauth2": [
+                            "ACCOUNTS_BROADBAND"
+                        ]
+                    },
+                    {
+                        "clientId": []
+                    }
+                ],
+                "deprecated": false,
+                "x-availabilityStatus": "Beta"
+            }
+        },
+        "/v1/accounts/filter": {
+            "post": {
+                "tags": [
+                    "accounts-v1"
+                ],
+                "summary": "Filter Accounts",
+                "operationId": "getFilteredAccountListUsingPOST",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "continuation_key",
+                        "in": "query",
+                        "description": "Resource listing may return a continuationKey if there's more results available. Request may be retried with the continuationKey, but otherwise same parameters, in order to get more results.",
+                        "required": false,
+                        "type": "string",
+                        "x-availabilityStatus": "Beta"
+                    },
+                    {
+                        "in": "body",
+                        "name": "filterRequest",
+                        "description": "Request for filtered accounts",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/definitions/AccountFilterRequest"
+                        },
+                        "x-availabilityStatus": "Beta"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Filtered list of accounts",
+                        "schema": {
+                            "$ref": "#/definitions/AccountListResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized with failure code:\n* error.apikey.missing = Missing API key. This operation requires API key, but it was missing.\n* error.token = Unspecified error with supplied token.\n* error.token.invalid = Missing access token or token did not authorized requested operation. This operation requires valid access token, but it was missing.\n* error.token.expired = Access token has expired.",
+                        "schema": {
+                            "$ref": "#/definitions/ExternalErrorResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Login failure",
+                        "schema": {
+                            "$ref": "#/definitions/ExternalErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Resource not found",
+                        "schema": {
+                            "$ref": "#/definitions/ExternalErrorResponse"
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "oauth2": [
+                            "ACCOUNTS_BROADBAND"
+                        ]
+                    },
+                    {
+                        "clientId": []
+                    }
+                ],
+                "deprecated": false,
+                "x-availabilityStatus": "Beta"
+            }
+        },
+        "/v1/accounts/{account_id}": {
+            "get": {
+                "tags": [
+                    "accounts-v1"
+                ],
+                "summary": "Account details",
+                "operationId": "getAccountDetailsUsingGET",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "account_id",
+                        "in": "path",
+                        "description": "Internal, technical account identifier",
+                        "required": true,
+                        "type": "string",
+                        "x-availabilityStatus": "Beta"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Account details",
+                        "schema": {
+                            "$ref": "#/definitions/AccountDetailsResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized with failure code:\n* error.apikey.missing = Missing API key. This operation requires API key, but it was missing.\n* error.token = Unspecified error with supplied token.\n* error.token.invalid = Missing access token or token did not authorized requested operation. This operation requires valid access token, but it was missing.\n* error.token.expired = Access token has expired.",
+                        "schema": {
+                            "$ref": "#/definitions/ExternalErrorResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Login failure",
+                        "schema": {
+                            "$ref": "#/definitions/ExternalErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Account not found",
+                        "schema": {
+                            "$ref": "#/definitions/ExternalErrorResponse"
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "oauth2": [
+                            "ACCOUNTS_BROADBAND"
+                        ]
+                    },
+                    {
+                        "clientId": []
+                    }
+                ],
+                "deprecated": false,
+                "x-availabilityStatus": "Beta"
+            }
+        },
+        "/v1/accounts/{account_id}/transactions": {
+            "get": {
+                "tags": [
+                    "accounts-v1"
+                ],
+                "summary": "List Transactions",
+                "operationId": "getTransactionsUsingGET",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "account_id",
+                        "in": "path",
+                        "description": "Internal, technical account identifier",
+                        "required": true,
+                        "type": "string",
+                        "x-availabilityStatus": "Beta"
+                    },
+                    {
+                        "name": "continuation_key",
+                        "in": "query",
+                        "description": "Resource listing may return a continuationKey if there's more results available. Request may be retried with the continuationKey, but otherwise same parameters, in order to get more results.",
+                        "required": false,
+                        "type": "string",
+                        "x-availabilityStatus": "Beta"
+                    },
+                    {
+                        "name": "end_date",
+                        "in": "query",
+                        "description": "List transactions until and including this date",
+                        "required": false,
+                        "type": "string",
+                        "format": "date",
+                        "x-availabilityStatus": "Beta"
+                    },
+                    {
+                        "name": "language",
+                        "in": "query",
+                        "description": "Preferred language for text values",
+                        "required": false,
+                        "type": "string",
+                        "x-availabilityStatus": "Beta"
+                    },
+                    {
+                        "name": "start_date",
+                        "in": "query",
+                        "description": "List transactions starting from and including this date",
+                        "required": false,
+                        "type": "string",
+                        "format": "date",
+                        "x-availabilityStatus": "Beta"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of account transactions",
+                        "schema": {
+                            "$ref": "#/definitions/TransactionListResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized with failure code:\n* error.apikey.missing = Missing API key. This operation requires API key, but it was missing.\n* error.token = Unspecified error with supplied token.\n* error.token.invalid = Missing access token or token did not authorized requested operation. This operation requires valid access token, but it was missing.\n* error.token.expired = Access token has expired.",
+                        "schema": {
+                            "$ref": "#/definitions/ExternalErrorResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Login failure",
+                        "schema": {
+                            "$ref": "#/definitions/ExternalErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Account not found",
+                        "schema": {
+                            "$ref": "#/definitions/ExternalErrorResponse"
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "oauth2": [
+                            "ACCOUNTS_BROADBAND"
+                        ]
+                    },
+                    {
+                        "clientId": []
+                    }
+                ],
+                "deprecated": false,
+                "x-availabilityStatus": "Beta"
+            }
+        }
+    },
+    "securityDefinitions": {
+        "clientId": {
+            "type": "apiKey",
+            "name": "X-IBM-Client-Id",
+            "in": "header"
+        },
+        "oauth2": {
+            "type": "oauth2",
+            "authorizationUrl": "/v1/authorize",
+            "tokenUrl": "/v1/authorize/token",
+            "flow": "accessCode",
+            "scopes": {
+                "ACCOUNTS_BROADBAND": "ACCOUNTS_BROADBAND scope type"
+            }
+        }
+    },
+    "definitions": {
+        "AccountDetailsResponse": {
+            "type": "object",
+            "properties": {
+                "group_header": {
+                    "description": "Standard format response header",
+                    "$ref": "#/definitions/ExternalResponseHeader",
+                    "x-availabilityStatus": "Beta"
+                },
+                "response": {
+                    "description": "Payload",
+                    "$ref": "#/definitions/AccountInfo",
+                    "x-availabilityStatus": "Beta"
+                }
+            },
+            "title": "AccountDetailsResponse",
+            "description": "Account details response"
+        },
+        "AccountFilterRequest": {
+            "type": "object",
+            "properties": {
+                "account_list": {
+                    "type": "array",
+                    "description": "Account List",
+                    "items": {
+                        "type": "string"
+                    },
+                    "x-availabilityStatus": "Beta"
+                },
+                "country_list": {
+                    "type": "array",
+                    "description": "Country List",
+                    "items": {
+                        "type": "string"
+                    },
+                    "x-availabilityStatus": "Beta"
+                },
+                "currency_list": {
+                    "type": "array",
+                    "description": "Currency List",
+                    "items": {
+                        "type": "string"
+                    },
+                    "x-availabilityStatus": "Beta"
+                }
+            },
+            "title": "AccountFilterRequest",
+            "description": "Request for filtered accounts"
+        },
+        "AccountInfo": {
+            "type": "object",
+            "required": [
+                "account_type",
+                "bic",
+                "booked_balance",
+                "country",
+                "currency",
+                "iban",
+                "id",
+                "links",
+                "product",
+                "status"
+            ],
+            "properties": {
+                "account_name": {
+                    "type": "string",
+                    "description": "Account name",
+                    "x-availabilityStatus": "Beta"
+                },
+                "account_type": {
+                    "type": "string",
+                    "description": "Account type",
+                    "x-availabilityStatus": "Beta"
+                },
+                "available_balance": {
+                    "type": "string",
+                    "example": 3451.12,
+                    "description": "Available balance indicates the funds which are available to the account holder at the time of the query",
+                    "x-availabilityStatus": "Beta"
+                },
+                "bban": {
+                    "type": "string",
+                    "description": "Basic Bank Account Number",
+                    "x-availabilityStatus": "Beta"
+                },
+                "bic": {
+                    "type": "string",
+                    "example": "NDEASESS",
+                    "description": "Bank Identifier Code",
+                    "x-availabilityStatus": "Beta"
+                },
+                "booked_balance": {
+                    "type": "string",
+                    "example": 3451.12,
+                    "description": "Booked balance includes all transactions entered on the account at the time of the query",
+                    "x-availabilityStatus": "Beta"
+                },
+                "country": {
+                    "type": "string",
+                    "example": "SE",
+                    "description": "Country code where the account is held according to ISO ALPHA-2",
+                    "x-availabilityStatus": "Beta"
+                },
+                "credit_limit": {
+                    "type": "string",
+                    "example": 3451.12,
+                    "description": "Amount of credit extended to account holder beyond account booked balance",
+                    "x-availabilityStatus": "Beta"
+                },
+                "currency": {
+                    "type": "string",
+                    "example": "SEK",
+                    "description": "Currency code according to ISO 4217",
+                    "x-availabilityStatus": "Beta"
+                },
+                "iban": {
+                    "type": "string",
+                    "description": "International Bank Account Number",
+                    "x-availabilityStatus": "Beta"
+                },
+                "id": {
+                    "type": "string",
+                    "description": "Internal, technical account identifier",
+                    "x-availabilityStatus": "Beta"
+                },
+                "latest_transaction_booking_date": {
+                    "type": "string",
+                    "description": "Date of last transaction booked to the account",
+                    "x-availabilityStatus": "Beta"
+                },
+                "links": {
+                    "type": "array",
+                    "description": "HATEOAS inspired links",
+                    "items": {
+                        "$ref": "#/definitions/Link"
+                    },
+                    "x-availabilityStatus": "Beta"
+                },
+                "product": {
+                    "type": "string",
+                    "description": "Name of the banking product delivered by this account",
+                    "x-availabilityStatus": "Beta"
+                },
+                "status": {
+                    "type": "string",
+                    "description": "Status of account",
+                    "x-availabilityStatus": "Beta"
+                },
+                "value_dated_balance": {
+                    "type": "string",
+                    "example": 3451.12,
+                    "description": "Value dated balance is the balance on the basis of which interest is calculated on the account",
+                    "x-availabilityStatus": "Beta"
+                }
+            },
+            "title": "AccountInfo",
+            "description": "Account information"
+        },
+        "AccountList": {
+            "type": "object",
+            "required": [
+                "links"
+            ],
+            "properties": {
+                "accounts": {
+                    "type": "array",
+                    "description": "List of accounts",
+                    "items": {
+                        "$ref": "#/definitions/AccountInfo"
+                    },
+                    "x-availabilityStatus": "Beta"
+                },
+                "continuation_key": {
+                    "type": "string",
+                    "description": "Resource listing may return a continuationKey if there's more results available. Request may be retried with the continuationKey, but otherwise same parameters, in order to get more results.",
+                    "x-availabilityStatus": "Beta"
+                },
+                "links": {
+                    "type": "array",
+                    "description": "HATEOAS inspired links",
+                    "items": {
+                        "$ref": "#/definitions/Link"
+                    },
+                    "x-availabilityStatus": "Beta"
+                }
+            },
+            "title": "AccountList",
+            "description": "List of accounts"
+        },
+        "AccountListResponse": {
+            "type": "object",
+            "properties": {
+                "group_header": {
+                    "description": "Standard format response header",
+                    "$ref": "#/definitions/ExternalResponseHeader",
+                    "x-availabilityStatus": "Beta"
+                },
+                "response": {
+                    "description": "Payload",
+                    "$ref": "#/definitions/AccountList",
+                    "x-availabilityStatus": "Beta"
+                }
+            },
+            "title": "AccountListResponse",
+            "description": "Account list response"
+        },
+        "ExternalError": {
+            "type": "object",
+            "properties": {
+                "http_code": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "HTTP error for response",
+                    "x-availabilityStatus": "Stable"
+                },
+                "request": {
+                    "description": "Error details",
+                    "$ref": "#/definitions/ExternalRequestEcho",
+                    "x-availabilityStatus": "Stable"
+                },
+                "failures": {
+                    "type": "array",
+                    "description": "More details on the occurred error",
+                    "items": {
+                        "$ref": "#/definitions/ExternalFailure"
+                    },
+                    "x-availabilityStatus": "Stable"
+                }
+            },
+            "title": "ExternalError",
+            "description": "Error information"
+        },
+        "ExternalErrorResponse": {
+            "type": "object",
+            "properties": {
+                "group_header": {
+                    "description": "Standard format response header",
+                    "$ref": "#/definitions/ExternalResponseHeaderV2",
+                    "x-availabilityStatus": "Stable"
+                },
+                "error": {
+                    "description": "Payload",
+                    "$ref": "#/definitions/ExternalError",
+                    "x-availabilityStatus": "Stable"
+                }
+            },
+            "title": "ExternalErrorResponse",
+            "description": "Error response"
+        },
+        "ExternalFailure": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string",
+                    "description": "Failure code",
+                    "x-availabilityStatus": "Stable"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "Failure description",
+                    "x-availabilityStatus": "Stable"
+                },
+                "path": {
+                    "type": "string",
+                    "description": "The failed component path",
+                    "x-availabilityStatus": "Stable"
+                },
+                "type": {
+                    "type": "string",
+                    "description": "Failure type",
+                    "x-availabilityStatus": "Stable"
+                }
+            },
+            "title": "ExternalFailure",
+            "description": "Failure description"
+        },
+        "ExternalRequestEcho": {
+            "type": "object",
+            "required": [
+                "message_identifier"
+            ],
+            "properties": {
+                "message_identifier": {
+                    "type": "string",
+                    "description": "Original request id for correlation purposes",
+                    "x-availabilityStatus": "Stable"
+                },
+                "url": {
+                    "type": "string",
+                    "description": "Original request url",
+                    "x-availabilityStatus": "Stable"
+                }
+            },
+            "title": "ExternalRequestEcho",
+            "description": "Original request information"
+        },
+        "ExternalResponseHeader": {
+            "type": "object",
+            "properties": {
+                "creation_date_time": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Response creation time",
+                    "x-availabilityStatus": "Beta"
+                },
+                "http_code": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "HTTP code for response",
+                    "x-availabilityStatus": "Beta"
+                },
+                "message_identification": {
+                    "type": "string",
+                    "description": "Original request id for correlation purposes",
+                    "x-availabilityStatus": "Beta"
+                },
+                "message_pagination": {
+                    "description": "Details of paginated response",
+                    "$ref": "#/definitions/Pagination",
+                    "x-availabilityStatus": "Beta"
+                }
+            },
+            "title": "ExternalResponseHeader",
+            "description": "External response header"
+        },
+        "ExternalResponseHeaderV2": {
+            "type": "object",
+            "properties": {
+                "http_code": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "HTTP code for response",
+                    "x-availabilityStatus": "Stable"
+                },
+                "message_identification": {
+                    "type": "string",
+                    "description": "Original request id for correlation purposes",
+                    "x-availabilityStatus": "Stable"
+                },
+                "creation_date_time": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Response creation time",
+                    "x-availabilityStatus": "Stable"
+                },
+                "message_pagination": {
+                    "description": "Details of paginated response",
+                    "$ref": "#/definitions/PaginationV2",
+                    "x-availabilityStatus": "Stable"
+                }
+            },
+            "title": "ExternalResponseHeaderV2",
+            "description": "External response header"
+        },
+        "Link": {
+            "type": "object",
+            "required": [
+                "href",
+                "rel"
+            ],
+            "properties": {
+                "href": {
+                    "type": "string",
+                    "example": "/v1/authorize/token",
+                    "description": "Relative path to the linked resource",
+                    "x-availabilityStatus": "Beta"
+                },
+                "rel": {
+                    "type": "string",
+                    "example": "status",
+                    "description": "Describes the nature of the link, e.g. 'details' for a link to the detailed information of a listed resource.",
+                    "x-availabilityStatus": "Beta"
+                }
+            },
+            "title": "Link",
+            "description": "Context specific link (only GET supported)"
+        },
+        "Pagination": {
+            "type": "object",
+            "properties": {
+                "continuation_key": {
+                    "type": "string",
+                    "description": "Resource listing may return a continuationKey if there's more results available. Request may be retried with the continuationKey, but otherwise same parameters, in order to get more results.",
+                    "x-availabilityStatus": "Beta"
+                }
+            },
+            "title": "Pagination",
+            "description": "Details of paginated response"
+        },
+        "PaginationV2": {
+            "type": "object",
+            "properties": {
+                "continuation_key": {
+                    "type": "string",
+                    "description": "Resource listing may return a continuationKey if there's more results available. Request may be retried with the continuationKey, but otherwise same parameters, in order to get more results.",
+                    "x-availabilityStatus": "Stable"
+                }
+            },
+            "title": "PaginationV2",
+            "description": "Details of paginated response"
+        },
+        "Transaction": {
+            "type": "object",
+            "required": [
+                "amount",
+                "booking_date",
+                "currency",
+                "status",
+                "type_description",
+                "value_date"
+            ],
+            "properties": {
+                "amount": {
+                    "type": "string",
+                    "example": 123.45,
+                    "description": "Transaction value",
+                    "x-availabilityStatus": "Beta"
+                },
+                "balance_after_transaction": {
+                    "type": "string",
+                    "example": 3451.12,
+                    "description": "Balance on account after transaction executed",
+                    "x-availabilityStatus": "Beta"
+                },
+                "booking_date": {
+                    "type": "string",
+                    "description": "Date transaction was booked to the account ledger",
+                    "x-availabilityStatus": "Beta"
+                },
+                "card_number": {
+                    "type": "string",
+                    "description": "Card details",
+                    "x-availabilityStatus": "Beta"
+                },
+                "counterparty_account": {
+                    "type": "string",
+                    "description": "Counterparty account details",
+                    "x-availabilityStatus": "Beta"
+                },
+                "counterparty_name": {
+                    "type": "string",
+                    "description": "Counterparty name",
+                    "x-availabilityStatus": "Beta"
+                },
+                "currency": {
+                    "type": "string",
+                    "description": "Currency code according to ISO 4217",
+                    "x-availabilityStatus": "Beta"
+                },
+                "currency_rate": {
+                    "type": "string",
+                    "example": 0.80654,
+                    "description": "Currency exchange rate applied to foreign currency transactions",
+                    "x-availabilityStatus": "Beta"
+                },
+                "message": {
+                    "type": "string",
+                    "description": "Message from remitter to beneficiary. In Finland this may alternatively include a short description of the transaction e.g. 'Automaattiotto'",
+                    "x-availabilityStatus": "Beta"
+                },
+                "narrative": {
+                    "type": "string",
+                    "description": "Description of transaction",
+                    "x-availabilityStatus": "Beta"
+                },
+                "original_currency": {
+                    "type": "string",
+                    "description": "Currency of original transaction",
+                    "x-availabilityStatus": "Beta"
+                },
+                "original_currency_amount": {
+                    "type": "string",
+                    "example": 3451.12,
+                    "description": "Foreign transaction amount in original currency",
+                    "x-availabilityStatus": "Beta"
+                },
+                "own_message": {
+                    "type": "string",
+                    "description": "Text message for the account holder's own use",
+                    "x-availabilityStatus": "Beta"
+                },
+                "payment_date": {
+                    "type": "string",
+                    "description": "Payment date of the transaction",
+                    "x-availabilityStatus": "Beta"
+                },
+                "reference": {
+                    "type": "string",
+                    "description": "Reference number",
+                    "x-availabilityStatus": "Beta"
+                },
+                "status": {
+                    "type": "string",
+                    "example": "billed",
+                    "description": "Status of the transaction",
+                    "x-availabilityStatus": "Beta"
+                },
+                "transaction_date": {
+                    "type": "string",
+                    "description": "Date on which transaction was enacted",
+                    "x-availabilityStatus": "Beta"
+                },
+                "transaction_id": {
+                    "type": "string",
+                    "description": "Transaction identifier as defined by the bank",
+                    "x-availabilityStatus": "Beta"
+                },
+                "type_description": {
+                    "type": "string",
+                    "example": "ATM Cash Withdrawal",
+                    "description": "Description of the type of transaction, e.g. Cash withdrawal, Account transfer, etc. (localized)",
+                    "x-availabilityStatus": "Beta"
+                },
+                "value_date": {
+                    "type": "string",
+                    "description": "Value date of the transaction, used for interest calculation",
+                    "x-availabilityStatus": "Beta"
+                }
+            },
+            "title": "Transaction",
+            "description": "Details of individual transaction"
+        },
+        "TransactionList": {
+            "type": "object",
+            "required": [
+                "links"
+            ],
+            "properties": {
+                "continuation_key": {
+                    "type": "string",
+                    "description": "Resource listing may return a continuationKey if there's more results available. Request may be retried with the continuationKey, but otherwise same parameters, in order to get more results.",
+                    "x-availabilityStatus": "Beta"
+                },
+                "links": {
+                    "type": "array",
+                    "description": "HATEOAS inspired links",
+                    "items": {
+                        "$ref": "#/definitions/Link"
+                    },
+                    "x-availabilityStatus": "Beta"
+                },
+                "transactions": {
+                    "type": "array",
+                    "description": "Listed transactions",
+                    "items": {
+                        "$ref": "#/definitions/Transaction"
+                    },
+                    "x-availabilityStatus": "Beta"
+                }
+            },
+            "title": "TransactionList",
+            "description": "List of transactions"
+        },
+        "TransactionListResponse": {
+            "type": "object",
+            "properties": {
+                "group_header": {
+                    "description": "Standard format response header",
+                    "$ref": "#/definitions/ExternalResponseHeader",
+                    "x-availabilityStatus": "Beta"
+                },
+                "response": {
+                    "description": "Payload",
+                    "$ref": "#/definitions/TransactionList",
+                    "x-availabilityStatus": "Beta"
+                }
+            },
+            "title": "TransactionListResponse",
+            "description": "Transaction history response"
+        }
+    }
+}
