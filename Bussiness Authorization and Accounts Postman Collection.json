@@ -1,0 +1,495 @@
+{
+	"info": {
+		"_postman_id": "0e5ac774-0552-4168-8b13-e34e05436db9",
+		"name": "Bussiness Authorization and Accounts Postman Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "authorize",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "7c39d98d-2f69-4444-a8cd-e042b7a284b2",
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.environment.set(\"client_token\", jsonData.response.client_token);",
+									"pm.environment.set(\"access_id\", jsonData.response.access_id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-IBM-Client-Id",
+								"value": "{{client_id}}"
+							},
+							{
+								"key": "X-IBM-Client-Secret",
+								"value": "{{client_secret}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"scope\": [\"ACCOUNTS_BROADBAND\"],\n\t\"duration\":129600\n}"
+						},
+						"url": {
+							"raw": "{{host}}/v1/authorize",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"v1",
+								"authorize"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "confirm",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{client_token}}"
+							},
+							{
+								"key": "X-IBM-Client-Id",
+								"value": "{{client_id}}"
+							},
+							{
+								"key": "X-IBM-Client-Secret",
+								"value": "{{client_secret}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"authorizer_id\":\"70311198\"\n}"
+						},
+						"url": {
+							"raw": "{{host}}/v1/authorize/{{access_id}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"v1",
+								"authorize",
+								"{{access_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "status",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "4de2adf3-d116-401e-ad84-1a0e6fa642b6",
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.environment.set(\"authorization_code\", jsonData.response.authorization_code);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{client_token}}"
+							},
+							{
+								"key": "X-IBM-Client-Id",
+								"value": "{{client_id}}"
+							},
+							{
+								"key": "X-IBM-Client-Secret",
+								"value": "{{client_secret}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{host}}/v1/authorize/{{access_id}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"v1",
+								"authorize",
+								"{{access_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ccc5e842-6727-4249-84d6-07341c2786ee",
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.environment.set(\"access_token\", jsonData.response.access_token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{client_token}}"
+							},
+							{
+								"key": "X-IBM-Client-Id",
+								"value": "{{client_id}}"
+							},
+							{
+								"key": "X-IBM-Client-Secret",
+								"value": "{{client_secret}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"authorization_code\" : \"{{authorization_code}}\",\n\t\"access_id\":\"{{access_id}}\"\n}"
+						},
+						"url": {
+							"raw": "{{host}}/v1/authorize/token",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"v1",
+								"authorize",
+								"token"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "AIS",
+			"item": [
+				{
+					"name": "Accounts List",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "26fb284b-206a-4471-9dd6-156a025fa31c",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "X-IBM-Client-Id",
+								"value": "{{client_id}}"
+							},
+							{
+								"key": "X-IBM-Client-Secret",
+								"value": "{{client_secret}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{host}}/v1/accounts?continuation_key=",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"v1",
+								"accounts"
+							],
+							"query": [
+								{
+									"key": "continuation_key",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Filtered Accounts List",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "26fb284b-206a-4471-9dd6-156a025fa31c",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "X-IBM-Client-Id",
+								"value": "{{client_id}}"
+							},
+							{
+								"key": "X-IBM-Client-Secret",
+								"value": "{{client_secret}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"account_list\":[\n\t\t\"SE99602614054381-SEK\"\n\t],\n\t\"currency_list\":[\n\t\t\"SEK\"\n\t],\n\t\"country_list\":[\n\t\t\"SE\"\n\t]\n}"
+						},
+						"url": {
+							"raw": "{{host}}/v1/accounts/filter?continuation_key=",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"v1",
+								"accounts",
+								"filter"
+							],
+							"query": [
+								{
+									"key": "continuation_key",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Account Details",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "26fb284b-206a-4471-9dd6-156a025fa31c",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "X-IBM-Client-Id",
+								"value": "{{client_id}}"
+							},
+							{
+								"key": "X-IBM-Client-Secret",
+								"value": "{{client_secret}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{host}}/v1/accounts/SE99602614054381-SEK",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"v1",
+								"accounts",
+								"SE99602614054381-SEK"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Transactions",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "26fb284b-206a-4471-9dd6-156a025fa31c",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "X-IBM-Client-Id",
+								"value": "{{client_id}}"
+							},
+							{
+								"key": "X-IBM-Client-Secret",
+								"value": "{{client_secret}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{host}}/v1/accounts/SE99602614054381-SEK/transactions?start_date=2018-02-12&end_date=2018-08-14&continuation_key=",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"v1",
+								"accounts",
+								"SE99602614054381-SEK",
+								"transactions"
+							],
+							"query": [
+								{
+									"key": "start_date",
+									"value": "2018-02-12"
+								},
+								{
+									"key": "end_date",
+									"value": "2018-08-14"
+								},
+								{
+									"key": "continuation_key",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "users",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "X-IBM-Client-Id",
+						"value": "{{client_id}}",
+						"type": "text"
+					},
+					{
+						"key": "X-IBM-Client-Secret",
+						"value": "{{client_secret}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{host}}/v1/authorize/users",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"v1",
+						"authorize",
+						"users"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
