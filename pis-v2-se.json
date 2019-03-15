@@ -1,0 +1,937 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Payments API Domestic transfer",
+    "version": "2.3",
+    "title": "Payments API Domestic transfer",
+    "contact": {
+      "name": "Open Banking team",
+      "url": "https://nordeaopenbanking.com",
+      "email": "support@nordeaopenbanking.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "x-ibm-name": "pis-v2-domestic",
+    "x-version": "2.3"
+  },
+  "host": "localhost:8080",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "payments-v2",
+      "description": "Payment initiation and confirmation"
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/v2/payments/domestic": {
+      "get": {
+        "tags": [
+          "payments-v2"
+        ],
+        "summary": "Get a list of payments created for the user. Country specifc access token will return only payments from the specific country",
+        "operationId": "getPaymentsUsingGET",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/PaymentListResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized with failure code:\n* error.apikey.missing = Missing API key. This operation requires API key, but it was missing.\n* error.token = Unspecified error with supplied token.\n* error.token.invalid = Missing access token or token did not authorized requested operation. This operation requires valid access token, but it was missing.\n* error.token.expired = Access token has expired.",
+            "schema": {
+              "$ref": "#/definitions/ExternalErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden with failure code:\n* error.resource.denied = Requested resource is not authorized by access token.",
+            "schema": {
+              "$ref": "#/definitions/ExternalErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Resource not found",
+            "schema": {
+              "$ref": "#/definitions/ExternalErrorResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "ClientId": []
+          },
+          {
+            "ClientSecret": []
+          }
+        ],
+        "deprecated": true,
+        "x-availabilityInfo": "V2 will be deprecated and v3 will be snake_case release",
+        "x-availabilityStatus": "Deprecated"
+      },
+      "post": {
+        "tags": [
+          "payments-v2"
+        ],
+        "summary": "Initiate a domestic payment",
+        "operationId": "paymentInitiateUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "X-Response-Scenarios",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "enum": [
+              "AuthorizationSkipAccessControl"
+            ],
+            "x-availabilityStatus": "SandboxOnly"
+          },
+          {
+            "in": "body",
+            "name": "createPaymentRequestV2",
+            "description": "Request to create a new payment",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreatePaymentRequest"
+            },
+            "x-availabilityInfo": "V2 will be deprecated and v3 will be snake_case release",
+            "x-availabilityStatus": "Deprecated"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "schema": {
+              "$ref": "#/definitions/PaymentResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized with failure code:\n* error.apikey.missing = Missing API key. This operation requires API key, but it was missing.\n* error.token = Unspecified error with supplied token.\n* error.token.invalid = Missing access token or token did not authorized requested operation. This operation requires valid access token, but it was missing.\n* error.token.expired = Access token has expired.",
+            "schema": {
+              "$ref": "#/definitions/ExternalErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden with failure code:\n* error.resource.denied = Requested resource is not authorized by access token.",
+            "schema": {
+              "$ref": "#/definitions/ExternalErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Resource not found",
+            "schema": {
+              "$ref": "#/definitions/ExternalErrorResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "ClientId": []
+          },
+          {
+            "ClientSecret": []
+          }
+        ],
+        "deprecated": true,
+        "x-availabilityInfo": "V2 will be deprecated and v3 will be snake_case release",
+        "x-availabilityStatus": "Deprecated"
+      }
+    },
+    "/v2/payments/domestic/{paymentId}": {
+      "get": {
+        "tags": [
+          "payments-v2"
+        ],
+        "summary": "Get payment by payment id",
+        "operationId": "getPaymentUsingGET",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "X-Response-Scenarios",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "enum": [
+              "AuthorizationSkipAccessControl"
+            ],
+            "x-availabilityStatus": "SandboxOnly"
+          },
+          {
+            "name": "paymentId",
+            "in": "path",
+            "description": "Payment id of the payment to get",
+            "required": true,
+            "type": "string",
+            "x-availabilityInfo": "V2 will be deprecated and v3 will be snake_case release",
+            "x-availabilityStatus": "Deprecated"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/PaymentResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized with failure code:\n* error.apikey.missing = Missing API key. This operation requires API key, but it was missing.\n* error.token = Unspecified error with supplied token.\n* error.token.invalid = Missing access token or token did not authorized requested operation. This operation requires valid access token, but it was missing.\n* error.token.expired = Access token has expired.",
+            "schema": {
+              "$ref": "#/definitions/ExternalErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden with failure code:\n* error.resource.denied = Requested resource is not authorized by access token.",
+            "schema": {
+              "$ref": "#/definitions/ExternalErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Resource not found",
+            "schema": {
+              "$ref": "#/definitions/ExternalErrorResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "ClientId": []
+          },
+          {
+            "ClientSecret": []
+          }
+        ],
+        "deprecated": true,
+        "x-availabilityInfo": "V2 will be deprecated and v3 will be snake_case release",
+        "x-availabilityStatus": "Deprecated"
+      }
+    },
+    "/v2/payments/domestic/{paymentId}/confirm": {
+      "put": {
+        "tags": [
+          "payments-v2"
+        ],
+        "summary": "Confirm a previously initiated payment",
+        "operationId": "paymentConfirmUsingPUT",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "X-Response-Scenarios",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "enum": [
+              "AuthorizationSkipAccessControl",
+              "PaymentSigningExpires",
+              "PaymentMissingFunds",
+              "PaymentOnHold"
+            ],
+            "x-availabilityStatus": "SandboxOnly"
+          },
+          {
+            "name": "paymentId",
+            "in": "path",
+            "description": "Payment id of the payment to confirm",
+            "required": true,
+            "type": "string",
+            "x-availabilityInfo": "V2 will be deprecated and v3 will be snake_case release",
+            "x-availabilityStatus": "Deprecated"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/PaymentResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized with failure code:\n* error.apikey.missing = Missing API key. This operation requires API key, but it was missing.\n* error.token = Unspecified error with supplied token.\n* error.token.invalid = Missing access token or token did not authorized requested operation. This operation requires valid access token, but it was missing.\n* error.token.expired = Access token has expired.",
+            "schema": {
+              "$ref": "#/definitions/ExternalErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden with failure code:\n* error.resource.denied = Requested resource is not authorized by access token.",
+            "schema": {
+              "$ref": "#/definitions/ExternalErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Resource not found",
+            "schema": {
+              "$ref": "#/definitions/ExternalErrorResponse"
+            }
+          },
+          "409": {
+            "description": "${error.409.description}"
+          }
+        },
+        "security": [
+          {
+            "ClientId": []
+          },
+          {
+            "ClientSecret": []
+          }
+        ],
+        "deprecated": true,
+        "x-availabilityInfo": "V2 will be deprecated and v3 will be snake_case release",
+        "x-availabilityStatus": "Deprecated"
+      }
+    }
+  },
+  "securityDefinitions": {
+    "ClientId": {
+      "type": "apiKey",
+      "name": "X-IBM-Client-Id",
+      "in": "header"
+    },
+    "ClientSecret": {
+      "type": "apiKey",
+      "name": "X-IBM-Client-Secret",
+      "in": "header"
+    },
+    "DecoupledAuth": {
+      "type": "oauth2",
+      "authorizationUrl": "/v2/authorize-decoupled",
+      "tokenUrl": "/v2/authorize-decoupled/token",
+      "flow": "accessCode",
+      "scopes": {
+        "ACCOUNTS_BASIC": "Account information",
+        "ACCOUNTS_BALANCES": "Account information with balances",
+        "ACCOUNTS_DETAILS": "Account information with details",
+        "ACCOUNTS_TRANSACTIONS": "Account's transactions",
+        "PAYMENTS_MULTIPLE": "Payments Multiple"
+      },
+      "x-authSubType": "decoupled-auth",
+      "x-codeStatusDescription": "Returns code when authorization second step is finished",
+      "x-codeStatusUrl": "/v2/authorize-decoupled"
+    },
+    "OAuth2": {
+      "type": "oauth2",
+      "authorizationUrl": "/v2/authorize",
+      "tokenUrl": "/v2/authorize/access_token",
+      "flow": "accessCode",
+      "scopes": {
+        "ACCOUNTS_BASIC": "Account information",
+        "ACCOUNTS_BALANCES": "Account information with balances",
+        "ACCOUNTS_DETAILS": "Account information with details",
+        "ACCOUNTS_TRANSACTIONS": "Account's transactions",
+        "PAYMENTS_MULTIPLE": "Payments Multiple"
+      }
+    }
+  },
+  "definitions": {
+    "AccountNumber": {
+      "type": "object",
+      "required": [
+        "_type",
+        "value"
+      ],
+      "properties": {
+        "_type": {
+          "type": "string",
+          "description": "Type of account number",
+          "enum": [
+            "IBAN",
+            "BBAN_SE"
+          ],
+          "x-availabilityStatus": "Stable"
+        },
+        "currency": {
+          "type": "string",
+          "description": "Currency of the payment",
+          "enum": [
+            "DKK",
+            "EUR",
+            "NOK",
+            "SEK"
+          ],
+          "x-availabilityStatus": "Stable"
+        },
+        "value": {
+          "type": "string",
+          "example": "FI1350001520000081",
+          "description": "Actual account number",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "AccountNumber",
+      "description": "Account number"
+    },
+    "CreatePaymentRequest": {
+      "type": "object",
+      "required": [
+        "amount",
+        "creditor",
+        "currency",
+        "debtor"
+      ],
+      "properties": {
+        "amount": {
+          "type": "number",
+          "example": 123.45,
+          "description": "Monetary amount of the payment",
+          "x-availabilityStatus": "Stable",
+          "x-exclusiveMinimum": "true",
+          "x-minimum": "0"
+        },
+        "creditor": {
+          "description": "Creditor of the payment",
+          "$ref": "#/definitions/PaymentCreditorV2",
+          "x-availabilityStatus": "Stable"
+        },
+        "currency": {
+          "type": "string",
+          "description": "Currency code according to ISO 4217",
+          "enum": [
+            "DKK",
+            "EUR",
+            "NOK",
+            "SEK"
+          ],
+          "x-availabilityStatus": "Stable"
+        },
+        "debtor": {
+          "description": "Debtor of the payment",
+          "$ref": "#/definitions/PaymentDebtorV2",
+          "x-availabilityStatus": "Stable"
+        },
+        "externalId": {
+          "type": "string",
+          "description": "Unique identification as assigned by a partner to identify the payment.",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "CreatePaymentRequest",
+      "description": "Payment to create"
+    },
+    "ExternalErrorResponse": {
+      "type": "object",
+      "discriminator": "_type",
+      "properties": {
+        "_type": {
+          "type": "string",
+          "readOnly": true,
+          "allowEmptyValue": false,
+          "enum": [
+            "ExternalErrorResponseV2",
+            "ExternalErrorResponseV3"
+          ],
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "ExternalErrorResponse",
+      "description": "Error response"
+    },
+    "ExternalErrorResponseV2": {
+      "title": "ExternalErrorResponseV2",
+      "allOf": [
+        {
+          "$ref": "#/definitions/ExternalErrorResponse"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "groupHeader": {
+              "description": "Standard format response header",
+              "$ref": "#/definitions/ExternalResponseHeaderV2",
+              "x-availabilityStatus": "Stable"
+            },
+            "error": {
+              "description": "Payload",
+              "$ref": "#/definitions/ExternalErrorV2",
+              "x-availabilityStatus": "Stable"
+            }
+          },
+          "title": "ExternalErrorResponseV2"
+        }
+      ]
+    },
+    "ExternalErrorResponseV3": {
+      "title": "ExternalErrorResponseV3",
+      "allOf": [
+        {
+          "$ref": "#/definitions/ExternalErrorResponse"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "group_header": {
+              "description": "Standard format response header",
+              "$ref": "#/definitions/ExternalResponseHeaderV3",
+              "x-availabilityStatus": "Stable"
+            },
+            "error": {
+              "description": "Payload",
+              "$ref": "#/definitions/ExternalErrorV3",
+              "x-availabilityStatus": "Stable"
+            }
+          },
+          "title": "ExternalErrorResponseV3"
+        }
+      ]
+    },
+    "ExternalErrorV2": {
+      "type": "object",
+      "properties": {
+        "httpCode": {
+          "type": "integer",
+          "format": "int32",
+          "description": "HTTP error for response",
+          "x-availabilityStatus": "Stable"
+        },
+        "request": {
+          "description": "Error details",
+          "$ref": "#/definitions/ExternalRequestEchoV2",
+          "x-availabilityStatus": "Stable"
+        },
+        "failures": {
+          "type": "array",
+          "description": "More details on the occurred error",
+          "items": {
+            "$ref": "#/definitions/ExternalFailure"
+          },
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "ExternalErrorV2"
+    },
+    "ExternalErrorV3": {
+      "type": "object",
+      "properties": {
+        "http_code": {
+          "type": "integer",
+          "format": "int32",
+          "description": "HTTP error for response",
+          "x-availabilityStatus": "Stable"
+        },
+        "request": {
+          "description": "Error details",
+          "$ref": "#/definitions/ExternalRequestEchoV3",
+          "x-availabilityStatus": "Stable"
+        },
+        "failures": {
+          "type": "array",
+          "description": "More details on the occurred error",
+          "items": {
+            "$ref": "#/definitions/ExternalFailure"
+          },
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "ExternalErrorV3"
+    },
+    "ExternalFailure": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "description": "Failure code",
+          "x-availabilityStatus": "Stable"
+        },
+        "description": {
+          "type": "string",
+          "description": "Failure description",
+          "x-availabilityStatus": "Stable"
+        },
+        "path": {
+          "type": "string",
+          "description": "The failed component path",
+          "x-availabilityStatus": "Stable"
+        },
+        "type": {
+          "type": "string",
+          "description": "Failure type",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "ExternalFailure",
+      "description": "Failure description"
+    },
+    "ExternalRequestEchoV2": {
+      "type": "object",
+      "required": [
+        "messageIdentifier"
+      ],
+      "properties": {
+        "messageIdentifier": {
+          "type": "string",
+          "description": "Original request id for correlation purposes",
+          "x-availabilityStatus": "Stable"
+        },
+        "url": {
+          "type": "string",
+          "description": "Original request url",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "ExternalRequestEchoV2"
+    },
+    "ExternalRequestEchoV3": {
+      "type": "object",
+      "required": [
+        "message_identifier"
+      ],
+      "properties": {
+        "message_identifier": {
+          "type": "string",
+          "description": "Original request id for correlation purposes",
+          "x-availabilityStatus": "Stable"
+        },
+        "url": {
+          "type": "string",
+          "description": "Original request url",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "ExternalRequestEchoV3"
+    },
+    "ExternalResponseHeaderV2": {
+      "type": "object",
+      "properties": {
+        "creationDateTime": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Response creation time",
+          "x-availabilityStatus": "Stable"
+        },
+        "httpCode": {
+          "type": "integer",
+          "format": "int32",
+          "example": 200,
+          "description": "HTTP code for response",
+          "x-availabilityStatus": "Stable"
+        },
+        "messageIdentification": {
+          "type": "string",
+          "description": "Original request id for correlation purposes",
+          "x-availabilityStatus": "Stable"
+        },
+        "messagePagination": {
+          "description": "Details of paginated response",
+          "$ref": "#/definitions/PaginationV2",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "ExternalResponseHeaderV2",
+      "description": "External response header"
+    },
+    "ExternalResponseHeaderV3": {
+      "type": "object",
+      "properties": {
+        "http_code": {
+          "type": "integer",
+          "format": "int32",
+          "example": 200,
+          "description": "HTTP code for response",
+          "x-availabilityStatus": "Stable"
+        },
+        "message_identification": {
+          "type": "string",
+          "description": "Original request id for correlation purposes",
+          "x-availabilityStatus": "Stable"
+        },
+        "creation_date_time": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Response creation time",
+          "x-availabilityStatus": "Stable"
+        },
+        "message_pagination": {
+          "description": "Details of paginated response",
+          "$ref": "#/definitions/PaginationV3",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "ExternalResponseHeaderV3",
+      "description": "External response header"
+    },
+    "Link": {
+      "type": "object",
+      "properties": {
+        "href": {
+          "type": "string",
+          "description": "Relative path to the linked resource",
+          "x-availabilityStatus": "Stable"
+        },
+        "rel": {
+          "type": "string",
+          "description": "Describes the nature of the link, e.g. 'details' for a link to the detailed information of a listed resource.",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "Link",
+      "description": "Context specific link (only GET supported)"
+    },
+    "PaginationV2": {
+      "type": "object",
+      "properties": {
+        "continuationKey": {
+          "type": "string",
+          "description": "Resource listing may return a continuationKey if there's more results available. Request may be retried with the continuationKey, but otherwise same parameters, in order to get more results.",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "PaginationV2",
+      "description": "Details of paginated response"
+    },
+    "PaginationV3": {
+      "type": "object",
+      "properties": {
+        "continuation_key": {
+          "type": "string",
+          "description": "Resource listing may return a continuationKey if there's more results available. Request may be retried with the continuationKey, but otherwise same parameters, in order to get more results.",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "PaginationV3",
+      "description": "Details of paginated response"
+    },
+    "Payment": {
+      "type": "object",
+      "required": [
+        "_id",
+        "amount",
+        "creditor",
+        "currency",
+        "debtor",
+        "timestamp"
+      ],
+      "properties": {
+        "_id": {
+          "type": "string",
+          "description": "Unique payment identifier assigned for new payment",
+          "x-availabilityStatus": "Stable"
+        },
+        "_links": {
+          "type": "array",
+          "description": "HATEOAS inspired links: 'rel' and 'href'",
+          "items": {
+            "$ref": "#/definitions/Link"
+          },
+          "x-availabilityStatus": "Stable"
+        },
+        "amount": {
+          "type": "number",
+          "example": 123.45,
+          "description": "Monetary amount of the payment",
+          "x-availabilityStatus": "Stable",
+          "x-exclusiveMinimum": "true",
+          "x-minimum": "0"
+        },
+        "creditor": {
+          "description": "Creditor of the payment",
+          "$ref": "#/definitions/PaymentCreditorV2",
+          "x-availabilityStatus": "Stable"
+        },
+        "currency": {
+          "type": "string",
+          "description": "Currency code according to ISO 4217",
+          "enum": [
+            "DKK",
+            "EUR",
+            "NOK",
+            "SEK"
+          ],
+          "x-availabilityStatus": "Stable"
+        },
+        "debtor": {
+          "description": "Debtor of the payment",
+          "$ref": "#/definitions/PaymentDebtorV2",
+          "x-availabilityStatus": "Stable"
+        },
+        "externalId": {
+          "type": "string",
+          "description": "Unique identification as assigned by a partner to identify the payment.",
+          "x-availabilityStatus": "Stable"
+        },
+        "paymentStatus": {
+          "type": "string",
+          "description": "Status of the payment",
+          "enum": [
+            "PendingConfirmation",
+            "PendingUserApproval",
+            "OnHold",
+            "Confirmed",
+            "Rejected",
+            "Paid",
+            "InsufficientFunds",
+            "LimitExceeded",
+            "UserApprovalFailed",
+            "UserApprovalTimeout",
+            "UserApprovalCancelled",
+            "Unknown"
+          ],
+          "x-availabilityStatus": "Stable"
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp of payment creation",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "Payment",
+      "description": "Payment information"
+    },
+    "PaymentCreditorV2": {
+      "type": "object",
+      "required": [
+        "account"
+      ],
+      "properties": {
+        "account": {
+          "description": "Account of the creditor",
+          "$ref": "#/definitions/AccountNumber",
+          "x-availabilityStatus": "Stable"
+        },
+        "message": {
+          "type": "string",
+          "example": "Message for the beneficiary",
+          "description": "Message for the creditor to appear on their transaction",
+          "x-availabilityStatus": "Stable"
+        },
+        "name": {
+          "type": "string",
+          "example": "Beneficiary name",
+          "description": "Name of the creditor",
+          "x-availabilityStatus": "Stable"
+        },
+        "reference": {
+          "description": "Reference for the creditor to appear on their transaction",
+          "$ref": "#/definitions/Reference",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "PaymentCreditorV2",
+      "description": "Creditor of the payment"
+    },
+    "PaymentDebtorV2": {
+      "type": "object",
+      "required": [
+        "account"
+      ],
+      "properties": {
+        "_accountId": {
+          "type": "string",
+          "example": "FI6593857450293470-EUR",
+          "description": "Internal, technical account identifier",
+          "x-availabilityStatus": "Deprecated",
+          "x-deprecationInfo": "V2.2",
+          "x-removalInfo": " "
+        },
+        "account": {
+          "description": "Account number",
+          "$ref": "#/definitions/AccountNumber",
+          "x-availabilityStatus": "Stable"
+        },
+        "message": {
+          "type": "string",
+          "example": "Own message",
+          "description": "Own message to be on the debitor's transaction.\nNB: This field is not supported for SEPA payments and will be ignored.",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "PaymentDebtorV2",
+      "description": "Debtor of the payment"
+    },
+    "PaymentList": {
+      "type": "object",
+      "properties": {
+        "payments": {
+          "type": "array",
+          "description": "List of payments",
+          "items": {
+            "$ref": "#/definitions/Payment"
+          },
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "PaymentList",
+      "description": "List of payments"
+    },
+    "PaymentListResponse": {
+      "type": "object",
+      "properties": {
+        "groupHeader": {
+          "description": "Standard format response header",
+          "$ref": "#/definitions/ExternalResponseHeaderV2",
+          "x-availabilityStatus": "Stable"
+        },
+        "response": {
+          "description": "Payload",
+          "$ref": "#/definitions/PaymentList",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "PaymentListResponse",
+      "description": "Get list of payments"
+    },
+    "PaymentResponse": {
+      "type": "object",
+      "properties": {
+        "groupHeader": {
+          "description": "Standard format response header",
+          "$ref": "#/definitions/ExternalResponseHeaderV2",
+          "x-availabilityStatus": "Stable"
+        },
+        "response": {
+          "description": "Payload",
+          "$ref": "#/definitions/Payment",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "PaymentResponse",
+      "description": "Payment information response"
+    },
+    "Reference": {
+      "type": "object",
+      "required": [
+        "_type",
+        "value"
+      ],
+      "properties": {
+        "_type": {
+          "type": "string",
+          "example": "RF",
+          "description": "Type of the reference number, e.g. RF",
+          "enum": [
+            "RF",
+            "INVOICE",
+            "OCR"
+          ],
+          "x-availabilityStatus": "Stable"
+        },
+        "value": {
+          "type": "string",
+          "example": "RF18539007547034",
+          "description": "Actual reference number",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "Reference",
+      "description": "Creditor reference number"
+    }
+  }
+}
