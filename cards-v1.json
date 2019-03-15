@@ -1,0 +1,754 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Cards API",
+    "version": "1.0",
+    "title": "Cards API",
+    "contact": {
+      "name": "Open Banking team",
+      "url": "https://nordeaopenbanking.com",
+      "email": "support@nordeaopenbanking.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "x-ibm-name": "cards-v1",
+    "x-version": "1.0"
+  },
+  "host": "localhost:8080",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "cards-v1",
+      "description": "Credit Card Resource"
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/v1/cards": {
+      "get": {
+        "tags": [
+          "cards-v1"
+        ],
+        "summary": "List credit cards",
+        "operationId": "getCreditCardsUsingGET",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "List of credit cards",
+            "schema": {
+              "$ref": "#/definitions/CardListResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized with failure code:\n* error.apikey.missing = Missing API key. This operation requires API key, but it was missing.\n* error.token = Unspecified error with supplied token.\n* error.token.invalid = Missing access token or token did not authorized requested operation. This operation requires valid access token, but it was missing.\n* error.token.expired = Access token has expired.",
+            "schema": {
+              "$ref": "#/definitions/ExternalErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Login failure",
+            "schema": {
+              "$ref": "#/definitions/ExternalErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Resource not found",
+            "schema": {
+              "$ref": "#/definitions/ExternalErrorResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "ClientId": []
+          },
+          {
+            "ClientSecret": []
+          }
+        ],
+        "deprecated": false,
+        "x-availabilityStatus": "Stable"
+      }
+    },
+    "/v1/cards/{card_id}": {
+      "get": {
+        "tags": [
+          "cards-v1"
+        ],
+        "summary": "Get card details",
+        "operationId": "getCreditCardDetailsUsingGET",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "card_id",
+            "in": "path",
+            "description": "card_id",
+            "required": true,
+            "type": "string",
+            "x-availabilityStatus": "Stable"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Credit card",
+            "schema": {
+              "$ref": "#/definitions/CardDetailsResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized with failure code:\n* error.apikey.missing = Missing API key. This operation requires API key, but it was missing.\n* error.token = Unspecified error with supplied token.\n* error.token.invalid = Missing access token or token did not authorized requested operation. This operation requires valid access token, but it was missing.\n* error.token.expired = Access token has expired.",
+            "schema": {
+              "$ref": "#/definitions/ExternalErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Login failure",
+            "schema": {
+              "$ref": "#/definitions/ExternalErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Credit card not found",
+            "schema": {
+              "$ref": "#/definitions/ExternalErrorResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "ClientId": []
+          },
+          {
+            "ClientSecret": []
+          }
+        ],
+        "deprecated": false,
+        "x-availabilityStatus": "Stable"
+      }
+    },
+    "/v1/cards/{card_id}/transactions": {
+      "get": {
+        "tags": [
+          "cards-v1"
+        ],
+        "summary": "List card transactions",
+        "operationId": "getCreditCardTransactionsUsingGET",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "card_id",
+            "in": "path",
+            "description": "card_id",
+            "required": true,
+            "type": "string",
+            "x-availabilityStatus": "Stable"
+          },
+          {
+            "name": "continuation_key",
+            "in": "query",
+            "description": "continuation_key",
+            "required": false,
+            "type": "string",
+            "x-availabilityStatus": "Stable"
+          },
+          {
+            "name": "from_date",
+            "in": "query",
+            "description": "from_date",
+            "required": false,
+            "type": "string",
+            "format": "date",
+            "x-availabilityStatus": "Stable"
+          },
+          {
+            "name": "to_date",
+            "in": "query",
+            "description": "to_date",
+            "required": false,
+            "type": "string",
+            "format": "date",
+            "x-availabilityStatus": "Stable"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of credit card transactions",
+            "schema": {
+              "$ref": "#/definitions/CardTransactionListResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized with failure code:\n* error.apikey.missing = Missing API key. This operation requires API key, but it was missing.\n* error.token = Unspecified error with supplied token.\n* error.token.invalid = Missing access token or token did not authorized requested operation. This operation requires valid access token, but it was missing.\n* error.token.expired = Access token has expired.",
+            "schema": {
+              "$ref": "#/definitions/ExternalErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Login failure",
+            "schema": {
+              "$ref": "#/definitions/ExternalErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Credit card not found",
+            "schema": {
+              "$ref": "#/definitions/ExternalErrorResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "ClientId": []
+          },
+          {
+            "ClientSecret": []
+          }
+        ],
+        "deprecated": false,
+        "x-availabilityStatus": "Stable"
+      }
+    },
+    "/v1/cards/{card_id}/transactions/{transaction_id}": {
+      "get": {
+        "tags": [
+          "cards-v1"
+        ],
+        "summary": "List CreditCard Transactions",
+        "operationId": "getCreditCardTransactionDetailsUsingGET",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "card_id",
+            "in": "path",
+            "description": "card_id",
+            "required": true,
+            "type": "string",
+            "x-availabilityStatus": "Stable"
+          },
+          {
+            "name": "transaction_id",
+            "in": "path",
+            "description": "transaction_id",
+            "required": true,
+            "type": "string",
+            "x-availabilityStatus": "Stable"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Credit card transaction",
+            "schema": {
+              "$ref": "#/definitions/CardTransactionResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized with failure code:\n* error.apikey.missing = Missing API key. This operation requires API key, but it was missing.\n* error.token = Unspecified error with supplied token.\n* error.token.invalid = Missing access token or token did not authorized requested operation. This operation requires valid access token, but it was missing.\n* error.token.expired = Access token has expired.",
+            "schema": {
+              "$ref": "#/definitions/ExternalErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Login failure",
+            "schema": {
+              "$ref": "#/definitions/ExternalErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Credit card or transaction not found",
+            "schema": {
+              "$ref": "#/definitions/ExternalErrorResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "ClientId": []
+          },
+          {
+            "ClientSecret": []
+          }
+        ],
+        "deprecated": false,
+        "x-availabilityStatus": "Stable"
+      }
+    }
+  },
+  "securityDefinitions": {
+    "ClientId": {
+      "type": "apiKey",
+      "name": "X-IBM-Client-Id",
+      "in": "header"
+    },
+    "ClientSecret": {
+      "type": "apiKey",
+      "name": "X-IBM-Client-Secret",
+      "in": "header"
+    },
+    "DecoupledAuth": {
+      "type": "oauth2",
+      "authorizationUrl": "/v3/authorize-decoupled",
+      "tokenUrl": "/v3/authorize-decoupled/token",
+      "flow": "accessCode",
+      "scopes": {
+        "ACCOUNTS_BASIC": "Account information",
+        "ACCOUNTS_BALANCES": "Account information with balances",
+        "ACCOUNTS_DETAILS": "Account information with details",
+        "ACCOUNTS_TRANSACTIONS": "Account's transactions",
+        "PAYMENTS_MULTIPLE": "Payments Multiple"
+      },
+      "x-authSubType": "decoupled-auth",
+      "x-codeStatusDescription": "Returns code when authorization second step is finished",
+      "x-codeStatusUrl": "/v3/authorize-decoupled"
+    },
+    "OAuth2": {
+      "type": "oauth2",
+      "authorizationUrl": "/v3/authorize",
+      "tokenUrl": "/v3/authorize/token",
+      "flow": "accessCode",
+      "scopes": {
+        "ACCOUNTS_BASIC": "Account information",
+        "ACCOUNTS_BALANCES": "Account information with balances",
+        "ACCOUNTS_DETAILS": "Account information with details",
+        "ACCOUNTS_TRANSACTIONS": "Account's transactions",
+        "PAYMENTS_MULTIPLE": "Payments Multiple"
+      }
+    }
+  },
+  "definitions": {
+    "CardDetailsResponse": {
+      "type": "object",
+      "properties": {
+        "group_header": {
+          "description": "Standard format response header",
+          "$ref": "#/definitions/ExternalResponseHeaderV3",
+          "x-availabilityStatus": "Stable"
+        },
+        "response": {
+          "description": "Payload",
+          "$ref": "#/definitions/CreditCard",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "CardDetailsResponse"
+    },
+    "CardListResponse": {
+      "type": "object",
+      "properties": {
+        "group_header": {
+          "description": "Standard format response header",
+          "$ref": "#/definitions/ExternalResponseHeaderV3",
+          "x-availabilityStatus": "Stable"
+        },
+        "response": {
+          "description": "Payload",
+          "$ref": "#/definitions/CreditCardList",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "CardListResponse"
+    },
+    "CardTransactionListResponse": {
+      "type": "object",
+      "properties": {
+        "group_header": {
+          "description": "Standard format response header",
+          "$ref": "#/definitions/ExternalResponseHeaderV3",
+          "x-availabilityStatus": "Stable"
+        },
+        "response": {
+          "description": "Payload",
+          "$ref": "#/definitions/CreditCardTransactionList",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "CardTransactionListResponse"
+    },
+    "CardTransactionResponse": {
+      "type": "object",
+      "properties": {
+        "group_header": {
+          "description": "Standard format response header",
+          "$ref": "#/definitions/ExternalResponseHeaderV3",
+          "x-availabilityStatus": "Stable"
+        },
+        "response": {
+          "description": "Payload",
+          "$ref": "#/definitions/CreditCardTransaction",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "CardTransactionResponse"
+    },
+    "CreditCard": {
+      "type": "object",
+      "properties": {
+        "credit_available_balance": {
+          "type": "number",
+          "x-availabilityStatus": "Stable"
+        },
+        "credit_booked_balance": {
+          "type": "number",
+          "x-availabilityStatus": "Stable"
+        },
+        "credit_limit": {
+          "type": "number",
+          "x-availabilityStatus": "Stable"
+        },
+        "id": {
+          "type": "string",
+          "x-availabilityStatus": "Stable"
+        },
+        "masked_credit_card_number": {
+          "type": "string",
+          "x-availabilityStatus": "Stable"
+        },
+        "parallel_cards": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/CreditCard"
+          },
+          "x-availabilityStatus": "Stable"
+        },
+        "product_id": {
+          "type": "string",
+          "x-availabilityStatus": "Stable"
+        },
+        "product_name": {
+          "type": "string",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "CreditCard"
+    },
+    "CreditCardList": {
+      "type": "object",
+      "properties": {
+        "cards": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/CreditCard"
+          },
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "CreditCardList"
+    },
+    "CreditCardTransaction": {
+      "type": "object",
+      "properties": {
+        "amount": {
+          "type": "number",
+          "x-availabilityStatus": "Stable"
+        },
+        "beneficiary": {
+          "type": "string",
+          "x-availabilityStatus": "Stable"
+        },
+        "entry_date": {
+          "type": "string",
+          "format": "date",
+          "x-availabilityStatus": "Stable"
+        },
+        "id": {
+          "type": "string",
+          "x-availabilityStatus": "Stable"
+        },
+        "masked_credit_card_number": {
+          "type": "string",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "CreditCardTransaction"
+    },
+    "CreditCardTransactionList": {
+      "type": "object",
+      "properties": {
+        "transactions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/CreditCardTransaction"
+          },
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "CreditCardTransactionList"
+    },
+    "ExternalErrorResponse": {
+      "type": "object",
+      "discriminator": "_type",
+      "properties": {
+        "_type": {
+          "type": "string",
+          "readOnly": true,
+          "allowEmptyValue": false,
+          "enum": [
+            "ExternalErrorResponseV2",
+            "ExternalErrorResponseV3"
+          ],
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "ExternalErrorResponse",
+      "description": "Error response"
+    },
+    "ExternalErrorResponseV2": {
+      "title": "ExternalErrorResponseV2",
+      "allOf": [
+        {
+          "$ref": "#/definitions/ExternalErrorResponse"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "error": {
+              "description": "Payload",
+              "$ref": "#/definitions/ExternalErrorV2",
+              "x-availabilityStatus": "Stable"
+            },
+            "groupHeader": {
+              "description": "Standard format response header",
+              "$ref": "#/definitions/ExternalResponseHeaderV2",
+              "x-availabilityStatus": "Stable"
+            }
+          },
+          "title": "ExternalErrorResponseV2"
+        }
+      ]
+    },
+    "ExternalErrorResponseV3": {
+      "title": "ExternalErrorResponseV3",
+      "allOf": [
+        {
+          "$ref": "#/definitions/ExternalErrorResponse"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "error": {
+              "description": "Payload",
+              "$ref": "#/definitions/ExternalErrorV3",
+              "x-availabilityStatus": "Stable"
+            },
+            "group_header": {
+              "description": "Standard format response header",
+              "$ref": "#/definitions/ExternalResponseHeaderV3",
+              "x-availabilityStatus": "Stable"
+            }
+          },
+          "title": "ExternalErrorResponseV3"
+        }
+      ]
+    },
+    "ExternalErrorV2": {
+      "type": "object",
+      "properties": {
+        "httpCode": {
+          "type": "integer",
+          "format": "int32",
+          "description": "HTTP error for response",
+          "x-availabilityStatus": "Stable"
+        },
+        "request": {
+          "description": "Error details",
+          "$ref": "#/definitions/ExternalRequestEchoV2",
+          "x-availabilityStatus": "Stable"
+        },
+        "failures": {
+          "type": "array",
+          "description": "More details on the occurred error",
+          "items": {
+            "$ref": "#/definitions/ExternalFailure"
+          },
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "ExternalErrorV2"
+    },
+    "ExternalErrorV3": {
+      "type": "object",
+      "properties": {
+        "http_code": {
+          "type": "integer",
+          "format": "int32",
+          "description": "HTTP error for response",
+          "x-availabilityStatus": "Stable"
+        },
+        "request": {
+          "description": "Error details",
+          "$ref": "#/definitions/ExternalRequestEchoV3",
+          "x-availabilityStatus": "Stable"
+        },
+        "failures": {
+          "type": "array",
+          "description": "More details on the occurred error",
+          "items": {
+            "$ref": "#/definitions/ExternalFailure"
+          },
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "ExternalErrorV3"
+    },
+    "ExternalFailure": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "description": "Failure code",
+          "x-availabilityStatus": "Stable"
+        },
+        "description": {
+          "type": "string",
+          "description": "Failure description",
+          "x-availabilityStatus": "Stable"
+        },
+        "path": {
+          "type": "string",
+          "description": "The failed component path",
+          "x-availabilityStatus": "Stable"
+        },
+        "type": {
+          "type": "string",
+          "description": "Failure type",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "ExternalFailure",
+      "description": "Failure description"
+    },
+    "ExternalRequestEchoV2": {
+      "type": "object",
+      "required": [
+        "messageIdentifier"
+      ],
+      "properties": {
+        "messageIdentifier": {
+          "type": "string",
+          "description": "Original request id for correlation purposes",
+          "x-availabilityStatus": "Stable"
+        },
+        "url": {
+          "type": "string",
+          "description": "Original request url",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "ExternalRequestEchoV2"
+    },
+    "ExternalRequestEchoV3": {
+      "type": "object",
+      "required": [
+        "message_identifier"
+      ],
+      "properties": {
+        "message_identifier": {
+          "type": "string",
+          "description": "Original request id for correlation purposes",
+          "x-availabilityStatus": "Stable"
+        },
+        "url": {
+          "type": "string",
+          "description": "Original request url",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "ExternalRequestEchoV3"
+    },
+    "ExternalResponseHeaderV2": {
+      "type": "object",
+      "properties": {
+        "httpCode": {
+          "type": "integer",
+          "format": "int32",
+          "example": 200,
+          "description": "HTTP code for response",
+          "x-availabilityStatus": "Stable"
+        },
+        "messageIdentification": {
+          "type": "string",
+          "description": "Original request id for correlation purposes",
+          "x-availabilityStatus": "Stable"
+        },
+        "creationDateTime": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Response creation time",
+          "x-availabilityStatus": "Stable"
+        },
+        "messagePagination": {
+          "description": "Details of paginated response",
+          "$ref": "#/definitions/PaginationV2",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "ExternalResponseHeaderV2",
+      "description": "External response header"
+    },
+    "ExternalResponseHeaderV3": {
+      "type": "object",
+      "properties": {
+        "creation_date_time": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Response creation time",
+          "x-availabilityStatus": "Stable"
+        },
+        "http_code": {
+          "type": "integer",
+          "format": "int32",
+          "example": 200,
+          "description": "HTTP code for response",
+          "x-availabilityStatus": "Stable"
+        },
+        "message_identification": {
+          "type": "string",
+          "description": "Original request id for correlation purposes",
+          "x-availabilityStatus": "Stable"
+        },
+        "message_pagination": {
+          "description": "Details of paginated response",
+          "$ref": "#/definitions/PaginationV3",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "ExternalResponseHeaderV3",
+      "description": "External response header"
+    },
+    "PaginationV2": {
+      "type": "object",
+      "properties": {
+        "continuationKey": {
+          "type": "string",
+          "description": "Resource listing may return a continuationKey if there's more results available. Request may be retried with the continuationKey, but otherwise same parameters, in order to get more results.",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "PaginationV2",
+      "description": "Details of paginated response"
+    },
+    "PaginationV3": {
+      "type": "object",
+      "properties": {
+        "continuation_key": {
+          "type": "string",
+          "description": "Resource listing may return a continuationKey if there's more results available. Request may be retried with the continuationKey, but otherwise same parameters, in order to get more results.",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "PaginationV3",
+      "description": "Details of paginated response"
+    }
+  }
+}
