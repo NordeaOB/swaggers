@@ -1,0 +1,710 @@
+{
+	"info": {
+		"_postman_id": "a1110233-c4d9-4890-b87c-dc28645800c0",
+		"name": "Nordea Open Banking v3 API Example NO",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Access Authorization",
+			"item": [
+				{
+					"name": "Redirect (For DK, FI and NO)",
+					"item": [
+						{
+							"name": "Start Oauth",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "d9ac38c9-42f2-4abb-9a41-ccb640e1ec4c",
+										"exec": [
+											"var location = postman.getResponseHeader(\"Location\");",
+											"var index = location.indexOf(\"code=\");",
+											"var end = location.indexOf(\"&sta\")",
+											"console.log(index);",
+											"",
+											"postman.setEnvironmentVariable(\"code\",location.substring(index+5,end));",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "X-IBM-Client-Id",
+										"value": "{{X-IBM-Client-ID}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "https://api.nordeaopenbanking.com/v3/authorize?state=oauth2&client_id={{X-IBM-Client-ID}}&scope=ACCOUNTS_BASIC,ACCOUNTS_BALANCES,ACCOUNTS_DETAILS,ACCOUNTS_TRANSACTIONS,PAYMENTS_MULTIPLE&duration=129600&redirect_uri=https://httpbin.org&country=NO",
+									"protocol": "https",
+									"host": [
+										"api",
+										"nordeaopenbanking",
+										"com"
+									],
+									"path": [
+										"v3",
+										"authorize"
+									],
+									"query": [
+										{
+											"key": "state",
+											"value": "oauth2",
+											"description": "The OAuth2 state parameter"
+										},
+										{
+											"key": "client_id",
+											"value": "{{X-IBM-Client-ID}}",
+											"description": "Client ID issued to the TPP via Developer Portal"
+										},
+										{
+											"key": "scope",
+											"value": "ACCOUNTS_BASIC,ACCOUNTS_BALANCES,ACCOUNTS_DETAILS,ACCOUNTS_TRANSACTIONS,PAYMENTS_MULTIPLE",
+											"description": "Access scopes which have been requested"
+										},
+										{
+											"key": "duration",
+											"value": "129600",
+											"description": "Duration of access authorization in minutes, range 1 to 129600 (90 days)."
+										},
+										{
+											"key": "redirect_uri",
+											"value": "https://httpbin.org",
+											"description": "Redirect URI you used when this application was registered with Nordea."
+										},
+										{
+											"key": "country",
+											"value": "NO",
+											"description": "Accepts DK, FI and NO"
+										},
+										{
+											"key": "language",
+											"value": "en",
+											"description": "(optional) If country is FI, the default language is \"fi\", if country is DK, the default language is \"da\"",
+											"disabled": true
+										},
+										{
+											"key": "accounts",
+											"value": "FI4710113500010326",
+											"description": "(optional) For use in the Sandbox to simulate the Resource Owner selecting a subset of their accounts for which to Grant Access. In the Sandbox, if this parameter isn't passed, the Client will get access to all accounts.",
+											"disabled": true
+										},
+										{
+											"key": "max_tx_history",
+											"value": "12",
+											"description": "(optional) Maximum transaction history in months. Optional if ACCOUNTS_TRANSACTIONS scope is requested. 1 - 12 months",
+											"disabled": true
+										},
+										{
+											"key": "authentication_method",
+											"value": "NEMID_2F",
+											"description": "(optional) Parameter with possible values: NEMID_2F (NemID with username, password and OTC/NMAS), NEMID_O_2F (NemID OCES with username and password). In the release, only supported if country = DK.",
+											"disabled": true
+										},
+										{
+											"key": "login_hint",
+											"value": null,
+											"description": "(optional) Can only be used if authentication_method has been provided. For future use, enabling the Client to pass a user ID to further streamline the authentication flow user experience.",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Exchange Token",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "057aa385-5e24-4bb7-baa0-7f88f46b1ea1",
+										"exec": [
+											"var jsonData = JSON.parse(responseBody);",
+											"",
+											"postman.setEnvironmentVariable(\"access_token\", jsonData.access_token);",
+											"",
+											"postman.setEnvironmentVariable(\"refresh_token\", jsonData.refresh_token);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "X-IBM-Client-ID",
+										"value": "{{X-IBM-Client-ID}}"
+									},
+									{
+										"key": "X-IBM-Client-Secret",
+										"value": "{{X-IBM-Client-Secret}}",
+										"description": "Client Secret issued to the TPP via Developer Portal"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "code",
+											"value": "{{code}}",
+											"type": "text"
+										},
+										{
+											"key": "redirect_uri",
+											"value": "https://httpbin.org",
+											"type": "text"
+										},
+										{
+											"key": "grant_type",
+											"value": "authorization_code",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://api.nordeaopenbanking.com/v3/authorize/token",
+									"protocol": "https",
+									"host": [
+										"api",
+										"nordeaopenbanking",
+										"com"
+									],
+									"path": [
+										"v3",
+										"authorize",
+										"token"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Refresh Token",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "6e904681-a22b-4d04-999a-eb773b141dfe",
+										"exec": [
+											"var jsonData = JSON.parse(responseBody);",
+											"",
+											"postman.setEnvironmentVariable(\"access_token\", jsonData.access_token);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-IBM-Client-ID",
+										"value": "{{X-IBM-Client-ID}}"
+									},
+									{
+										"description": "Client Secret issued to the TPP via Developer Portal",
+										"key": "X-IBM-Client-Secret",
+										"value": "{{X-IBM-Client-Secret}}"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/x-www-form-urlencoded",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "refresh_token",
+											"value": "{{refresh_token}}",
+											"type": "text"
+										},
+										{
+											"key": "redirect_uri",
+											"value": "https://httpbin.org",
+											"type": "text"
+										},
+										{
+											"key": "grant_type",
+											"value": "refresh_token",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://api.nordeaopenbanking.com/v3/authorize/token",
+									"protocol": "https",
+									"host": [
+										"api",
+										"nordeaopenbanking",
+										"com"
+									],
+									"path": [
+										"v3",
+										"authorize",
+										"token"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"description": "Authorizing PSUs with redirect for Codes and NemID (For FI and DK)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "46bf275b-7d26-43ac-956d-bfa65454a9fe",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "f7721797-e243-404c-880e-4391ab83e52b",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"_postman_isSubFolder": true
+				}
+			]
+		},
+		{
+			"name": "Account Information Service",
+			"item": [
+				{
+					"name": "Get Accounts",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"",
+									"postman.setEnvironmentVariable(\"account_id\", ",
+									"    jsonData.response.accounts[0].id);",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-IBM-Client-ID",
+								"value": "{{X-IBM-Client-ID}}"
+							},
+							{
+								"key": "X-IBM-Client-Secret",
+								"value": "{{X-IBM-Client-Secret}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://api.nordeaopenbanking.com/v3/accounts",
+							"protocol": "https",
+							"host": [
+								"api",
+								"nordeaopenbanking",
+								"com"
+							],
+							"path": [
+								"v3",
+								"accounts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Account Details by Account ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"\r",
+									"postman.setEnvironmentVariable(\"paymentId\", \r",
+									"    jsonData.response.id);"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-IBM-Client-ID",
+								"value": "{{X-IBM-Client-ID}}"
+							},
+							{
+								"key": "X-IBM-Client-Secret",
+								"value": "{{X-IBM-Client-Secret}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://api.nordeaopenbanking.com/v3/accounts/{{account_id}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"nordeaopenbanking",
+								"com"
+							],
+							"path": [
+								"v3",
+								"accounts",
+								"{{account_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Transactions",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"",
+									"postman.setEnvironmentVariable(\"payment-id\", ",
+									"    jsonData.response._id);",
+									"postman.setEnvironmentVariable(\"continuation_key\",jsonData.response._continuationKey)",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-IBM-Client-ID",
+								"value": "{{X-IBM-Client-ID}}"
+							},
+							{
+								"key": "X-IBM-Client-Secret",
+								"value": "{{X-IBM-Client-Secret}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://api.nordeaopenbanking.com/v3/accounts/{{account_id}}/transactions?",
+							"protocol": "https",
+							"host": [
+								"api",
+								"nordeaopenbanking",
+								"com"
+							],
+							"path": [
+								"v3",
+								"accounts",
+								"{{account_id}}",
+								"transactions"
+							],
+							"query": [
+								{
+									"key": "continuationKey",
+									"value": "{{continuation_key}}",
+									"description": "Optional",
+									"disabled": true
+								},
+								{
+									"key": "language",
+									"value": "FI",
+									"description": "Optional",
+									"disabled": true
+								},
+								{
+									"key": "fromDate",
+									"value": null,
+									"description": "Optional",
+									"disabled": true
+								},
+								{
+									"key": "toDate",
+									"value": null,
+									"description": "Optional",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Payment Initiation Service - Domestic",
+			"item": [
+				{
+					"name": "Get Payments Domestic",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "X-IBM-Client-Id",
+								"value": "{{X-IBM-Client-ID}}"
+							},
+							{
+								"key": "X-IBM-Client-Secret",
+								"value": "{{X-IBM-Client-Secret}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://api.nordeaopenbanking.com/v3/payments/domestic",
+							"protocol": "https",
+							"host": [
+								"api",
+								"nordeaopenbanking",
+								"com"
+							],
+							"path": [
+								"v3",
+								"payments",
+								"domestic"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Initiate Payment Domestic - Norway",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "5d819a01-462d-43bd-bb90-24234131264a",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"\r",
+									"postman.setEnvironmentVariable(\"payment_id\", \r",
+									"    jsonData.response._id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "X-IBM-Client-Id",
+								"value": "{{X-IBM-Client-ID}}"
+							},
+							{
+								"key": "X-IBM-Client-Secret",
+								"value": "{{X-IBM-Client-Secret}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"amount\": 1230.45,\n  \"creditor\": {\n    \"account\": {\n      \"_type\": \"BBAN_NO\",\n      \"currency\": \"NOK\",\n      \"value\": \"60010503178\"\n    },\n    \"name\": \"Beneficiary name\",\n    \"reference\": {\n      \"_type\": \"RF\",\n      \"value\": \"RF18539007547034\"\n    }\n  },\n  \"currency\": \"NOK\",\n  \"debtor\": {\n    \"account\": {\n      \"_type\": \"BBAN_NO\",\n      \"currency\": \"NOK\",\n      \"value\": \"60301132843\"\n    },\n    \"message\": \"Message for debtor\"\n  },\n  \"external_id\": \"some id\",\n  \"urgency\": \"standard\"\n}"
+						},
+						"url": {
+							"raw": "https://api.nordeaopenbanking.com/v3/payments/domestic",
+							"protocol": "https",
+							"host": [
+								"api",
+								"nordeaopenbanking",
+								"com"
+							],
+							"path": [
+								"v3",
+								"payments",
+								"domestic"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get payment Domestic",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-IBM-Client-ID",
+								"value": "{{X-IBM-Client-ID}}"
+							},
+							{
+								"key": "X-IBM-Client-Secret",
+								"value": "{{X-IBM-Client-Secret}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://api.nordeaopenbanking.com/v3/payments/domestic/{{payment_id}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"nordeaopenbanking",
+								"com"
+							],
+							"path": [
+								"v3",
+								"payments",
+								"domestic",
+								"{{payment_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Confirm payment Domestic",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-IBM-Client-ID",
+								"value": "{{X-IBM-Client-ID}}"
+							},
+							{
+								"key": "X-IBM-Client-Secret",
+								"value": "{{X-IBM-Client-Secret}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://api.nordeaopenbanking.com/v3/payments/domestic/{{payment_id}}/confirm",
+							"protocol": "https",
+							"host": [
+								"api",
+								"nordeaopenbanking",
+								"com"
+							],
+							"path": [
+								"v3",
+								"payments",
+								"domestic",
+								"{{payment_id}}",
+								"confirm"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "For domestic SEK and DKK payments"
+		}
+	]
+}
