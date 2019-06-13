@@ -1,0 +1,1177 @@
+{
+	"info": {
+		"_postman_id": "ca1d1f44-c2b0-4920-9c70-ee6cfe87dabd",
+		"name": "Business Authorization and Accounts",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Auth V1",
+			"item": [
+				{
+					"name": "Create Authorization",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "7c39d98d-2f69-4444-a8cd-e042b7a284b2",
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.environment.set(\"client_token\", jsonData.response.client_token);",
+									"pm.environment.set(\"access_id\", jsonData.response.access_id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-IBM-Client-Id",
+								"value": "{{X-IBM-Client-ID}}"
+							},
+							{
+								"key": "X-IBM-Client-Secret",
+								"value": "{{X-IBM-Client-Secret}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"scope\": [\"ACCOUNTS_BROADBAND\"],\n\t\"duration\":129600\n}"
+						},
+						"url": {
+							"raw": "https://api.nordeaopenbanking.com/xs2a-business/v1/authorize",
+							"protocol": "https",
+							"host": [
+								"api",
+								"nordeaopenbanking",
+								"com"
+							],
+							"path": [
+								"xs2a-business",
+								"v1",
+								"authorize"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Confirm Authorization",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{client_token}}"
+							},
+							{
+								"key": "X-IBM-Client-Id",
+								"value": "{{X-IBM-Client-ID}}"
+							},
+							{
+								"key": "X-IBM-Client-Secret",
+								"value": "{{X-IBM-Client-Secret}}",
+								"type": "text"
+							},
+							{
+								"key": "Mac-Authorization",
+								"value": "Mac Mg62MdjMPakxWCbh9e6mgnDpi95BmAWJ",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"authorizer_id\":\"70311198\"\n}"
+						},
+						"url": {
+							"raw": "https://api.nordeaopenbanking.com/xs2a-business/v1/authorize/{{access_id}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"nordeaopenbanking",
+								"com"
+							],
+							"path": [
+								"xs2a-business",
+								"v1",
+								"authorize",
+								"{{access_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Authorization Status",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "4de2adf3-d116-401e-ad84-1a0e6fa642b6",
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.environment.set(\"code\", jsonData.response.code);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{client_token}}"
+							},
+							{
+								"key": "X-IBM-Client-Id",
+								"value": "{{X-IBM-Client-ID}}"
+							},
+							{
+								"key": "X-IBM-Client-Secret",
+								"type": "text",
+								"value": "{{X-IBM-Client-Secret}}"
+							}
+						],
+						"url": {
+							"raw": "https://api.nordeaopenbanking.com/xs2a-business/v1/authorize/{{access_id}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"nordeaopenbanking",
+								"com"
+							],
+							"path": [
+								"xs2a-business",
+								"v1",
+								"authorize",
+								"{{access_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Exchange Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ccc5e842-6727-4249-84d6-07341c2786ee",
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.environment.set(\"access_token\", jsonData.response.access_token);",
+									"pm.environment.set(\"refresh_token\", jsonData.response.refresh_token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/x-www-form-urlencoded"
+							},
+							{
+								"key": "X-IBM-Client-Id",
+								"value": "{{X-IBM-Client-ID}}"
+							},
+							{
+								"key": "X-IBM-Client-Secret",
+								"type": "text",
+								"value": "{{X-IBM-Client-Secret}}"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "grant_type",
+									"value": "authorization_code",
+									"type": "text"
+								},
+								{
+									"key": "code",
+									"value": "{{code}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://api.nordeaopenbanking.com/xs2a-business/v1/authorize/token",
+							"protocol": "https",
+							"host": [
+								"api",
+								"nordeaopenbanking",
+								"com"
+							],
+							"path": [
+								"xs2a-business",
+								"v1",
+								"authorize",
+								"token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Exchange Refresh Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ccc5e842-6727-4249-84d6-07341c2786ee",
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.environment.set(\"access_token\", jsonData.response.access_token);",
+									"pm.environment.set(\"refresh_token\", jsonData.response.refresh_token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							},
+							{
+								"key": "X-IBM-Client-Id",
+								"value": "{{X-IBM-Client-ID}}"
+							},
+							{
+								"key": "X-IBM-Client-Secret",
+								"type": "text",
+								"value": "{{X-IBM-Client-Secret}}"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "grant_type",
+									"value": "refresh_token",
+									"type": "text"
+								},
+								{
+									"key": "refresh_token",
+									"value": "{{refresh_token}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://api.nordeaopenbanking.com/xs2a-business/v1/authorize/token",
+							"protocol": "https",
+							"host": [
+								"api",
+								"nordeaopenbanking",
+								"com"
+							],
+							"path": [
+								"xs2a-business",
+								"v1",
+								"authorize",
+								"token"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Auth V2",
+			"item": [
+				{
+					"name": "Create Authorization",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "7c39d98d-2f69-4444-a8cd-e042b7a284b2",
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.environment.set(\"client_token\", jsonData.response.client_token);",
+									"pm.environment.set(\"access_id\", jsonData.response.access_id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-IBM-Client-Id",
+								"value": "{{X-IBM-Client-ID}}"
+							},
+							{
+								"key": "X-IBM-Client-Secret",
+								"value": "{{X-IBM-Client-Secret}}",
+								"type": "text"
+							},
+							{
+								"key": "Signature",
+								"value": "SKIP_SIGNATURE_VALIDATION_FOR_SANDBOX",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"scope\": [\"ACCOUNTS_BROADBAND\"],\n\t\"duration\":129600\n}"
+						},
+						"url": {
+							"raw": "https://api.nordeaopenbanking.com/xs2a-business/v2/authorize",
+							"protocol": "https",
+							"host": [
+								"api",
+								"nordeaopenbanking",
+								"com"
+							],
+							"path": [
+								"xs2a-business",
+								"v2",
+								"authorize"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Confirm Authorization",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{client_token}}"
+							},
+							{
+								"key": "X-IBM-Client-Id",
+								"value": "{{X-IBM-Client-ID}}"
+							},
+							{
+								"key": "X-IBM-Client-Secret",
+								"value": "{{X-IBM-Client-Secret}}",
+								"type": "text"
+							},
+							{
+								"key": "Signature",
+								"value": "SKIP_SIGNATURE_VALIDATION_FOR_SANDBOX",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"authorizer_id\":\"70311198\"\n}"
+						},
+						"url": {
+							"raw": "https://api.nordeaopenbanking.com/xs2a-business/v2/authorize/{{access_id}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"nordeaopenbanking",
+								"com"
+							],
+							"path": [
+								"xs2a-business",
+								"v2",
+								"authorize",
+								"{{access_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Authorization Status",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "4de2adf3-d116-401e-ad84-1a0e6fa642b6",
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.environment.set(\"code\", jsonData.response.code);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{client_token}}"
+							},
+							{
+								"key": "X-IBM-Client-Id",
+								"value": "{{X-IBM-Client-ID}}"
+							},
+							{
+								"key": "X-IBM-Client-Secret",
+								"type": "text",
+								"value": "{{X-IBM-Client-Secret}}"
+							},
+							{
+								"key": "Signature",
+								"value": "SKIP_SIGNATURE_VALIDATION_FOR_SANDBOX",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://api.nordeaopenbanking.com/xs2a-business/v2/authorize/{{access_id}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"nordeaopenbanking",
+								"com"
+							],
+							"path": [
+								"xs2a-business",
+								"v2",
+								"authorize",
+								"{{access_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Exchange Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ccc5e842-6727-4249-84d6-07341c2786ee",
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.environment.set(\"access_token\", jsonData.response.access_token);",
+									"pm.environment.set(\"refresh_token\", jsonData.response.refresh_token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/x-www-form-urlencoded"
+							},
+							{
+								"key": "X-IBM-Client-Id",
+								"value": "{{X-IBM-Client-ID}}"
+							},
+							{
+								"key": "X-IBM-Client-Secret",
+								"type": "text",
+								"value": "{{X-IBM-Client-Secret}}"
+							},
+							{
+								"key": "Signature",
+								"value": "SKIP_SIGNATURE_VALIDATION_FOR_SANDBOX",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "grant_type",
+									"value": "authorization_code",
+									"type": "text"
+								},
+								{
+									"key": "code",
+									"value": "{{code}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://api.nordeaopenbanking.com/xs2a-business/v2/authorize/token",
+							"protocol": "https",
+							"host": [
+								"api",
+								"nordeaopenbanking",
+								"com"
+							],
+							"path": [
+								"xs2a-business",
+								"v2",
+								"authorize",
+								"token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Exchange Refresh Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ccc5e842-6727-4249-84d6-07341c2786ee",
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.environment.set(\"access_token\", jsonData.response.access_token);",
+									"pm.environment.set(\"refresh_token\", jsonData.response.refresh_token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							},
+							{
+								"key": "X-IBM-Client-Id",
+								"value": "{{X-IBM-Client-ID}}"
+							},
+							{
+								"key": "X-IBM-Client-Secret",
+								"type": "text",
+								"value": "{{X-IBM-Client-Secret}}"
+							},
+							{
+								"key": "Signature",
+								"value": "SKIP_SIGNATURE_VALIDATION_FOR_SANDBOX",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "grant_type",
+									"value": "refresh_token",
+									"type": "text"
+								},
+								{
+									"key": "refresh_token",
+									"value": "{{refresh_token}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://api.nordeaopenbanking.com/xs2a-business/v2/authorize/token",
+							"protocol": "https",
+							"host": [
+								"api",
+								"nordeaopenbanking",
+								"com"
+							],
+							"path": [
+								"xs2a-business",
+								"v2",
+								"authorize",
+								"token"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "AIS V1",
+			"item": [
+				{
+					"name": "Accounts List",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "26fb284b-206a-4471-9dd6-156a025fa31c",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "X-IBM-Client-Id",
+								"value": "{{X-IBM-Client-ID}}"
+							},
+							{
+								"key": "X-IBM-Client-Secret",
+								"value": "{{X-IBM-Client-Secret}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://api.nordeaopenbanking.com/xs2a-business/v1/accounts?page=1&size=50",
+							"protocol": "https",
+							"host": [
+								"api",
+								"nordeaopenbanking",
+								"com"
+							],
+							"path": [
+								"xs2a-business",
+								"v1",
+								"accounts"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "size",
+									"value": "50"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Filtered Accounts List",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "26fb284b-206a-4471-9dd6-156a025fa31c",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "X-IBM-Client-Id",
+								"value": "{{X-IBM-Client-ID}}"
+							},
+							{
+								"key": "X-IBM-Client-Secret",
+								"value": "{{X-IBM-Client-Secret}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"account_list\":[\n\t],\n\t\"currency_list\":[\n\t],\n\t\"country_list\":[\n\t\t\"FI\"\n\t]\n}"
+						},
+						"url": {
+							"raw": "https://api.nordeaopenbanking.com/xs2a-business/v1/accounts/filter",
+							"protocol": "https",
+							"host": [
+								"api",
+								"nordeaopenbanking",
+								"com"
+							],
+							"path": [
+								"xs2a-business",
+								"v1",
+								"accounts",
+								"filter"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Account Details",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "26fb284b-206a-4471-9dd6-156a025fa31c",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "X-IBM-Client-Id",
+								"value": "{{X-IBM-Client-ID}}"
+							},
+							{
+								"key": "X-IBM-Client-Secret",
+								"value": "{{X-IBM-Client-Secret}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://api.nordeaopenbanking.com/xs2a-business/v1/accounts/SE99602614054381-SEK",
+							"protocol": "https",
+							"host": [
+								"api",
+								"nordeaopenbanking",
+								"com"
+							],
+							"path": [
+								"xs2a-business",
+								"v1",
+								"accounts",
+								"SE99602614054381-SEK"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Account Transactions",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "26fb284b-206a-4471-9dd6-156a025fa31c",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "X-IBM-Client-Id",
+								"value": "{{X-IBM-Client-ID}}"
+							},
+							{
+								"key": "X-IBM-Client-Secret",
+								"value": "{{X-IBM-Client-Secret}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://api.nordeaopenbanking.com/xs2a-business/v1/accounts/SE99602614054381-SEK/transactions?start_date=2018-04-01&end_date=2018-12-31&continuation_key=",
+							"protocol": "https",
+							"host": [
+								"api",
+								"nordeaopenbanking",
+								"com"
+							],
+							"path": [
+								"xs2a-business",
+								"v1",
+								"accounts",
+								"SE99602614054381-SEK",
+								"transactions"
+							],
+							"query": [
+								{
+									"key": "start_date",
+									"value": "2018-04-01"
+								},
+								{
+									"key": "end_date",
+									"value": "2018-12-31"
+								},
+								{
+									"key": "continuation_key",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "AIS V2",
+			"item": [
+				{
+					"name": "Accounts List",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "26fb284b-206a-4471-9dd6-156a025fa31c",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "X-IBM-Client-Id",
+								"value": "{{X-IBM-Client-ID}}"
+							},
+							{
+								"key": "X-IBM-Client-Secret",
+								"value": "{{X-IBM-Client-Secret}}",
+								"type": "text"
+							},
+							{
+								"key": "Signature",
+								"value": "SKIP_SIGNATURE_VALIDATION_FOR_SANDBOX",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://api.nordeaopenbanking.com/xs2a-business/v2/accounts?page=1&size=50",
+							"protocol": "https",
+							"host": [
+								"api",
+								"nordeaopenbanking",
+								"com"
+							],
+							"path": [
+								"xs2a-business",
+								"v2",
+								"accounts"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "size",
+									"value": "50"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Filtered Accounts List",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "26fb284b-206a-4471-9dd6-156a025fa31c",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "X-IBM-Client-Id",
+								"value": "{{X-IBM-Client-ID}}"
+							},
+							{
+								"key": "X-IBM-Client-Secret",
+								"value": "{{X-IBM-Client-Secret}}",
+								"type": "text"
+							},
+							{
+								"key": "Signature",
+								"value": "SKIP_SIGNATURE_VALIDATION_FOR_SANDBOX",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"account_list\":[\n\t],\n\t\"currency_list\":[\n\t],\n\t\"country_list\":[\n\t\t\"FI\"\n\t]\n}"
+						},
+						"url": {
+							"raw": "https://api.nordeaopenbanking.com/xs2a-business/v2/accounts/filter",
+							"protocol": "https",
+							"host": [
+								"api",
+								"nordeaopenbanking",
+								"com"
+							],
+							"path": [
+								"xs2a-business",
+								"v2",
+								"accounts",
+								"filter"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Account Details",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "26fb284b-206a-4471-9dd6-156a025fa31c",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "X-IBM-Client-Id",
+								"value": "{{X-IBM-Client-ID}}"
+							},
+							{
+								"key": "X-IBM-Client-Secret",
+								"value": "{{X-IBM-Client-Secret}}",
+								"type": "text"
+							},
+							{
+								"key": "Signature",
+								"value": "SKIP_SIGNATURE_VALIDATION_FOR_SANDBOX",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://api.nordeaopenbanking.com/xs2a-business/v2/accounts/SE99602614054381-SEK",
+							"protocol": "https",
+							"host": [
+								"api",
+								"nordeaopenbanking",
+								"com"
+							],
+							"path": [
+								"xs2a-business",
+								"v2",
+								"accounts",
+								"SE99602614054381-SEK"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Account Transactions",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "26fb284b-206a-4471-9dd6-156a025fa31c",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "X-IBM-Client-Id",
+								"value": "{{X-IBM-Client-ID}}"
+							},
+							{
+								"key": "X-IBM-Client-Secret",
+								"value": "{{X-IBM-Client-Secret}}",
+								"type": "text"
+							},
+							{
+								"key": "Signature",
+								"value": "SKIP_SIGNATURE_VALIDATION_FOR_SANDBOX",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://api.nordeaopenbanking.com/xs2a-business/v2/accounts/SE99602614054381-SEK/transactions?start_date=2018-04-01&end_date=2018-12-31&continuation_key=",
+							"protocol": "https",
+							"host": [
+								"api",
+								"nordeaopenbanking",
+								"com"
+							],
+							"path": [
+								"xs2a-business",
+								"v2",
+								"accounts",
+								"SE99602614054381-SEK",
+								"transactions"
+							],
+							"query": [
+								{
+									"key": "start_date",
+									"value": "2018-04-01"
+								},
+								{
+									"key": "end_date",
+									"value": "2018-12-31"
+								},
+								{
+									"key": "continuation_key",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "X-IBM-Client-Id",
+						"value": "{{X-IBM-Client-ID}}",
+						"type": "text"
+					},
+					{
+						"key": "X-IBM-Client-Secret",
+						"value": "{{X-IBM-Client-Secret}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://api.nordeaopenbanking.com/xs2a-business/v1/authorize/users",
+					"protocol": "https",
+					"host": [
+						"api",
+						"nordeaopenbanking",
+						"com"
+					],
+					"path": [
+						"xs2a-business",
+						"v1",
+						"authorize",
+						"users"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
