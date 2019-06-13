@@ -1,0 +1,860 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Business Identity and Access API",
+    "version": "1.0",
+    "title": "Business Identity and Access API",
+    "contact": {
+      "name": "Open Banking team",
+      "url": "https://nordeaopenbanking.com",
+      "email": "support@nordeaopenbanking.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "x-ibm-name": "business-auth-v1",
+    "x-version": "1.0"
+  },
+  "host": "localhost:49350",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "authorize-v1",
+      "description": "OAuth 2.0 authentication with support for scopes"
+    }
+  ],
+  "paths": {
+    "/v1/authorize": {
+      "post": {
+        "tags": [
+          "authorize-v1"
+        ],
+        "summary": "Start an authorization flow and create authorization resource",
+        "operationId": "authorization-v1-baa",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "X-IBM-Client-Id",
+            "in": "header",
+            "description": "X-IBM-Client-Id Id of the Client",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "X-IBM-Client-Secret",
+            "in": "header",
+            "description": "X-IBM-Client-Secret Secret password generated for Client",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "request",
+            "description": "Request for authorization initialization",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/InitialAuthorizationRequest"
+            },
+            "x-availabilityInfo": "V1 will be deprecated as it does not support QSealC. Please use V2",
+            "x-availabilityStatus": "Deprecated",
+            "x-deprecationInfo": "V2 will be available by Q3 2019",
+            "x-removalInfo": "V1 will be replaced by V2"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Response with a JWT token with CLIENT_ROLE as the role",
+            "schema": {
+              "$ref": "#/definitions/InitialAuthorizationResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized with failure code:\n* error.apikey.missing = Missing API key. This operation requires API key, but it was missing.\n* error.token = Unspecified error with supplied token.\n* error.token.invalid = Missing access token or token did not authorized requested operation. This operation requires valid access token, but it was missing.\n* error.token.expired = Access token has expired.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden with failure code:\n* error.resource.denied = Requested resource is not authorized by access token.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Resource not found",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        },
+        "deprecated": true,
+        "x-availabilityInfo": "V1 will be deprecated as it does not support QSealC. Please use V2",
+        "x-availabilityStatus": "Deprecated",
+        "x-deprecationInfo": "V2 will be available by Q3 2019",
+        "x-removalInfo": "V1 will be replaced by V2"
+      }
+    },
+    "/v1/authorize/token": {
+      "post": {
+        "tags": [
+          "authorize-v1"
+        ],
+        "summary": "Token exchange",
+        "description": "This is used for exchanging the auth code or refresh token for an access token.",
+        "operationId": "getAccessTokenUsingPOST",
+        "consumes": [
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "X-IBM-Client-Id",
+            "in": "header",
+            "description": "X-IBM-Client-Id Id of the Client",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "X-IBM-Client-Secret",
+            "in": "header",
+            "description": "X-IBM-Client-Secret Secret password generated for Client",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "code",
+            "in": "formData",
+            "description": "Authorization code",
+            "required": false,
+            "type": "string",
+            "x-availabilityInfo": "V1 will be deprecated as it does not support QSealC. Please use V2",
+            "x-availabilityStatus": "Deprecated",
+            "x-deprecationInfo": "V2 will be available by Q3 2019",
+            "x-removalInfo": "V1 will be replaced by V2"
+          },
+          {
+            "name": "grant_type",
+            "in": "formData",
+            "description": "Grant type",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "authorization_code",
+              "refresh_token"
+            ],
+            "x-availabilityInfo": "V1 will be deprecated as it does not support QSealC. Please use V2",
+            "x-availabilityStatus": "Deprecated",
+            "x-deprecationInfo": "V2 will be available by Q3 2019",
+            "x-removalInfo": "V1 will be replaced by V2"
+          },
+          {
+            "name": "refresh_token",
+            "in": "formData",
+            "description": "Refresh token",
+            "required": false,
+            "type": "string",
+            "x-availabilityInfo": "V1 will be deprecated as it does not support QSealC. Please use V2",
+            "x-availabilityStatus": "Deprecated",
+            "x-deprecationInfo": "V2 will be available by Q3 2019",
+            "x-removalInfo": "V1 will be replaced by V2"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Response with a JWT token for AIS and PIS requests",
+            "schema": {
+              "$ref": "#/definitions/AccessTokenResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Authentication failure",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Authorization failure",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Resource not found",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        },
+        "deprecated": true,
+        "x-availabilityInfo": "V1 will be deprecated as it does not support QSealC. Please use V2",
+        "x-availabilityStatus": "Deprecated",
+        "x-deprecationInfo": "V2 will be available by Q3 2019",
+        "x-removalInfo": "V1 will be replaced by V2"
+      }
+    },
+    "/v1/authorize/users": {
+      "get": {
+        "tags": [
+          "authorize-v1"
+        ],
+        "summary": "Get group of authorizers with privileges",
+        "operationId": "getAgreementUsersUsingGET",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "X-IBM-Client-Id",
+            "in": "header",
+            "description": "X-IBM-Client-Id Id of the Client",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "X-IBM-Client-Secret",
+            "in": "header",
+            "description": "X-IBM-Client-Secret Secret password generated for Client",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/AdminAccess"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized with failure code:\n* error.apikey.missing = Missing API key. This operation requires API key, but it was missing.\n* error.token = Unspecified error with supplied token.\n* error.token.invalid = Missing access token or token did not authorized requested operation. This operation requires valid access token, but it was missing.\n* error.token.expired = Access token has expired.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden with failure code:\n* error.resource.denied = Requested resource is not authorized by access token.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Resource not found",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        },
+        "deprecated": false,
+        "x-availabilityStatus": "Sandbox Only - Stable"
+      }
+    },
+    "/v1/authorize/{access_id}": {
+      "get": {
+        "tags": [
+          "authorize-v1"
+        ],
+        "summary": "Get status of the authorization process",
+        "operationId": "getStatusUsingGET",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Bearer token identifying client",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "X-IBM-Client-Id",
+            "in": "header",
+            "description": "X-IBM-Client-Id Id of the Client",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "X-IBM-Client-Secret",
+            "in": "header",
+            "description": "X-IBM-Client-Secret Secret password generated for Client",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "access_id",
+            "in": "path",
+            "description": "Access ID requested for authorization status",
+            "required": true,
+            "type": "string",
+            "x-availabilityInfo": "V1 will be deprecated as it does not support QSealC. Please use V2",
+            "x-availabilityStatus": "Deprecated",
+            "x-deprecationInfo": "V2 will be available by Q3 2019",
+            "x-removalInfo": "V1 will be replaced by V2"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success - response includes status of specified authorization request",
+            "schema": {
+              "$ref": "#/definitions/AuthorizationStatusResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized with failure code:\n* error.apikey.missing = Missing API key. This operation requires API key, but it was missing.\n* error.token = Unspecified error with supplied token.\n* error.token.invalid = Missing access token or token did not authorized requested operation. This operation requires valid access token, but it was missing.\n* error.token.expired = Access token has expired.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Credential failure",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Resource not found",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        },
+        "deprecated": true,
+        "x-availabilityInfo": "V1 will be deprecated as it does not support QSealC. Please use V2",
+        "x-availabilityStatus": "Deprecated",
+        "x-deprecationInfo": "V2 will be available by Q3 2019",
+        "x-removalInfo": "V1 will be replaced by V2"
+      },
+      "put": {
+        "tags": [
+          "authorize-v1"
+        ],
+        "summary": "Confirm an authorization request",
+        "operationId": "addAuthorizerUsingPUT",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Bearer token identifying client",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "X-IBM-Client-Id",
+            "in": "header",
+            "description": "X-IBM-Client-Id Id of the Client",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "X-IBM-Client-Secret",
+            "in": "header",
+            "description": "X-IBM-Client-Secret Secret password generated for Client",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "access_id",
+            "in": "path",
+            "description": "Access ID requested for authorization confirmation",
+            "required": true,
+            "type": "string",
+            "x-availabilityInfo": "V1 will be deprecated as it does not support QSealC. Please use V2",
+            "x-availabilityStatus": "Deprecated",
+            "x-deprecationInfo": "V2 will be available by Q3 2019",
+            "x-removalInfo": "V1 will be replaced by V2"
+          },
+          {
+            "in": "body",
+            "name": "request",
+            "description": "Request for authorization confirmation",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AddAuthorizerRequest"
+            },
+            "x-availabilityInfo": "V1 will be deprecated as it does not support QSealC. Please use V2",
+            "x-availabilityStatus": "Deprecated",
+            "x-deprecationInfo": "V2 will be available by Q3 2019",
+            "x-removalInfo": "V1 will be replaced by V2"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Response with a request confirmation",
+            "schema": {
+              "$ref": "#/definitions/AuthorizationStatusResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Authentication failure",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Authorization failure",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Resource not found",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        },
+        "deprecated": true,
+        "x-availabilityInfo": "V1 will be deprecated as it does not support QSealC. Please use V2",
+        "x-availabilityStatus": "Deprecated",
+        "x-deprecationInfo": "V2 will be available by Q3 2019",
+        "x-removalInfo": "V1 will be replaced by V2"
+      }
+    }
+  },
+  "securityDefinitions": {
+    "ClientId": {
+      "type": "apiKey",
+      "name": "X-IBM-Client-Id",
+      "in": "header"
+    },
+    "ClientSecret": {
+      "type": "apiKey",
+      "name": "X-IBM-Client-Secret",
+      "in": "header"
+    },
+    "DecoupledAuth": {
+      "type": "oauth2",
+      "authorizationUrl": "/v1/authorize",
+      "tokenUrl": "/v1/authorize/token",
+      "flow": "accessCode",
+      "scopes": {
+        "ACCOUNTS_BROADBAND": "Scope used for Instant Reporting",
+        "ACCOUNTS_PSD2": "Scope for accessing accounts within psd2",
+        "PAYMENTS_BROADBAND": "Scope used for making payments from all accounts, including premium.",
+        "PAYMENTS_PSD2": "Scope used for making payments from accounts within psd2."
+      },
+      "x-addAuthorizerDescription": "Send authorization request to relevant agreement administrator",
+      "x-addAuthorizerUrl": "/v1/authorize",
+      "x-authSubType": "decoupled-auth",
+      "x-codeStatusDescription": "Returns code when authorization second step is finished",
+      "x-codeStatusUrl": "/v1/authorize"
+    }
+  },
+  "definitions": {
+    "AccessTokenResponse": {
+      "type": "object",
+      "properties": {
+        "group_header": {
+          "description": "Standard format response header",
+          "$ref": "#/definitions/ResponseHeader",
+          "x-availabilityStatus": "Stable"
+        },
+        "response": {
+          "description": "Payload",
+          "$ref": "#/definitions/BearerToken",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "AccessTokenResponse",
+      "description": "The access token (JWT)"
+    },
+    "AddAuthorizerRequest": {
+      "type": "object",
+      "required": [
+        "authorizer_id"
+      ],
+      "properties": {
+        "authorizer_id": {
+          "type": "string",
+          "example": 3314162233,
+          "description": "Corporate Netbank login id of nominated authorizer",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "AddAuthorizerRequest",
+      "description": "Nominate an authorizer (Corporate Netbank Administrator) who will confirm the access authorization request"
+    },
+    "AdminAccess": {
+      "type": "object",
+      "properties": {
+        "account_id": {
+          "type": "string",
+          "description": "Technical account identifier",
+          "x-availabilityStatus": "Stable"
+        },
+        "authorization_access": {
+          "type": "string",
+          "description": "Permission level for authorization requests",
+          "enum": [
+            "ACT_ALONE",
+            "TWO_TOGETHER",
+            "RESTRICTED"
+          ],
+          "x-availabilityStatus": "Stable"
+        },
+        "login": {
+          "type": "string",
+          "description": "Authorizer ID",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "AdminAccess",
+      "description": "Details of authorizer"
+    },
+    "AuthorizationStatus": {
+      "type": "object",
+      "required": [
+        "status"
+      ],
+      "properties": {
+        "_links": {
+          "type": "array",
+          "description": "HATEOAS inspired links: 'rel' and 'href'",
+          "items": {
+            "$ref": "#/definitions/Link"
+          },
+          "x-availabilityStatus": "Stable"
+        },
+        "code": {
+          "type": "string",
+          "example": "eyJjdHkiOiJKV1QiLCJlbmMiOiJBMTI4R0NNIiwiYWxnIjoiZGlyIn0..duRyOpFN9OHfF4zq.9exR4Tp8eO-jorDtljriNEQO-mTknGC6DWbvBSmgO9whUaJcJckU2QXX754v7-BnRFrWjExxvf5taoSBmTPVgq6ymVXheE5qFHPyHGtpMV5iUjzV1H9Huhgun46GESZd4eTu4M7TNVduGu6XLdksETDWZYOag6jJD05WrZZoVDwCq87Abl0aCIE0vmY7xwpfSopNcqd1vPrGBq2lZybzzEyXOE4NefVtbmPvywch1H-zp16JhVLLIIsiQ9x8eJlrf1oK67DcAoBRpHKQqr-6c8YcSDQXFkoNdXUaqd6fUCVEvq-iBkjpj7MmrDTw12HCE8KVN1VWQLe7f3D-TQur37BRz5fOXL13IqgJdZdgYQ3hp-oy-B1oYgjB34ZOPsPm1ghdxDxjmeDFV51h1_SupJuogMwN6AZyzX7LeuNCq_8R_Ez8tznOnE8ILhw367kltDYJBTJvu1YU_CD_-HhcD3SyjU9bOKI93VSn3NLp2618r_uxTk8RgixD_PRw2HzKgfCWwImUbl8k-kITtKTfsjbgv3nOygcapq82NsBlQx2ZUpoVye7KXNtA2WSPKls7_4whg_Dwedb9IKr34F3CzomZnGFCRcqfArLJY1zY4nLZix57SctvdqAdcgAys0lbsY4oDe1m7S2rwp-PLWCkvZSDWATmYCG_6Ah2Oyy1DNNqa-NrFGgjDHhJJjaBeNCCLJ39WWlCl5EAUCjb08HNsRtGgeMboYzWDjbqRFi_r0-2fRE6LuAwNJaeSbz0MKRW03BNzkevdhp8HSIPq1UYyy_wtiwOxm4JTp_VNXkoM0-IoTXN6E4DZQ.M5SwrJzAeq2gDdSnkB0QNw",
+          "description": "code",
+          "x-availabilityStatus": "Stable"
+        },
+        "status": {
+          "type": "string",
+          "example": "PENDING",
+          "description": "Current status of authorization request",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "AuthorizationStatus",
+      "description": "Response for authorization status"
+    },
+    "AuthorizationStatusResponse": {
+      "type": "object",
+      "properties": {
+        "group_header": {
+          "description": "Standard format response header",
+          "$ref": "#/definitions/ResponseHeader",
+          "x-availabilityStatus": "Stable"
+        },
+        "response": {
+          "description": "Payload",
+          "$ref": "#/definitions/AuthorizationStatus",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "AuthorizationStatusResponse",
+      "description": "Response for authorization status"
+    },
+    "BearerToken": {
+      "type": "object",
+      "properties": {
+        "access_token": {
+          "type": "string",
+          "example": "eyJjdHkiOiJKV1QiLCJlbmMiOiJBMTI4R0NNIiwiYWxnIjoiZGlyIn0..EM2YgJGre7OTIpmA.8GmpStB05uh4u_1wrEpyVCV_P5XwTcbL7zF_NsZJaMcZvo3B78gqhDR2lCCGLbTTImM4ILGHEQXO5Q7-obmdacIk9jcRr2eg5lTj_MBk9ch9yCMGh1NLEtXfOuHO1WzLoR6njQLDHdvvA2M3MEnVToqF6NdRI5f1hpWwC75TwUJWG50YTTYUBJskGPuRMLPfuTH-sncyVpI5Pj-XwXgcwOuXq8mz87DE1ZCCxPollReFZFsriQO3FeAqdgKigLaDH_WsoromxG2RAz6u4de-IYwXeWhsyq81SvOICE29kLMl9uxCvp6frYzOHoe7rfSaJiPhWGLn4_l29GimVNepQi1BadFqvHUyr7pUtO4Nx8e3piN7RV4DpMu1mf8_BYJaNUMyaeismu7RS9CmXm8wiEwgxK6f6vSOZxK6X8k7EHNKmZJZyR0q5ZRtFMzNa27tFah5_CybeJ86dJYIoaS1yG4rwBhokM06lVwAUAnpjXSRdoD7VUeNeg70DvTS2rtLa_w0_RLpva-iGkup-GIQyURK_jDZF2dVlRIanA8cwF6PZTA4cVslCd6EScJx9AHG87MmiWs6j0KOLZRyun3N3BEeRrjjcPk_lc3zcd8E2MZB4l-4o69cYvgAk1DpkxB__3IyuVkTEGwxlvT04anjsGLXEiunvQnDlAyEApr4xBeIGA2tAU8sstOQgGQffRj17iXWFgh4n5uHP77wrA4_d1tydAGCBhEVk6tsUVA81cavlwEfF53Yn1SK9bVofKv412tzU8fzNecni0IAsuWsCLGX.z3MMhpzmMp-GwdbTSl2rWQ",
+          "description": "Access token",
+          "x-availabilityStatus": "Stable"
+        },
+        "expires_in": {
+          "type": "integer",
+          "format": "int64",
+          "example": 3600,
+          "description": "Token expiration time",
+          "x-availabilityStatus": "Stable"
+        },
+        "token_type": {
+          "type": "string",
+          "example": "Bearer",
+          "description": "Token type",
+          "x-availabilityStatus": "Stable"
+        },
+        "refresh_token": {
+          "type": "string",
+          "example": "eyJjdHkiOiJKV1QiLCJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiZGlyIn0..9IxfdEexBagh8deitsB4_pSVMs-y7OZ73k07MKTUufBOCUWpuBx3cRyPaGfMvwehEhefL2Ffi_FYhBb-StxF_m59aA2kqJimtSX0mr3Ogd5bLWNc2fXSEHPoKEJyzIVi-V-wjv6hBspUAk008Fq26tzvhjrBoswqUdqfmbksXED02fjMYYYP9Fcn7Jg3JO_AjEswxgqmWGsfhHIdNXrPPGpIfk7R0G0sehignbOjDraxCfYsYmp_6zxh5Ja2QDvsRlhAqdSRgX_I7kEpZFZbtJk-19mYMK7eOidTkLMPuhhg_7UcJSo5PjuFMhgvNJKx8UWiyRFlLAWCdo6CknQgJDGCGTiNCUoHywlZBYVmsPJlQITIOHgjvhQQa6Bk3xVs_r4gVfJiKqI4y96l6Tw9ydHJQrLw-4eJBdjisPpUZlrGgvP_WUYigVzco95kSQcT1WqBHhCMdGchPm0mEPD4BSpzHOvlIqmXaiGSwLC4YxQn_PfWWGGnbPvcfg8GJoX4iR6nv_Excn32mpUWlbl7lo-YD2c45oJVJVqFrADRqtQN-lR84cXmd75Gr7R7IJxgZnH8C6EfrBAiy_QEScsIOoDFESqAvUPCXj8FH9_cdWkeLsLSEkJwLOeLcTF73iXG7h_L_giz3t6zjNRa2WxErOxdYF0G453xQb4nFH1X9gc2jnSInmt1jiZGL3WSSXcCWjTSwQq3WhgVfjVTszMF_3F5NnSPHKuKpYf1Dc1kG_F0egzg2HIwTESZOr1jsmMjfyW42jotjc8JhbnjTU-dOgopCf5jWjzTeXFgdxgow7Am3NQa8R3wudqTQD7q5-ItMhW5mVt8TKk7IFjxd2r5tTJFiIsi8nyXOEujs4GuWtmL8gfqrulA7MgodN-FFXPGpa4KbLCGgO7dr5qY-eYLcg._OZAqZevjU4wIAe7D8aQfw",
+          "description": "Refresh token",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "BearerToken",
+      "description": "The Access token (JWT)"
+    },
+    "ErrorPayload": {
+      "type": "object",
+      "properties": {
+        "failures": {
+          "type": "array",
+          "description": "More details on the occurred error",
+          "items": {
+            "$ref": "#/definitions/Failure"
+          },
+          "x-availabilityStatus": "Stable"
+        },
+        "request": {
+          "description": "Error details",
+          "$ref": "#/definitions/RequestEcho",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "ErrorPayload",
+      "description": "Error response body"
+    },
+    "ErrorResponse": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "description": "Payload",
+          "$ref": "#/definitions/ErrorPayload",
+          "x-availabilityStatus": "Stable"
+        },
+        "group_header": {
+          "description": "Standard format response header",
+          "$ref": "#/definitions/ResponseHeader",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "ErrorResponse",
+      "description": "Error response"
+    },
+    "Failure": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "description": "Failure code",
+          "x-availabilityStatus": "Stable"
+        },
+        "description": {
+          "type": "string",
+          "description": "Failure description",
+          "x-availabilityStatus": "Stable"
+        },
+        "path": {
+          "type": "string",
+          "description": "JSON path of the failing element if applicable",
+          "x-availabilityStatus": "Stable"
+        },
+        "type": {
+          "type": "string",
+          "description": "Type of the validation error, e.g. NotNull",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "Failure",
+      "description": "Validation error"
+    },
+    "InitialAuthorization": {
+      "type": "object",
+      "required": [
+        "status"
+      ],
+      "properties": {
+        "_links": {
+          "type": "array",
+          "description": "HATEOAS inspired links: 'rel' and 'href'",
+          "items": {
+            "$ref": "#/definitions/Link"
+          },
+          "x-availabilityStatus": "Stable"
+        },
+        "access_id": {
+          "type": "string",
+          "example": "286beebf-d386-43ff-9607-84cc2c8dad4d",
+          "description": "Resource identifier of newly created access authorization request",
+          "x-availabilityStatus": "Stable"
+        },
+        "client_token": {
+          "type": "string",
+          "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
+          "description": "JWT token supplied to authorize client in subsequent operations on this access authorization resource",
+          "x-availabilityStatus": "Stable"
+        },
+        "code": {
+          "type": "string",
+          "example": "eyJjdHkiOiJKV1QiLCJlbmMiOiJBMTI4R0NNIiwiYWxnIjoiZGlyIn0..duRyOpFN9OHfF4zq.9exR4Tp8eO-jorDtljriNEQO-mTknGC6DWbvBSmgO9whUaJcJckU2QXX754v7-BnRFrWjExxvf5taoSBmTPVgq6ymVXheE5qFHPyHGtpMV5iUjzV1H9Huhgun46GESZd4eTu4M7TNVduGu6XLdksETDWZYOag6jJD05WrZZoVDwCq87Abl0aCIE0vmY7xwpfSopNcqd1vPrGBq2lZybzzEyXOE4NefVtbmPvywch1H-zp16JhVLLIIsiQ9x8eJlrf1oK67DcAoBRpHKQqr-6c8YcSDQXFkoNdXUaqd6fUCVEvq-iBkjpj7MmrDTw12HCE8KVN1VWQLe7f3D-TQur37BRz5fOXL13IqgJdZdgYQ3hp-oy-B1oYgjB34ZOPsPm1ghdxDxjmeDFV51h1_SupJuogMwN6AZyzX7LeuNCq_8R_Ez8tznOnE8ILhw367kltDYJBTJvu1YU_CD_-HhcD3SyjU9bOKI93VSn3NLp2618r_uxTk8RgixD_PRw2HzKgfCWwImUbl8k-kITtKTfsjbgv3nOygcapq82NsBlQx2ZUpoVye7KXNtA2WSPKls7_4whg_Dwedb9IKr34F3CzomZnGFCRcqfArLJY1zY4nLZix57SctvdqAdcgAys0lbsY4oDe1m7S2rwp-PLWCkvZSDWATmYCG_6Ah2Oyy1DNNqa-NrFGgjDHhJJjaBeNCCLJ39WWlCl5EAUCjb08HNsRtGgeMboYzWDjbqRFi_r0-2fRE6LuAwNJaeSbz0MKRW03BNzkevdhp8HSIPq1UYyy_wtiwOxm4JTp_VNXkoM0-IoTXN6E4DZQ.M5SwrJzAeq2gDdSnkB0QNw",
+          "description": "code",
+          "x-availabilityStatus": "Stable"
+        },
+        "status": {
+          "type": "string",
+          "example": "PENDING",
+          "description": "Current status of authorization request",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "InitialAuthorization",
+      "description": "Response for authorization initialization"
+    },
+    "InitialAuthorizationRequest": {
+      "type": "object",
+      "required": [
+        "duration",
+        "scope"
+      ],
+      "properties": {
+        "duration": {
+          "type": "integer",
+          "format": "int32",
+          "example": 3600,
+          "description": "Duration of desired access token in minutes",
+          "x-availabilityStatus": "Stable"
+        },
+        "scope": {
+          "type": "array",
+          "description": "List of access scopes required",
+          "items": {
+            "type": "string",
+            "enum": [
+              "ACCOUNTS_BROADBAND",
+              "ACCOUNTS_PSD2"
+            ]
+          },
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "InitialAuthorizationRequest",
+      "description": "Initiate a new access authorization request"
+    },
+    "InitialAuthorizationResponse": {
+      "type": "object",
+      "properties": {
+        "group_header": {
+          "description": "Standard format response header",
+          "$ref": "#/definitions/ResponseHeader",
+          "x-availabilityStatus": "Stable"
+        },
+        "response": {
+          "description": "Payload",
+          "$ref": "#/definitions/InitialAuthorization",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "InitialAuthorizationResponse",
+      "description": "Response upon creation of new access authorization request"
+    },
+    "Link": {
+      "type": "object",
+      "properties": {
+        "href": {
+          "type": "string",
+          "description": "Relative path to the linked resource",
+          "x-availabilityStatus": "Stable"
+        },
+        "rel": {
+          "type": "string",
+          "description": "Describes the nature of the link, e.g. 'details' for a link to the detailed information of a listed resource.",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "Link",
+      "description": "Context specific link (only GET supported)"
+    },
+    "Pagination": {
+      "type": "object",
+      "title": "Pagination",
+      "description": "Details of paginated response"
+    },
+    "RequestEcho": {
+      "type": "object",
+      "properties": {
+        "url": {
+          "type": "string",
+          "description": "Original request url",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "RequestEcho",
+      "description": "Original request information"
+    },
+    "ResponseHeader": {
+      "type": "object",
+      "properties": {
+        "creation_date_time": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Response creation time",
+          "x-availabilityStatus": "Stable"
+        },
+        "http_code": {
+          "type": "integer",
+          "format": "int32",
+          "example": 200,
+          "description": "HTTP code for response",
+          "x-availabilityStatus": "Stable"
+        },
+        "message_identification": {
+          "type": "string",
+          "description": "Original request id for correlation purposes",
+          "x-availabilityStatus": "Stable"
+        },
+        "message_pagination": {
+          "description": "Details of paginated response",
+          "$ref": "#/definitions/Pagination",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "ResponseHeader",
+      "description": "External response header"
+    },
+    "UserGroup": {
+      "type": "object",
+      "properties": {
+        "agreement_access_group": {
+          "type": "array",
+          "description": "Group of authorizers that can take part in same authorization request",
+          "items": {
+            "$ref": "#/definitions/AdminAccess"
+          },
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "UserGroup",
+      "description": "Authorizer ID and Permission"
+    }
+  }
+}

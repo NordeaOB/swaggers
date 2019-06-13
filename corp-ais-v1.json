@@ -1,0 +1,968 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Business Accounts API",
+    "version": "1.0",
+    "title": "Business Accounts API",
+    "contact": {
+      "name": "Open Banking team",
+      "url": "https://nordeaopenbanking.com",
+      "email": "support@nordeaopenbanking.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "x-ibm-name": "business-ais-v1",
+    "x-version": "1.0"
+  },
+  "host": "localhost:49317",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "accounts-v1",
+      "description": "Customer accounts"
+    }
+  ],
+  "paths": {
+    "/v1/accounts": {
+      "get": {
+        "tags": [
+          "accounts-v1"
+        ],
+        "summary": "List Accounts",
+        "operationId": "getAccountsListUsingGET",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "X-IBM-Client-Id",
+            "in": "header",
+            "description": "X-IBM-Client-Id Id of the Client",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "X-IBM-Client-Secret",
+            "in": "header",
+            "description": "X-IBM-Client-Secret Secret password generated for Client",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number",
+            "required": false,
+            "type": "string",
+            "x-availabilityInfo": "V1 will be deprecated as it does not support QSealC. Please use V2",
+            "x-availabilityStatus": "Deprecated",
+            "x-deprecationInfo": "V2 will be available by Q3 2019",
+            "x-removalInfo": "V1 will be replaced by V2"
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "Page size",
+            "required": false,
+            "type": "string",
+            "x-availabilityInfo": "V1 will be deprecated as it does not support QSealC. Please use V2",
+            "x-availabilityStatus": "Deprecated",
+            "x-deprecationInfo": "V2 will be available by Q3 2019",
+            "x-removalInfo": "V1 will be replaced by V2"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of accounts",
+            "schema": {
+              "$ref": "#/definitions/AccountListResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized with failure code:\n* error.apikey.missing = Missing API key. This operation requires API key, but it was missing.\n* error.token = Unspecified error with supplied token.\n* error.token.invalid = Missing access token or token did not authorized requested operation. This operation requires valid access token, but it was missing.\n* error.token.expired = Access token has expired.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Login failure",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Resource not found",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "DecoupledAuth": [
+              "ACCOUNTS_BROADBAND",
+              "ACCOUNTS_PSD2"
+            ]
+          }
+        ],
+        "deprecated": true,
+        "x-availabilityInfo": "V1 will be deprecated as it does not support QSealC. Please use V2",
+        "x-availabilityStatus": "Deprecated",
+        "x-deprecationInfo": "V2 will be available by Q3 2019",
+        "x-removalInfo": "V1 will be replaced by V2"
+      }
+    },
+    "/v1/accounts/filter": {
+      "post": {
+        "tags": [
+          "accounts-v1"
+        ],
+        "summary": "Filter Accounts",
+        "operationId": "getFilteredAccountListUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "X-IBM-Client-Id",
+            "in": "header",
+            "description": "X-IBM-Client-Id Id of the Client",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "X-IBM-Client-Secret",
+            "in": "header",
+            "description": "X-IBM-Client-Secret Secret password generated for Client",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "filterRequest",
+            "description": "Request for filtered accounts",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/AccountFilterRequest"
+            },
+            "x-availabilityInfo": "V1 will be deprecated as it does not support QSealC. Please use V2",
+            "x-availabilityStatus": "Deprecated",
+            "x-deprecationInfo": "V2 will be available by Q3 2019",
+            "x-removalInfo": "V1 will be replaced by V2"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number",
+            "required": false,
+            "type": "string",
+            "x-availabilityInfo": "V1 will be deprecated as it does not support QSealC. Please use V2",
+            "x-availabilityStatus": "Deprecated",
+            "x-deprecationInfo": "V2 will be available by Q3 2019",
+            "x-removalInfo": "V1 will be replaced by V2"
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "Page size",
+            "required": false,
+            "type": "string",
+            "x-availabilityInfo": "V1 will be deprecated as it does not support QSealC. Please use V2",
+            "x-availabilityStatus": "Deprecated",
+            "x-deprecationInfo": "V2 will be available by Q3 2019",
+            "x-removalInfo": "V1 will be replaced by V2"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Filtered list of accounts",
+            "schema": {
+              "$ref": "#/definitions/AccountListResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized with failure code:\n* error.apikey.missing = Missing API key. This operation requires API key, but it was missing.\n* error.token = Unspecified error with supplied token.\n* error.token.invalid = Missing access token or token did not authorized requested operation. This operation requires valid access token, but it was missing.\n* error.token.expired = Access token has expired.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Login failure",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Resource not found",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "DecoupledAuth": [
+              "ACCOUNTS_BROADBAND",
+              "ACCOUNTS_PSD2"
+            ]
+          }
+        ],
+        "deprecated": true,
+        "x-availabilityInfo": "V1 will be deprecated as it does not support QSealC. Please use V2",
+        "x-availabilityStatus": "Deprecated",
+        "x-deprecationInfo": "V2 will be available by Q3 2019",
+        "x-removalInfo": "V1 will be replaced by V2"
+      }
+    },
+    "/v1/accounts/{account_id}": {
+      "get": {
+        "tags": [
+          "accounts-v1"
+        ],
+        "summary": "Account details",
+        "operationId": "getAccountDetailsUsingGET",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "X-IBM-Client-Id",
+            "in": "header",
+            "description": "X-IBM-Client-Id Id of the Client",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "X-IBM-Client-Secret",
+            "in": "header",
+            "description": "X-IBM-Client-Secret Secret password generated for Client",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "account_id",
+            "in": "path",
+            "description": "Internal, technical account identifier",
+            "required": true,
+            "type": "string",
+            "x-availabilityInfo": "V1 will be deprecated as it does not support QSealC. Please use V2",
+            "x-availabilityStatus": "Deprecated",
+            "x-deprecationInfo": "V2 will be available by Q3 2019",
+            "x-removalInfo": "V1 will be replaced by V2"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Account details",
+            "schema": {
+              "$ref": "#/definitions/AccountDetailsResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized with failure code:\n* error.apikey.missing = Missing API key. This operation requires API key, but it was missing.\n* error.token = Unspecified error with supplied token.\n* error.token.invalid = Missing access token or token did not authorized requested operation. This operation requires valid access token, but it was missing.\n* error.token.expired = Access token has expired.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Login failure",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Account not found",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "DecoupledAuth": [
+              "ACCOUNTS_BROADBAND",
+              "ACCOUNTS_PSD2"
+            ]
+          }
+        ],
+        "deprecated": true,
+        "x-availabilityInfo": "V1 will be deprecated as it does not support QSealC. Please use V2",
+        "x-availabilityStatus": "Deprecated",
+        "x-deprecationInfo": "V2 will be available by Q3 2019",
+        "x-removalInfo": "V1 will be replaced by V2"
+      }
+    },
+    "/v1/accounts/{account_id}/transactions": {
+      "get": {
+        "tags": [
+          "accounts-v1"
+        ],
+        "summary": "List Transactions",
+        "operationId": "getTransactionsUsingGET",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "X-IBM-Client-Id",
+            "in": "header",
+            "description": "X-IBM-Client-Id Id of the Client",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "X-IBM-Client-Secret",
+            "in": "header",
+            "description": "X-IBM-Client-Secret Secret password generated for Client",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "account_id",
+            "in": "path",
+            "description": "Internal, technical account identifier",
+            "required": true,
+            "type": "string",
+            "x-availabilityInfo": "V1 will be deprecated as it does not support QSealC. Please use V2",
+            "x-availabilityStatus": "Deprecated",
+            "x-deprecationInfo": "V2 will be available by Q3 2019",
+            "x-removalInfo": "V1 will be replaced by V2"
+          },
+          {
+            "name": "continuation_key",
+            "in": "query",
+            "description": "Resource listing may return a continuationKey if there is more results available. Request may be retried with the continuationKey, but otherwise same parameters, in order to get more results.",
+            "required": false,
+            "type": "string",
+            "x-availabilityInfo": "V1 will be deprecated as it does not support QSealC. Please use V2",
+            "x-availabilityStatus": "Deprecated",
+            "x-deprecationInfo": "V2 will be available by Q3 2019",
+            "x-removalInfo": "V1 will be replaced by V2"
+          },
+          {
+            "name": "from_date",
+            "in": "query",
+            "description": "List transactions starting from and including this date",
+            "required": false,
+            "type": "string",
+            "format": "date",
+            "x-availabilityInfo": "V1 will be deprecated as it does not support QSealC. Please use V2",
+            "x-availabilityStatus": "Deprecated",
+            "x-deprecationInfo": "V2 will be available by Q3 2019",
+            "x-removalInfo": "V1 will be replaced by V2"
+          },
+          {
+            "name": "language",
+            "in": "query",
+            "description": "Preferred language for text values",
+            "required": false,
+            "type": "string",
+            "x-availabilityInfo": "V1 will be deprecated as it does not support QSealC. Please use V2",
+            "x-availabilityStatus": "Deprecated",
+            "x-deprecationInfo": "V2 will be available by Q3 2019",
+            "x-removalInfo": "V1 will be replaced by V2"
+          },
+          {
+            "name": "to_date",
+            "in": "query",
+            "description": "List transactions until and including this date",
+            "required": false,
+            "type": "string",
+            "format": "date",
+            "x-availabilityInfo": "V1 will be deprecated as it does not support QSealC. Please use V2",
+            "x-availabilityStatus": "Deprecated",
+            "x-deprecationInfo": "V2 will be available by Q3 2019",
+            "x-removalInfo": "V1 will be replaced by V2"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of account transactions",
+            "schema": {
+              "$ref": "#/definitions/TransactionListResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized with failure code:\n* error.apikey.missing = Missing API key. This operation requires API key, but it was missing.\n* error.token = Unspecified error with supplied token.\n* error.token.invalid = Missing access token or token did not authorized requested operation. This operation requires valid access token, but it was missing.\n* error.token.expired = Access token has expired.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Login failure",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Account not found",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "DecoupledAuth": [
+              "ACCOUNTS_BROADBAND",
+              "ACCOUNTS_PSD2"
+            ]
+          }
+        ],
+        "deprecated": true,
+        "x-availabilityInfo": "V1 will be deprecated as it does not support QSealC. Please use V2",
+        "x-availabilityStatus": "Deprecated",
+        "x-deprecationInfo": "V2 will be available by Q3 2019",
+        "x-removalInfo": "V1 will be replaced by V2"
+      }
+    }
+  },
+  "securityDefinitions": {
+    "ClientId": {
+      "type": "apiKey",
+      "name": "X-IBM-Client-Id",
+      "in": "header"
+    },
+    "ClientSecret": {
+      "type": "apiKey",
+      "name": "X-IBM-Client-Secret",
+      "in": "header"
+    },
+    "DecoupledAuth": {
+      "type": "oauth2",
+      "authorizationUrl": "/v1/authorize",
+      "tokenUrl": "/v1/authorize/token",
+      "flow": "accessCode",
+      "scopes": {
+        "ACCOUNTS_BROADBAND": "Scope used for Instant Reporting",
+        "ACCOUNTS_PSD2": "Scope for accessing accounts within psd2"
+      },
+      "x-addAuthorizerDescription": "Send authorization request to relevant agreement administrator",
+      "x-addAuthorizerUrl": "/v1/authorize",
+      "x-authSubType": "decoupled-auth",
+      "x-codeStatusDescription": "Returns code when authorization second step is finished",
+      "x-codeStatusUrl": "/v1/authorize"
+    }
+  },
+  "definitions": {
+    "AccountDetailsResponse": {
+      "type": "object",
+      "properties": {
+        "group_header": {
+          "description": "Standard format response header",
+          "$ref": "#/definitions/ResponseHeader",
+          "x-availabilityStatus": "Stable"
+        },
+        "response": {
+          "description": "Payload",
+          "$ref": "#/definitions/AccountInfo",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "AccountDetailsResponse",
+      "description": "Account details response"
+    },
+    "AccountFilterRequest": {
+      "type": "object",
+      "properties": {
+        "account_list": {
+          "type": "array",
+          "description": "Account List",
+          "items": {
+            "type": "string"
+          },
+          "x-availabilityStatus": "Stable"
+        },
+        "country_list": {
+          "type": "array",
+          "description": "Country List",
+          "items": {
+            "type": "string"
+          },
+          "x-availabilityStatus": "Stable"
+        },
+        "currency_list": {
+          "type": "array",
+          "description": "Currency List",
+          "items": {
+            "type": "string"
+          },
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "AccountFilterRequest",
+      "description": "Request for filtered accounts"
+    },
+    "AccountInfo": {
+      "type": "object",
+      "required": [
+        "_id",
+        "account_type",
+        "bic",
+        "booked_balance",
+        "country",
+        "currency",
+        "iban",
+        "product",
+        "status"
+      ],
+      "properties": {
+        "_id": {
+          "type": "string",
+          "description": "Internal, technical account identifier",
+          "x-availabilityStatus": "Stable"
+        },
+        "_links": {
+          "type": "array",
+          "description": "HATEOAS inspired links: 'rel' and 'href'",
+          "items": {
+            "$ref": "#/definitions/Link"
+          },
+          "x-availabilityStatus": "Stable"
+        },
+        "account_name": {
+          "type": "string",
+          "description": "Account name",
+          "x-availabilityStatus": "Stable"
+        },
+        "account_type": {
+          "type": "string",
+          "description": "Account type",
+          "x-availabilityStatus": "Stable"
+        },
+        "available_balance": {
+          "type": "string",
+          "example": 3451.12,
+          "description": "Available balance indicates the funds which are available to the account holder at the time of the query",
+          "x-availabilityStatus": "Stable"
+        },
+        "bban": {
+          "type": "string",
+          "description": "Basic Bank Account Number",
+          "x-availabilityStatus": "Stable"
+        },
+        "bic": {
+          "type": "string",
+          "example": "NDEASESS",
+          "description": "Bank Identifier Code",
+          "x-availabilityStatus": "Stable"
+        },
+        "booked_balance": {
+          "type": "string",
+          "example": 3451.12,
+          "description": "Booked balance includes all transactions entered on the account at the time of the query",
+          "x-availabilityStatus": "Stable"
+        },
+        "country": {
+          "type": "string",
+          "example": "SE",
+          "description": "Country code where the account is held according to ISO ALPHA-2",
+          "x-availabilityStatus": "Stable"
+        },
+        "credit_limit": {
+          "type": "string",
+          "example": 3451.12,
+          "description": "Amount of credit extended to account holder beyond account booked balance",
+          "x-availabilityStatus": "Stable"
+        },
+        "currency": {
+          "type": "string",
+          "example": "SEK",
+          "description": "Currency code according to ISO 4217",
+          "x-availabilityStatus": "Stable"
+        },
+        "iban": {
+          "type": "string",
+          "description": "International Bank Account Number",
+          "x-availabilityStatus": "Stable"
+        },
+        "latest_transaction_booking_date": {
+          "type": "string",
+          "description": "Date of last transaction booked to the account",
+          "x-availabilityStatus": "Stable"
+        },
+        "product": {
+          "type": "string",
+          "description": "Name of the banking product delivered by this account",
+          "x-availabilityStatus": "Stable"
+        },
+        "status": {
+          "type": "string",
+          "description": "Status of account",
+          "x-availabilityStatus": "Stable"
+        },
+        "value_dated_balance": {
+          "type": "string",
+          "example": 3451.12,
+          "description": "Value dated balance is the balance on the basis of which interest is calculated on the account",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "AccountInfo",
+      "description": "Account information"
+    },
+    "AccountList": {
+      "type": "object",
+      "properties": {
+        "_links": {
+          "type": "array",
+          "description": "HATEOAS inspired links: 'rel' and 'href'",
+          "items": {
+            "$ref": "#/definitions/Link"
+          },
+          "x-availabilityStatus": "Stable"
+        },
+        "accounts": {
+          "type": "array",
+          "description": "List of accounts",
+          "items": {
+            "$ref": "#/definitions/AccountInfo"
+          },
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "AccountList",
+      "description": "List of accounts"
+    },
+    "AccountListResponse": {
+      "type": "object",
+      "properties": {
+        "group_header": {
+          "description": "Standard format response header",
+          "$ref": "#/definitions/ResponseHeader",
+          "x-availabilityStatus": "Stable"
+        },
+        "response": {
+          "description": "Payload",
+          "$ref": "#/definitions/AccountList",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "AccountListResponse",
+      "description": "Account list response"
+    },
+    "ErrorPayload": {
+      "type": "object",
+      "properties": {
+        "failures": {
+          "type": "array",
+          "description": "More details on the occurred error",
+          "items": {
+            "$ref": "#/definitions/Failure"
+          },
+          "x-availabilityStatus": "Stable"
+        },
+        "request": {
+          "description": "Error details",
+          "$ref": "#/definitions/RequestEcho",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "ErrorPayload",
+      "description": "Error response body"
+    },
+    "ErrorResponse": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "description": "Payload",
+          "$ref": "#/definitions/ErrorPayload",
+          "x-availabilityStatus": "Stable"
+        },
+        "group_header": {
+          "description": "Standard format response header",
+          "$ref": "#/definitions/ResponseHeader",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "ErrorResponse",
+      "description": "Error response"
+    },
+    "Failure": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "description": "Failure code",
+          "x-availabilityStatus": "Stable"
+        },
+        "description": {
+          "type": "string",
+          "description": "Failure description",
+          "x-availabilityStatus": "Stable"
+        },
+        "path": {
+          "type": "string",
+          "description": "JSON path of the failing element if applicable",
+          "x-availabilityStatus": "Stable"
+        },
+        "type": {
+          "type": "string",
+          "description": "Type of the validation error, e.g. NotNull",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "Failure",
+      "description": "Validation error"
+    },
+    "Link": {
+      "type": "object",
+      "properties": {
+        "href": {
+          "type": "string",
+          "description": "Relative path to the linked resource",
+          "x-availabilityStatus": "Stable"
+        },
+        "rel": {
+          "type": "string",
+          "description": "Describes the nature of the link, e.g. 'details' for a link to the detailed information of a listed resource.",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "Link",
+      "description": "Context specific link (only GET supported)"
+    },
+    "Pagination": {
+      "type": "object",
+      "title": "Pagination",
+      "description": "Details of paginated response"
+    },
+    "RequestEcho": {
+      "type": "object",
+      "properties": {
+        "url": {
+          "type": "string",
+          "description": "Original request url",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "RequestEcho",
+      "description": "Original request information"
+    },
+    "ResponseHeader": {
+      "type": "object",
+      "properties": {
+        "creation_date_time": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Response creation time",
+          "x-availabilityStatus": "Stable"
+        },
+        "http_code": {
+          "type": "integer",
+          "format": "int32",
+          "example": 200,
+          "description": "HTTP code for response",
+          "x-availabilityStatus": "Stable"
+        },
+        "message_identification": {
+          "type": "string",
+          "description": "Original request id for correlation purposes",
+          "x-availabilityStatus": "Stable"
+        },
+        "message_pagination": {
+          "description": "Details of paginated response",
+          "$ref": "#/definitions/Pagination",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "ResponseHeader",
+      "description": "External response header"
+    },
+    "Transaction": {
+      "type": "object",
+      "required": [
+        "amount",
+        "booking_date",
+        "currency",
+        "status",
+        "type_description",
+        "value_date"
+      ],
+      "properties": {
+        "amount": {
+          "type": "string",
+          "example": 123.45,
+          "description": "Transaction value",
+          "x-availabilityStatus": "Stable"
+        },
+        "balance_after_transaction": {
+          "type": "string",
+          "example": 3451.12,
+          "description": "Balance on account after transaction executed",
+          "x-availabilityStatus": "Stable"
+        },
+        "booking_date": {
+          "type": "string",
+          "description": "Date transaction was booked to the account ledger",
+          "x-availabilityStatus": "Stable"
+        },
+        "card_number": {
+          "type": "string",
+          "description": "Card details",
+          "x-availabilityStatus": "Stable"
+        },
+        "counterparty_account": {
+          "type": "string",
+          "description": "Counterparty account details",
+          "x-availabilityStatus": "Stable"
+        },
+        "counterparty_name": {
+          "type": "string",
+          "description": "Counterparty name",
+          "x-availabilityStatus": "Stable"
+        },
+        "currency": {
+          "type": "string",
+          "description": "Currency code according to ISO 4217",
+          "x-availabilityStatus": "Stable"
+        },
+        "currency_rate": {
+          "type": "string",
+          "example": 0.80654,
+          "description": "Currency exchange rate applied to foreign currency transactions",
+          "x-availabilityStatus": "Stable"
+        },
+        "message": {
+          "type": "string",
+          "description": "Message from remitter to beneficiary. In Finland this may alternatively include a short description of the transaction e.g. 'Automaattiotto'",
+          "x-availabilityStatus": "Stable"
+        },
+        "narrative": {
+          "type": "string",
+          "description": "Description of transaction",
+          "x-availabilityStatus": "Stable"
+        },
+        "original_currency": {
+          "type": "string",
+          "description": "Currency of original transaction",
+          "x-availabilityStatus": "Stable"
+        },
+        "original_currency_amount": {
+          "type": "string",
+          "example": 3451.12,
+          "description": "Foreign transaction amount in original currency",
+          "x-availabilityStatus": "Stable"
+        },
+        "own_message": {
+          "type": "string",
+          "description": "Text message for the account holder's own use",
+          "x-availabilityStatus": "Stable"
+        },
+        "payment_date": {
+          "type": "string",
+          "description": "Payment date of the transaction",
+          "x-availabilityStatus": "Stable"
+        },
+        "reference": {
+          "type": "string",
+          "description": "Reference number",
+          "x-availabilityStatus": "Stable"
+        },
+        "status": {
+          "type": "string",
+          "example": "billed",
+          "description": "Status of the transaction",
+          "x-availabilityStatus": "Stable"
+        },
+        "transaction_date": {
+          "type": "string",
+          "description": "Date on which transaction was enacted",
+          "x-availabilityStatus": "Stable"
+        },
+        "transaction_id": {
+          "type": "string",
+          "description": "Transaction identifier as defined by the bank",
+          "x-availabilityStatus": "Stable"
+        },
+        "type_description": {
+          "type": "string",
+          "example": "ATM Cash Withdrawal",
+          "description": "Description of the type of transaction, e.g. Cash withdrawal, Account transfer, etc. (localized)",
+          "x-availabilityStatus": "Stable"
+        },
+        "value_date": {
+          "type": "string",
+          "description": "Value date of the transaction, used for interest calculation",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "Transaction",
+      "description": "Details of individual transaction"
+    },
+    "TransactionList": {
+      "type": "object",
+      "properties": {
+        "_links": {
+          "type": "array",
+          "description": "HATEOAS inspired links: 'rel' and 'href'",
+          "items": {
+            "$ref": "#/definitions/Link"
+          },
+          "x-availabilityStatus": "Stable"
+        },
+        "continuation_key": {
+          "type": "string",
+          "description": "Resource listing may return a continuationKey if there is more results available. Request may be retried with the continuationKey, but otherwise same parameters, in order to get more results.",
+          "x-availabilityStatus": "Stable"
+        },
+        "transactions": {
+          "type": "array",
+          "description": "Listed transactions",
+          "items": {
+            "$ref": "#/definitions/Transaction"
+          },
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "TransactionList",
+      "description": "List of transactions"
+    },
+    "TransactionListResponse": {
+      "type": "object",
+      "properties": {
+        "group_header": {
+          "description": "Standard format response header",
+          "$ref": "#/definitions/ResponseHeader",
+          "x-availabilityStatus": "Stable"
+        },
+        "response": {
+          "description": "Payload",
+          "$ref": "#/definitions/TransactionList",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "TransactionListResponse",
+      "description": "Transaction history response"
+    }
+  }
+}
