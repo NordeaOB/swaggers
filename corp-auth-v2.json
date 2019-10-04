@@ -1,9 +1,9 @@
 {
   "swagger": "2.0",
   "info": {
-    "description": "Business Identity & Access API",
+    "description": "Corporate Identity & Access API",
     "version": "2.0",
-    "title": "Business Access Authorization API",
+    "title": "Corporate Access Authorization API",
     "contact": {
       "name": "Open Banking team",
       "url": "https://nordeaopenbanking.com",
@@ -14,7 +14,7 @@
       "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
     }
   },
-  "host": "localhost",
+  "host": "localhost:8080",
   "basePath": "/xs2a-business",
   "tags": [
     {
@@ -40,14 +40,14 @@
           {
             "name": "Digest",
             "in": "header",
-            "description": "The Digest Header header as defined in [RFC3230] contains a Hash of the message body. The only hash algorithms that may be used to calculate the Digest within the context of this specification are SHA-256 and SHA-512 as defined in [RFC5843]",
+            "description": "The Digest Header header as defined in [RFC3230] contains a Hash of the message body. The only hash algorithms that may be used to calculate the Digest within the context of this specification are SHA-256 and SHA-512 as defined in [RFC5843]. For POST with 'application/x-www-form-urlencoded' content type Digest should be calculated for normalized string created from request parameters like this: 'param1&#61;value1&#38;param2&#61;value2'. It is important that parameters should be placed in alphabetic order",
             "required": true,
             "type": "string"
           },
           {
             "name": "Signature",
             "in": "header",
-            "description": "A signature of request by the TPP on application level. The process of signing a request is described in 'Signing HTTP Messages' RFC draft version 10 (https://tools.ietf.org/html/draft-cavage-http-signatures-10). The request signature needs to be sent in the 'Signature' HTTP header as described in the RFC. Additional requirements from Nordea \n - The only allowed algorithm is RSA-SHA256 \n- The key size for the used RSA key pair has to be at least 2048 bit \n- The keyId is the clientId of your application originating from the Nordea Developer Portal \n- We require the following headers to be used in the signature \n* GET request: (request-target) X-Nordea-Originating-Host X-Nordea-Originating-Date \n* POST, PUT and PATCH request: (request-target) X-Nordea-Originating-Host X-Nordea-Originating-Date content-type digest . \n* The request-target is a combination of the HTTP action verb and the request URI path",
+            "description": "A signature of request by the TPP on application level. The process of signing a request is described in 'Signing HTTP Messages' RFC draft version 10 (<a href=\"https://tools.ietf.org/html/draft-cavage-http-signatures-10\" target=\"_blank\">https://tools.ietf.org/html/draft-cavage-http-signatures-10</a>). The request signature needs to be sent in the 'Signature' HTTP header as described in the RFC. Additional requirements from Nordea \n - The only allowed algorithm is RSA-SHA256 \n- The key size for the used RSA key pair has to be at least 2048 bit \n- The keyId is the clientId of your application originating from the Nordea Developer Portal \n- We require the following headers to be used in the signature \n* Request without body: (request-target) X-Nordea-Originating-Host X-Nordea-Originating-Date \n* Request with body: (request-target) X-Nordea-Originating-Host X-Nordea-Originating-Date Content-type Digest \n* The request-target is a combination of the HTTP action verb and the request URI path",
             "required": true,
             "type": "string"
           },
@@ -56,7 +56,8 @@
             "in": "header",
             "description": "Id of the Client",
             "required": true,
-            "type": "string"
+            "type": "string",
+            "x-availabilityStatus": "Beta"
           },
           {
             "name": "X-IBM-Client-Secret",
@@ -68,7 +69,7 @@
           {
             "name": "X-Nordea-Originating-Date",
             "in": "header",
-            "description": "HTTP header element for date and time represented as RFC 7231 Full Dates. example date: **Wed, 24 Apr 2019 14:00:37 EEST**, It allows to set it under JavaScript in browser while standard 'Date' is forbidden",
+            "description": "HTTP header element for date and time represented as RFC 7231 Full Dates (GMT). Example date: **Wed, 24 Apr 2019 14:00:37 GMT**. It is similar to standard HTTP 'Date' expect that it allows to set it under JavaScript in browser while standard 'Date' is forbidden",
             "required": true,
             "type": "string"
           },
@@ -158,14 +159,14 @@
           {
             "name": "Digest",
             "in": "header",
-            "description": "The Digest Header header as defined in [RFC3230] contains a Hash of the message body. The only hash algorithms that may be used to calculate the Digest within the context of this specification are SHA-256 and SHA-512 as defined in [RFC5843]",
+            "description": "The Digest Header header as defined in [RFC3230] contains a Hash of the message body. The only hash algorithms that may be used to calculate the Digest within the context of this specification are SHA-256 and SHA-512 as defined in [RFC5843]. For POST with 'application/x-www-form-urlencoded' content type Digest should be calculated for normalized string created from request parameters like this: 'param1&#61;value1&#38;param2&#61;value2'. It is important that parameters should be placed in alphabetic order",
             "required": true,
             "type": "string"
           },
           {
             "name": "Signature",
             "in": "header",
-            "description": "A signature of request by the TPP on application level. The process of signing a request is described in 'Signing HTTP Messages' RFC draft version 10 (https://tools.ietf.org/html/draft-cavage-http-signatures-10). The request signature needs to be sent in the 'Signature' HTTP header as described in the RFC. Additional requirements from Nordea \n - The only allowed algorithm is RSA-SHA256 \n- The key size for the used RSA key pair has to be at least 2048 bit \n- The keyId is the clientId of your application originating from the Nordea Developer Portal \n- We require the following headers to be used in the signature \n* GET request: (request-target) X-Nordea-Originating-Host X-Nordea-Originating-Date \n* POST, PUT and PATCH request: (request-target) X-Nordea-Originating-Host X-Nordea-Originating-Date content-type digest . \n* The request-target is a combination of the HTTP action verb and the request URI path",
+            "description": "A signature of request by the TPP on application level. The process of signing a request is described in 'Signing HTTP Messages' RFC draft version 10 (<a href=\"https://tools.ietf.org/html/draft-cavage-http-signatures-10\" target=\"_blank\">https://tools.ietf.org/html/draft-cavage-http-signatures-10</a>). The request signature needs to be sent in the 'Signature' HTTP header as described in the RFC. Additional requirements from Nordea \n - The only allowed algorithm is RSA-SHA256 \n- The key size for the used RSA key pair has to be at least 2048 bit \n- The keyId is the clientId of your application originating from the Nordea Developer Portal \n- We require the following headers to be used in the signature \n* Request without body: (request-target) X-Nordea-Originating-Host X-Nordea-Originating-Date \n* Request with body: (request-target) X-Nordea-Originating-Host X-Nordea-Originating-Date Content-type Digest \n* The request-target is a combination of the HTTP action verb and the request URI path",
             "required": true,
             "type": "string"
           },
@@ -174,7 +175,8 @@
             "in": "header",
             "description": "Id of the Client",
             "required": true,
-            "type": "string"
+            "type": "string",
+            "x-availabilityStatus": "Beta"
           },
           {
             "name": "X-IBM-Client-Secret",
@@ -186,7 +188,7 @@
           {
             "name": "X-Nordea-Originating-Date",
             "in": "header",
-            "description": "HTTP header element for date and time represented as RFC 7231 Full Dates. example date: **Wed, 24 Apr 2019 14:00:37 EEST**, It allows to set it under JavaScript in browser while standard 'Date' is forbidden",
+            "description": "HTTP header element for date and time represented as RFC 7231 Full Dates (GMT). Example date: **Wed, 24 Apr 2019 14:00:37 GMT**. It is similar to standard HTTP 'Date' expect that it allows to set it under JavaScript in browser while standard 'Date' is forbidden",
             "required": true,
             "type": "string"
           },
@@ -217,7 +219,7 @@
             "description": "Authorization code",
             "required": false,
             "type": "string",
-            "x-availabilityStatus": "Beta"
+            "x-availabilityStatus": "Stable"
           },
           {
             "name": "grant_type",
@@ -225,11 +227,12 @@
             "description": "Grant type",
             "required": false,
             "type": "string",
+            "x-example": "authorization_code",
             "enum": [
               "authorization_code",
               "refresh_token"
             ],
-            "x-availabilityStatus": "Beta"
+            "x-availabilityStatus": "Stable"
           },
           {
             "name": "refresh_token",
@@ -237,7 +240,7 @@
             "description": "Refresh token",
             "required": false,
             "type": "string",
-            "x-availabilityStatus": "Beta"
+            "x-availabilityStatus": "Stable"
           }
         ],
         "responses": {
@@ -281,7 +284,7 @@
         "tags": [
           "authorize-v2"
         ],
-        "summary": "Get group of authorizers with privileges",
+        "summary": "List access authorization permissions held by each user.",
         "operationId": "getAgreementUsersUsingGET_1",
         "produces": [
           "application/json"
@@ -290,7 +293,7 @@
           {
             "name": "Signature",
             "in": "header",
-            "description": "A signature of request by the TPP on application level. The process of signing a request is described in 'Signing HTTP Messages' RFC draft version 10 (https://tools.ietf.org/html/draft-cavage-http-signatures-10). The request signature needs to be sent in the 'Signature' HTTP header as described in the RFC. Additional requirements from Nordea \n - The only allowed algorithm is RSA-SHA256 \n- The key size for the used RSA key pair has to be at least 2048 bit \n- The keyId is the clientId of your application originating from the Nordea Developer Portal \n- We require the following headers to be used in the signature \n* GET request: (request-target) X-Nordea-Originating-Host X-Nordea-Originating-Date \n* POST, PUT and PATCH request: (request-target) X-Nordea-Originating-Host X-Nordea-Originating-Date content-type digest . \n* The request-target is a combination of the HTTP action verb and the request URI path",
+            "description": "A signature of request by the TPP on application level. The process of signing a request is described in 'Signing HTTP Messages' RFC draft version 10 (<a href=\"https://tools.ietf.org/html/draft-cavage-http-signatures-10\" target=\"_blank\">https://tools.ietf.org/html/draft-cavage-http-signatures-10</a>). The request signature needs to be sent in the 'Signature' HTTP header as described in the RFC. Additional requirements from Nordea \n - The only allowed algorithm is RSA-SHA256 \n- The key size for the used RSA key pair has to be at least 2048 bit \n- The keyId is the clientId of your application originating from the Nordea Developer Portal \n- We require the following headers to be used in the signature \n* Request without body: (request-target) X-Nordea-Originating-Host X-Nordea-Originating-Date \n* Request with body: (request-target) X-Nordea-Originating-Host X-Nordea-Originating-Date Content-type Digest \n* The request-target is a combination of the HTTP action verb and the request URI path",
             "required": true,
             "type": "string"
           },
@@ -311,7 +314,7 @@
           {
             "name": "X-Nordea-Originating-Date",
             "in": "header",
-            "description": "HTTP header element for date and time represented as RFC 7231 Full Dates. example date: **Wed, 24 Apr 2019 14:00:37 EEST**, It allows to set it under JavaScript in browser while standard 'Date' is forbidden",
+            "description": "HTTP header element for date and time represented as RFC 7231 Full Dates (GMT). Example date: **Wed, 24 Apr 2019 14:00:37 GMT**. It is similar to standard HTTP 'Date' expect that it allows to set it under JavaScript in browser while standard 'Date' is forbidden",
             "required": true,
             "type": "string"
           },
@@ -339,9 +342,9 @@
         ],
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "Agreement details.",
             "schema": {
-              "$ref": "#/definitions/AdminAccess"
+              "$ref": "#/definitions/AccessAgreementListResponse"
             }
           },
           "400": {
@@ -394,7 +397,7 @@
           {
             "name": "Signature",
             "in": "header",
-            "description": "A signature of request by the TPP on application level. The process of signing a request is described in 'Signing HTTP Messages' RFC draft version 10 (https://tools.ietf.org/html/draft-cavage-http-signatures-10). The request signature needs to be sent in the 'Signature' HTTP header as described in the RFC. Additional requirements from Nordea \n - The only allowed algorithm is RSA-SHA256 \n- The key size for the used RSA key pair has to be at least 2048 bit \n- The keyId is the clientId of your application originating from the Nordea Developer Portal \n- We require the following headers to be used in the signature \n* GET request: (request-target) X-Nordea-Originating-Host X-Nordea-Originating-Date \n* POST, PUT and PATCH request: (request-target) X-Nordea-Originating-Host X-Nordea-Originating-Date content-type digest . \n* The request-target is a combination of the HTTP action verb and the request URI path",
+            "description": "A signature of request by the TPP on application level. The process of signing a request is described in 'Signing HTTP Messages' RFC draft version 10 (<a href=\"https://tools.ietf.org/html/draft-cavage-http-signatures-10\" target=\"_blank\">https://tools.ietf.org/html/draft-cavage-http-signatures-10</a>). The request signature needs to be sent in the 'Signature' HTTP header as described in the RFC. Additional requirements from Nordea \n - The only allowed algorithm is RSA-SHA256 \n- The key size for the used RSA key pair has to be at least 2048 bit \n- The keyId is the clientId of your application originating from the Nordea Developer Portal \n- We require the following headers to be used in the signature \n* Request without body: (request-target) X-Nordea-Originating-Host X-Nordea-Originating-Date \n* Request with body: (request-target) X-Nordea-Originating-Host X-Nordea-Originating-Date Content-type Digest \n* The request-target is a combination of the HTTP action verb and the request URI path",
             "required": true,
             "type": "string"
           },
@@ -415,7 +418,7 @@
           {
             "name": "X-Nordea-Originating-Date",
             "in": "header",
-            "description": "HTTP header element for date and time represented as RFC 7231 Full Dates. example date: **Wed, 24 Apr 2019 14:00:37 EEST**, It allows to set it under JavaScript in browser while standard 'Date' is forbidden",
+            "description": "HTTP header element for date and time represented as RFC 7231 Full Dates (GMT). Example date: **Wed, 24 Apr 2019 14:00:37 GMT**. It is similar to standard HTTP 'Date' expect that it allows to set it under JavaScript in browser while standard 'Date' is forbidden",
             "required": true,
             "type": "string"
           },
@@ -507,14 +510,14 @@
           {
             "name": "Digest",
             "in": "header",
-            "description": "The Digest Header header as defined in [RFC3230] contains a Hash of the message body. The only hash algorithms that may be used to calculate the Digest within the context of this specification are SHA-256 and SHA-512 as defined in [RFC5843]",
+            "description": "The Digest Header header as defined in [RFC3230] contains a Hash of the message body. The only hash algorithms that may be used to calculate the Digest within the context of this specification are SHA-256 and SHA-512 as defined in [RFC5843]. For POST with 'application/x-www-form-urlencoded' content type Digest should be calculated for normalized string created from request parameters like this: 'param1&#61;value1&#38;param2&#61;value2'. It is important that parameters should be placed in alphabetic order",
             "required": true,
             "type": "string"
           },
           {
             "name": "Signature",
             "in": "header",
-            "description": "A signature of request by the TPP on application level. The process of signing a request is described in 'Signing HTTP Messages' RFC draft version 10 (https://tools.ietf.org/html/draft-cavage-http-signatures-10). The request signature needs to be sent in the 'Signature' HTTP header as described in the RFC. Additional requirements from Nordea \n - The only allowed algorithm is RSA-SHA256 \n- The key size for the used RSA key pair has to be at least 2048 bit \n- The keyId is the clientId of your application originating from the Nordea Developer Portal \n- We require the following headers to be used in the signature \n* GET request: (request-target) X-Nordea-Originating-Host X-Nordea-Originating-Date \n* POST, PUT and PATCH request: (request-target) X-Nordea-Originating-Host X-Nordea-Originating-Date content-type digest . \n* The request-target is a combination of the HTTP action verb and the request URI path",
+            "description": "A signature of request by the TPP on application level. The process of signing a request is described in 'Signing HTTP Messages' RFC draft version 10 (<a href=\"https://tools.ietf.org/html/draft-cavage-http-signatures-10\" target=\"_blank\">https://tools.ietf.org/html/draft-cavage-http-signatures-10</a>). The request signature needs to be sent in the 'Signature' HTTP header as described in the RFC. Additional requirements from Nordea \n - The only allowed algorithm is RSA-SHA256 \n- The key size for the used RSA key pair has to be at least 2048 bit \n- The keyId is the clientId of your application originating from the Nordea Developer Portal \n- We require the following headers to be used in the signature \n* Request without body: (request-target) X-Nordea-Originating-Host X-Nordea-Originating-Date \n* Request with body: (request-target) X-Nordea-Originating-Host X-Nordea-Originating-Date Content-type Digest \n* The request-target is a combination of the HTTP action verb and the request URI path",
             "required": true,
             "type": "string"
           },
@@ -535,7 +538,7 @@
           {
             "name": "X-Nordea-Originating-Date",
             "in": "header",
-            "description": "HTTP header element for date and time represented as RFC 7231 Full Dates. example date: **Wed, 24 Apr 2019 14:00:37 EEST**, It allows to set it under JavaScript in browser while standard 'Date' is forbidden",
+            "description": "HTTP header element for date and time represented as RFC 7231 Full Dates (GMT). Example date: **Wed, 24 Apr 2019 14:00:37 GMT**. It is similar to standard HTTP 'Date' expect that it allows to set it under JavaScript in browser while standard 'Date' is forbidden",
             "required": true,
             "type": "string"
           },
@@ -617,6 +620,48 @@
     }
   },
   "definitions": {
+    "AccessAgreementListResponse": {
+      "type": "object",
+      "properties": {
+        "group_header": {
+          "description": "Standard format response header",
+          "$ref": "#/definitions/ResponseHeader",
+          "x-availabilityStatus": "Stable"
+        },
+        "response": {
+          "type": "array",
+          "description": "Agreement details.",
+          "items": {
+            "$ref": "#/definitions/AgreementDetails"
+          },
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "AccessAgreementListResponse",
+      "description": "Agreements available response."
+    },
+    "AccessAuthorization": {
+      "type": "object",
+      "properties": {
+        "authorization_permission": {
+          "type": "string",
+          "description": "Permission level for access authorization.",
+          "enum": [
+            "ACT_ALONE",
+            "TWO_TOGETHER",
+            "RESTRICTED"
+          ],
+          "x-availabilityStatus": "Sandbox Only - Beta"
+        },
+        "authorizer_id": {
+          "type": "string",
+          "description": "Identifier of the user.",
+          "x-availabilityStatus": "Sandbox Only - Beta"
+        }
+      },
+      "title": "AccessAuthorization",
+      "description": "Details of the user."
+    },
     "AccessTokenResponse": {
       "type": "object",
       "properties": {
@@ -650,32 +695,25 @@
       "title": "AddAuthorizerRequest",
       "description": "Nominate an authorizer (Corporate Netbank Administrator) who will confirm the access authorization request"
     },
-    "AdminAccess": {
+    "AgreementDetails": {
       "type": "object",
       "properties": {
-        "account_id": {
+        "agreement_number": {
           "type": "string",
-          "description": "Technical account identifier",
-          "x-availabilityStatus": "Stable"
+          "description": "Agreement Number.",
+          "x-availabilityStatus": "Sandbox Only - Beta"
         },
-        "authorization_access": {
-          "type": "string",
-          "description": "Permission level for authorization requests",
-          "enum": [
-            "ACT_ALONE",
-            "TWO_TOGETHER",
-            "RESTRICTED"
-          ],
-          "x-availabilityStatus": "Stable"
-        },
-        "login": {
-          "type": "string",
-          "description": "Authorizer ID",
-          "x-availabilityStatus": "Stable"
+        "users": {
+          "type": "array",
+          "description": "Users available within the agreement.",
+          "items": {
+            "$ref": "#/definitions/AccessAuthorization"
+          },
+          "x-availabilityStatus": "Sandbox Only - Beta"
         }
       },
-      "title": "AdminAccess",
-      "description": "Details of authorizer"
+      "title": "AgreementDetails",
+      "description": "Agreements available."
     },
     "AuthorizationStatus": {
       "type": "object",
@@ -823,6 +861,8 @@
     "InitialAuthorization": {
       "type": "object",
       "required": [
+        "access_id",
+        "client_token",
         "status"
       ],
       "properties": {
@@ -865,10 +905,17 @@
     "InitialAuthorizationRequest": {
       "type": "object",
       "required": [
+        "agreement_number",
         "duration",
         "scope"
       ],
       "properties": {
+        "agreement_number": {
+          "type": "string",
+          "example": 130474822200,
+          "description": "Identifies bank agreement targeted by authorisation request.",
+          "x-availabilityStatus": "Stable"
+        },
         "duration": {
           "type": "integer",
           "format": "int32",
@@ -878,12 +925,15 @@
         },
         "scope": {
           "type": "array",
+          "example": "ACCOUNTS_BROADBAND",
           "description": "List of access scopes required",
           "items": {
             "type": "string",
             "enum": [
               "ACCOUNTS_BROADBAND",
-              "ACCOUNTS_PSD2"
+              "ACCOUNTS_PSD2",
+              "PAYMENTS_BROADBAND",
+              "PAYMENTS_PSD2"
             ]
           },
           "x-availabilityStatus": "Stable"
@@ -972,21 +1022,6 @@
       },
       "title": "ResponseHeader",
       "description": "External response header"
-    },
-    "UserGroup": {
-      "type": "object",
-      "properties": {
-        "agreement_access_group": {
-          "type": "array",
-          "description": "Group of authorizers that can take part in same authorization request",
-          "items": {
-            "$ref": "#/definitions/AdminAccess"
-          },
-          "x-availabilityStatus": "Stable"
-        }
-      },
-      "title": "UserGroup",
-      "description": "Authorizer ID and Permission"
     }
   },
   "security": [
