@@ -1,9 +1,9 @@
 {
   "swagger": "2.0",
   "info": {
-    "description": "Business Accounts API",
-    "version": "1.0",
-    "title": "Business Accounts API",
+    "description": "Corporate Accounts API",
+    "version": "2.0",
+    "title": "Corporate Accounts API",
     "contact": {
       "name": "Open Banking team",
       "url": "https://nordeaopenbanking.com",
@@ -12,12 +12,10 @@
     "license": {
       "name": "Apache 2.0",
       "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
-    },
-    "x-ibm-name": "business-ais-v1",
-    "x-version": "1.0"
+    }
   },
-  "host": "localhost:49317",
-  "basePath": "/",
+  "host": "localhost:8080",
+  "basePath": "/xs2a-business",
   "tags": [
     {
       "name": "accounts-v1",
@@ -25,29 +23,64 @@
     }
   ],
   "paths": {
-    "/v1/accounts": {
+    "/v2/accounts": {
       "get": {
         "tags": [
-          "accounts-v1"
+          "accounts-v2"
         ],
         "summary": "List Accounts",
-        "operationId": "getAccountsListUsingGET",
+        "operationId": "getAccountsListUsingGET_1",
         "produces": [
           "application/json"
         ],
         "parameters": [
           {
+            "name": "Signature",
+            "in": "header",
+            "description": "A signature of request by the TPP on application level. The process of signing a request is described in 'Signing HTTP Messages' RFC draft version 10 (https://tools.ietf.org/html/draft-cavage-http-signatures-10). The request signature needs to be sent in the 'Signature' HTTP header as described in the RFC. Additional requirements from Nordea \n - The only allowed algorithm is RSA-SHA256 \n- The key size for the used RSA key pair has to be at least 2048 bit \n- The keyId is the clientId of your application originating from the Nordea Developer Portal \n- We require the following headers to be used in the signature \n* GET request: (request-target) X-Nordea-Originating-Host X-Nordea-Originating-Date \n* POST, PUT and PATCH request: (request-target) X-Nordea-Originating-Host X-Nordea-Originating-Date content-type digest . \n* The request-target is a combination of the HTTP action verb and the request URI path",
+            "required": true,
+            "type": "string"
+          },
+          {
             "name": "X-IBM-Client-Id",
             "in": "header",
-            "description": "X-IBM-Client-Id Id of the Client",
+            "description": "Id of the Client",
             "required": true,
             "type": "string"
           },
           {
             "name": "X-IBM-Client-Secret",
             "in": "header",
-            "description": "X-IBM-Client-Secret Secret password generated for Client",
+            "description": "Secret password generated for the Client",
             "required": true,
+            "type": "string"
+          },
+          {
+            "name": "X-Nordea-Originating-Date",
+            "in": "header",
+            "description": "HTTP header element for date and time represented as RFC 7231 Full Dates. example date: **Wed, 24 Apr 2019 14:00:37 EEST**, It allows to set it under JavaScript in browser while standard 'Date' is forbidden",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "X-Nordea-Originating-Host",
+            "in": "header",
+            "description": "HTTP header element for specification of the domain name of the server. It is similar to standard HTTP 'Host' header but it won't be overridden by proxies. It also allows to set it under JavaScript in browser while standard 'Host' is forbidden",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "X-Nordea-Originating-User-Agent",
+            "in": "header",
+            "description": "End user (i.e. PSU) agent information, to be provided if TPP is in session with the PSU",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Nordea-Originating-User-Ip",
+            "in": "header",
+            "description": "End user (i.e. PSU) IP address, to be provided if TPP is in session with the PSU",
+            "required": false,
             "type": "string"
           },
           {
@@ -56,10 +89,7 @@
             "description": "Page number",
             "required": false,
             "type": "string",
-            "x-availabilityInfo": "V1 will be deprecated as it does not support QSealC. Please use V2",
-            "x-availabilityStatus": "Deprecated",
-            "x-deprecationInfo": "V2 will be available by Q3 2019",
-            "x-removalInfo": "V1 will be replaced by V2"
+            "x-availabilityStatus": "Beta"
           },
           {
             "name": "size",
@@ -67,10 +97,7 @@
             "description": "Page size",
             "required": false,
             "type": "string",
-            "x-availabilityInfo": "V1 will be deprecated as it does not support QSealC. Please use V2",
-            "x-availabilityStatus": "Deprecated",
-            "x-deprecationInfo": "V2 will be available by Q3 2019",
-            "x-removalInfo": "V1 will be replaced by V2"
+            "x-availabilityStatus": "Beta"
           }
         ],
         "responses": {
@@ -105,28 +132,17 @@
             }
           }
         },
-        "security": [
-          {
-            "DecoupledAuth": [
-              "ACCOUNTS_BROADBAND",
-              "ACCOUNTS_PSD2"
-            ]
-          }
-        ],
-        "deprecated": true,
-        "x-availabilityInfo": "V1 will be deprecated as it does not support QSealC. Please use V2",
-        "x-availabilityStatus": "Deprecated",
-        "x-deprecationInfo": "V2 will be available by Q3 2019",
-        "x-removalInfo": "V1 will be replaced by V2"
+        "deprecated": false,
+        "x-availabilityStatus": "Beta"
       }
     },
-    "/v1/accounts/filter": {
+    "/v2/accounts/filter": {
       "post": {
         "tags": [
-          "accounts-v1"
+          "accounts-v2"
         ],
         "summary": "Filter Accounts",
-        "operationId": "getFilteredAccountListUsingPOST",
+        "operationId": "getFilteredAccountListUsingPOST_1",
         "consumes": [
           "application/json"
         ],
@@ -135,17 +151,59 @@
         ],
         "parameters": [
           {
+            "name": "Digest",
+            "in": "header",
+            "description": "The Digest Header header as defined in [RFC3230] contains a Hash of the message body. The only hash algorithms that may be used to calculate the Digest within the context of this specification are SHA-256 and SHA-512 as defined in [RFC5843]",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Signature",
+            "in": "header",
+            "description": "A signature of request by the TPP on application level. The process of signing a request is described in 'Signing HTTP Messages' RFC draft version 10 (https://tools.ietf.org/html/draft-cavage-http-signatures-10). The request signature needs to be sent in the 'Signature' HTTP header as described in the RFC. Additional requirements from Nordea \n - The only allowed algorithm is RSA-SHA256 \n- The key size for the used RSA key pair has to be at least 2048 bit \n- The keyId is the clientId of your application originating from the Nordea Developer Portal \n- We require the following headers to be used in the signature \n* GET request: (request-target) X-Nordea-Originating-Host X-Nordea-Originating-Date \n* POST, PUT and PATCH request: (request-target) X-Nordea-Originating-Host X-Nordea-Originating-Date content-type digest . \n* The request-target is a combination of the HTTP action verb and the request URI path",
+            "required": true,
+            "type": "string"
+          },
+          {
             "name": "X-IBM-Client-Id",
             "in": "header",
-            "description": "X-IBM-Client-Id Id of the Client",
+            "description": "Id of the Client",
             "required": true,
             "type": "string"
           },
           {
             "name": "X-IBM-Client-Secret",
             "in": "header",
-            "description": "X-IBM-Client-Secret Secret password generated for Client",
+            "description": "Secret password generated for the Client",
             "required": true,
+            "type": "string"
+          },
+          {
+            "name": "X-Nordea-Originating-Date",
+            "in": "header",
+            "description": "HTTP header element for date and time represented as RFC 7231 Full Dates. example date: **Wed, 24 Apr 2019 14:00:37 EEST**, It allows to set it under JavaScript in browser while standard 'Date' is forbidden",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "X-Nordea-Originating-Host",
+            "in": "header",
+            "description": "HTTP header element for specification of the domain name of the server. It is similar to standard HTTP 'Host' header but it won't be overridden by proxies. It also allows to set it under JavaScript in browser while standard 'Host' is forbidden",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "X-Nordea-Originating-User-Agent",
+            "in": "header",
+            "description": "End user (i.e. PSU) agent information, to be provided if TPP is in session with the PSU",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Nordea-Originating-User-Ip",
+            "in": "header",
+            "description": "End user (i.e. PSU) IP address, to be provided if TPP is in session with the PSU",
+            "required": false,
             "type": "string"
           },
           {
@@ -156,10 +214,7 @@
             "schema": {
               "$ref": "#/definitions/AccountFilterRequest"
             },
-            "x-availabilityInfo": "V1 will be deprecated as it does not support QSealC. Please use V2",
-            "x-availabilityStatus": "Deprecated",
-            "x-deprecationInfo": "V2 will be available by Q3 2019",
-            "x-removalInfo": "V1 will be replaced by V2"
+            "x-availabilityStatus": "Beta"
           },
           {
             "name": "page",
@@ -167,10 +222,7 @@
             "description": "Page number",
             "required": false,
             "type": "string",
-            "x-availabilityInfo": "V1 will be deprecated as it does not support QSealC. Please use V2",
-            "x-availabilityStatus": "Deprecated",
-            "x-deprecationInfo": "V2 will be available by Q3 2019",
-            "x-removalInfo": "V1 will be replaced by V2"
+            "x-availabilityStatus": "Beta"
           },
           {
             "name": "size",
@@ -178,10 +230,7 @@
             "description": "Page size",
             "required": false,
             "type": "string",
-            "x-availabilityInfo": "V1 will be deprecated as it does not support QSealC. Please use V2",
-            "x-availabilityStatus": "Deprecated",
-            "x-deprecationInfo": "V2 will be available by Q3 2019",
-            "x-removalInfo": "V1 will be replaced by V2"
+            "x-availabilityStatus": "Beta"
           }
         ],
         "responses": {
@@ -216,44 +265,68 @@
             }
           }
         },
-        "security": [
-          {
-            "DecoupledAuth": [
-              "ACCOUNTS_BROADBAND",
-              "ACCOUNTS_PSD2"
-            ]
-          }
-        ],
-        "deprecated": true,
-        "x-availabilityInfo": "V1 will be deprecated as it does not support QSealC. Please use V2",
-        "x-availabilityStatus": "Deprecated",
-        "x-deprecationInfo": "V2 will be available by Q3 2019",
-        "x-removalInfo": "V1 will be replaced by V2"
+        "deprecated": false,
+        "x-availabilityStatus": "Beta"
       }
     },
-    "/v1/accounts/{account_id}": {
+    "/v2/accounts/{account_id}": {
       "get": {
         "tags": [
-          "accounts-v1"
+          "accounts-v2"
         ],
         "summary": "Account details",
-        "operationId": "getAccountDetailsUsingGET",
+        "operationId": "getAccountDetailsUsingGET_1",
         "produces": [
           "application/json"
         ],
         "parameters": [
           {
+            "name": "Signature",
+            "in": "header",
+            "description": "A signature of request by the TPP on application level. The process of signing a request is described in 'Signing HTTP Messages' RFC draft version 10 (https://tools.ietf.org/html/draft-cavage-http-signatures-10). The request signature needs to be sent in the 'Signature' HTTP header as described in the RFC. Additional requirements from Nordea \n - The only allowed algorithm is RSA-SHA256 \n- The key size for the used RSA key pair has to be at least 2048 bit \n- The keyId is the clientId of your application originating from the Nordea Developer Portal \n- We require the following headers to be used in the signature \n* GET request: (request-target) X-Nordea-Originating-Host X-Nordea-Originating-Date \n* POST, PUT and PATCH request: (request-target) X-Nordea-Originating-Host X-Nordea-Originating-Date content-type digest . \n* The request-target is a combination of the HTTP action verb and the request URI path",
+            "required": true,
+            "type": "string"
+          },
+          {
             "name": "X-IBM-Client-Id",
             "in": "header",
-            "description": "X-IBM-Client-Id Id of the Client",
+            "description": "Id of the Client",
             "required": true,
             "type": "string"
           },
           {
             "name": "X-IBM-Client-Secret",
             "in": "header",
-            "description": "X-IBM-Client-Secret Secret password generated for Client",
+            "description": "Secret password generated for the Client",
             "required": true,
+            "type": "string"
+          },
+          {
+            "name": "X-Nordea-Originating-Date",
+            "in": "header",
+            "description": "HTTP header element for date and time represented as RFC 7231 Full Dates. example date: **Wed, 24 Apr 2019 14:00:37 EEST**, It allows to set it under JavaScript in browser while standard 'Date' is forbidden",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "X-Nordea-Originating-Host",
+            "in": "header",
+            "description": "HTTP header element for specification of the domain name of the server. It is similar to standard HTTP 'Host' header but it won't be overridden by proxies. It also allows to set it under JavaScript in browser while standard 'Host' is forbidden",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "X-Nordea-Originating-User-Agent",
+            "in": "header",
+            "description": "End user (i.e. PSU) agent information, to be provided if TPP is in session with the PSU",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Nordea-Originating-User-Ip",
+            "in": "header",
+            "description": "End user (i.e. PSU) IP address, to be provided if TPP is in session with the PSU",
+            "required": false,
             "type": "string"
           },
           {
@@ -262,10 +335,7 @@
             "description": "Internal, technical account identifier",
             "required": true,
             "type": "string",
-            "x-availabilityInfo": "V1 will be deprecated as it does not support QSealC. Please use V2",
-            "x-availabilityStatus": "Deprecated",
-            "x-deprecationInfo": "V2 will be available by Q3 2019",
-            "x-removalInfo": "V1 will be replaced by V2"
+            "x-availabilityStatus": "Beta"
           }
         ],
         "responses": {
@@ -300,44 +370,68 @@
             }
           }
         },
-        "security": [
-          {
-            "DecoupledAuth": [
-              "ACCOUNTS_BROADBAND",
-              "ACCOUNTS_PSD2"
-            ]
-          }
-        ],
-        "deprecated": true,
-        "x-availabilityInfo": "V1 will be deprecated as it does not support QSealC. Please use V2",
-        "x-availabilityStatus": "Deprecated",
-        "x-deprecationInfo": "V2 will be available by Q3 2019",
-        "x-removalInfo": "V1 will be replaced by V2"
+        "deprecated": false,
+        "x-availabilityStatus": "Beta"
       }
     },
-    "/v1/accounts/{account_id}/transactions": {
+    "/v2/accounts/{account_id}/transactions": {
       "get": {
         "tags": [
-          "accounts-v1"
+          "accounts-v2"
         ],
         "summary": "List Transactions",
-        "operationId": "getTransactionsUsingGET",
+        "operationId": "getTransactionsUsingGET_1",
         "produces": [
           "application/json"
         ],
         "parameters": [
           {
+            "name": "Signature",
+            "in": "header",
+            "description": "A signature of request by the TPP on application level. The process of signing a request is described in 'Signing HTTP Messages' RFC draft version 10 (https://tools.ietf.org/html/draft-cavage-http-signatures-10). The request signature needs to be sent in the 'Signature' HTTP header as described in the RFC. Additional requirements from Nordea \n - The only allowed algorithm is RSA-SHA256 \n- The key size for the used RSA key pair has to be at least 2048 bit \n- The keyId is the clientId of your application originating from the Nordea Developer Portal \n- We require the following headers to be used in the signature \n* GET request: (request-target) X-Nordea-Originating-Host X-Nordea-Originating-Date \n* POST, PUT and PATCH request: (request-target) X-Nordea-Originating-Host X-Nordea-Originating-Date content-type digest . \n* The request-target is a combination of the HTTP action verb and the request URI path",
+            "required": true,
+            "type": "string"
+          },
+          {
             "name": "X-IBM-Client-Id",
             "in": "header",
-            "description": "X-IBM-Client-Id Id of the Client",
+            "description": "Id of the Client",
             "required": true,
             "type": "string"
           },
           {
             "name": "X-IBM-Client-Secret",
             "in": "header",
-            "description": "X-IBM-Client-Secret Secret password generated for Client",
+            "description": "Secret password generated for the Client",
             "required": true,
+            "type": "string"
+          },
+          {
+            "name": "X-Nordea-Originating-Date",
+            "in": "header",
+            "description": "HTTP header element for date and time represented as RFC 7231 Full Dates. example date: **Wed, 24 Apr 2019 14:00:37 EEST**, It allows to set it under JavaScript in browser while standard 'Date' is forbidden",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "X-Nordea-Originating-Host",
+            "in": "header",
+            "description": "HTTP header element for specification of the domain name of the server. It is similar to standard HTTP 'Host' header but it won't be overridden by proxies. It also allows to set it under JavaScript in browser while standard 'Host' is forbidden",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "X-Nordea-Originating-User-Agent",
+            "in": "header",
+            "description": "End user (i.e. PSU) agent information, to be provided if TPP is in session with the PSU",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Nordea-Originating-User-Ip",
+            "in": "header",
+            "description": "End user (i.e. PSU) IP address, to be provided if TPP is in session with the PSU",
+            "required": false,
             "type": "string"
           },
           {
@@ -346,10 +440,7 @@
             "description": "Internal, technical account identifier",
             "required": true,
             "type": "string",
-            "x-availabilityInfo": "V1 will be deprecated as it does not support QSealC. Please use V2",
-            "x-availabilityStatus": "Deprecated",
-            "x-deprecationInfo": "V2 will be available by Q3 2019",
-            "x-removalInfo": "V1 will be replaced by V2"
+            "x-availabilityStatus": "Beta"
           },
           {
             "name": "continuation_key",
@@ -357,10 +448,7 @@
             "description": "Resource listing may return a continuationKey if there is more results available. Request may be retried with the continuationKey, but otherwise same parameters, in order to get more results.",
             "required": false,
             "type": "string",
-            "x-availabilityInfo": "V1 will be deprecated as it does not support QSealC. Please use V2",
-            "x-availabilityStatus": "Deprecated",
-            "x-deprecationInfo": "V2 will be available by Q3 2019",
-            "x-removalInfo": "V1 will be replaced by V2"
+            "x-availabilityStatus": "Beta"
           },
           {
             "name": "from_date",
@@ -369,10 +457,7 @@
             "required": false,
             "type": "string",
             "format": "date",
-            "x-availabilityInfo": "V1 will be deprecated as it does not support QSealC. Please use V2",
-            "x-availabilityStatus": "Deprecated",
-            "x-deprecationInfo": "V2 will be available by Q3 2019",
-            "x-removalInfo": "V1 will be replaced by V2"
+            "x-availabilityStatus": "Beta"
           },
           {
             "name": "language",
@@ -380,10 +465,7 @@
             "description": "Preferred language for text values",
             "required": false,
             "type": "string",
-            "x-availabilityInfo": "V1 will be deprecated as it does not support QSealC. Please use V2",
-            "x-availabilityStatus": "Deprecated",
-            "x-deprecationInfo": "V2 will be available by Q3 2019",
-            "x-removalInfo": "V1 will be replaced by V2"
+            "x-availabilityStatus": "Beta"
           },
           {
             "name": "to_date",
@@ -392,10 +474,7 @@
             "required": false,
             "type": "string",
             "format": "date",
-            "x-availabilityInfo": "V1 will be deprecated as it does not support QSealC. Please use V2",
-            "x-availabilityStatus": "Deprecated",
-            "x-deprecationInfo": "V2 will be available by Q3 2019",
-            "x-removalInfo": "V1 will be replaced by V2"
+            "x-availabilityStatus": "Beta"
           }
         ],
         "responses": {
@@ -430,47 +509,9 @@
             }
           }
         },
-        "security": [
-          {
-            "DecoupledAuth": [
-              "ACCOUNTS_BROADBAND",
-              "ACCOUNTS_PSD2"
-            ]
-          }
-        ],
-        "deprecated": true,
-        "x-availabilityInfo": "V1 will be deprecated as it does not support QSealC. Please use V2",
-        "x-availabilityStatus": "Deprecated",
-        "x-deprecationInfo": "V2 will be available by Q3 2019",
-        "x-removalInfo": "V1 will be replaced by V2"
+        "deprecated": false,
+        "x-availabilityStatus": "Beta"
       }
-    }
-  },
-  "securityDefinitions": {
-    "ClientId": {
-      "type": "apiKey",
-      "name": "X-IBM-Client-Id",
-      "in": "header"
-    },
-    "ClientSecret": {
-      "type": "apiKey",
-      "name": "X-IBM-Client-Secret",
-      "in": "header"
-    },
-    "DecoupledAuth": {
-      "type": "oauth2",
-      "authorizationUrl": "/v1/authorize",
-      "tokenUrl": "/v1/authorize/token",
-      "flow": "accessCode",
-      "scopes": {
-        "ACCOUNTS_BROADBAND": "Scope used for Instant Reporting",
-        "ACCOUNTS_PSD2": "Scope for accessing accounts within psd2"
-      },
-      "x-addAuthorizerDescription": "Send authorization request to relevant agreement administrator",
-      "x-addAuthorizerUrl": "/v1/authorize",
-      "x-authSubType": "decoupled-auth",
-      "x-codeStatusDescription": "Returns code when authorization second step is finished",
-      "x-codeStatusUrl": "/v1/authorize"
     }
   },
   "definitions": {
@@ -673,17 +714,17 @@
     "ErrorPayload": {
       "type": "object",
       "properties": {
+        "request": {
+          "description": "Error details",
+          "$ref": "#/definitions/RequestEcho",
+          "x-availabilityStatus": "Stable"
+        },
         "failures": {
           "type": "array",
           "description": "More details on the occurred error",
           "items": {
             "$ref": "#/definitions/Failure"
           },
-          "x-availabilityStatus": "Stable"
-        },
-        "request": {
-          "description": "Error details",
-          "$ref": "#/definitions/RequestEcho",
           "x-availabilityStatus": "Stable"
         }
       },
@@ -693,14 +734,14 @@
     "ErrorResponse": {
       "type": "object",
       "properties": {
-        "error": {
-          "description": "Payload",
-          "$ref": "#/definitions/ErrorPayload",
-          "x-availabilityStatus": "Stable"
-        },
         "group_header": {
           "description": "Standard format response header",
           "$ref": "#/definitions/ResponseHeader",
+          "x-availabilityStatus": "Stable"
+        },
+        "error": {
+          "description": "Payload",
+          "$ref": "#/definitions/ErrorPayload",
           "x-availabilityStatus": "Stable"
         }
       },
@@ -771,12 +812,6 @@
     "ResponseHeader": {
       "type": "object",
       "properties": {
-        "creation_date_time": {
-          "type": "string",
-          "format": "date-time",
-          "description": "Response creation time",
-          "x-availabilityStatus": "Stable"
-        },
         "http_code": {
           "type": "integer",
           "format": "int32",
@@ -787,6 +822,12 @@
         "message_identification": {
           "type": "string",
           "description": "Original request id for correlation purposes",
+          "x-availabilityStatus": "Stable"
+        },
+        "creation_date_time": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Response creation time",
           "x-availabilityStatus": "Stable"
         },
         "message_pagination": {
@@ -963,6 +1004,28 @@
       },
       "title": "TransactionListResponse",
       "description": "Transaction history response"
+    }
+  },
+  "security": [
+    {
+      "clientId": [
+
+      ],
+      "clientSecret": [
+
+      ]
+    }
+  ],
+  "securityDefinitions": {
+    "clientId": {
+      "type": "apiKey",
+      "name": "X-IBM-Client-Id",
+      "in": "header"
+    },
+    "clientSecret": {
+      "type": "apiKey",
+      "name": "X-IBM-Client-Secret",
+      "in": "header"
     }
   }
 }
