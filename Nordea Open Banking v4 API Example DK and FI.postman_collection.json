@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "7da73e8b-497b-4a5c-a44a-ed2e927328eb",
+		"_postman_id": "1da424ff-7262-47a0-afb4-59f425342e99",
 		"name": "Nordea Open Banking v4 Personal API Example DK and FI",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -19,21 +19,15 @@
 									"script": {
 										"id": "d9ac38c9-42f2-4abb-9a41-ccb640e1ec4c",
 										"exec": [
-											"var location = postman.getResponseHeader(\"Location\");",
-											"var index = location.indexOf(\"code=\");",
-											"var end = location.indexOf(\"&sta\")",
+											"const querystring = require('querystring');",
+											"const loc = pm.response.headers.get('Location');",
+											"const qs = loc.split('?')[1];",
 											"",
-											"const paramsString = request.url.split('?')[1];",
-											"const eachParamArray = paramsString.split('&');",
-											"let params = {};",
-											"eachParamArray.forEach((param) => {",
-											"    const key = param.split('=')[0];",
-											"    const value = param.split('=')[1];",
-											"    Object.assign(params, {[key]: value});",
-											"});",
+											"const code = querystring.parse(qs).code;",
+											"const country = pm.request.url.query.get('country');",
 											"",
-											"postman.setEnvironmentVariable(\"country\", params.country);",
-											"postman.setEnvironmentVariable(\"code\", location.substring(index+5,end));",
+											"pm.environment.set(\"country\", country);",
+											"pm.environment.set(\"code\", code);",
 											""
 										],
 										"type": "text/javascript"
@@ -151,11 +145,10 @@
 									"script": {
 										"id": "921355e2-1226-4505-8429-50bb442ec6cc",
 										"exec": [
-											"var jsonData = JSON.parse(responseBody);",
+											"const res = pm.response.json();",
 											"",
-											"postman.setEnvironmentVariable(\"access_token\", jsonData.access_token);",
-											"",
-											"postman.setEnvironmentVariable(\"refresh_token\", jsonData.refresh_token);",
+											"pm.environment.set(\"access_token\", res.access_token);",
+											"pm.environment.set(\"refresh_token\", res.refresh_token);",
 											""
 										],
 										"type": "text/javascript"
@@ -262,9 +255,9 @@
 									"script": {
 										"id": "6e904681-a22b-4d04-999a-eb773b141dfe",
 										"exec": [
-											"var jsonData = JSON.parse(responseBody);",
+											"const res = pm.response.json();",
 											"",
-											"postman.setEnvironmentVariable(\"access_token\", jsonData.access_token);"
+											"pm.environment.set(\"access_token\", res.access_token);"
 										],
 										"type": "text/javascript"
 									}
@@ -388,9 +381,11 @@
 							}
 						}
 					],
+					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				}
-			]
+			],
+			"protocolProfileBehavior": {}
 		},
 		{
 			"name": "Account Information Service",
@@ -655,7 +650,8 @@
 					},
 					"response": []
 				}
-			]
+			],
+			"protocolProfileBehavior": {}
 		},
 		{
 			"name": "Credit Card API",
@@ -916,7 +912,8 @@
 						]
 					}
 				}
-			]
+			],
+			"protocolProfileBehavior": {}
 		},
 		{
 			"name": "Payment Initiation Service - Domestic",
@@ -1242,7 +1239,8 @@
 					"response": []
 				}
 			],
-			"description": "For domestic SEK and DKK payments"
+			"description": "For domestic SEK and DKK payments",
+			"protocolProfileBehavior": {}
 		},
 		{
 			"name": "Payment Initiation Service - SEPA",
@@ -1568,7 +1566,8 @@
 					"response": []
 				}
 			],
-			"description": "Single Euro Payments Area - For Euro payments (FI)"
+			"description": "Single Euro Payments Area - For Euro payments (FI)",
+			"protocolProfileBehavior": {}
 		}
 	],
 	"event": [
@@ -30925,5 +30924,6 @@
 				]
 			}
 		}
-	]
+	],
+	"protocolProfileBehavior": {}
 }
