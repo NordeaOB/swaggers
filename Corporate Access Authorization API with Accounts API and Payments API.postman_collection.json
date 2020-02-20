@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "3e31c309-7acb-4e85-b971-d1f72d2c253e",
+		"_postman_id": "9ebd1a44-ea51-4ad3-bdd1-df1adf80174f",
 		"name": "Corporate Access Authorization API with Accounts API and Payments API",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -59484,7 +59484,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"template_id\": \"SEPA_CREDIT_TRANSFER_FI\",\r\n  \"authorizer_id\":\"70311591\",\r\n  \"currency\":\"EUR\",\r\n  \"amount\": 123.45,\r\n  \"requested_execution_date\": \"2019-11-28\", \r\n  \"debtor\": {\r\n    \"account\": {\r\n      \"value\": \"FI6816603001007528\",\r\n      \"type\": \"IBAN\",\r\n      \"currency\":\"EUR\"\r\n    },\r\n    \"own_reference\": \"Own message\"\r\n  },\r\n  \"creditor\": {\r\n    \"account\": {\r\n      \"value\": \"FI1216636327580515\",\r\n      \"type\": \"IBAN\"\r\n    },\r\n    \"name\": \"Screws and Nuts Ltd\",\r\n    \"reference\": {\r\n      \"value\": \"RF18539007547034\",\r\n      \"type\": \"RF\"\r\n    }\r\n  },\r\n  \"external_id\":\"d630b00a-227c-474e-8d20-1fc2b7141fdc\",\r\n  \"end_to_end_id\": \"13227asdfds\"\r\n}"
+							"raw": "{\n  \"template_id\": \"SEPA_CREDIT_TRANSFER_FI\",\n  \"amount\": 123.45,\n  \"authorizer_id\": 70311198,\n  \"currency\": \"EUR\",\n  \"end_to_end_id\": \"13227asdfds\",\n  \"external_id\": \"{{randomUUID}}\",\n  \"requested_execution_date\": \"{{today}}\",\n  \"debtor\": {\n    \"account\": {\n      \"currency\": \"EUR\",\n      \"type\": \"IBAN\",\n      \"value\": \"FI4116603500005114\"\n    },\n    \"own_reference\": \"Own message\"\n  },\n  \"creditor\": {\n    \"account\": {\n      \"type\": \"IBAN\",\n      \"value\": \"FI1350001520000081\"\n    },\n    \"message\": \"Invoice 5071\",\n    \"name\": \"Screws and Nuts Ltd\"\n  }\n}"
 						},
 						"url": {
 							"raw": "https://api.nordeaopenbanking.com/corporate/v1/payments",
@@ -59566,7 +59566,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"template_id\": \"DOMESTIC_CREDIT_TRANSFER_SE\",\r\n  \"authorizer_id\":\"70311515\",\r\n  \"currency\":\"SEK\",\r\n  \"amount\": 123.45,\r\n  \"requested_execution_date\": \"2019-11-28\", \r\n  \"debtor\": {\r\n    \"account\": {\r\n      \"value\": \"SE0295000099604213908314\",\r\n      \"type\": \"IBAN\",\r\n      \"currency\":\"SEK\"\r\n    },\r\n    \"own_reference\": \"Own message\"\r\n  },\r\n  \"creditor\": {\r\n    \"account\": {\r\n      \"value\": \"SE5095000099603413908389\",\r\n      \"type\": \"IBAN\"\r\n    },\r\n    \"message\": \"Invoice 5071\",\r\n    \"name\": \"Screws and Nuts Ltd\"\r\n  },\r\n  \"external_id\":\"d630b00a-227c-474e-8d20-1fc2b7141fdc\"\r\n}"
+							"raw": "{\n  \"template_id\": \"DOMESTIC_CREDIT_TRANSFER_SE\",\n  \"amount\": 123.45,\n  \"authorizer_id\": 70311198,\n  \"currency\": \"SEK\",\n  \"external_id\": \"{{randomUUID}}\",\n  \"requested_execution_date\": \"{{today}}\",\n  \"debtor\": {\n    \"account\": {\n      \"currency\": \"SEK\",\n      \"type\": \"BBAN\",\n      \"value\": 40161303419\n    },\n    \"own_reference\": \"Own message\"\n  },\n  \"creditor\": {\n    \"account\": {\n      \"type\": \"BBAN\",\n      \"value\": 12010113101\n    },\n    \"bank\": {\n      \"bank_code\": 600,\n      \"bic\": \"DABASESS\"\n    },\n    \"message\": \"Invoice 5071\",\n    \"name\": \"Screws and Nuts Ltd\"\n  }\n}"
 						},
 						"url": {
 							"raw": "https://api.nordeaopenbanking.com/corporate/v1/payments",
@@ -59648,7 +59648,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"template_id\": \"DOMESTIC_CREDIT_TRANSFER_DK\",\r\n  \"authorizer_id\":\"70311198\",\r\n  \"currency\":\"DKK\",\r\n  \"amount\": 123.45,\r\n  \"requested_execution_date\": \"2019-11-28\", \r\n  \"debtor\": {\r\n    \"account\": {\r\n      \"value\": \"20000270491715\",\r\n      \"type\": \"BBAN\",\r\n      \"currency\":\"DKK\"\r\n    },\r\n    \"own_reference\": \"Own message\"\r\n  },\r\n  \"creditor\": {\r\n    \"account\": {\r\n      \"value\": \"DK2420005005528692\",\r\n      \"type\": \"IBAN\"\r\n    },\r\n    \"name\": \"Screws and Nuts Ltd\",\r\n    \"reference\": {\r\n      \"value\": \"RF11223344\",\r\n      \"type\": \"RF\"\r\n    }\r\n  },\r\n  \"external_id\":\"d630b00a-227c-474e-8d20-1fc2b7141fdc\",\r\n  \"urgency\":\"NURG\"\r\n}"
+							"raw": "{\n  \"template_id\": \"DOMESTIC_CREDIT_TRANSFER_DK\",\n  \"amount\": 123.45,\n  \"authorizer_id\": 70311198,\n  \"currency\": \"DKK\",\n  \"end_to_end_id\": \"13227asdfds\",\n  \"external_id\": \"{{randomUUID}}\",\n  \"requested_execution_date\": \"{{today}}\",\n  \"urgency\": \"EXPRESS\",\n  \"debtor\": {\n    \"account\": {\n      \"currency\": \"DKK\",\n      \"type\": \"BBAN\",\n      \"value\": 20000270491715\n    },\n    \"own_reference\": \"Own message\"\n  },\n  \"creditor\": {\n    \"account\": {\n      \"type\": \"BBAN\",\n      \"value\": 27861544318671\n    },\n    \"message\": \"Invoice 5071\",\n    \"message_to_bank_statement\": \"Invoice 5071\",\n    \"name\": \"Screws and Nuts Ltd\"\n  }\n}"
 						},
 						"url": {
 							"raw": "https://api.nordeaopenbanking.com/corporate/v1/payments",
@@ -59730,7 +59730,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"template_id\": \"DOMESTIC_CREDIT_TRANSFER_NO\",\r\n  \"authorizer_id\":\"70312055\",\r\n  \"currency\":\"NOK\",\r\n  \"amount\": 123.45,\r\n  \"requested_execution_date\": \"2019-11-28\", \r\n  \"debtor\": {\r\n    \"account\": {\r\n      \"value\": \"NO9768250512353\",\r\n      \"type\": \"IBAN\",\r\n      \"currency\":\"NOK\"\r\n    },\r\n    \"own_reference\": \"Own message\"\r\n  },\r\n  \"creditor\": {\r\n    \"account\": {\r\n      \"value\": \"NO2268250512345\",\r\n      \"type\": \"IBAN\"\r\n    },\r\n    \"message\": \"Invoice 5071\",\r\n    \"name\": \"Screws and Nuts Ltd\"\r\n  },\r\n  \"external_id\":\"d630b00a-227c-474e-8d20-1fc2b7141fdc\"\r\n}"
+							"raw": "{\n  \"template_id\": \"DOMESTIC_CREDIT_TRANSFER_NO\",\n  \"amount\": 123.45,\n  \"authorizer_id\": 70311198,\n  \"currency\": \"NOK\",\n  \"external_id\": \"{{randomUUID}}\",\n  \"requested_execution_date\": \"{{today}}\",\n  \"debtor\": {\n    \"account\": {\n      \"currency\": \"NOK\",\n      \"type\": \"IBAN\",\n      \"value\": \"NO2268250512345\"\n    }\n  },\n  \"creditor\": {\n    \"account\": {\n      \"type\": \"IBAN\",\n      \"value\": \"NO9386011117947\"\n    },\n    \"advice_required\": \"Y\",\n    \"message\": \"Invoice 5071\",\n    \"name\": \"Screws and Nuts Ltd\"\n  }\n}"
 						},
 						"url": {
 							"raw": "https://api.nordeaopenbanking.com/corporate/v1/payments",
@@ -89178,6 +89178,15 @@
 							"",
 							"",
 							"// ========================== OBI Logic ==========================",
+							"//PIS specific",
+							"const uuid = require(\"uuid\");",
+							"const moment = require(\"moment\");",
+							"",
+							"const requestId = uuid.v4();",
+							"const today = moment().format(\"YYYY-MM-DD\");",
+							"",
+							"pm.environment.set(\"randomUUID\", requestId);",
+							"pm.environment.set(\"today\", today);",
 							"",
 							"// Common",
 							"function getHeaderValue(headerName) {",
@@ -89190,7 +89199,7 @@
 							"",
 							"function resolveVariables(textWithPossibleVaraibles) {",
 							"    return textWithPossibleVaraibles.replace(/{{(\\w*)}}/g, (str, key) => {",
-							"        const value = environment[key];",
+							"        const value = pm.environment.get(key);",
 							"        return value === undefined ? \"{{\" + key + \"}}\" : value; ",
 							"    });",
 							"}",
@@ -89232,7 +89241,6 @@
 							"// Signature Calculation",
 							"",
 							"const sdk = require(\"postman-collection\");",
-							"const moment = require(\"moment\")",
 							"",
 							"const requestWithoutContentHeaders = \"(request-target) x-nordea-originating-host x-nordea-originating-date\";",
 							"const requestWithContentHeaders = \"(request-target) x-nordea-originating-host x-nordea-originating-date content-type digest\";",
@@ -89277,6 +89285,7 @@
 							"    return forge.pki.privateKeyFromPem(eidasPrivateKey);",
 							"}",
 							"",
+							"",
 							"const clientId = getHeaderValue(\"x-ibm-client-id\")",
 							"const signature = getSignatureBaseOnRequest();",
 							"const encryptedSignature = encryptSignature(signature.normalizedString);",
@@ -89284,6 +89293,7 @@
 							"",
 							"console.log(`Normalized signature string: ${signature.normalizedString}`);",
 							"console.log(`Signature header: ${signatureHeader}`);",
+							"",
 							"",
 							"pm.environment.set(\"Signature\", signatureHeader);",
 							"pm.environment.set(\"X-Nordea-Originating-Host\", signature.host);",
