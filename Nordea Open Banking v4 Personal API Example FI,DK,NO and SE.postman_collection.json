@@ -55,7 +55,7 @@
 									}
 								],
 								"url": {
-									"raw": "https://api.nordeaopenbanking.com/personal/v4/authorize?state=oauth2&client_id={{X-IBM-Client-ID}}&scope=ACCOUNTS_BASIC,ACCOUNTS_BALANCES,ACCOUNTS_DETAILS,ACCOUNTS_TRANSACTIONS,PAYMENTS_MULTIPLE&duration=129600&redirect_uri={{redirect_uri}}&country=FI",
+									"raw": "https://api.nordeaopenbanking.com/personal/v4/authorize?state=oauth2&client_id={{X-IBM-Client-ID}}&scope=ACCOUNTS_BASIC,ACCOUNTS_BALANCES,ACCOUNTS_DETAILS,ACCOUNTS_TRANSACTIONS,PAYMENTS_MULTIPLE, CARDS_INFORMATION, CARDS_TRANSACTIONS&duration=129600&redirect_uri={{redirect_uri}}&country=FI",
 									"protocol": "https",
 									"host": [
 										"api",
@@ -80,7 +80,7 @@
 										},
 										{
 											"key": "scope",
-											"value": "ACCOUNTS_BASIC,ACCOUNTS_BALANCES,ACCOUNTS_DETAILS,ACCOUNTS_TRANSACTIONS,PAYMENTS_MULTIPLE",
+											"value": "ACCOUNTS_BASIC,ACCOUNTS_BALANCES,ACCOUNTS_DETAILS,ACCOUNTS_TRANSACTIONS,PAYMENTS_MULTIPLE, CARDS_INFORMATION, CARDS_TRANSACTIONS",
 											"description": "Access scopes which have been requested"
 										},
 										{
@@ -195,9 +195,15 @@
 									},
 									{
 										"key": "Signature",
+										"value": "SKIP_SIGNATURE_VALIDATION_FOR_SANDBOX",
+										"type": "text"
+									},
+									{
+										"key": "Signature",
 										"value": "{{Signature}}",
 										"type": "text",
-										"description": "Calculated signature"
+										"description": "Calculated signature",
+										"disabled": true
 									},
 									{
 										"key": "Digest",
@@ -268,7 +274,6 @@
 								"header": [
 									{
 										"key": "Content-Type",
-										"name": "Content-Type",
 										"value": "application/x-www-form-urlencoded",
 										"type": "text",
 										"description": "URL Encoded Form"
@@ -276,11 +281,13 @@
 									{
 										"key": "X-IBM-Client-ID",
 										"value": "{{X-IBM-Client-ID}}",
+										"type": "text",
 										"description": "Client ID issued to the TPP via Developer Portal"
 									},
 									{
 										"key": "X-IBM-Client-Secret",
 										"value": "{{X-IBM-Client-Secret}}",
+										"type": "text",
 										"description": "Client Secret issued to the TPP via Developer Portal"
 									},
 									{
@@ -297,15 +304,21 @@
 									},
 									{
 										"key": "Signature",
-										"value": "{{Signature}}",
+										"value": "SKIP_SIGNATURE_VALIDATION_FOR_SANDBOX",
 										"type": "text",
 										"description": "Calculated signature"
 									},
 									{
+										"key": "Signature",
+										"value": "{{Signature}}",
+										"type": "text",
+										"description": "Digest calculated for form parmeters",
+										"disabled": true
+									},
+									{
 										"key": "Digest",
 										"value": "{{Digest}}",
-										"type": "text",
-										"description": "Digest calculated for form parmeters"
+										"type": "text"
 									}
 								],
 								"body": {
@@ -361,37 +374,46 @@
 								"method": "GET",
 								"header": [
 									{
-										"description": "Bearer Token",
 										"key": "Authorization",
-										"value": "Bearer {{access_token}}"
+										"value": "Bearer {{access_token}}",
+										"type": "text",
+										"description": "Bearer Token"
 									},
 									{
-										"description": "Client ID issued to the TPP via Developer Portal",
 										"key": "X-IBM-Client-ID",
-										"value": "{{X-IBM-Client-ID}}"
+										"value": "{{X-IBM-Client-ID}}",
+										"type": "text",
+										"description": "Client ID issued to the TPP via Developer Portal"
 									},
 									{
-										"description": "Client Secret issued to the TPP via Developer Portal",
 										"key": "X-IBM-Client-Secret",
-										"value": "{{X-IBM-Client-Secret}}"
+										"value": "{{X-IBM-Client-Secret}}",
+										"type": "text",
+										"description": "Client Secret issued to the TPP via Developer Portal"
 									},
 									{
-										"description": "Current date represented as RFC 7231 Full Date",
 										"key": "X-Nordea-Originating-Date",
+										"value": "{{X-Nordea-Originating-Date}}",
 										"type": "text",
-										"value": "{{X-Nordea-Originating-Date}}"
+										"description": "Current date represented as RFC 7231 Full Date"
 									},
 									{
-										"description": "Domain name of the server",
 										"key": "X-Nordea-Originating-Host",
+										"value": "{{X-Nordea-Originating-Host}}",
 										"type": "text",
-										"value": "{{X-Nordea-Originating-Host}}"
+										"description": "Domain name of the server"
 									},
 									{
-										"description": "Calculated signature",
 										"key": "Signature",
+										"value": "SKIP_SIGNATURE_VALIDATION_FOR_SANDBOX",
 										"type": "text",
-										"value": "{{Signature}}"
+										"description": "Calculated signature"
+									},
+									{
+										"key": "Signature",
+										"value": "{{Signature}}",
+										"type": "text",
+										"disabled": true
 									}
 								],
 								"url": {
@@ -440,44 +462,51 @@
 								"header": [
 									{
 										"key": "Content-Type",
-										"name": "Content-Type",
 										"value": "application/json",
-										"description": "URL Encoded Form",
-										"type": "text"
+										"type": "text",
+										"description": "URL Encoded Form"
 									},
 									{
-										"description": "Client ID issued to the TPP via Developer Portal",
 										"key": "X-IBM-Client-ID",
-										"value": "{{X-IBM-Client-ID}}"
+										"value": "{{X-IBM-Client-ID}}",
+										"type": "text",
+										"description": "Client ID issued to the TPP via Developer Portal"
 									},
 									{
-										"description": "Client Secret issued to the TPP via Developer Portal",
 										"key": "X-IBM-Client-Secret",
-										"value": "{{X-IBM-Client-Secret}}"
+										"value": "{{X-IBM-Client-Secret}}",
+										"type": "text",
+										"description": "Client Secret issued to the TPP via Developer Portal"
 									},
 									{
-										"description": "Current date represented as RFC 7231 Full Date",
 										"key": "X-Nordea-Originating-Date",
+										"value": "{{X-Nordea-Originating-Date}}",
 										"type": "text",
-										"value": "{{X-Nordea-Originating-Date}}"
+										"description": "Current date represented as RFC 7231 Full Date"
 									},
 									{
-										"description": "Domain name of the server",
 										"key": "X-Nordea-Originating-Host",
+										"value": "{{X-Nordea-Originating-Host}}",
 										"type": "text",
-										"value": "{{X-Nordea-Originating-Host}}"
+										"description": "Domain name of the server"
 									},
 									{
-										"description": "Calculated signature",
 										"key": "Signature",
+										"value": "SKIP_SIGNATURE_VALIDATION_FOR_SANDBOX",
 										"type": "text",
-										"value": "{{Signature}}"
+										"description": "Calculated signature"
 									},
 									{
-										"description": "Digest calculated for form parmeters",
-										"key": "Digest",
+										"key": "Signature",
+										"value": "{{Signature}}",
 										"type": "text",
-										"value": "{{Digest}}"
+										"description": "Digest calculated for form parmeters",
+										"disabled": true
+									},
+									{
+										"key": "Digest",
+										"value": "{{Digest}}",
+										"type": "text"
 									}
 								],
 								"body": {
@@ -695,11 +724,13 @@
 									{
 										"key": "X-IBM-Client-ID",
 										"value": "{{X-IBM-Client-ID}}",
+										"type": "text",
 										"description": "Client ID issued to the TPP via Developer Portal"
 									},
 									{
 										"key": "X-IBM-Client-Secret",
 										"value": "{{X-IBM-Client-Secret}}",
+										"type": "text",
 										"description": "Client Secret issued to the TPP via Developer Portal"
 									},
 									{
@@ -716,15 +747,21 @@
 									},
 									{
 										"key": "Signature",
-										"value": "{{Signature}}",
+										"value": "SKIP_SIGNATURE_VALIDATION_FOR_SANDBOX",
 										"type": "text",
 										"description": "Calculated signature"
 									},
 									{
+										"key": "Signature",
+										"value": "{{Signature}}",
+										"type": "text",
+										"description": "Digest calculated for form parmeters",
+										"disabled": true
+									},
+									{
 										"key": "Digest",
 										"value": "{{Digest}}",
-										"type": "text",
-										"description": "Digest calculated for form parmeters"
+										"type": "text"
 									}
 								],
 								"body": {
@@ -789,7 +826,6 @@
 								"header": [
 									{
 										"key": "Content-Type",
-										"name": "Content-Type",
 										"value": "application/x-www-form-urlencoded",
 										"type": "text",
 										"description": "URL Encoded Form"
@@ -797,11 +833,13 @@
 									{
 										"key": "X-IBM-Client-ID",
 										"value": "{{X-IBM-Client-ID}}",
+										"type": "text",
 										"description": "Client ID issued to the TPP via Developer Portal"
 									},
 									{
 										"key": "X-IBM-Client-Secret",
 										"value": "{{X-IBM-Client-Secret}}",
+										"type": "text",
 										"description": "Client Secret issued to the TPP via Developer Portal"
 									},
 									{
@@ -818,15 +856,21 @@
 									},
 									{
 										"key": "Signature",
-										"value": "{{Signature}}",
+										"value": "SKIP_SIGNATURE_VALIDATION_FOR_SANDBOX",
 										"type": "text",
 										"description": "Calculated signature"
 									},
 									{
+										"key": "Signature",
+										"value": "{{Signature}}",
+										"type": "text",
+										"description": "Digest calculated for form parmeters",
+										"disabled": true
+									},
+									{
 										"key": "Digest",
 										"value": "{{Digest}}",
-										"type": "text",
-										"description": "Digest calculated for form parmeters"
+										"type": "text"
 									}
 								],
 								"body": {
@@ -882,37 +926,51 @@
 								"method": "GET",
 								"header": [
 									{
-										"description": "Bearer Token",
 										"key": "Authorization",
-										"value": "Bearer {{access_token}}"
+										"value": "Bearer {{access_token}}",
+										"type": "text",
+										"description": "Bearer Token"
 									},
 									{
-										"description": "Client ID issued to the TPP via Developer Portal",
 										"key": "X-IBM-Client-ID",
-										"value": "{{X-IBM-Client-ID}}"
+										"value": "{{X-IBM-Client-ID}}",
+										"type": "text",
+										"description": "Client ID issued to the TPP via Developer Portal"
 									},
 									{
-										"description": "Client Secret issued to the TPP via Developer Portal",
 										"key": "X-IBM-Client-Secret",
-										"value": "{{X-IBM-Client-Secret}}"
+										"value": "{{X-IBM-Client-Secret}}",
+										"type": "text",
+										"description": "Client Secret issued to the TPP via Developer Portal"
 									},
 									{
-										"description": "Current date represented as RFC 7231 Full Date",
 										"key": "X-Nordea-Originating-Date",
+										"value": "{{X-Nordea-Originating-Date}}",
 										"type": "text",
-										"value": "{{X-Nordea-Originating-Date}}"
+										"description": "Current date represented as RFC 7231 Full Date"
 									},
 									{
-										"description": "Domain name of the server",
 										"key": "X-Nordea-Originating-Host",
+										"value": "{{X-Nordea-Originating-Host}}",
 										"type": "text",
-										"value": "{{X-Nordea-Originating-Host}}"
+										"description": "Domain name of the server"
 									},
 									{
-										"description": "Calculated signature",
 										"key": "Signature",
+										"value": "SKIP_SIGNATURE_VALIDATION_FOR_SANDBOX",
 										"type": "text",
-										"value": "{{Signature}}"
+										"description": "Calculated signature"
+									},
+									{
+										"key": "Signature",
+										"value": "{{Signature}}",
+										"type": "text",
+										"disabled": true
+									},
+									{
+										"key": "Signature",
+										"value": "{{Signature}}",
+										"type": "text"
 									}
 								],
 								"url": {
@@ -961,44 +1019,51 @@
 								"header": [
 									{
 										"key": "Content-Type",
-										"name": "Content-Type",
 										"value": "application/json",
-										"description": "URL Encoded Form",
-										"type": "text"
+										"type": "text",
+										"description": "URL Encoded Form"
 									},
 									{
-										"description": "Client ID issued to the TPP via Developer Portal",
 										"key": "X-IBM-Client-ID",
-										"value": "{{X-IBM-Client-ID}}"
+										"value": "{{X-IBM-Client-ID}}",
+										"type": "text",
+										"description": "Client ID issued to the TPP via Developer Portal"
 									},
 									{
-										"description": "Client Secret issued to the TPP via Developer Portal",
 										"key": "X-IBM-Client-Secret",
-										"value": "{{X-IBM-Client-Secret}}"
+										"value": "{{X-IBM-Client-Secret}}",
+										"type": "text",
+										"description": "Client Secret issued to the TPP via Developer Portal"
 									},
 									{
-										"description": "Current date represented as RFC 7231 Full Date",
 										"key": "X-Nordea-Originating-Date",
+										"value": "{{X-Nordea-Originating-Date}}",
 										"type": "text",
-										"value": "{{X-Nordea-Originating-Date}}"
+										"description": "Current date represented as RFC 7231 Full Date"
 									},
 									{
-										"description": "Domain name of the server",
 										"key": "X-Nordea-Originating-Host",
+										"value": "{{X-Nordea-Originating-Host}}",
 										"type": "text",
-										"value": "{{X-Nordea-Originating-Host}}"
+										"description": "Domain name of the server"
 									},
 									{
-										"description": "Calculated signature",
 										"key": "Signature",
+										"value": "SKIP_SIGNATURE_VALIDATION_FOR_SANDBOX",
 										"type": "text",
-										"value": "{{Signature}}"
+										"description": "Calculated signature"
 									},
 									{
-										"description": "Digest calculated for form parmeters",
-										"key": "Digest",
+										"key": "Signature",
+										"value": "{{Signature}}",
 										"type": "text",
-										"value": "{{Digest}}"
+										"description": "Digest calculated for form parmeters",
+										"disabled": true
+									},
+									{
+										"key": "Digest",
+										"value": "{{Digest}}",
+										"type": "text"
 									}
 								],
 								"body": {
@@ -1097,7 +1162,7 @@
 									}
 								],
 								"url": {
-									"raw": "https://api.nordeaopenbanking.com/personal/v4/authorize?state=oauth2&client_id={{X-IBM-Client-ID}}&scope=ACCOUNTS_BASIC,ACCOUNTS_BALANCES,ACCOUNTS_DETAILS,ACCOUNTS_TRANSACTIONS,PAYMENTS_MULTIPLE&duration=129600&redirect_uri={{redirect_uri}}&country=DK",
+									"raw": "https://api.nordeaopenbanking.com/personal/v4/authorize?state=oauth2&client_id={{X-IBM-Client-ID}}&scope=ACCOUNTS_BASIC,ACCOUNTS_BALANCES,ACCOUNTS_DETAILS,ACCOUNTS_TRANSACTIONS,PAYMENTS_MULTIPLE, CARDS_INFORMATION, CARDS_TRANSACTIONS&duration=129600&redirect_uri={{redirect_uri}}&country=DK",
 									"protocol": "https",
 									"host": [
 										"api",
@@ -1122,7 +1187,7 @@
 										},
 										{
 											"key": "scope",
-											"value": "ACCOUNTS_BASIC,ACCOUNTS_BALANCES,ACCOUNTS_DETAILS,ACCOUNTS_TRANSACTIONS,PAYMENTS_MULTIPLE",
+											"value": "ACCOUNTS_BASIC,ACCOUNTS_BALANCES,ACCOUNTS_DETAILS,ACCOUNTS_TRANSACTIONS,PAYMENTS_MULTIPLE, CARDS_INFORMATION, CARDS_TRANSACTIONS",
 											"description": "Access scopes which have been requested"
 										},
 										{
@@ -1215,11 +1280,13 @@
 									{
 										"key": "X-IBM-Client-ID",
 										"value": "{{X-IBM-Client-ID}}",
+										"type": "text",
 										"description": "Client ID issued to the TPP via Developer Portal"
 									},
 									{
 										"key": "X-IBM-Client-Secret",
 										"value": "{{X-IBM-Client-Secret}}",
+										"type": "text",
 										"description": "Client Secret issued to the TPP via Developer Portal"
 									},
 									{
@@ -1236,15 +1303,21 @@
 									},
 									{
 										"key": "Signature",
-										"value": "{{Signature}}",
+										"value": "SKIP_SIGNATURE_VALIDATION_FOR_SANDBOX",
 										"type": "text",
 										"description": "Calculated signature"
 									},
 									{
+										"key": "Signature",
+										"value": "{{Signature}}",
+										"type": "text",
+										"description": "Digest calculated for form parmeters",
+										"disabled": true
+									},
+									{
 										"key": "Digest",
 										"value": "{{Digest}}",
-										"type": "text",
-										"description": "Digest calculated for form parmeters"
+										"type": "text"
 									}
 								],
 								"body": {
@@ -1309,7 +1382,6 @@
 								"header": [
 									{
 										"key": "Content-Type",
-										"name": "Content-Type",
 										"value": "application/x-www-form-urlencoded",
 										"type": "text",
 										"description": "URL Encoded Form"
@@ -1317,11 +1389,13 @@
 									{
 										"key": "X-IBM-Client-ID",
 										"value": "{{X-IBM-Client-ID}}",
+										"type": "text",
 										"description": "Client ID issued to the TPP via Developer Portal"
 									},
 									{
 										"key": "X-IBM-Client-Secret",
 										"value": "{{X-IBM-Client-Secret}}",
+										"type": "text",
 										"description": "Client Secret issued to the TPP via Developer Portal"
 									},
 									{
@@ -1338,15 +1412,21 @@
 									},
 									{
 										"key": "Signature",
-										"value": "{{Signature}}",
+										"value": "SKIP_SIGNATURE_VALIDATION_FOR_SANDBOX",
 										"type": "text",
 										"description": "Calculated signature"
 									},
 									{
+										"key": "Signature",
+										"value": "{{Signature}}",
+										"type": "text",
+										"description": "Digest calculated for form parmeters",
+										"disabled": true
+									},
+									{
 										"key": "Digest",
 										"value": "{{Digest}}",
-										"type": "text",
-										"description": "Digest calculated for form parmeters"
+										"type": "text"
 									}
 								],
 								"body": {
@@ -1402,37 +1482,46 @@
 								"method": "GET",
 								"header": [
 									{
-										"description": "Bearer Token",
 										"key": "Authorization",
-										"value": "Bearer {{access_token}}"
+										"value": "Bearer {{access_token}}",
+										"type": "text",
+										"description": "Bearer Token"
 									},
 									{
-										"description": "Client ID issued to the TPP via Developer Portal",
 										"key": "X-IBM-Client-ID",
-										"value": "{{X-IBM-Client-ID}}"
+										"value": "{{X-IBM-Client-ID}}",
+										"type": "text",
+										"description": "Client ID issued to the TPP via Developer Portal"
 									},
 									{
-										"description": "Client Secret issued to the TPP via Developer Portal",
 										"key": "X-IBM-Client-Secret",
-										"value": "{{X-IBM-Client-Secret}}"
+										"value": "{{X-IBM-Client-Secret}}",
+										"type": "text",
+										"description": "Client Secret issued to the TPP via Developer Portal"
 									},
 									{
-										"description": "Current date represented as RFC 7231 Full Date",
 										"key": "X-Nordea-Originating-Date",
+										"value": "{{X-Nordea-Originating-Date}}",
 										"type": "text",
-										"value": "{{X-Nordea-Originating-Date}}"
+										"description": "Current date represented as RFC 7231 Full Date"
 									},
 									{
-										"description": "Domain name of the server",
 										"key": "X-Nordea-Originating-Host",
+										"value": "{{X-Nordea-Originating-Host}}",
 										"type": "text",
-										"value": "{{X-Nordea-Originating-Host}}"
+										"description": "Domain name of the server"
 									},
 									{
-										"description": "Calculated signature",
 										"key": "Signature",
+										"value": "SKIP_SIGNATURE_VALIDATION_FOR_SANDBOX",
 										"type": "text",
-										"value": "{{Signature}}"
+										"description": "Calculated signature"
+									},
+									{
+										"key": "Signature",
+										"value": "{{Signature}}",
+										"type": "text",
+										"disabled": true
 									}
 								],
 								"url": {
@@ -1481,44 +1570,51 @@
 								"header": [
 									{
 										"key": "Content-Type",
-										"name": "Content-Type",
 										"value": "application/json",
-										"description": "URL Encoded Form",
-										"type": "text"
+										"type": "text",
+										"description": "URL Encoded Form"
 									},
 									{
-										"description": "Client ID issued to the TPP via Developer Portal",
 										"key": "X-IBM-Client-ID",
-										"value": "{{X-IBM-Client-ID}}"
+										"value": "{{X-IBM-Client-ID}}",
+										"type": "text",
+										"description": "Client ID issued to the TPP via Developer Portal"
 									},
 									{
-										"description": "Client Secret issued to the TPP via Developer Portal",
 										"key": "X-IBM-Client-Secret",
-										"value": "{{X-IBM-Client-Secret}}"
+										"value": "{{X-IBM-Client-Secret}}",
+										"type": "text",
+										"description": "Client Secret issued to the TPP via Developer Portal"
 									},
 									{
-										"description": "Current date represented as RFC 7231 Full Date",
 										"key": "X-Nordea-Originating-Date",
+										"value": "{{X-Nordea-Originating-Date}}",
 										"type": "text",
-										"value": "{{X-Nordea-Originating-Date}}"
+										"description": "Current date represented as RFC 7231 Full Date"
 									},
 									{
-										"description": "Domain name of the server",
 										"key": "X-Nordea-Originating-Host",
+										"value": "{{X-Nordea-Originating-Host}}",
 										"type": "text",
-										"value": "{{X-Nordea-Originating-Host}}"
+										"description": "Domain name of the server"
 									},
 									{
-										"description": "Calculated signature",
 										"key": "Signature",
+										"value": "SKIP_SIGNATURE_VALIDATION_FOR_SANDBOX",
 										"type": "text",
-										"value": "{{Signature}}"
+										"description": "Calculated signature"
 									},
 									{
-										"description": "Digest calculated for form parmeters",
-										"key": "Digest",
+										"key": "Signature",
+										"value": "{{Signature}}",
 										"type": "text",
-										"value": "{{Digest}}"
+										"description": "Digest calculated for form parmeters",
+										"disabled": true
+									},
+									{
+										"key": "Digest",
+										"value": "{{Digest}}",
+										"type": "text"
 									}
 								],
 								"body": {
@@ -1617,7 +1713,7 @@
 									}
 								],
 								"url": {
-									"raw": "https://api.nordeaopenbanking.com/personal/v4/authorize?state=oauth2&client_id={{X-IBM-Client-ID}}&scope=ACCOUNTS_BASIC,ACCOUNTS_BALANCES,ACCOUNTS_DETAILS,ACCOUNTS_TRANSACTIONS,PAYMENTS_MULTIPLE&duration=129600&redirect_uri={{redirect_uri}}&country=NO",
+									"raw": "https://api.nordeaopenbanking.com/personal/v4/authorize?state=oauth2&client_id={{X-IBM-Client-ID}}&scope=ACCOUNTS_BASIC,ACCOUNTS_BALANCES,ACCOUNTS_DETAILS,ACCOUNTS_TRANSACTIONS,PAYMENTS_MULTIPLE, CARDS_INFORMATION, CARDS_TRANSACTIONS&duration=129600&redirect_uri={{redirect_uri}}&country=NO",
 									"protocol": "https",
 									"host": [
 										"api",
@@ -1642,7 +1738,7 @@
 										},
 										{
 											"key": "scope",
-											"value": "ACCOUNTS_BASIC,ACCOUNTS_BALANCES,ACCOUNTS_DETAILS,ACCOUNTS_TRANSACTIONS,PAYMENTS_MULTIPLE",
+											"value": "ACCOUNTS_BASIC,ACCOUNTS_BALANCES,ACCOUNTS_DETAILS,ACCOUNTS_TRANSACTIONS,PAYMENTS_MULTIPLE, CARDS_INFORMATION, CARDS_TRANSACTIONS",
 											"description": "Access scopes which have been requested"
 										},
 										{
@@ -1736,11 +1832,13 @@
 									{
 										"key": "X-IBM-Client-ID",
 										"value": "{{X-IBM-Client-ID}}",
+										"type": "text",
 										"description": "Client ID issued to the TPP via Developer Portal"
 									},
 									{
 										"key": "X-IBM-Client-Secret",
 										"value": "{{X-IBM-Client-Secret}}",
+										"type": "text",
 										"description": "Client Secret issued to the TPP via Developer Portal"
 									},
 									{
@@ -1757,15 +1855,21 @@
 									},
 									{
 										"key": "Signature",
-										"value": "{{Signature}}",
+										"value": "SKIP_SIGNATURE_VALIDATION_FOR_SANDBOX",
 										"type": "text",
 										"description": "Calculated signature"
 									},
 									{
+										"key": "Signature",
+										"value": "{{Signature}}",
+										"type": "text",
+										"description": "Digest calculated for form parmeters",
+										"disabled": true
+									},
+									{
 										"key": "Digest",
 										"value": "{{Digest}}",
-										"type": "text",
-										"description": "Digest calculated for form parmeters"
+										"type": "text"
 									}
 								],
 								"body": {
@@ -1830,7 +1934,6 @@
 								"header": [
 									{
 										"key": "Content-Type",
-										"name": "Content-Type",
 										"value": "application/x-www-form-urlencoded",
 										"type": "text",
 										"description": "URL Encoded Form"
@@ -1838,11 +1941,13 @@
 									{
 										"key": "X-IBM-Client-ID",
 										"value": "{{X-IBM-Client-ID}}",
+										"type": "text",
 										"description": "Client ID issued to the TPP via Developer Portal"
 									},
 									{
 										"key": "X-IBM-Client-Secret",
 										"value": "{{X-IBM-Client-Secret}}",
+										"type": "text",
 										"description": "Client Secret issued to the TPP via Developer Portal"
 									},
 									{
@@ -1859,15 +1964,21 @@
 									},
 									{
 										"key": "Signature",
-										"value": "{{Signature}}",
+										"value": "SKIP_SIGNATURE_VALIDATION_FOR_SANDBOX",
 										"type": "text",
 										"description": "Calculated signature"
 									},
 									{
+										"key": "Signature",
+										"value": "{{Signature}}",
+										"type": "text",
+										"description": "Digest calculated for form parmeters",
+										"disabled": true
+									},
+									{
 										"key": "Digest",
 										"value": "{{Digest}}",
-										"type": "text",
-										"description": "Digest calculated for form parmeters"
+										"type": "text"
 									}
 								],
 								"body": {
@@ -1923,37 +2034,46 @@
 								"method": "GET",
 								"header": [
 									{
-										"description": "Bearer Token",
 										"key": "Authorization",
-										"value": "Bearer {{access_token}}"
+										"value": "Bearer {{access_token}}",
+										"type": "text",
+										"description": "Bearer Token"
 									},
 									{
-										"description": "Client ID issued to the TPP via Developer Portal",
 										"key": "X-IBM-Client-ID",
-										"value": "{{X-IBM-Client-ID}}"
+										"value": "{{X-IBM-Client-ID}}",
+										"type": "text",
+										"description": "Client ID issued to the TPP via Developer Portal"
 									},
 									{
-										"description": "Client Secret issued to the TPP via Developer Portal",
 										"key": "X-IBM-Client-Secret",
-										"value": "{{X-IBM-Client-Secret}}"
+										"value": "{{X-IBM-Client-Secret}}",
+										"type": "text",
+										"description": "Client Secret issued to the TPP via Developer Portal"
 									},
 									{
-										"description": "Current date represented as RFC 7231 Full Date",
 										"key": "X-Nordea-Originating-Date",
+										"value": "{{X-Nordea-Originating-Date}}",
 										"type": "text",
-										"value": "{{X-Nordea-Originating-Date}}"
+										"description": "Current date represented as RFC 7231 Full Date"
 									},
 									{
-										"description": "Domain name of the server",
 										"key": "X-Nordea-Originating-Host",
+										"value": "{{X-Nordea-Originating-Host}}",
 										"type": "text",
-										"value": "{{X-Nordea-Originating-Host}}"
+										"description": "Domain name of the server"
 									},
 									{
-										"description": "Calculated signature",
 										"key": "Signature",
+										"value": "SKIP_SIGNATURE_VALIDATION_FOR_SANDBOX",
 										"type": "text",
-										"value": "{{Signature}}"
+										"description": "Calculated signature"
+									},
+									{
+										"key": "Signature",
+										"value": "{{Signature}}",
+										"type": "text",
+										"disabled": true
 									}
 								],
 								"url": {
@@ -2002,44 +2122,51 @@
 								"header": [
 									{
 										"key": "Content-Type",
-										"name": "Content-Type",
 										"value": "application/json",
-										"description": "URL Encoded Form",
-										"type": "text"
+										"type": "text",
+										"description": "URL Encoded Form"
 									},
 									{
-										"description": "Client ID issued to the TPP via Developer Portal",
 										"key": "X-IBM-Client-ID",
-										"value": "{{X-IBM-Client-ID}}"
+										"value": "{{X-IBM-Client-ID}}",
+										"type": "text",
+										"description": "Client ID issued to the TPP via Developer Portal"
 									},
 									{
-										"description": "Client Secret issued to the TPP via Developer Portal",
 										"key": "X-IBM-Client-Secret",
-										"value": "{{X-IBM-Client-Secret}}"
+										"value": "{{X-IBM-Client-Secret}}",
+										"type": "text",
+										"description": "Client Secret issued to the TPP via Developer Portal"
 									},
 									{
-										"description": "Current date represented as RFC 7231 Full Date",
 										"key": "X-Nordea-Originating-Date",
+										"value": "{{X-Nordea-Originating-Date}}",
 										"type": "text",
-										"value": "{{X-Nordea-Originating-Date}}"
+										"description": "Current date represented as RFC 7231 Full Date"
 									},
 									{
-										"description": "Domain name of the server",
 										"key": "X-Nordea-Originating-Host",
+										"value": "{{X-Nordea-Originating-Host}}",
 										"type": "text",
-										"value": "{{X-Nordea-Originating-Host}}"
+										"description": "Domain name of the server"
 									},
 									{
-										"description": "Calculated signature",
 										"key": "Signature",
+										"value": "SKIP_SIGNATURE_VALIDATION_FOR_SANDBOX",
 										"type": "text",
-										"value": "{{Signature}}"
+										"description": "Calculated signature"
 									},
 									{
-										"description": "Digest calculated for form parmeters",
-										"key": "Digest",
+										"key": "Signature",
+										"value": "{{Signature}}",
 										"type": "text",
-										"value": "{{Digest}}"
+										"description": "Digest calculated for form parmeters",
+										"disabled": true
+									},
+									{
+										"key": "Digest",
+										"value": "{{Digest}}",
+										"type": "text"
 									}
 								],
 								"body": {
@@ -2119,16 +2246,19 @@
 							{
 								"key": "Authorization",
 								"value": "Bearer {{access_token}}",
+								"type": "text",
 								"description": "Bearer Token"
 							},
 							{
 								"key": "X-IBM-Client-ID",
 								"value": "{{X-IBM-Client-ID}}",
+								"type": "text",
 								"description": "Client ID issued to the TPP via Developer Portal"
 							},
 							{
 								"key": "X-IBM-Client-Secret",
 								"value": "{{X-IBM-Client-Secret}}",
+								"type": "text",
 								"description": "Client Secret issued to the TPP via Developer Portal"
 							},
 							{
@@ -2145,9 +2275,15 @@
 							},
 							{
 								"key": "Signature",
-								"value": "{{Signature}}",
+								"value": "SKIP_SIGNATURE_VALIDATION_FOR_SANDBOX",
 								"type": "text",
 								"description": "Calculated signature"
+							},
+							{
+								"key": "Signature",
+								"value": "{{Signature}}",
+								"type": "text",
+								"disabled": true
 							}
 						],
 						"url": {
@@ -2190,16 +2326,19 @@
 							{
 								"key": "Authorization",
 								"value": "Bearer {{access_token}}",
+								"type": "text",
 								"description": "Bearer Token"
 							},
 							{
 								"key": "X-IBM-Client-ID",
 								"value": "{{X-IBM-Client-ID}}",
+								"type": "text",
 								"description": "Client ID issued to the TPP via Developer Portal"
 							},
 							{
 								"key": "X-IBM-Client-Secret",
 								"value": "{{X-IBM-Client-Secret}}",
+								"type": "text",
 								"description": "Client Secret issued to the TPP via Developer Portal"
 							},
 							{
@@ -2216,9 +2355,15 @@
 							},
 							{
 								"key": "Signature",
-								"value": "{{Signature}}",
+								"value": "SKIP_SIGNATURE_VALIDATION_FOR_SANDBOX",
 								"type": "text",
 								"description": "Calculated signature"
+							},
+							{
+								"key": "Signature",
+								"value": "{{Signature}}",
+								"type": "text",
+								"disabled": true
 							}
 						],
 						"url": {
@@ -2263,16 +2408,19 @@
 							{
 								"key": "Authorization",
 								"value": "Bearer {{access_token}}",
+								"type": "text",
 								"description": "Bearer Token"
 							},
 							{
 								"key": "X-IBM-Client-ID",
 								"value": "{{X-IBM-Client-ID}}",
+								"type": "text",
 								"description": "Client ID issued to the TPP via Developer Portal"
 							},
 							{
 								"key": "X-IBM-Client-Secret",
 								"value": "{{X-IBM-Client-Secret}}",
+								"type": "text",
 								"description": "Client Secret issued to the TPP via Developer Portal"
 							},
 							{
@@ -2289,9 +2437,15 @@
 							},
 							{
 								"key": "Signature",
-								"value": "{{Signature}}",
+								"value": "SKIP_SIGNATURE_VALIDATION_FOR_SANDBOX",
 								"type": "text",
 								"description": "Calculated signature"
+							},
+							{
+								"key": "Signature",
+								"value": "{{Signature}}",
+								"type": "text",
+								"disabled": true
 							}
 						],
 						"url": {
@@ -2361,19 +2515,44 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer {{access_token}}"
+								"value": "Bearer {{access_token}}",
+								"type": "text"
 							},
 							{
 								"key": "Content-Type",
-								"value": "application/json"
+								"value": "application/json",
+								"type": "text"
 							},
 							{
 								"key": "X-IBM-Client-ID",
-								"value": "{{X-IBM-Client-ID}}"
+								"value": "{{X-IBM-Client-ID}}",
+								"type": "text"
 							},
 							{
 								"key": "X-IBM-Client-Secret",
-								"value": "{{X-IBM-Client-Secret}}"
+								"value": "{{X-IBM-Client-Secret}}",
+								"type": "text"
+							},
+							{
+								"key": "X-Nordea-Originating-Date",
+								"value": "{{X-Nordea-Originating-Date}}",
+								"type": "text"
+							},
+							{
+								"key": "X-Nordea-Originating-Host",
+								"value": "{{X-Nordea-Originating-Host}}",
+								"type": "text"
+							},
+							{
+								"key": "Signature",
+								"value": "SKIP_SIGNATURE_VALIDATION_FOR_SANDBOX",
+								"type": "text"
+							},
+							{
+								"key": "Signature",
+								"value": "{{Signature}}",
+								"type": "text",
+								"disabled": true
 							}
 						],
 						"url": {
@@ -2413,19 +2592,44 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer {{access_token}}"
+								"value": "Bearer {{access_token}}",
+								"type": "text"
 							},
 							{
 								"key": "Content-Type",
-								"value": "application/json"
+								"value": "application/json",
+								"type": "text"
 							},
 							{
 								"key": "X-IBM-Client-ID",
-								"value": "{{X-IBM-Client-ID}}"
+								"value": "{{X-IBM-Client-ID}}",
+								"type": "text"
 							},
 							{
 								"key": "X-IBM-Client-Secret",
-								"value": "{{X-IBM-Client-Secret}}"
+								"value": "{{X-IBM-Client-Secret}}",
+								"type": "text"
+							},
+							{
+								"key": "X-Nordea-Originating-Date",
+								"value": "{{X-Nordea-Originating-Date}}",
+								"type": "text"
+							},
+							{
+								"key": "X-Nordea-Originating-Host",
+								"value": "{{X-Nordea-Originating-Host}}",
+								"type": "text"
+							},
+							{
+								"key": "Signature",
+								"value": "SKIP_SIGNATURE_VALIDATION_FOR_SANDBOX",
+								"type": "text"
+							},
+							{
+								"key": "Signature",
+								"value": "{{Signature}}",
+								"type": "text",
+								"disabled": true
 							}
 						],
 						"url": {
@@ -2468,19 +2672,44 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer {{access_token}}"
+								"value": "Bearer {{access_token}}",
+								"type": "text"
 							},
 							{
 								"key": "Content-Type",
-								"value": "application/json"
+								"value": "application/json",
+								"type": "text"
 							},
 							{
 								"key": "X-IBM-Client-ID",
-								"value": "{{X-IBM-Client-ID}}"
+								"value": "{{X-IBM-Client-ID}}",
+								"type": "text"
 							},
 							{
 								"key": "X-IBM-Client-Secret",
-								"value": "{{X-IBM-Client-Secret}}"
+								"value": "{{X-IBM-Client-Secret}}",
+								"type": "text"
+							},
+							{
+								"key": "X-Nordea-Originating-Date",
+								"value": "{{X-Nordea-Originating-Date}}",
+								"type": "text"
+							},
+							{
+								"key": "X-Nordea-Originating-Host",
+								"value": "{{X-Nordea-Originating-Host}}",
+								"type": "text"
+							},
+							{
+								"key": "Signature",
+								"value": "SKIP_SIGNATURE_VALIDATION_FOR_SANDBOX",
+								"type": "text"
+							},
+							{
+								"key": "Signature",
+								"value": "{{Signature}}",
+								"type": "text",
+								"disabled": true
 							}
 						],
 						"url": {
@@ -2518,16 +2747,19 @@
 									{
 										"key": "Authorization",
 										"value": "Bearer {{access_token}}",
+										"type": "text",
 										"description": "Bearer Token"
 									},
 									{
 										"key": "X-IBM-Client-ID",
 										"value": "{{X-IBM-Client-ID}}",
+										"type": "text",
 										"description": "Client ID issued to the TPP via Developer Portal"
 									},
 									{
 										"key": "X-IBM-Client-Secret",
 										"value": "{{X-IBM-Client-Secret}}",
+										"type": "text",
 										"description": "Client Secret issued to the TPP via Developer Portal"
 									},
 									{
@@ -2544,9 +2776,15 @@
 									},
 									{
 										"key": "Signature",
-										"value": "{{Signature}}",
+										"value": "SKIP_SIGNATURE_VALIDATION_FOR_SANDBOX",
 										"type": "text",
 										"description": "Calculated signature"
+									},
+									{
+										"key": "Signature",
+										"value": "{{Signature}}",
+										"type": "text",
+										"disabled": true
 									}
 								],
 								"url": {
@@ -2589,21 +2827,25 @@
 									{
 										"key": "Content-Type",
 										"value": "application/json",
+										"type": "text",
 										"description": "Json body"
 									},
 									{
 										"key": "Authorization",
 										"value": "Bearer {{access_token}}",
+										"type": "text",
 										"description": "Bearer Token"
 									},
 									{
 										"key": "X-IBM-Client-ID",
 										"value": "{{X-IBM-Client-ID}}",
+										"type": "text",
 										"description": "Client ID issued to the TPP via Developer Portal"
 									},
 									{
 										"key": "X-IBM-Client-Secret",
 										"value": "{{X-IBM-Client-Secret}}",
+										"type": "text",
 										"description": "Client Secret issued to the TPP via Developer Portal"
 									},
 									{
@@ -2620,15 +2862,21 @@
 									},
 									{
 										"key": "Signature",
-										"value": "{{Signature}}",
+										"value": "SKIP_SIGNATURE_VALIDATION_FOR_SANDBOX",
 										"type": "text",
 										"description": "Calculated signature"
 									},
 									{
+										"key": "Signature",
+										"value": "{{Signature}}",
+										"type": "text",
+										"description": "Digest calculated for body",
+										"disabled": true
+									},
+									{
 										"key": "Digest",
 										"value": "{{Digest}}",
-										"type": "text",
-										"description": "Digest calculated for body"
+										"type": "text"
 									}
 								],
 								"body": {
@@ -2674,16 +2922,19 @@
 									{
 										"key": "Authorization",
 										"value": "Bearer {{access_token}}",
+										"type": "text",
 										"description": "Bearer Token"
 									},
 									{
 										"key": "X-IBM-Client-ID",
 										"value": "{{X-IBM-Client-ID}}",
+										"type": "text",
 										"description": "Client ID issued to the TPP via Developer Portal"
 									},
 									{
 										"key": "X-IBM-Client-Secret",
 										"value": "{{X-IBM-Client-Secret}}",
+										"type": "text",
 										"description": "Client Secret issued to the TPP via Developer Portal"
 									},
 									{
@@ -2700,9 +2951,15 @@
 									},
 									{
 										"key": "Signature",
-										"value": "{{Signature}}",
+										"value": "SKIP_SIGNATURE_VALIDATION_FOR_SANDBOX",
 										"type": "text",
 										"description": "Calculated signature"
+									},
+									{
+										"key": "Signature",
+										"value": "{{Signature}}",
+										"type": "text",
+										"disabled": true
 									}
 								],
 								"url": {
@@ -2732,21 +2989,25 @@
 									{
 										"key": "Content-Type",
 										"value": "application/json",
+										"type": "text",
 										"description": "Json body"
 									},
 									{
 										"key": "Authorization",
 										"value": "Bearer {{access_token}}",
+										"type": "text",
 										"description": "Bearer Token"
 									},
 									{
 										"key": "X-IBM-Client-ID",
 										"value": "{{X-IBM-Client-ID}}",
+										"type": "text",
 										"description": "Client ID issued to the TPP via Developer Portal"
 									},
 									{
 										"key": "X-IBM-Client-Secret",
 										"value": "{{X-IBM-Client-Secret}}",
+										"type": "text",
 										"description": "Client Secret issued to the TPP via Developer Portal"
 									},
 									{
@@ -2763,9 +3024,15 @@
 									},
 									{
 										"key": "Signature",
-										"value": "{{Signature}}",
+										"value": "SKIP_SIGNATURE_VALIDATION_FOR_SANDBOX",
 										"type": "text",
 										"description": "Calculated signature"
+									},
+									{
+										"key": "Signature",
+										"value": "{{Signature}}",
+										"type": "text",
+										"disabled": true
 									}
 								],
 								"body": {
@@ -2829,16 +3096,19 @@
 									{
 										"key": "Authorization",
 										"value": "Bearer {{access_token}}",
+										"type": "text",
 										"description": "Bearer Token"
 									},
 									{
 										"key": "X-IBM-Client-ID",
 										"value": "{{X-IBM-Client-ID}}",
+										"type": "text",
 										"description": "Client ID issued to the TPP via Developer Portal"
 									},
 									{
 										"key": "X-IBM-Client-Secret",
 										"value": "{{X-IBM-Client-Secret}}",
+										"type": "text",
 										"description": "Client Secret issued to the TPP via Developer Portal"
 									},
 									{
@@ -2855,9 +3125,15 @@
 									},
 									{
 										"key": "Signature",
-										"value": "{{Signature}}",
+										"value": "SKIP_SIGNATURE_VALIDATION_FOR_SANDBOX",
 										"type": "text",
 										"description": "Calculated signature"
+									},
+									{
+										"key": "Signature",
+										"value": "{{Signature}}",
+										"type": "text",
+										"disabled": true
 									}
 								],
 								"url": {
@@ -2900,21 +3176,25 @@
 									{
 										"key": "Content-Type",
 										"value": "application/json",
+										"type": "text",
 										"description": "Json body"
 									},
 									{
 										"key": "Authorization",
 										"value": "Bearer {{access_token}}",
+										"type": "text",
 										"description": "Bearer Token"
 									},
 									{
 										"key": "X-IBM-Client-ID",
 										"value": "{{X-IBM-Client-ID}}",
+										"type": "text",
 										"description": "Client ID issued to the TPP via Developer Portal"
 									},
 									{
 										"key": "X-IBM-Client-Secret",
 										"value": "{{X-IBM-Client-Secret}}",
+										"type": "text",
 										"description": "Client Secret issued to the TPP via Developer Portal"
 									},
 									{
@@ -2931,20 +3211,27 @@
 									},
 									{
 										"key": "Signature",
-										"value": "{{Signature}}",
+										"value": "SKIP_SIGNATURE_VALIDATION_FOR_SANDBOX",
 										"type": "text",
 										"description": "Calculated signature"
+									},
+									{
+										"key": "Signature",
+										"value": "{{Signature}}",
+										"type": "text",
+										"description": "Digest calculated for body",
+										"disabled": true
 									},
 									{
 										"key": "Digest",
 										"value": "{{Digest}}",
 										"type": "text",
-										"description": "Digest calculated for body"
+										"disabled": true
 									}
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"amount\": 1230.45,\n  \"creditor\": {\n    \"account\": {\n      \"_type\": \"BBAN_DK\",\n      \"currency\": \"DKK\",\n      \"value\": \"20301544117544\"\n    },\n    \"name\": \"Beneficiary name\",\n    \"reference\": {\n      \"_type\": \"RF\",\n      \"value\": \"RF18539007547034\"\n    }\n  },\n  \"currency\": \"DKK\",\n  \"debtor\": {\n    \"account\": {\n      \"_type\": \"BBAN_DK\",\n      \"currency\": \"DKK\",\n      \"value\": \"20301544118028\"\n    },\n    \"message\": \"Message for debtor\"\n  },\n  \"external_id\": \"some id\",\n  \"urgency\": \"standard\"\n}"
+									"raw": "{\r\n  \"amount\": 1230.45,\r\n  \"creditor\": {\r\n    \"account\": {\r\n      \"_type\": \"BBAN_DK\",\r\n      \"currency\": \"DKK\",\r\n      \"value\": \"20301544117544\"\r\n    },\r\n\"reference\": {\r\n      \"_type\": \"RF\",\r\n      \"value\": \"RF18539007547034\"\r\n    },\r\n        \"name\": \"ACME INC\"\r\n    \r\n  },\r\n  \"currency\": \"DKK\",\r\n  \"debtor\": {\r\n    \"account\": {\r\n      \"_type\": \"BBAN_DK\",\r\n      \"currency\": \"DKK\",\r\n      \"value\": \"20301544118028\"\r\n    },\r\n    \"message\": \"Messageøæå\"\r\n  },\r\n  \"external_id\": \"some id\",\r\n   \"urgency\": \"standard\"\r\n}"
 								},
 								"url": {
 									"raw": "https://api.nordeaopenbanking.com/personal/v4/payments/domestic",
@@ -3177,16 +3464,19 @@
 									{
 										"key": "Authorization",
 										"value": "Bearer {{access_token}}",
+										"type": "text",
 										"description": "Bearer Token"
 									},
 									{
 										"key": "X-IBM-Client-ID",
 										"value": "{{X-IBM-Client-ID}}",
+										"type": "text",
 										"description": "Client ID issued to the TPP via Developer Portal"
 									},
 									{
 										"key": "X-IBM-Client-Secret",
 										"value": "{{X-IBM-Client-Secret}}",
+										"type": "text",
 										"description": "Client Secret issued to the TPP via Developer Portal"
 									},
 									{
@@ -3203,9 +3493,15 @@
 									},
 									{
 										"key": "Signature",
-										"value": "{{Signature}}",
+										"value": "SKIP_SIGNATURE_VALIDATION_FOR_SANDBOX",
 										"type": "text",
 										"description": "Calculated signature"
+									},
+									{
+										"key": "Signature",
+										"value": "{{Signature}}",
+										"type": "text",
+										"disabled": true
 									}
 								],
 								"url": {
@@ -3235,21 +3531,25 @@
 									{
 										"key": "Content-Type",
 										"value": "application/json",
+										"type": "text",
 										"description": "Json body"
 									},
 									{
 										"key": "Authorization",
 										"value": "Bearer {{access_token}}",
+										"type": "text",
 										"description": "Bearer Token"
 									},
 									{
 										"key": "X-IBM-Client-ID",
 										"value": "{{X-IBM-Client-ID}}",
+										"type": "text",
 										"description": "Client ID issued to the TPP via Developer Portal"
 									},
 									{
 										"key": "X-IBM-Client-Secret",
 										"value": "{{X-IBM-Client-Secret}}",
+										"type": "text",
 										"description": "Client Secret issued to the TPP via Developer Portal"
 									},
 									{
@@ -3266,9 +3566,15 @@
 									},
 									{
 										"key": "Signature",
-										"value": "{{Signature}}",
+										"value": "SKIP_SIGNATURE_VALIDATION_FOR_SANDBOX",
 										"type": "text",
 										"description": "Calculated signature"
+									},
+									{
+										"key": "Signature",
+										"value": "{{Signature}}",
+										"type": "text",
+										"disabled": true
 									}
 								],
 								"body": {
