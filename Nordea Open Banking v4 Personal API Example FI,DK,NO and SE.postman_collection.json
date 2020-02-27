@@ -121,12 +121,6 @@
 											"value": "CCALC",
 											"description": "(optional) Parameter with possible values: MTA (FI only: CodeAppFI - Online), MTA_OFF (FI only: CodeAppFI - Offline), CCALC (FI only: Code Calculator)",
 											"disabled": true
-										},
-										{
-											"key": "login_hint",
-											"value": null,
-											"description": "(Optional) if authentication_method is provided; not possible without authentication_method.\nIf authentication_method=MTA, login hint can be user ID\nIf authentication_method=MTA_OFF, no login_hint is possible\nIf authentication_method=CCALC, no login_hint is possible",
-											"disabled": true
 										}
 									]
 								}
@@ -670,12 +664,6 @@
 											"key": "authentication_method",
 											"value": "CARD_RDR ",
 											"description": "(optional) Parameter with possible values: BANKID_SE (SE only: BankIdSe), CARD_RDR (SE only: Card Reader e-code)",
-											"disabled": true
-										},
-										{
-											"key": "login_hint",
-											"value": null,
-											"description": "(Optional) if authentication_method is provided; not possible without authentication_method.\nIf authentication_method=BANKID_SE, no login_hint is possible\nIf authentication_method=CARD_RDR, login hint can be user ID",
 											"disabled": true
 										}
 									]
@@ -1225,12 +1213,6 @@
 											"disabled": true
 										},
 										{
-											"key": "login_hint",
-											"value": null,
-											"description": "(Optional) if authentication_method is provided; not possible without authentication_method.\nIf authentication_method=NEMID_2F, no login_hint is possible",
-											"disabled": true
-										},
-										{
 											"key": "country",
 											"value": "DK"
 										}
@@ -1773,12 +1755,6 @@
 											"key": "authentication_method",
 											"value": "BANKID_NO",
 											"description": "(optional) Parameter with possible values: BANKID_NO (NO only: BankID Norway), BANKIDM_NO (NO only: Mobile BankID Norway), MTA_NO (NO only: CodeAppNO - Online)",
-											"disabled": true
-										},
-										{
-											"key": "login_hint",
-											"value": null,
-											"description": "(Optional) if authentication_method is provided; not possible without authentication_method.If authentication_method=BANKID_NO, login_hint can be user ID\nIf authentication_method=BANKIDM_NO, login hint can be mobile number and date of birth, separated by ‘:’\nIf authentication_method=MTA_NO, login hint can be user ID",
 											"disabled": true
 										},
 										{
