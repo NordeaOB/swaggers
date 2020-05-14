@@ -1,458 +1,387 @@
 {
 	"info": {
-		"_postman_id": "aeeedd72-a24d-4b5f-8fc2-bf7e51e9e028",
-		"name": "Corporate Access Authorization API with Accounts API and Payments API",
+		"_postman_id": "d0019691-011b-4de8-b98c-9de416af2336",
+		"name": "Business Internal Nordea Open Banking v4 API Example",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
-			"name": "AUTH V2",
+			"name": "Access Authorization",
 			"item": [
 				{
-					"name": "Initiate Authorization",
-					"event": [
+					"name": "Redirect",
+					"item": [
 						{
-							"listen": "test",
-							"script": {
-								"id": "64cc479a-f94b-40f0-964f-a2cbac03f1b4",
-								"exec": [
-									"var jsonData = pm.response.json();",
-									"pm.environment.set(\"client_token\", jsonData.response.client_token);",
-									"pm.environment.set(\"access_id\", jsonData.response.access_id);"
+							"name": "Start Oauth",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "d9ac38c9-42f2-4abb-9a41-ccb640e1ec4c",
+										"exec": [
+											"var location = postman.getResponseHeader(\"Location\");",
+											"var index = location.indexOf(\"code=\");",
+											"var end = location.indexOf(\"&sta\")",
+											"",
+											"const paramsString = request.url.split('?')[1];",
+											"const eachParamArray = paramsString.split('&');",
+											"let params = {};",
+											"eachParamArray.forEach((param) => {",
+											"    const key = param.split('=')[0];",
+											"    const value = param.split('=')[1];",
+											"    Object.assign(params, {[key]: value});",
+											"});",
+											"",
+											"postman.setEnvironmentVariable(\"country\", params.country);",
+											"postman.setEnvironmentVariable(\"code\", location.substring(index+5,end));"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"description": "Json body"
+									},
+									{
+										"key": "X-IBM-Client-Id",
+										"value": "{{X-IBM-Client-ID}}",
+										"description": "Client ID issued to the TPP via Developer Portal"
+									}
 								],
-								"type": "text/javascript"
-							}
+								"url": {
+									"raw": "{{host}}/business/v4/authorize?state=oauth2&client_id={{X-IBM-Client-ID}}&scope=ACCOUNTS_BASIC,ACCOUNTS_BALANCES,ACCOUNTS_DETAILS,ACCOUNTS_TRANSACTIONS,PAYMENTS_MULTIPLE&duration=129600&redirect_uri={{redirect_uri}}&country=SE&company_id=1234567890",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"business",
+										"v4",
+										"authorize"
+									],
+									"query": [
+										{
+											"key": "state",
+											"value": "oauth2",
+											"description": "The OAuth2 state parameter"
+										},
+										{
+											"key": "client_id",
+											"value": "{{X-IBM-Client-ID}}",
+											"description": "Client ID issued to the TPP via Developer Portal"
+										},
+										{
+											"key": "scope",
+											"value": "ACCOUNTS_BASIC,ACCOUNTS_BALANCES,ACCOUNTS_DETAILS,ACCOUNTS_TRANSACTIONS,PAYMENTS_MULTIPLE",
+											"description": "Access scopes which have been requested"
+										},
+										{
+											"key": "duration",
+											"value": "129600",
+											"description": "Duration of access authorization in minutes, range 1 to 129600 (90 days)."
+										},
+										{
+											"key": "redirect_uri",
+											"value": "{{redirect_uri}}",
+											"description": "Redirect URI you used when this application was registered with Nordea."
+										},
+										{
+											"key": "country",
+											"value": "SE",
+											"description": "Accepts DK, FI, NO and SE"
+										},
+										{
+											"key": "company_id",
+											"value": "1234567890",
+											"description": "If country is FI then 8 digits FO number, if country is DK then 8 digits CVR number, if country is NO then 9 digits Organisasjonsnummer, if country is SE then 10 digits Organisationsnummer or 12 digits owner’s personnummer if the customer is a sole trader."
+										},
+										{
+											"key": "language",
+											"value": "en",
+											"description": "(optional) If country is FI, the default language is \"fi\", if country is DK, the default language is \"da\"",
+											"disabled": true
+										},
+										{
+											"key": "accounts",
+											"value": "",
+											"description": "(optional) For use in the Sandbox to simulate the Resource Owner selecting a subset of their accounts for which to Grant Access. In the Sandbox, if this parameter isn't passed, the Client will get access to all accounts.",
+											"disabled": true
+										},
+										{
+											"key": "max_tx_history",
+											"value": "2",
+											"description": "(optional) Maximum transaction history in months. Optional if ACCOUNTS_TRANSACTIONS scope is requested. Default=2 months. range: 1 to 12 months",
+											"disabled": true
+										},
+										{
+											"key": "authentication_method",
+											"value": "NEMID_2F",
+											"description": "(optional) Parameter with possible values: NEMID_2F (DK only: NemID with username, password and OTC/NMAS), BANKID_NO (NO only: BankID Norway), BANKIDM_NO (NO only: Mobile BankID Norway), MTA_NO (NO only: CodeAppNO - Online), BANKID_SE (SE only: BankIdSe), CARD_RDR (SE only: Card Reader e-code), MTA (FI only: CodeAppFI - Online), MTA_OFF (FI only: CodeAppFI - Offline), CCALC (FI only: Code Calculator)\n",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
 						},
+						{
+							"name": "Exchange Token",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "16feebbb-1e9e-4021-abda-c70b11bf4012",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "921355e2-1226-4505-8429-50bb442ec6cc",
+										"exec": [
+											"var jsonData = JSON.parse(responseBody);",
+											"",
+											"postman.setEnvironmentVariable(\"access_token\", jsonData.access_token);",
+											"",
+											"postman.setEnvironmentVariable(\"refresh_token\", jsonData.refresh_token);",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/x-www-form-urlencoded",
+										"type": "text",
+										"description": "URL Encoded Form"
+									},
+									{
+										"key": "X-IBM-Client-ID",
+										"value": "{{X-IBM-Client-ID}}",
+										"description": "Client ID issued to the TPP via Developer Portal"
+									},
+									{
+										"key": "X-IBM-Client-Secret",
+										"value": "{{X-IBM-Client-Secret}}",
+										"description": "Client Secret issued to the TPP via Developer Portal"
+									},
+									{
+										"key": "X-Nordea-Originating-Date",
+										"value": "{{X-Nordea-Originating-Date}}",
+										"type": "text",
+										"description": "Current date represented as RFC 7231 Full Date"
+									},
+									{
+										"key": "X-Nordea-Originating-Host",
+										"value": "{{X-Nordea-Originating-Host}}",
+										"type": "text",
+										"description": "Domain name of the server"
+									},
+									{
+										"key": "Signature",
+										"value": "{{Signature}}",
+										"type": "text",
+										"description": "Calculated signature"
+									},
+									{
+										"key": "Digest",
+										"value": "{{Digest}}",
+										"type": "text",
+										"description": "Digest calculated for form parmeters"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "code",
+											"value": "{{code}}",
+											"description": "Code to exchange",
+											"type": "text"
+										},
+										{
+											"key": "grant_type",
+											"value": "authorization_code",
+											"description": "Type of OAuth2 grant",
+											"type": "text"
+										},
+										{
+											"key": "redirect_uri",
+											"value": "{{redirect_uri}}",
+											"description": "Redirection URL",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{host}}/business/v4/authorize/token",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"business",
+										"v4",
+										"authorize",
+										"token"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Refresh Token",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "6e904681-a22b-4d04-999a-eb773b141dfe",
+										"exec": [
+											"var jsonData = JSON.parse(responseBody);",
+											"",
+											"postman.setEnvironmentVariable(\"access_token\", jsonData.access_token);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/x-www-form-urlencoded",
+										"type": "text",
+										"description": "URL Encoded Form"
+									},
+									{
+										"key": "X-IBM-Client-ID",
+										"value": "{{X-IBM-Client-ID}}",
+										"description": "Client ID issued to the TPP via Developer Portal"
+									},
+									{
+										"key": "X-IBM-Client-Secret",
+										"value": "{{X-IBM-Client-Secret}}",
+										"description": "Client Secret issued to the TPP via Developer Portal"
+									},
+									{
+										"key": "X-Nordea-Originating-Date",
+										"value": "{{X-Nordea-Originating-Date}}",
+										"type": "text",
+										"description": "Current date represented as RFC 7231 Full Date"
+									},
+									{
+										"key": "X-Nordea-Originating-Host",
+										"value": "{{X-Nordea-Originating-Host}}",
+										"type": "text",
+										"description": "Domain name of the server"
+									},
+									{
+										"key": "Signature",
+										"value": "{{Signature}}",
+										"type": "text",
+										"description": "Calculated signature"
+									},
+									{
+										"key": "Digest",
+										"value": "{{Digest}}",
+										"type": "text",
+										"description": "Digest calculated for form parmeters"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "grant_type",
+											"value": "refresh_token",
+											"description": "Type of OAuth2 grant",
+											"type": "text"
+										},
+										{
+											"key": "redirect_uri",
+											"value": "{{redirect_uri}}",
+											"description": "Redirection URL",
+											"type": "text"
+										},
+										{
+											"key": "refresh_token",
+											"value": "{{refresh_token}}",
+											"description": "Token to refresh",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{host}}/business/v4/authorize/token",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"business",
+										"v4",
+										"authorize",
+										"token"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"description": "Authorizing PSUs with redirect for Codes and NemID (For FI and DK)",
+					"event": [
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "229ea07a-ea2e-4bcc-ac2c-7c8320be78a1",
+								"id": "46bf275b-7d26-43ac-956d-bfa65454a9fe",
+								"type": "text/javascript",
 								"exec": [
 									""
-								],
-								"type": "text/javascript"
+								]
 							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "X-IBM-Client-Id",
-								"value": "{{X-IBM-Client-ID}}"
-							},
-							{
-								"key": "X-IBM-Client-Secret",
-								"value": "{{X-IBM-Client-Secret}}"
-							},
-							{
-								"key": "Signature",
-								"value": "{{Signature}}"
-							},
-							{
-								"key": "Digest",
-								"value": "{{Digest}}"
-							},
-							{
-								"key": "X-Nordea-Originating-Date",
-								"value": "{{X-Nordea-Originating-Date}}"
-							},
-							{
-								"key": "X-Nordea-Originating-Host",
-								"value": "{{X-Nordea-Originating-Host}}"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"scope\": [\"PAYMENTS_BROADBAND\", \"ACCOUNTS_BROADBAND\"],\n    \"duration\":129600,\n    \"agreement_number\":\"130474822427\"\n}"
 						},
-						"url": {
-							"raw": "https://api.nordeaopenbanking.com/corporate/v2/authorize",
-							"protocol": "https",
-							"host": [
-								"api",
-								"nordeaopenbanking",
-								"com"
-							],
-							"path": [
-								"corporate",
-								"v2",
-								"authorize"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Confirm Authorization",
-					"request": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "Bearer {{client_token}}"
-							},
-							{
-								"key": "X-IBM-Client-Id",
-								"value": "{{X-IBM-Client-ID}}"
-							},
-							{
-								"key": "X-IBM-Client-Secret",
-								"value": "{{X-IBM-Client-Secret}}"
-							},
-							{
-								"key": "Signature",
-								"value": "{{Signature}}"
-							},
-							{
-								"key": "Digest",
-								"value": "{{Digest}}"
-							},
-							{
-								"key": "X-Nordea-Originating-Date",
-								"value": "{{X-Nordea-Originating-Date}}"
-							},
-							{
-								"key": "X-Nordea-Originating-Host",
-								"value": "{{X-Nordea-Originating-Host}}"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"authorizer_id\":\"70311198\"\n}"
-						},
-						"url": {
-							"raw": "https://api.nordeaopenbanking.com/corporate/v2/authorize/{{access_id}}",
-							"protocol": "https",
-							"host": [
-								"api",
-								"nordeaopenbanking",
-								"com"
-							],
-							"path": [
-								"corporate",
-								"v2",
-								"authorize",
-								"{{access_id}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Authorization Status",
-					"event": [
 						{
 							"listen": "test",
 							"script": {
-								"id": "b8cb0275-8c7e-4ed4-b8ee-6201e0f848db",
+								"id": "f7721797-e243-404c-880e-4391ab83e52b",
+								"type": "text/javascript",
 								"exec": [
-									"var jsonData = pm.response.json();",
-									"pm.environment.set(\"exchange_code\", jsonData.response.code);"
-								],
-								"type": "text/javascript"
+									""
+								]
 							}
 						}
 					],
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{client_token}}"
-							},
-							{
-								"key": "X-IBM-Client-Id",
-								"value": "{{X-IBM-Client-ID}}"
-							},
-							{
-								"key": "X-IBM-Client-Secret",
-								"value": "{{X-IBM-Client-Secret}}"
-							},
-							{
-								"key": "Signature",
-								"value": "{{Signature}}"
-							},
-							{
-								"key": "X-Nordea-Originating-Date",
-								"value": "{{X-Nordea-Originating-Date}}"
-							},
-							{
-								"key": "X-Nordea-Originating-Host",
-								"value": "{{X-Nordea-Originating-Host}}"
-							}
-						],
-						"url": {
-							"raw": "https://api.nordeaopenbanking.com/corporate/v2/authorize/{{access_id}}",
-							"protocol": "https",
-							"host": [
-								"api",
-								"nordeaopenbanking",
-								"com"
-							],
-							"path": [
-								"corporate",
-								"v2",
-								"authorize",
-								"{{access_id}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Exchange Token",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "576bc300-c031-4dc1-ba0a-27bbbfbb9694",
-								"exec": [
-									"var jsonData = pm.response.json();",
-									"pm.environment.set(\"access_token\", jsonData.response.access_token);",
-									"pm.environment.set(\"refresh_token\", jsonData.response.refresh_token);"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"name": "Content-Type",
-								"value": "application/x-www-form-urlencoded",
-								"type": "text"
-							},
-							{
-								"key": "X-IBM-Client-Id",
-								"value": "{{X-IBM-Client-ID}}"
-							},
-							{
-								"key": "X-IBM-Client-Secret",
-								"value": "{{X-IBM-Client-Secret}}"
-							},
-							{
-								"key": "Signature",
-								"value": "{{Signature}}"
-							},
-							{
-								"key": "Digest",
-								"value": "{{Digest}}"
-							},
-							{
-								"key": "X-Nordea-Originating-Date",
-								"value": "{{X-Nordea-Originating-Date}}"
-							},
-							{
-								"key": "X-Nordea-Originating-Host",
-								"value": "{{X-Nordea-Originating-Host}}"
-							}
-						],
-						"body": {
-							"mode": "urlencoded",
-							"urlencoded": [
-								{
-									"key": "grant_type",
-									"value": "authorization_code",
-									"type": "text"
-								},
-								{
-									"key": "code",
-									"value": "{{exchange_code}}",
-									"type": "text"
-								}
-							],
-							"options": {
-								"raw": {
-									"language": "text"
-								}
-							}
-						},
-						"url": {
-							"raw": "https://api.nordeaopenbanking.com/corporate/v2/authorize/token",
-							"protocol": "https",
-							"host": [
-								"api",
-								"nordeaopenbanking",
-								"com"
-							],
-							"path": [
-								"corporate",
-								"v2",
-								"authorize",
-								"token"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Exchange Refresh Token",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "576bc300-c031-4dc1-ba0a-27bbbfbb9694",
-								"exec": [
-									"var jsonData = pm.response.json();",
-									"pm.environment.set(\"access_token\", jsonData.response.access_token);",
-									"pm.environment.set(\"refresh_token\", jsonData.response.refresh_token);"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"name": "Content-Type",
-								"value": "application/x-www-form-urlencoded",
-								"type": "text"
-							},
-							{
-								"key": "X-IBM-Client-Id",
-								"value": "{{X-IBM-Client-ID}}"
-							},
-							{
-								"key": "X-IBM-Client-Secret",
-								"value": "{{X-IBM-Client-Secret}}"
-							},
-							{
-								"key": "Signature",
-								"value": "{{Signature}}"
-							},
-							{
-								"key": "Digest",
-								"value": "{{Digest}}"
-							},
-							{
-								"key": "X-Nordea-Originating-Date",
-								"value": "{{X-Nordea-Originating-Date}}"
-							},
-							{
-								"key": "X-Nordea-Originating-Host",
-								"value": "{{X-Nordea-Originating-Host}}"
-							}
-						],
-						"body": {
-							"mode": "urlencoded",
-							"urlencoded": [
-								{
-									"key": "grant_type",
-									"value": "refresh_token",
-									"type": "text"
-								},
-								{
-									"key": "refresh_token",
-									"value": "{{refresh_token}}",
-									"type": "text"
-								}
-							],
-							"options": {
-								"raw": {
-									"language": "text"
-								}
-							}
-						},
-						"url": {
-							"raw": "https://api.nordeaopenbanking.com/corporate/v2/authorize/token",
-							"protocol": "https",
-							"host": [
-								"api",
-								"nordeaopenbanking",
-								"com"
-							],
-							"path": [
-								"corporate",
-								"v2",
-								"authorize",
-								"token"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get Users - Sandbox Only",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "X-IBM-Client-Id",
-								"value": "{{X-IBM-Client-ID}}"
-							},
-							{
-								"key": "X-IBM-Client-Secret",
-								"value": "{{X-IBM-Client-Secret}}"
-							}
-						],
-						"url": {
-							"raw": "https://api.nordeaopenbanking.com/corporate/v2/authorize/users",
-							"protocol": "https",
-							"host": [
-								"api",
-								"nordeaopenbanking",
-								"com"
-							],
-							"path": [
-								"corporate",
-								"v2",
-								"authorize",
-								"users"
-							]
-						}
-					},
-					"response": []
-				}
-			],
-			"description": "Authorization V2",
-			"event": [
-				{
-					"listen": "prerequest",
-					"script": {
-						"id": "92ba90e1-b499-45a5-9fce-a0c9d6f1fe31",
-						"type": "text/javascript",
-						"exec": [
-							""
-						]
-					}
-				},
-				{
-					"listen": "test",
-					"script": {
-						"id": "1d2d89c6-0356-449d-8e8c-d7bc2efadab8",
-						"type": "text/javascript",
-						"exec": [
-							""
-						]
-					}
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
 				}
 			],
 			"protocolProfileBehavior": {}
 		},
 		{
-			"name": "AIS V2",
+			"name": "Account Information Service",
 			"item": [
 				{
-					"name": "Accounts List",
+					"name": "Get Accounts",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
-								"id": "26fb284b-206a-4471-9dd6-156a025fa31c",
+								"id": "0fb67eea-a8fd-4597-b6ab-5e5eb6cdad8b",
 								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"",
+									"postman.setEnvironmentVariable(\"account_id\", jsonData.response.accounts[0]._id);",
 									""
 								],
 								"type": "text/javascript"
@@ -464,40 +393,46 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer {{access_token}}"
+								"value": "Bearer {{access_token}}",
+								"description": "Bearer Token"
 							},
 							{
-								"key": "X-IBM-Client-Id",
-								"value": "{{X-IBM-Client-ID}}"
+								"key": "X-IBM-Client-ID",
+								"value": "{{X-IBM-Client-ID}}",
+								"description": "Client ID issued to the TPP via Developer Portal"
 							},
 							{
 								"key": "X-IBM-Client-Secret",
-								"value": "{{X-IBM-Client-Secret}}"
-							},
-							{
-								"key": "Signature",
-								"value": "{{Signature}}"
+								"value": "{{X-IBM-Client-Secret}}",
+								"description": "Client Secret issued to the TPP via Developer Portal"
 							},
 							{
 								"key": "X-Nordea-Originating-Date",
-								"value": "{{X-Nordea-Originating-Date}}"
+								"value": "{{X-Nordea-Originating-Date}}",
+								"type": "text",
+								"description": "Current date represented as RFC 7231 Full Date"
 							},
 							{
 								"key": "X-Nordea-Originating-Host",
-								"value": "{{X-Nordea-Originating-Host}}"
+								"value": "{{X-Nordea-Originating-Host}}",
+								"type": "text",
+								"description": "Domain name of the server"
+							},
+							{
+								"key": "Signature",
+								"value": "{{Signature}}",
+								"type": "text",
+								"description": "Calculated signature"
 							}
 						],
 						"url": {
-							"raw": "https://api.nordeaopenbanking.com/corporate/v2/accounts",
-							"protocol": "https",
+							"raw": "{{host}}/business/v4/accounts",
 							"host": [
-								"api",
-								"nordeaopenbanking",
-								"com"
+								"{{host}}"
 							],
 							"path": [
-								"corporate",
-								"v2",
+								"business",
+								"v4",
 								"accounts"
 							]
 						}
@@ -505,13 +440,86 @@
 					"response": []
 				},
 				{
-					"name": "Accounts Details",
+					"name": "Get Account Details by Account ID",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
-								"id": "26fb284b-206a-4471-9dd6-156a025fa31c",
+								"id": "b39b32ac-263c-4e5a-ad40-ec9a076cafad",
 								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"\r",
+									"postman.setEnvironmentVariable(\"payment_id\", jsonData.response.id);\r",
+									"postman.setEnvironmentVariable(\"continuation_key\", null);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"description": "Bearer Token"
+							},
+							{
+								"key": "X-IBM-Client-ID",
+								"value": "{{X-IBM-Client-ID}}",
+								"description": "Client ID issued to the TPP via Developer Portal"
+							},
+							{
+								"key": "X-IBM-Client-Secret",
+								"value": "{{X-IBM-Client-Secret}}",
+								"description": "Client Secret issued to the TPP via Developer Portal"
+							},
+							{
+								"key": "X-Nordea-Originating-Date",
+								"value": "{{X-Nordea-Originating-Date}}",
+								"type": "text",
+								"description": "Current date represented as RFC 7231 Full Date"
+							},
+							{
+								"key": "X-Nordea-Originating-Host",
+								"value": "{{X-Nordea-Originating-Host}}",
+								"type": "text",
+								"description": "Domain name of the server"
+							},
+							{
+								"key": "Signature",
+								"value": "{{Signature}}",
+								"type": "text",
+								"description": "Calculated signature"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/business/v4/accounts/{{account_id}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"business",
+								"v4",
+								"accounts",
+								"{{account_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Transactions",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "2b450807-8fa9-4630-ab20-21eb656e97f5",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"",
+									"postman.setEnvironmentVariable(\"payment_id\", jsonData.response._id);",
+									"postman.setEnvironmentVariable(\"continuation_key\", jsonData.group_header.message_pagination.continuation_key);",
 									""
 								],
 								"type": "text/javascript"
@@ -523,258 +531,97 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer {{access_token}}"
+								"value": "Bearer {{access_token}}",
+								"description": "Bearer Token"
 							},
 							{
-								"key": "X-IBM-Client-Id",
-								"value": "{{X-IBM-Client-ID}}"
-							},
-							{
-								"key": "X-IBM-Client-Secret",
-								"value": "{{X-IBM-Client-Secret}}"
-							},
-							{
-								"key": "Signature",
-								"value": "{{Signature}}"
-							},
-							{
-								"key": "X-Nordea-Originating-Date",
-								"value": "{{X-Nordea-Originating-Date}}"
-							},
-							{
-								"key": "X-Nordea-Originating-Host",
-								"value": "{{X-Nordea-Originating-Host}}"
-							}
-						],
-						"url": {
-							"raw": "https://api.nordeaopenbanking.com/corporate/v2/accounts/FI6816603001007528-EUR",
-							"protocol": "https",
-							"host": [
-								"api",
-								"nordeaopenbanking",
-								"com"
-							],
-							"path": [
-								"corporate",
-								"v2",
-								"accounts",
-								"FI6816603001007528-EUR"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Filter Accounts",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "26fb284b-206a-4471-9dd6-156a025fa31c",
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "Bearer {{access_token}}"
-							},
-							{
-								"key": "X-IBM-Client-Id",
-								"value": "{{X-IBM-Client-ID}}"
+								"key": "X-IBM-Client-ID",
+								"value": "{{X-IBM-Client-ID}}",
+								"description": "Client ID issued to the TPP via Developer Portal"
 							},
 							{
 								"key": "X-IBM-Client-Secret",
-								"value": "{{X-IBM-Client-Secret}}"
-							},
-							{
-								"key": "Signature",
-								"value": "{{Signature}}"
-							},
-							{
-								"key": "Digest",
-								"value": "{{Digest}}"
+								"value": "{{X-IBM-Client-Secret}}",
+								"description": "Client Secret issued to the TPP via Developer Portal"
 							},
 							{
 								"key": "X-Nordea-Originating-Date",
-								"value": "{{X-Nordea-Originating-Date}}"
+								"value": "{{X-Nordea-Originating-Date}}",
+								"type": "text",
+								"description": "Current date represented as RFC 7231 Full Date"
 							},
 							{
 								"key": "X-Nordea-Originating-Host",
-								"value": "{{X-Nordea-Originating-Host}}"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\t\n\t\"account_list\": [\n\t\t\"NO68250512345-NOK\"\n\t\t],\n\t\"currency_list\": [\n\t\t\"NOK\"\n\t\t],\n    \"country_list\": [\n        \"NO\"\n    ]\n}"
-						},
-						"url": {
-							"raw": "https://api.nordeaopenbanking.com/corporate/v2/accounts/filter?page=1&size=50",
-							"protocol": "https",
-							"host": [
-								"api",
-								"nordeaopenbanking",
-								"com"
-							],
-							"path": [
-								"corporate",
-								"v2",
-								"accounts",
-								"filter"
-							],
-							"query": [
-								{
-									"key": "page",
-									"value": "1"
-								},
-								{
-									"key": "size",
-									"value": "50"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Transactions List",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "26fb284b-206a-4471-9dd6-156a025fa31c",
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{access_token}}"
-							},
-							{
-								"key": "X-IBM-Client-Id",
-								"value": "{{X-IBM-Client-ID}}"
-							},
-							{
-								"key": "X-IBM-Client-Secret",
-								"value": "{{X-IBM-Client-Secret}}"
+								"value": "{{X-Nordea-Originating-Host}}",
+								"type": "text",
+								"description": "Domain name of the server"
 							},
 							{
 								"key": "Signature",
-								"value": "{{Signature}}"
-							},
-							{
-								"key": "X-Nordea-Originating-Date",
-								"value": "{{X-Nordea-Originating-Date}}"
-							},
-							{
-								"key": "X-Nordea-Originating-Host",
-								"value": "{{X-Nordea-Originating-Host}}"
+								"value": "{{Signature}}",
+								"type": "text",
+								"description": "Calculated signature"
 							}
 						],
 						"url": {
-							"raw": "https://api.nordeaopenbanking.com/corporate/v2/accounts/FI6816603001007528-EUR/transactions?from_date=2018-01-09&to_date=2019-09-09&from_transaction=1808232584LV360353",
-							"protocol": "https",
+							"raw": "{{host}}/business/v4/accounts/{{account_id}}/transactions",
 							"host": [
-								"api",
-								"nordeaopenbanking",
-								"com"
+								"{{host}}"
 							],
 							"path": [
-								"corporate",
-								"v2",
+								"business",
+								"v4",
 								"accounts",
-								"FI6816603001007528-EUR",
+								"{{account_id}}",
 								"transactions"
 							],
 							"query": [
 								{
-									"key": "from_date",
-									"value": "2018-01-09"
-								},
-								{
-									"key": "to_date",
-									"value": "2019-09-09"
-								},
-								{
 									"key": "continuation_key",
-									"value": "1808232584LV360349--2",
+									"value": "{{continuation_key}}",
+									"description": "(optional) Resource listing may return a continuationKey if there’s more results available. Request may be retried with the continuationKey, but otherwise same parameters, in order to get more results.",
 									"disabled": true
 								},
 								{
-									"key": "from_transaction",
-									"value": "1808232584LV360353"
+									"key": "language",
+									"value": "FI",
+									"description": "(optional) Preferred language for textual values, possible values are: fi, sv, en, da",
+									"disabled": true
+								},
+								{
+									"key": "from_date",
+									"value": "2019-03-01",
+									"description": "(optional) List transactions starting from and including this date",
+									"disabled": true
+								},
+								{
+									"key": "to_date",
+									"value": "2019-07-01",
+									"description": "(optional) List transactions until and including this date",
+									"disabled": true
 								}
 							]
 						}
 					},
 					"response": []
-				}
-			],
-			"description": "Accounts Information Services V2",
-			"event": [
-				{
-					"listen": "prerequest",
-					"script": {
-						"id": "bf165f67-acc4-423c-835b-11156b7f257c",
-						"type": "text/javascript",
-						"exec": [
-							""
-						]
-					}
-				},
-				{
-					"listen": "test",
-					"script": {
-						"id": "6f1ea309-a3ae-4345-9170-01e92e0681fa",
-						"type": "text/javascript",
-						"exec": [
-							""
-						]
-					}
 				}
 			],
 			"protocolProfileBehavior": {}
 		},
 		{
-			"name": "PIS V1",
+			"name": "Payment Initiation Service - Domestic",
 			"item": [
 				{
-					"name": "Create Payment SEPA",
+					"name": "V4 Initiate Payment Domestic - DK",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
-								"id": "3f3e7741-b1a4-41cc-8de3-4baa10f5d83b",
+								"id": "065c0536-6564-4523-86a8-c3b8bf48a73f",
 								"exec": [
-									"var jsonData = pm.response.json();",
-									"pm.environment.set(\"payment_id\", jsonData.response._id);"
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"id": "243bcc52-c74a-47c3-b3f7-1eb1e44c84ac",
-								"exec": [
-									""
+									"var jsonData = JSON.parse(responseBody);\r",
+									"\r",
+									"postman.setEnvironmentVariable(\"payment_id\", jsonData.response._id);"
 								],
 								"type": "text/javascript"
 							}
@@ -784,434 +631,590 @@
 						"method": "POST",
 						"header": [
 							{
+								"description": "Json body",
 								"key": "Content-Type",
 								"value": "application/json"
 							},
 							{
+								"description": "Bearer Token",
 								"key": "Authorization",
 								"value": "Bearer {{access_token}}"
 							},
 							{
-								"key": "X-IBM-Client-Id",
+								"description": "Client ID issued to the TPP via Developer Portal",
+								"key": "X-IBM-Client-ID",
 								"value": "{{X-IBM-Client-ID}}"
 							},
 							{
+								"description": "Client Secret issued to the TPP via Developer Portal",
 								"key": "X-IBM-Client-Secret",
 								"value": "{{X-IBM-Client-Secret}}"
 							},
 							{
-								"key": "Signature",
-								"value": "{{Signature}}"
-							},
-							{
-								"key": "Digest",
-								"value": "{{Digest}}"
-							},
-							{
-								"key": "X-Nordea-Originating-Date",
-								"value": "{{X-Nordea-Originating-Date}}"
-							},
-							{
-								"key": "X-Nordea-Originating-Host",
-								"value": "{{X-Nordea-Originating-Host}}"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"template_id\": \"SEPA_CREDIT_TRANSFER_FI\",\n  \"amount\": \"123.45\",\n  \"authorizer_id\": \"70311198\",\n  \"currency\": \"EUR\",\n  \"end_to_end_id\": \"13227asdfds\",\n  \"external_id\": \"{{randomUUID}}\",\n  \"requested_execution_date\": \"{{today}}\",\n  \"urgency\": \"NORMAL\",\n  \"debtor\": {\n    \"account\": {\n      \"currency\": \"EUR\",\n      \"type\": \"IBAN\",\n      \"value\": \"FI4116603500005114\"\n    },\n    \"own_reference\": \"Own message\"\n  },\n  \"creditor\": {\n    \"account\": {\n      \"type\": \"IBAN\",\n      \"value\": \"FI1350001520000081\"\n    },\n    \"message\": \"Invoice 5071\",\n    \"name\": \"Screws and Nuts Ltd\"\n  }\n}"
-						},
-						"url": {
-							"raw": "https://api.nordeaopenbanking.com/corporate/v1/payments",
-							"protocol": "https",
-							"host": [
-								"api",
-								"nordeaopenbanking",
-								"com"
-							],
-							"path": [
-								"corporate",
-								"v1",
-								"payments"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Create Payment Domestic SE",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "3f3e7741-b1a4-41cc-8de3-4baa10f5d83b",
-								"exec": [
-									"var jsonData = pm.response.json();",
-									"pm.environment.set(\"payment_id\", jsonData.response._id);"
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"id": "243bcc52-c74a-47c3-b3f7-1eb1e44c84ac",
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "Bearer {{access_token}}"
-							},
-							{
-								"key": "X-IBM-Client-Id",
-								"value": "{{X-IBM-Client-ID}}"
-							},
-							{
-								"key": "X-IBM-Client-Secret",
-								"value": "{{X-IBM-Client-Secret}}"
-							},
-							{
-								"key": "Signature",
-								"value": "{{Signature}}"
-							},
-							{
-								"key": "Digest",
-								"value": "{{Digest}}"
-							},
-							{
-								"key": "X-Nordea-Originating-Date",
-								"value": "{{X-Nordea-Originating-Date}}"
-							},
-							{
-								"key": "X-Nordea-Originating-Host",
-								"value": "{{X-Nordea-Originating-Host}}"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"template_id\": \"DOMESTIC_CREDIT_TRANSFER_SE\",\n  \"amount\": \"123.45\",\n  \"authorizer_id\": \"70311198\",\n  \"currency\": \"SEK\",\n  \"external_id\": \"{{randomUUID}}\",\n  \"requested_execution_date\": \"{{today}}\",\n  \"debtor\": {\n    \"account\": {\n      \"currency\": \"SEK\",\n      \"type\": \"BBAN\",\n      \"value\": \"40161303419\"\n    },\n    \"own_reference\": \"Own message\"\n  },\n  \"creditor\": {\n    \"account\": {\n      \"type\": \"BBAN\",\n      \"value\": \"12010113101\"\n    },\n    \"bank\": {\n      \"bank_code\": \"600\",\n      \"bic\": \"DABASESS\"\n    },\n    \"message\": \"Invoice 5071\",\n    \"name\": \"Screws and Nuts Ltd\"\n  }\n}"
-						},
-						"url": {
-							"raw": "https://api.nordeaopenbanking.com/corporate/v1/payments",
-							"protocol": "https",
-							"host": [
-								"api",
-								"nordeaopenbanking",
-								"com"
-							],
-							"path": [
-								"corporate",
-								"v1",
-								"payments"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Create Payment Domestic DK",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "3f3e7741-b1a4-41cc-8de3-4baa10f5d83b",
-								"exec": [
-									"var jsonData = pm.response.json();",
-									"pm.environment.set(\"payment_id\", jsonData.response._id);"
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"id": "243bcc52-c74a-47c3-b3f7-1eb1e44c84ac",
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "Bearer {{access_token}}"
-							},
-							{
-								"key": "X-IBM-Client-Id",
-								"value": "{{X-IBM-Client-ID}}"
-							},
-							{
-								"key": "X-IBM-Client-Secret",
-								"value": "{{X-IBM-Client-Secret}}"
-							},
-							{
-								"key": "Signature",
-								"value": "{{Signature}}"
-							},
-							{
-								"key": "Digest",
-								"value": "{{Digest}}"
-							},
-							{
-								"key": "X-Nordea-Originating-Date",
-								"value": "{{X-Nordea-Originating-Date}}"
-							},
-							{
-								"key": "X-Nordea-Originating-Host",
-								"value": "{{X-Nordea-Originating-Host}}"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"template_id\": \"DOMESTIC_CREDIT_TRANSFER_DK\",\n  \"amount\": \"123.45\",\n  \"authorizer_id\": \"70311198\",\n  \"currency\": \"DKK\",\n  \"end_to_end_id\": \"13227asdfds\",\n  \"external_id\": \"{{randomUUID}}\",\n  \"requested_execution_date\": \"{{today}}\",\n  \"urgency\": \"EXPRESS\",\n  \"debtor\": {\n    \"account\": {\n      \"currency\": \"DKK\",\n      \"type\": \"BBAN\",\n      \"value\": \"20000270491715\"\n    },\n    \"own_reference\": \"Own message\"\n  },\n  \"creditor\": {\n    \"account\": {\n      \"type\": \"BBAN\",\n      \"value\": \"27861544318671\"\n    },\n    \"message\": \"Invoice 5071\",\n    \"message_to_bank_statement\": \"Invoice 5071\",\n    \"name\": \"Screws and Nuts Ltd\"\n  }\n}"
-						},
-						"url": {
-							"raw": "https://api.nordeaopenbanking.com/corporate/v1/payments",
-							"protocol": "https",
-							"host": [
-								"api",
-								"nordeaopenbanking",
-								"com"
-							],
-							"path": [
-								"corporate",
-								"v1",
-								"payments"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Create Payment Transfer Form DK",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "3f3e7741-b1a4-41cc-8de3-4baa10f5d83b",
-								"exec": [
-									"var jsonData = pm.response.json();",
-									"pm.environment.set(\"payment_id\", jsonData.response._id);"
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"id": "243bcc52-c74a-47c3-b3f7-1eb1e44c84ac",
-								"exec": [
-									"var moment = require('moment')\r",
-									"pm.environment.set(\"today\", moment().format(\"YYYY-MM-DD\"))"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"type": "text",
-								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"type": "text",
-								"value": "Bearer {{access_token}}"
-							},
-							{
-								"key": "X-IBM-Client-Id",
-								"type": "text",
-								"value": "{{X-IBM-Client-ID}}"
-							},
-							{
-								"key": "X-IBM-Client-Secret",
-								"type": "text",
-								"value": "{{X-IBM-Client-Secret}}"
-							},
-							{
-								"key": "Signature",
-								"type": "text",
-								"value": "{{Signature}}"
-							},
-							{
-								"key": "Digest",
-								"type": "text",
-								"value": "{{Digest}}"
-							},
-							{
+								"description": "Current date represented as RFC 7231 Full Date",
 								"key": "X-Nordea-Originating-Date",
 								"type": "text",
-								"value": "{{X-Nordea-Originating-Date}}"
-							},
-							{
-								"key": "X-Nordea-Originating-Host",
-								"type": "text",
-								"value": "{{X-Nordea-Originating-Host}}"
-							},
-							{
-								"key": "Mac-Authorization",
-								"type": "text",
-								"value": "{{macHeader}}",
-								"disabled": true
-							},
-							{
-								"key": "X-Mocked-Components",
-								"value": "mocked-mta",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"template_id\": \"DOMESTIC_TRANSFER_FORM_DK\",\n  \"amount\": \"123.45\",\n  \"authorizer_id\": 70311198,\n  \"currency\": \"DKK\",\n  \"external_id\": \"{{randomUUID}}\",\n  \"requested_execution_date\": \"{{today}}\",\n  \"transfer_form\": \"01\",\n  \"debtor\": {\n    \"account\": {\n      \"currency\": \"DKK\",\n      \"type\": \"BBAN\",\n      \"value\": \"20000270491715\"\n    },\n    \"own_reference\": \"Own message\"\n  },\n  \"creditor\": {\n    \"account\": {\n      \"type\": \"GIRO_DK\",\n      \"value\": \"19523179\"\n    },\n    \"message\": \"Invoice 5071\",\n    \"name\": \"Screws and Nuts Ltd\"\n  },\n  \"ultimate_debtor\": {\n    \"address\": \"Strandgade 1 0900 Copenhagen C Denmark\",\n    \"name\": \"Screws and Nuts Subsidiary\"\n  }\n}"
-						},
-						"url": {
-							"raw": "https://api.nordeaopenbanking.com/corporate/v1/payments",
-							"protocol": "https",
-							"host": [
-								"api",
-								"nordeaopenbanking",
-								"com"
-							],
-							"path": [
-								"corporate",
-								"v1",
-								"payments"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Create Payment Domestic Transfer Form OCR DK",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "3f3e7741-b1a4-41cc-8de3-4baa10f5d83b",
-								"exec": [
-									"var jsonData = pm.response.json();",
-									"pm.environment.set(\"payment_id\", jsonData.response._id);"
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"id": "243bcc52-c74a-47c3-b3f7-1eb1e44c84ac",
-								"exec": [
-									"var moment = require('moment')\r",
-									"pm.environment.set(\"today\", moment().format(\"YYYY-MM-DD\"))"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							},
-							{
-								"key": "Authorization",
-								"value": "Bearer {{access_token}}",
-								"type": "text"
-							},
-							{
-								"key": "X-IBM-Client-Id",
-								"value": "{{X-IBM-Client-ID}}",
-								"type": "text"
-							},
-							{
-								"key": "X-IBM-Client-Secret",
-								"value": "{{X-IBM-Client-Secret}}",
-								"type": "text"
-							},
-							{
-								"key": "Signature",
-								"value": "{{Signature}}",
-								"type": "text"
-							},
-							{
-								"key": "Digest",
-								"value": "{{Digest}}",
-								"type": "text"
-							},
-							{
-								"key": "X-Nordea-Originating-Date",
 								"value": "{{X-Nordea-Originating-Date}}",
-								"type": "text"
+								"disabled": true
 							},
 							{
+								"description": "Domain name of the server",
 								"key": "X-Nordea-Originating-Host",
-								"value": "{{X-Nordea-Originating-Host}}",
-								"type": "text"
+								"type": "text",
+								"value": "localhost",
+								"disabled": true
+							},
+							{
+								"description": "Calculated signature",
+								"key": "Signature",
+								"type": "text",
+								"value": "{{Signature}}"
+							},
+							{
+								"description": "Digest calculated for body",
+								"key": "Digest",
+								"type": "text",
+								"value": "{{Digest}}",
+								"disabled": true
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"template_id\": \"DOMESTIC_TRANSFER_FORM_WITH_OCR_DK\",\n  \"amount\": \"123.45\",\n  \"authorizer_id\": \"70311198\",\n  \"currency\": \"DKK\",\n  \"external_id\": \"{{randomUUID}}\",\n  \"requested_execution_date\": \"{{today}}\",\n  \"transfer_form\": \"75\",\n  \"debtor\": {\n    \"account\": {\n      \"currency\": \"DKK\",\n      \"type\": \"BBAN\",\n      \"value\": \"20000270491715\"\n    },\n    \"own_reference\": \"Own message\"\n  },\n  \"creditor\": {\n    \"account\": {\n      \"type\": \"GIRO_DK\",\n      \"value\": \"19523179\"\n    },\n    \"message\": \"Invoice 5071\",\n    \"name\": \"Screws and Nuts Ltd\",\n    \"reference\": {\n      \"value\": \"7047178577750189\"\n    }\n  }\n}"
+							"raw": "{\n  \"amount\": 1.6,\n  \"creditor\": {\n    \"account\": {\n      \"_type\": \"BBAN_DK\",\n      \"currency\": \"DKK\",\n      \"value\": \"20301544117544\"\n    },\n    \"name\": \"Beneficiary name\",\n    \"reference\": {\n      \"_type\": \"RF\",\n      \"value\": \"RF18539007547034\"\n    }\n  },\n  \"currency\": \"DKK\",\n  \"debtor\": {\n    \"account\": {\n      \"_type\": \"BBAN_DK\",\n      \"currency\": \"DKK\",\n      \"value\": \"20001545785605\"\n    },\n    \"message\": \"Message for debtor\"\n  },\n  \"external_id\": \"some id\",\n  \"urgency\": \"standard\",\n  \"end_to_end_identification\":\"Test my end2end\"\n}"
 						},
 						"url": {
-							"raw": "https://api.nordeaopenbanking.com/corporate/v1/payments",
-							"protocol": "https",
+							"raw": "{{host}}/v4/payments/domestic",
 							"host": [
-								"api",
-								"nordeaopenbanking",
-								"com"
+								"{{host}}"
 							],
 							"path": [
-								"corporate",
-								"v1",
-								"payments"
+								"v4",
+								"payments",
+								"domestic"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Create Payment Domestic NO",
+					"name": "V4 Initiate Payment Domestic - DK Transfer form",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
-								"id": "3f3e7741-b1a4-41cc-8de3-4baa10f5d83b",
+								"id": "065c0536-6564-4523-86a8-c3b8bf48a73f",
 								"exec": [
-									"var jsonData = pm.response.json();",
-									"pm.environment.set(\"payment_id\", jsonData.response._id);"
+									"var jsonData = JSON.parse(responseBody);\r",
+									"\r",
+									"postman.setEnvironmentVariable(\"payment_id\", jsonData.response._id);"
 								],
 								"type": "text/javascript"
 							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"description": "Json body",
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"description": "Bearer Token",
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"description": "Client ID issued to the TPP via Developer Portal",
+								"key": "X-IBM-Client-ID",
+								"value": "{{X-IBM-Client-ID}}"
+							},
+							{
+								"description": "Client Secret issued to the TPP via Developer Portal",
+								"key": "X-IBM-Client-Secret",
+								"value": "{{X-IBM-Client-Secret}}"
+							},
+							{
+								"description": "Current date represented as RFC 7231 Full Date",
+								"key": "X-Nordea-Originating-Date",
+								"type": "text",
+								"value": "{{X-Nordea-Originating-Date}}"
+							},
+							{
+								"description": "Domain name of the server",
+								"key": "X-Nordea-Originating-Host",
+								"type": "text",
+								"value": "{{X-Nordea-Originating-Host}}"
+							},
+							{
+								"description": "Calculated signature",
+								"key": "Signature",
+								"type": "text",
+								"value": "{{Signature}}"
+							},
+							{
+								"description": "Digest calculated for body",
+								"key": "Digest",
+								"type": "text",
+								"value": "{{Digest}}",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"externalId\": \"string\",\r\n  \"amount\": \"1.13\",\r\n  \"urgency\": \"standard\",\r\n  \"currency\": \"DKK\",\r\n  \"debtor\": {\r\n    \"account\": {\r\n      \"_type\": \"BBAN_DK\",\r\n      \"currency\": \"DKK\",\r\n      \"value\": \"20001545785605\"\r\n    },\r\n    \"message\": \"Own message\"\r\n  },\r\n  \"creditor\": {\r\n    \"account\": {\r\n      \"_type\": \"GIRO_DK\",\r\n      \"currency\": \"DKK\",\r\n      \"value\": \"7000995\"\r\n    },\r\n    \"reference\": {\r\n         \"_type\":\"01\",\r\n         \"value\":\"\"\r\n    },\r\n    \"message\":\"Credit msg\"\r\n  }\r\n} \r\n"
 						},
+						"url": {
+							"raw": "{{host}}/v4/payments/domestic",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"v4",
+								"payments",
+								"domestic"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "V4 Initiate Payment Domestic - NO",
+					"event": [
 						{
-							"listen": "prerequest",
+							"listen": "test",
 							"script": {
-								"id": "243bcc52-c74a-47c3-b3f7-1eb1e44c84ac",
+								"id": "065c0536-6564-4523-86a8-c3b8bf48a73f",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"\r",
+									"postman.setEnvironmentVariable(\"payment_id\", jsonData.response._id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"description": "Json body",
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"description": "Bearer Token",
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"description": "Client ID issued to the TPP via Developer Portal",
+								"key": "X-IBM-Client-ID",
+								"value": "{{X-IBM-Client-ID}}"
+							},
+							{
+								"description": "Client Secret issued to the TPP via Developer Portal",
+								"key": "X-IBM-Client-Secret",
+								"value": "{{X-IBM-Client-Secret}}"
+							},
+							{
+								"description": "Current date represented as RFC 7231 Full Date",
+								"key": "X-Nordea-Originating-Date",
+								"type": "text",
+								"value": "{{X-Nordea-Originating-Date}}",
+								"disabled": true
+							},
+							{
+								"description": "Domain name of the server",
+								"key": "X-Nordea-Originating-Host",
+								"type": "text",
+								"value": "localhost",
+								"disabled": true
+							},
+							{
+								"description": "Calculated signature",
+								"key": "Signature",
+								"type": "text",
+								"value": "{{Signature}}"
+							},
+							{
+								"description": "Digest calculated for body",
+								"key": "Digest",
+								"type": "text",
+								"value": "{{Digest}}",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"amount\": 1.02,\n  \"creditor\": {\n    \"account\": {\n      \"_type\": \"BBAN_NO\",\n      \"currency\": \"NOK\",\n      \"value\": \"60010503178\"\n    },\n    \"name\": \"Beneficiary name\"\n  },\n  \"currency\": \"NOK\",\n  \"debtor\": {\n    \"account\": {\n      \"_type\": \"BBAN_NO\",\n      \"currency\": \"NOK\",\n      \"value\": \"61735686908\"\n    },\n    \"message\": \"Message for debtor\"\n  },\n  \"external_id\": \"some id\",\n  \"urgency\": \"standard\"\n}"
+						},
+						"url": {
+							"raw": "{{host}}/v4/payments/domestic",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"v4",
+								"payments",
+								"domestic"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "V4 Initiate Payment Domestic - SE",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "065c0536-6564-4523-86a8-c3b8bf48a73f",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"\r",
+									"postman.setEnvironmentVariable(\"payment_id\", jsonData.response._id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"description": "Json body",
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"description": "Bearer Token",
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"description": "Client ID issued to the TPP via Developer Portal",
+								"key": "X-IBM-Client-ID",
+								"value": "{{X-IBM-Client-ID}}"
+							},
+							{
+								"description": "Client Secret issued to the TPP via Developer Portal",
+								"key": "X-IBM-Client-Secret",
+								"value": "{{X-IBM-Client-Secret}}"
+							},
+							{
+								"description": "Current date represented as RFC 7231 Full Date",
+								"key": "X-Nordea-Originating-Date",
+								"type": "text",
+								"value": "{{X-Nordea-Originating-Date}}",
+								"disabled": true
+							},
+							{
+								"description": "Domain name of the server",
+								"key": "X-Nordea-Originating-Host",
+								"type": "text",
+								"value": "localhost",
+								"disabled": true
+							},
+							{
+								"description": "Calculated signature",
+								"key": "Signature",
+								"type": "text",
+								"value": "{{Signature}}"
+							},
+							{
+								"description": "Digest calculated for body",
+								"key": "Digest",
+								"type": "text",
+								"value": "{{Digest}}",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"amount\": 1230.45,\n  \"creditor\": {\n    \"account\": {\n      \"_type\": \"IBAN\",\n      \"currency\": \"SEK\",\n      \"value\": \"SE4550000000058398257466\"\n    },\n    \"message\": \"message\",\n    \"name\": \"Beneficiary name\"\n  },\n  \"currency\": \"SEK\",\n  \"debtor\": {\n    \"account\": {\n      \"_type\": \"BBAN_SE\",\n      \"currency\": \"SEK\",\n      \"value\": \"41350000155\"\n    },\n    \"message\": \"Message for debtor\"\n  },\n  \"external_id\": \"some id\",\n  \"urgency\": \"standard\"\n}"
+						},
+						"url": {
+							"raw": "{{host}}/v4/payments/domestic",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"v4",
+								"payments",
+								"domestic"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "V4 Initiate Payment Domestic - SE Bank Giro",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "065c0536-6564-4523-86a8-c3b8bf48a73f",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"\r",
+									"postman.setEnvironmentVariable(\"payment_id\", jsonData.response._id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"description": "Json body",
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"description": "Bearer Token",
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"description": "Client ID issued to the TPP via Developer Portal",
+								"key": "X-IBM-Client-ID",
+								"value": "{{X-IBM-Client-ID}}"
+							},
+							{
+								"description": "Client Secret issued to the TPP via Developer Portal",
+								"key": "X-IBM-Client-Secret",
+								"value": "{{X-IBM-Client-Secret}}"
+							},
+							{
+								"description": "Current date represented as RFC 7231 Full Date",
+								"key": "X-Nordea-Originating-Date",
+								"type": "text",
+								"value": "{{X-Nordea-Originating-Date}}",
+								"disabled": true
+							},
+							{
+								"description": "Domain name of the server",
+								"key": "X-Nordea-Originating-Host",
+								"type": "text",
+								"value": "localhost",
+								"disabled": true
+							},
+							{
+								"description": "Calculated signature",
+								"key": "Signature",
+								"type": "text",
+								"value": "{{Signature}}"
+							},
+							{
+								"description": "Digest calculated for body",
+								"key": "Digest",
+								"type": "text",
+								"value": "{{Digest}}",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"amount\": \"5.50\",\n  \"currency\": \"SEK\",\n  \"debtor\": {\n    \"account\": {\n      \"_type\": \"BBAN_SE\",\n      \"currency\": \"SEK\",\n      \"value\": \"41350000155\"\n    },\n    \"message\": \"Own message\"\n  },\n    \"creditor\": {\n      \"account\": {\n        \"value\": \"51965770\",\n        \"_type\": \"BGNR\"\n      },\n      \"name\": \"OBI \",\n      \"reference\": {\n        \"value\": \"109939429740003\",\n        \"_type\": \"OCR\"\n      }\n      },\n\n    \"externalId\": \"string\"\n}\n"
+						},
+						"url": {
+							"raw": "{{host}}/v4/payments/domestic",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"v4",
+								"payments",
+								"domestic"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "V4 Initiate Payment Domestic - SE PlusGiro",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "065c0536-6564-4523-86a8-c3b8bf48a73f",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"\r",
+									"postman.setEnvironmentVariable(\"payment_id\", jsonData.response._id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"description": "Json body",
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"description": "Bearer Token",
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"description": "Client ID issued to the TPP via Developer Portal",
+								"key": "X-IBM-Client-ID",
+								"value": "{{X-IBM-Client-ID}}"
+							},
+							{
+								"description": "Client Secret issued to the TPP via Developer Portal",
+								"key": "X-IBM-Client-Secret",
+								"value": "{{X-IBM-Client-Secret}}"
+							},
+							{
+								"description": "Current date represented as RFC 7231 Full Date",
+								"key": "X-Nordea-Originating-Date",
+								"type": "text",
+								"value": "{{X-Nordea-Originating-Date}}",
+								"disabled": true
+							},
+							{
+								"description": "Domain name of the server",
+								"key": "X-Nordea-Originating-Host",
+								"type": "text",
+								"value": "localhost",
+								"disabled": true
+							},
+							{
+								"description": "Calculated signature",
+								"key": "Signature",
+								"type": "text",
+								"value": "{{Signature}}"
+							},
+							{
+								"description": "Digest calculated for body",
+								"key": "Digest",
+								"type": "text",
+								"value": "{{Digest}}",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"amount\": \"5.50\",\n  \"currency\": \"SEK\",\n  \"debtor\": {\n    \"account\": {\n      \"_type\": \"BBAN_SE\",\n      \"currency\": \"SEK\",\n      \"value\": \"41350000155\"\n    },\n    \"message\": \"Own message\"\n  },\n    \"creditor\": {\n      \"account\": {\n        \"value\": \"51965770\",\n        \"_type\": \"PGNR\"\n      },\n      \"name\": \"OBI \",\n      \"reference\": {\n        \"value\": \"109939429740003\",\n        \"_type\": \"OCR\"\n      }\n      },\n\n    \"externalId\": \"string\"\n}\n"
+						},
+						"url": {
+							"raw": "{{host}}/v4/payments/domestic",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"v4",
+								"payments",
+								"domestic"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "V4 Payment Details Domestic",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "065c0536-6564-4523-86a8-c3b8bf48a73f",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"\r",
+									"postman.setEnvironmentVariable(\"payment_id\", jsonData.response._id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"description": "Json body",
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"description": "Bearer Token",
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"description": "Client ID issued to the TPP via Developer Portal",
+								"key": "X-IBM-Client-ID",
+								"value": "{{X-IBM-Client-ID}}"
+							},
+							{
+								"description": "Client Secret issued to the TPP via Developer Portal",
+								"key": "X-IBM-Client-Secret",
+								"value": "{{X-IBM-Client-Secret}}"
+							},
+							{
+								"description": "Current date represented as RFC 7231 Full Date",
+								"key": "X-Nordea-Originating-Date",
+								"type": "text",
+								"value": "{{X-Nordea-Originating-Date}}",
+								"disabled": true
+							},
+							{
+								"description": "Domain name of the server",
+								"key": "X-Nordea-Originating-Host",
+								"type": "text",
+								"value": "localhost",
+								"disabled": true
+							},
+							{
+								"description": "Calculated signature",
+								"key": "Signature",
+								"type": "text",
+								"value": "{{Signature}}"
+							},
+							{
+								"description": "Digest calculated for body",
+								"key": "Digest",
+								"type": "text",
+								"value": "{{Digest}}",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"amount\": 12.23,\n  \"creditor\": {\n    \"account\": {\n      \"_type\": \"BBAN_DK\",\n      \"currency\": \"DKK\",\n      \"value\": \"20301544117544\"\n    },\n    \"name\": \"Beneficiary name\",\n    \"reference\": {\n      \"_type\": \"RF\",\n      \"value\": \"RF18539007547034\"\n    }\n  },\n  \"currency\": \"DKK\",\n  \"debtor\": {\n    \"account\": {\n      \"_type\": \"BBAN_DK\",\n      \"currency\": \"DKK\",\n      \"value\": \"20001545785605\"\n    },\n    \"message\": \"Message for debtor\"\n  },\n  \"external_id\": \"some id\",\n  \"urgency\": \"standard\"\n}"
+						},
+						"url": {
+							"raw": "{{host}}/v4/payments/domestic/{{payment_id}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"v4",
+								"payments",
+								"domestic",
+								"{{payment_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "V4 Payment List Domestic",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "03185bdc-cda6-45b9-ba9e-b7bb4ebdc4a3",
 								"exec": [
 									""
 								],
@@ -1219,390 +1222,543 @@
 							}
 						}
 					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
 					"request": {
-						"method": "POST",
+						"method": "GET",
 						"header": [
 							{
+								"description": "Json body",
 								"key": "Content-Type",
 								"value": "application/json"
 							},
 							{
+								"description": "Bearer Token",
 								"key": "Authorization",
 								"value": "Bearer {{access_token}}"
 							},
 							{
-								"key": "X-IBM-Client-Id",
+								"description": "Client ID issued to the TPP via Developer Portal",
+								"key": "X-IBM-Client-ID",
 								"value": "{{X-IBM-Client-ID}}"
 							},
 							{
+								"description": "Client Secret issued to the TPP via Developer Portal",
 								"key": "X-IBM-Client-Secret",
 								"value": "{{X-IBM-Client-Secret}}"
 							},
 							{
+								"description": "Current date represented as RFC 7231 Full Date",
+								"key": "X-Nordea-Originating-Date",
+								"type": "text",
+								"value": "{{X-Nordea-Originating-Date}}",
+								"disabled": true
+							},
+							{
+								"description": "Domain name of the server",
+								"key": "X-Nordea-Originating-Host",
+								"type": "text",
+								"value": "localhost",
+								"disabled": true
+							},
+							{
+								"description": "Calculated signature",
 								"key": "Signature",
+								"type": "text",
 								"value": "{{Signature}}"
 							},
 							{
+								"description": "Digest calculated for body",
 								"key": "Digest",
-								"value": "{{Digest}}"
-							},
-							{
-								"key": "X-Nordea-Originating-Date",
-								"value": "{{X-Nordea-Originating-Date}}"
-							},
-							{
-								"key": "X-Nordea-Originating-Host",
-								"value": "{{X-Nordea-Originating-Host}}"
+								"type": "text",
+								"value": "{{Digest}}",
+								"disabled": true
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"template_id\": \"DOMESTIC_CREDIT_TRANSFER_NO\",\n  \"amount\": \"123.45\",\n  \"authorizer_id\": \"70311198\",\n  \"currency\": \"NOK\",\n  \"external_id\": \"{{randomUUID}}\",\n  \"requested_execution_date\": \"{{today}}\",\n  \"debtor\": {\n    \"account\": {\n      \"currency\": \"NOK\",\n      \"type\": \"IBAN\",\n      \"value\": \"NO2268250512345\"\n    }\n  },\n  \"creditor\": {\n    \"account\": {\n      \"type\": \"IBAN\",\n      \"value\": \"NO9386011117947\"\n    },\n    \"address\": \"Sonja Henies Plass 2, Oslo\",\n    \"advice_required\": \"Y\",\n    \"message\": \"Invoice 5071\",\n    \"name\": \"Screws and Nuts Ltd\"\n  }\n}"
+							"raw": ""
 						},
 						"url": {
-							"raw": "https://api.nordeaopenbanking.com/corporate/v1/payments",
-							"protocol": "https",
+							"raw": "{{host}}/v4/payments/domestic?page=2&parameter=creation_date&desc=true",
 							"host": [
-								"api",
-								"nordeaopenbanking",
-								"com"
+								"{{host}}"
 							],
 							"path": [
-								"corporate",
-								"v1",
-								"payments"
+								"v4",
+								"payments",
+								"domestic"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "2"
+								},
+								{
+									"key": "parameter",
+									"value": "creation_date"
+								},
+								{
+									"key": "desc",
+									"value": "true"
+								}
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Create Payment Domestic Kid NO",
+					"name": "V4 Confirm Payment Domestic",
 					"event": [
 						{
-							"listen": "test",
+							"listen": "prerequest",
 							"script": {
-								"id": "3f3e7741-b1a4-41cc-8de3-4baa10f5d83b",
+								"id": "34637bf9-f21d-4bf8-875f-753c1280b640",
 								"exec": [
-									"var jsonData = pm.response.json();",
-									"pm.environment.set(\"payment_id\", jsonData.response._id);"
+									""
 								],
 								"type": "text/javascript"
 							}
 						},
 						{
-							"listen": "prerequest",
+							"listen": "test",
 							"script": {
-								"id": "243bcc52-c74a-47c3-b3f7-1eb1e44c84ac",
+								"id": "9d975542-ad88-47e1-98ac-a89f83837c02",
 								"exec": [
-									"var moment = require('moment')\r",
-									"pm.environment.set(\"today\", moment().format(\"YYYY-MM-DD\"))"
+									""
 								],
 								"type": "text/javascript"
 							}
 						}
 					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"type": "text",
-								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"type": "text",
-								"value": "Bearer {{access_token}}"
-							},
-							{
-								"key": "X-IBM-Client-Id",
-								"type": "text",
-								"value": "{{X-IBM-Client-ID}}"
-							},
-							{
-								"key": "X-IBM-Client-Secret",
-								"type": "text",
-								"value": "{{X-IBM-Client-Secret}}"
-							},
-							{
-								"key": "Signature",
-								"type": "text",
-								"value": "{{Signature}}"
-							},
-							{
-								"key": "Digest",
-								"type": "text",
-								"value": "{{Digest}}"
-							},
-							{
-								"key": "X-Nordea-Originating-Date",
-								"type": "text",
-								"value": "{{X-Nordea-Originating-Date}}"
-							},
-							{
-								"key": "X-Nordea-Originating-Host",
-								"type": "text",
-								"value": "{{X-Nordea-Originating-Host}}"
-							},
-							{
-								"key": "Mac-Authorization",
-								"type": "text",
-								"value": "{{macHeader}}",
-								"disabled": true
-							},
-							{
-								"key": "X-Mocked-Components",
-								"type": "text",
-								"value": "mocked-mta",
-								"disabled": true
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"template_id\": \"DOMESTIC_KID_TRANSFER_NO\",\n  \"amount\": \"123.45\",\n  \"authorizer_id\": \"70311198\",\n  \"currency\": \"NOK\",\n  \"external_id\": \"{{randomUUID}}\",\n  \"requested_execution_date\": \"{{today}}\",\n  \"debtor\": {\n    \"account\": {\n      \"currency\": \"NOK\",\n      \"type\": \"IBAN\",\n      \"value\": \"NO2268250512345\"\n    }\n  },\n  \"creditor\": {\n    \"account\": {\n      \"type\": \"IBAN\",\n      \"value\": \"NO5797600516993\"\n    },\n    \"address\": \"Sonja Henies Plass 2, Oslo\",\n    \"name\": \"Screws and Nuts Ltd\",\n    \"reference\": {\n      \"type\": \"KID\",\n      \"value\": \"240000158915751520\"\n    }\n  }\n}"
-						},
-						"url": {
-							"raw": "https://api.nordeaopenbanking.com/corporate/v1/payments",
-							"protocol": "https",
-							"host": [
-								"api",
-								"nordeaopenbanking",
-								"com"
-							],
-							"path": [
-								"corporate",
-								"v1",
-								"payments"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Confirm Payment",
 					"request": {
 						"method": "PUT",
 						"header": [
 							{
+								"description": "Json body",
 								"key": "Content-Type",
 								"value": "application/json"
 							},
 							{
+								"description": "Bearer Token",
 								"key": "Authorization",
 								"value": "Bearer {{access_token}}"
 							},
 							{
-								"key": "X-IBM-Client-Id",
+								"description": "Client ID issued to the TPP via Developer Portal",
+								"key": "X-IBM-Client-ID",
 								"value": "{{X-IBM-Client-ID}}"
 							},
 							{
+								"description": "Client Secret issued to the TPP via Developer Portal",
 								"key": "X-IBM-Client-Secret",
 								"value": "{{X-IBM-Client-Secret}}"
 							},
 							{
-								"key": "Signature",
-								"value": "{{Signature}}"
-							},
-							{
-								"key": "Digest",
-								"value": "{{Digest}}"
-							},
-							{
+								"description": "Current date represented as RFC 7231 Full Date",
 								"key": "X-Nordea-Originating-Date",
+								"type": "text",
 								"value": "{{X-Nordea-Originating-Date}}"
 							},
 							{
+								"description": "Domain name of the server",
 								"key": "X-Nordea-Originating-Host",
+								"type": "text",
 								"value": "{{X-Nordea-Originating-Host}}"
+							},
+							{
+								"description": "Calculated signature",
+								"key": "Signature",
+								"type": "text",
+								"value": "{{Signature}}"
+							},
+							{
+								"description": "Digest calculated for body",
+								"key": "Digest",
+								"type": "text",
+								"value": "{{Digest}}",
+								"disabled": true
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"authorizer_id\": \"70311591\"\n}"
+							"raw": "{\r\n\t\"payments_ids\": [\"{{payment_id}}\"]\r\n}"
 						},
 						"url": {
-							"raw": "https://api.nordeaopenbanking.com/corporate/v1/payments/{{payment_id}}",
-							"protocol": "https",
+							"raw": "{{host}}/v4/payments/domestic/confirm",
 							"host": [
-								"api",
-								"nordeaopenbanking",
-								"com"
+								"{{host}}"
 							],
 							"path": [
-								"corporate",
-								"v1",
+								"v4",
 								"payments",
-								"{{payment_id}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Payment Details",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "26fb284b-206a-4471-9dd6-156a025fa31c",
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "Bearer {{access_token}}"
-							},
-							{
-								"key": "X-IBM-Client-Id",
-								"value": "{{X-IBM-Client-ID}}"
-							},
-							{
-								"key": "X-IBM-Client-Secret",
-								"value": "{{X-IBM-Client-Secret}}"
-							},
-							{
-								"key": "Signature",
-								"value": "{{Signature}}"
-							},
-							{
-								"key": "X-Nordea-Originating-Date",
-								"value": "{{X-Nordea-Originating-Date}}"
-							},
-							{
-								"key": "X-Nordea-Originating-Host",
-								"value": "{{X-Nordea-Originating-Host}}"
-							}
-						],
-						"url": {
-							"raw": "https://api.nordeaopenbanking.com/corporate/v1/payments/{{payment_id}}",
-							"protocol": "https",
-							"host": [
-								"api",
-								"nordeaopenbanking",
-								"com"
-							],
-							"path": [
-								"corporate",
-								"v1",
-								"payments",
-								"{{payment_id}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get Templates - Sandbox Only",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "26fb284b-206a-4471-9dd6-156a025fa31c",
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "X-IBM-Client-Id",
-								"value": "{{X-IBM-Client-ID}}"
-							},
-							{
-								"key": "X-IBM-Client-Secret",
-								"value": "{{X-IBM-Client-Secret}}"
-							}
-						],
-						"url": {
-							"raw": "https://api.nordeaopenbanking.com/corporate/v1/payments/templates",
-							"protocol": "https",
-							"host": [
-								"api",
-								"nordeaopenbanking",
-								"com"
-							],
-							"path": [
-								"corporate",
-								"v1",
-								"payments",
-								"templates"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get Users - Sandbox Only",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "X-IBM-Client-Id",
-								"type": "text",
-								"value": "{{X-IBM-Client-ID}}"
-							},
-							{
-								"key": "X-IBM-Client-Secret",
-								"type": "text",
-								"value": "{{X-IBM-Client-Secret}}"
-							}
-						],
-						"url": {
-							"raw": "https://api.nordeaopenbanking.com/corporate/v1/payments/users",
-							"protocol": "https",
-							"host": [
-								"api",
-								"nordeaopenbanking",
-								"com"
-							],
-							"path": [
-								"corporate",
-								"v1",
-								"payments",
-								"users"
+								"domestic",
+								"confirm"
 							]
 						}
 					},
 					"response": []
 				}
 			],
-			"description": "Payments Initiation Services V1",
-			"event": [
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Payment Initiation Service - Sepa",
+			"item": [
 				{
-					"listen": "prerequest",
-					"script": {
-						"id": "4127d9ce-22b2-4686-8515-4bdc0728244a",
-						"type": "text/javascript",
-						"exec": [
-							""
-						]
-					}
+					"name": "V4 Initiate Payment SEPA",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "065c0536-6564-4523-86a8-c3b8bf48a73f",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"\r",
+									"postman.setEnvironmentVariable(\"payment_id\", jsonData.response._id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"description": "Json body",
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"description": "Bearer Token",
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"description": "Client ID issued to the TPP via Developer Portal",
+								"key": "X-IBM-Client-ID",
+								"value": "{{X-IBM-Client-ID}}"
+							},
+							{
+								"description": "Client Secret issued to the TPP via Developer Portal",
+								"key": "X-IBM-Client-Secret",
+								"value": "{{X-IBM-Client-Secret}}"
+							},
+							{
+								"description": "Current date represented as RFC 7231 Full Date",
+								"key": "X-Nordea-Originating-Date",
+								"type": "text",
+								"value": "{{X-Nordea-Originating-Date}}",
+								"disabled": true
+							},
+							{
+								"description": "Domain name of the server",
+								"key": "X-Nordea-Originating-Host",
+								"type": "text",
+								"value": "localhost",
+								"disabled": true
+							},
+							{
+								"description": "Calculated signature",
+								"key": "Signature",
+								"type": "text",
+								"value": "{{Signature}}"
+							},
+							{
+								"description": "Digest calculated for body",
+								"key": "Digest",
+								"type": "text",
+								"value": "{{Digest}}",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"amount\": \"1.45\",\n  \"creditor\": {\n    \"account\": {\n      \"_type\": \"IBAN\",\n      \"currency\": \"EUR\",\n      \"value\": \"FI1350001520000081\"\n    },\n    \"message\": \"Message for the beneficiary\",\n    \"name\": \"Beneficiary name\",\n    \"reference\": {\n      \"_type\": \"RF\",\n      \"value\": \"RF18539007547034\"\n    }\n  },\n  \"currency\": \"EUR\",\n  \"debtor\": {\n    \"account\": {\n      \"_type\": \"IBAN\",\n      \"currency\": \"EUR\",\n      \"value\": \"FI3815903000105518\"\n    },\n    \"message\": \"Own message\"\n  },\n  \"externalId\": \"no example\"\n}"
+						},
+						"url": {
+							"raw": "{{host}}/v4/payments/sepa",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"v4",
+								"payments",
+								"sepa"
+							]
+						}
+					},
+					"response": []
 				},
 				{
-					"listen": "test",
-					"script": {
-						"id": "58aeb056-1194-45d3-b960-a49b1146c7d5",
-						"type": "text/javascript",
-						"exec": [
-							""
-						]
-					}
+					"name": "V4 Payment Details SEPA",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "065c0536-6564-4523-86a8-c3b8bf48a73f",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"\r",
+									"postman.setEnvironmentVariable(\"payment_id\", jsonData.response._id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"description": "Json body",
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"description": "Bearer Token",
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"description": "Client ID issued to the TPP via Developer Portal",
+								"key": "X-IBM-Client-ID",
+								"value": "{{X-IBM-Client-ID}}"
+							},
+							{
+								"description": "Client Secret issued to the TPP via Developer Portal",
+								"key": "X-IBM-Client-Secret",
+								"value": "{{X-IBM-Client-Secret}}"
+							},
+							{
+								"description": "Current date represented as RFC 7231 Full Date",
+								"key": "X-Nordea-Originating-Date",
+								"type": "text",
+								"value": "{{X-Nordea-Originating-Date}}",
+								"disabled": true
+							},
+							{
+								"description": "Domain name of the server",
+								"key": "X-Nordea-Originating-Host",
+								"type": "text",
+								"value": "localhost",
+								"disabled": true
+							},
+							{
+								"description": "Calculated signature",
+								"key": "Signature",
+								"type": "text",
+								"value": "{{Signature}}"
+							},
+							{
+								"description": "Digest calculated for body",
+								"key": "Digest",
+								"type": "text",
+								"value": "{{Digest}}",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"amount\": 12.23,\n  \"creditor\": {\n    \"account\": {\n      \"_type\": \"BBAN_DK\",\n      \"currency\": \"DKK\",\n      \"value\": \"20301544117544\"\n    },\n    \"name\": \"Beneficiary name\",\n    \"reference\": {\n      \"_type\": \"RF\",\n      \"value\": \"RF18539007547034\"\n    }\n  },\n  \"currency\": \"DKK\",\n  \"debtor\": {\n    \"account\": {\n      \"_type\": \"BBAN_DK\",\n      \"currency\": \"DKK\",\n      \"value\": \"20001545785605\"\n    },\n    \"message\": \"Message for debtor\"\n  },\n  \"external_id\": \"some id\",\n  \"urgency\": \"standard\"\n}"
+						},
+						"url": {
+							"raw": "{{host}}/v4/payments/sepa/{{payment_id}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"v4",
+								"payments",
+								"sepa",
+								"{{payment_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "V4 Payment List SEPA",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "03185bdc-cda6-45b9-ba9e-b7bb4ebdc4a3",
+								"exec": [
+									"//var jsonData = JSON.parse(responseBody);\r",
+									"\r",
+									"//postman.setEnvironmentVariable(\"payment_id\", jsonData.response._id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"description": "Json body",
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"description": "Bearer Token",
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"description": "Client ID issued to the TPP via Developer Portal",
+								"key": "X-IBM-Client-ID",
+								"value": "{{X-IBM-Client-ID}}"
+							},
+							{
+								"description": "Client Secret issued to the TPP via Developer Portal",
+								"key": "X-IBM-Client-Secret",
+								"value": "{{X-IBM-Client-Secret}}"
+							},
+							{
+								"description": "Current date represented as RFC 7231 Full Date",
+								"key": "X-Nordea-Originating-Date",
+								"type": "text",
+								"value": "{{X-Nordea-Originating-Date}}",
+								"disabled": true
+							},
+							{
+								"description": "Domain name of the server",
+								"key": "X-Nordea-Originating-Host",
+								"type": "text",
+								"value": "localhost",
+								"disabled": true
+							},
+							{
+								"description": "Calculated signature",
+								"key": "Signature",
+								"type": "text",
+								"value": "{{Signature}}"
+							},
+							{
+								"description": "Digest calculated for body",
+								"key": "Digest",
+								"type": "text",
+								"value": "{{Digest}}",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{host}}/v4/payments/sepa",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"v4",
+								"payments",
+								"sepa"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "V4 Confirm Payment SEPA",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "34637bf9-f21d-4bf8-875f-753c1280b640",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "9d975542-ad88-47e1-98ac-a89f83837c02",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"description": "Json body",
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"description": "Bearer Token",
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"description": "Client ID issued to the TPP via Developer Portal",
+								"key": "X-IBM-Client-ID",
+								"value": "{{X-IBM-Client-ID}}"
+							},
+							{
+								"description": "Client Secret issued to the TPP via Developer Portal",
+								"key": "X-IBM-Client-Secret",
+								"value": "{{X-IBM-Client-Secret}}"
+							},
+							{
+								"description": "Current date represented as RFC 7231 Full Date",
+								"key": "X-Nordea-Originating-Date",
+								"type": "text",
+								"value": "{{X-Nordea-Originating-Date}}"
+							},
+							{
+								"description": "Domain name of the server",
+								"key": "X-Nordea-Originating-Host",
+								"type": "text",
+								"value": "{{X-Nordea-Originating-Host}}"
+							},
+							{
+								"description": "Calculated signature",
+								"key": "Signature",
+								"type": "text",
+								"value": "{{Signature}}"
+							},
+							{
+								"description": "Digest calculated for body",
+								"key": "Digest",
+								"type": "text",
+								"value": "{{Digest}}",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"payments_ids\": [\"{{payment_id}}\"]\r\n}"
+						},
+						"url": {
+							"raw": "{{host}}/v4/payments/sepa/confirm",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"v4",
+								"payments",
+								"sepa",
+								"confirm"
+							]
+						}
+					},
+					"response": []
 				}
 			],
 			"protocolProfileBehavior": {}
@@ -1612,7 +1768,7 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "fc277c3e-cd9a-4933-92c3-829af6de488c",
+				"id": "070578ac-7aa0-4571-a47e-3c79eda13a9c",
 				"type": "text/javascript",
 				"exec": [
 					"// Forge library OBI logic is at the bottom",
@@ -6967,7 +7123,7 @@
 					" * of Nb*(Nr + 1) words: the algorithm requires an initial set of Nb words,",
 					" * and each of the Nr rounds requires Nb words of key data. The resulting",
 					" * key schedule consists of a linear array of 4-byte words, denoted [wi ],",
-					" * with i in the range 0 = i < Nb(Nr + 1).",
+					" * with i in the range 0 ≤ i < Nb(Nr + 1).",
 					" *",
 					" * KeyExpansion(byte key[4*Nk], word w[Nb*(Nr+1)], Nk)",
 					" * AES-128 (Nb=4, Nk=4, Nr=10)",
@@ -7124,7 +7280,7 @@
 					"    byte state[4,Nb]",
 					"    state = in",
 					"    AddRoundKey(state, w[0, Nb-1])",
-					"    for round = 1 step 1 to Nr?1",
+					"    for round = 1 step 1 to Nr–1",
 					"      SubBytes(state)",
 					"      ShiftRows(state)",
 					"      MixColumns(state)",
@@ -24380,7 +24536,7 @@
 					" * PKCS12Attribute ::= SEQUENCE {",
 					" *   attrId ATTRIBUTE.&id ({PKCS12AttrSet}),",
 					" *   attrValues SET OF ATTRIBUTE.&Type ({PKCS12AttrSet}{@attrId})",
-					" * } -- This type is compatible with the X.500 type ?Attribute?",
+					" * } -- This type is compatible with the X.500 type ’Attribute’",
 					" *",
 					" * PKCS12AttrSet ATTRIBUTE ::= {",
 					" *   friendlyName | -- from PKCS #9",
@@ -30833,15 +30989,6 @@
 					"",
 					"",
 					"// ========================== OBI Logic ==========================",
-					"//PIS specific",
-					"const uuid = require(\"uuid\");",
-					"const moment = require(\"moment\");",
-					"",
-					"const requestId = uuid.v4();",
-					"const today = moment().format(\"YYYY-MM-DD\");",
-					"",
-					"pm.environment.set(\"randomUUID\", requestId);",
-					"pm.environment.set(\"today\", today);",
 					"",
 					"// Common",
 					"function getHeaderValue(headerName) {",
@@ -30854,18 +31001,24 @@
 					"",
 					"function resolveVariables(textWithPossibleVaraibles) {",
 					"    return textWithPossibleVaraibles.replace(/{{(\\w*)}}/g, (str, key) => {",
-					"        const value = pm.environment.get(key);",
-					"        return value === undefined ? \"{{\" + key + \"}}\" : value; ",
+					"        const value = environment[key];",
+					"        return value === undefined ? \"{{\" + key + \"}}\" : value;",
 					"    });",
+					"}",
+					"",
+					"function isUrlEncodedForm() {",
+					"    return request.headers[\"content-type\"] === \"application/x-www-form-urlencoded\";",
+					"}",
+					"",
+					"function noBody() {",
+					"    return Object.entries(request.data).length === 0 && request.data.constructor === Object;",
 					"}",
 					"",
 					"// Digest Calculation",
 					"function resolveRequestBody() {",
-					"    const contentType = getHeaderValue(\"content-type\");",
-					"    ",
-					"    if (contentType === \"application/x-www-form-urlencoded\") {",
+					"    if (isUrlEncodedForm()) {",
 					"        const data = Object.keys(request.data)",
-					"            .sort(function(a, b){",
+					"            .sort((a, b) => {",
 					"                if(a < b) { return -1; }",
 					"                if(a > b) { return 1; }",
 					"                return 0;",
@@ -30873,7 +31026,7 @@
 					"            .map(key => key + \"=\" + request.data[key])",
 					"            .join('&');",
 					"        return resolveVariables(data);",
-					"    } else if (Object.entries(request.data).length === 0 && request.data.constructor === Object) {",
+					"    } else if (noBody()) {",
 					"        return \"\";",
 					"    }",
 					"",
@@ -30896,6 +31049,7 @@
 					"// Signature Calculation",
 					"",
 					"const sdk = require(\"postman-collection\");",
+					"const moment = require(\"moment\")",
 					"",
 					"const requestWithoutContentHeaders = \"(request-target) x-nordea-originating-host x-nordea-originating-date\";",
 					"const requestWithContentHeaders = \"(request-target) x-nordea-originating-host x-nordea-originating-date content-type digest\";",
@@ -30914,7 +31068,7 @@
 					"        `x-nordea-originating-host: ${host}\\n` +",
 					"        `x-nordea-originating-date: ${date}`;",
 					"",
-					"    if (method === \"post\" || method === \"put\" || method === \"patch\") {",
+					"    if (isUrlEncodedForm() || !noBody()) {",
 					"        const contentType = getHeaderValue(\"content-type\");",
 					"        const digest = calculateDigest();",
 					"        normalizedString += `\\ncontent-type: ${contentType}\\ndigest: ${digest}`",
@@ -30940,7 +31094,6 @@
 					"    return forge.pki.privateKeyFromPem(eidasPrivateKey);",
 					"}",
 					"",
-					"",
 					"const clientId = getHeaderValue(\"x-ibm-client-id\")",
 					"const signature = getSignatureBaseOnRequest();",
 					"const encryptedSignature = encryptSignature(signature.normalizedString);",
@@ -30948,7 +31101,6 @@
 					"",
 					"console.log(`Normalized signature string: ${signature.normalizedString}`);",
 					"console.log(`Signature header: ${signatureHeader}`);",
-					"",
 					"",
 					"pm.environment.set(\"Signature\", signatureHeader);",
 					"pm.environment.set(\"X-Nordea-Originating-Host\", signature.host);",
@@ -30959,7 +31111,7 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "57045737-83d1-420d-81f0-deb4e6c10414",
+				"id": "5d4ab661-80d2-49e7-a2da-44f0b778c64f",
 				"type": "text/javascript",
 				"exec": [
 					""
