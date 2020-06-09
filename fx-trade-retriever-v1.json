@@ -1,0 +1,394 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "Automate your post-trade activities by retrieving your executed FX trades from Nordea to your own systems.",
+        "version": "1.0",
+        "title": "FX Trade Retriever API",
+        "contact": {
+            "name": "e-Trading Business Support",
+            "email": "e-tradingsystems@nordea.com"
+        },
+        "x-auth-options": "NO-AUTH",
+        "x-auth-versions": [],
+        "x-documentation": ["xs2a-business-fx_trade_retriever-v1-doc", "xs2a-business-fx_trade_retriever-v1-swagger"],
+        "x-ibm-name": "fx-trade-retriever-api",
+        "x-nordea-api-console-available": "true",
+        "x-nordea-category-name": "BUSINESS API PRODUCTS",
+        "x-nordea-description": "Automate your post-trade activities by retrieving your executed FX trades from Nordea to your own systems.",
+        "x-nordea-feature-categories": [{
+                "features": [{
+                        "isSvgIcon": true,
+                        "heading": "Automated trade processing",
+                        "icon": "cogwheel",
+                        "content": "Automated your post-trade activities related to FX trade executions at Nordea Markets  by combining this API with your other APIs"
+                    }, {
+                        "isSvgIcon": true,
+                        "heading": "Simplified risk management",
+                        "icon": "shield",
+                        "content": "Smarter and easier risk management by capturing and handling the risk when it actually occurs"
+                    }
+                ],
+                "title": "Use cases"
+            }, {
+                "features": [{
+                        "isSvgIcon": true,
+                        "heading": "Integration",
+                        "icon": "dashboard",
+                        "content": "Integrate your preferred system  for a secure and automated post-trade processing of your executed FX trades"
+                    }, {
+                        "isSvgIcon": true,
+                        "heading": "Market leading liquidity",
+                        "icon": "cup",
+                        "content": "Get access to the leading liquidity provider in the Nordics via simple integration"
+                    }
+                ],
+                "title": "Functionality"
+            }
+        ],
+        "x-nordea-icon-class-name": "fx-icon",
+        "x-nordea-name": "FX Trade Retriever API",
+        "x-nordea-order": "16",
+        "x-nordea-quote": "Built to help you gain efficiency",
+        "x-nordea-short-description": "FX Trade Retriever API",
+        "x-nordea-version": "1.0",
+        "x-version": "1.0"
+    },
+    "host": "($catalog.host)",
+    "basePath": "/trade-retriever-api",
+    "tags": [{
+            "name": "trade-retriever-API",
+            "description": "Retrieve your Nordea Markets FX trades using this API"
+        }
+    ],
+    "paths": {
+        "/v1/fx/trades/{company-id}": {
+            "get": {
+                "tags": ["trade-retriever-API"],
+                "summary": "Retrieve a list of trades executed for a given company id  between two dates",
+                "operationId": "getTradesForShortnameUsingGET",
+                "produces": ["application/json"],
+                "parameters": [{
+                        "name": "company-id",
+                        "in": "path",
+                        "description": "Nordea Markets company identifier",
+                        "required": true,
+                        "type": "string",
+                        "x-example": "COMPANY_A"
+                    }, {
+                        "name": "fromDate",
+                        "in": "query",
+                        "description": "start date for the search filter",
+                        "required": true,
+                        "type": "string",
+                        "allowEmptyValue": false,
+                        "x-example": "20191115"
+                    }, {
+                        "name": "toDate",
+                        "in": "query",
+                        "description": "end date for the search filter",
+                        "required": true,
+                        "type": "string",
+                        "allowEmptyValue": false,
+                        "x-example": "20191125"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/Trades"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/OpenBankingError"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/OpenBankingError"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/OpenBankingError"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/OpenBankingError"
+                        }
+                    }
+                },
+                "deprecated": false,
+                "x-auth-options": "NO-AUTH",
+                "x-auth-versions": []
+            }
+        },
+        "/v1/fx/trades/{company-id}/{trade-id}": {
+            "get": {
+                "tags": ["trade-retriever-API"],
+                "summary": "Retrieve the trade details for a specific Nordea trade id executed by or on behalf of the given company id. If the trade has been modified using an auxiliary, its related trades wil also appear here",
+                "operationId": "getTradeByTradeIdUsingGET",
+                "produces": ["application/json"],
+                "parameters": [{
+                        "name": "company-id",
+                        "in": "path",
+                        "description": "Nordea Markets company identifier",
+                        "required": true,
+                        "type": "string",
+                        "x-example": "COMPANY_A"
+                    }, {
+                        "name": "trade-id",
+                        "in": "path",
+                        "description": "Nordea Markets trade id",
+                        "required": true,
+                        "type": "string",
+                        "x-example": "9396132N0"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/Trades"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/OpenBankingError"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/OpenBankingError"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/OpenBankingError"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/OpenBankingError"
+                        }
+                    }
+                },
+                "deprecated": false,
+                "x-auth-options": "NO-AUTH",
+                "x-auth-versions": []
+            }
+        }
+    },
+    "definitions": {
+        "FXLeg": {
+            "type": "object",
+            "required": ["all_in_rate", "buy_amount", "buy_currency", "company_id", "forward_points", "leg_type", "sell_amount", "sell_currency", "settl_date", "spot_rate", "uti"],
+            "properties": {
+                "all_in_rate": {
+                    "type": "number",
+                    "example": 1.19023,
+                    "description": "All In FX Rate of this leg"
+                },
+                "buy_amount": {
+                    "type": "number",
+                    "example": 1000.0,
+                    "description": "The quantity bought in this leg"
+                },
+                "buy_currency": {
+                    "type": "string",
+                    "example": "EUR",
+                    "description": "Buy currency of this leg"
+                },
+                "company_id": {
+                    "type": "string",
+                    "example": "COMPANY_A",
+                    "description": "The company identifier or shortname that executed this leg"
+                },
+                "forward_points": {
+                    "type": "number",
+                    "example": 3.0E-4,
+                    "description": "Swap / Forward points of this leg. Not present for SPOT trades"
+                },
+                "leg_type": {
+                    "type": "string",
+                    "example": "STANDARD",
+                    "description": "Indicates whether this leg is a spot, forward, a swap near, or swap far leg",
+                    "enum": ["STANDARD", "NDF", "SWAP_NEAR_LEG", "SWAP_FAR_LEG"]
+                },
+                "ndf_details": {
+                    "description": "Contains the NDF details for NDF legs. Only present if this leg is part of an NDF.",
+                    "$ref": "#/definitions/FXNDFLegDetails"
+                },
+                "sell_amount": {
+                    "type": "number",
+                    "example": 1190.23,
+                    "description": "The quantity sold in this leg"
+                },
+                "sell_currency": {
+                    "type": "string",
+                    "example": "USD",
+                    "description": "Sell currency of this leg"
+                },
+                "settl_date": {
+                    "type": "string",
+                    "example": 20191120,
+                    "description": "The settle/value date in yyyyMMdd format indicating the date that the leg traded amount is credited or debited"
+                },
+                "settlement_no": {
+                    "type": "string",
+                    "example": "0191216000049",
+                    "description": "The settlement number of this leg"
+                },
+                "spot_rate": {
+                    "type": "number",
+                    "example": 3.0E-4,
+                    "description": "Spot rate used in this leg. Equal to all in rate if part of a SPOT trade"
+                },
+                "uti": {
+                    "type": "string",
+                    "example": "E02CXW2O4HGH7B459BHRXCDSWAEKAAM3HZIYJDB6SP",
+                    "description": "Unique Transaction Identifier"
+                }
+            },
+            "title": "FXLeg",
+            "description": "Leg of an FX Trade executed at Nordea Markets"
+        },
+        "FXNDFLegDetails": {
+            "type": "object",
+            "required": ["ndf_fixing_date", "ndf_notional_amount", "ndf_notional_currency", "ndf_reference_currency", "ndf_settle_currency"],
+            "properties": {
+                "ndf_fixing_date": {
+                    "type": "string",
+                    "example": 20191120,
+                    "description": "The fixing date in yyyyMMdd format indicating the date for the NDF fixing"
+                },
+                "ndf_notional_amount": {
+                    "type": "number",
+                    "example": 1000.0,
+                    "description": "The notional amount of the NDF"
+                },
+                "ndf_notional_currency": {
+                    "type": "string",
+                    "example": "BRL",
+                    "description": "The currency of the notional amount of the NDF"
+                },
+                "ndf_reference_currency": {
+                    "type": "string",
+                    "example": "BRL",
+                    "description": "The reference currency of the NDF"
+                },
+                "ndf_settle_currency": {
+                    "type": "string",
+                    "example": "EUR",
+                    "description": "The settlement currency of the NDF"
+                }
+            },
+            "title": "FXNDFLegDetails",
+            "description": "Non deliverable settlement details for NDF legs executed at Nordea Markets"
+        },
+        "FXTrade": {
+            "type": "object",
+            "required": ["client_reference", "counterparty", "currency_pair", "legs", "nordea_trade_id", "prev_settlement_no", "product_type", "trade_date", "trade_status", "transaction_time"],
+            "properties": {
+                "client_reference": {
+                    "type": "string",
+                    "example": "Client specific note for a trade",
+                    "description": "The client reference for a given trade"
+                },
+                "counterparty": {
+                    "type": "string",
+                    "example": "NORDEA",
+                    "description": "The counterparty of your trade. Always NORDEA"
+                },
+                "currency_pair": {
+                    "type": "string",
+                    "example": "EUR/USD",
+                    "description": "The currency pair of this FX trade"
+                },
+                "legs": {
+                    "type": "array",
+                    "description": "Contains the legs of the FX trade. Spot and forward trades contain only one leg. FX Swaps contain two legs and block trades can contain more than two legs",
+                    "items": {
+                        "$ref": "#/definitions/FXLeg"
+                    }
+                },
+                "nordea_trade_id": {
+                    "type": "string",
+                    "example": "9797323N0",
+                    "description": "The Nordea Markets trade ID for the executed trade"
+                },
+                "prev_settlement_no": {
+                    "type": "string",
+                    "example": "9797323N0",
+                    "description": "In the case of extension or early settlement, this field links to the previous settlement number"
+                },
+                "product_type": {
+                    "type": "string",
+                    "example": "FX_SPOT",
+                    "description": "FX Product Type of the executed trade",
+                    "enum": ["FX_SPOT", "FX_FORWARD", "FX_SWAP", "FX_NDF", "FX_HRET", "FX_MRET", "FX_HREXT", "FX_MREXT"]
+                },
+                "trade_date": {
+                    "type": "string",
+                    "example": 20191118,
+                    "description": "The date in yyyyMMdd format of when the trade was executed"
+                },
+                "trade_status": {
+                    "type": "string",
+                    "example": "SETTLED",
+                    "description": "Indicates whether trade has settled or is still in open status",
+                    "enum": ["OPEN", "SETTLED", "CANCELLED"]
+                },
+                "transaction_time": {
+                    "type": "string",
+                    "example": "2019-02-08T08:13:12.841Z",
+                    "description": "UTC timestamp of transaction time"
+                }
+            },
+            "title": "FXTrade",
+            "description": "An FX Trade executed at Nordea Markets"
+        },
+        "OpenBankingError": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string"
+                },
+                "error_description": {
+                    "type": "string"
+                },
+                "error_reason": {
+                    "type": "string"
+                },
+                "http_status": {
+                    "type": "integer",
+                    "format": "int32"
+                }
+            },
+            "title": "OpenBankingError"
+        },
+        "Trades": {
+            "type": "object",
+            "properties": {
+                "fx_trades": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/FXTrade"
+                    }
+                }
+            },
+            "title": "Trades",
+            "description": "Container for trades executed at Nordea Markets"
+        }
+    }
+}

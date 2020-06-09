@@ -1,0 +1,1447 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Nordea Payment Initiation Services API v4",
+    "version": "4.0",
+    "title": "Payments API Domestic Transfer",
+    "contact": {
+      "name": "Open Banking team",
+      "url": "https://nordeaopenbanking.com",
+      "email": "support@nordeaopenbanking.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "x-ibm-name": "payments-api-domestic-transfer-v4",
+    "x-version": "4.0"
+  },
+  "host": "localhost:8079",
+  "basePath": "/personal",
+  "tags": [
+    {
+      "name": "payments-v4",
+      "description": "Domestic Payment initiation and confirmation"
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/v4/payments/domestic": {
+      "get": {
+        "tags": [
+          "payments-v4"
+        ],
+        "summary": "Get a list of payments created for the user",
+        "description": "Country specific access token will return only payments from the specific country",
+        "operationId": "getPaymentsUsingGET_1",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Signature",
+            "in": "header",
+            "description": "A signature of request by the TPP on application level. The process of signing a request is described in 'Signing HTTP Messages' RFC draft version 10 (<a href=\"https://tools.ietf.org/html/draft-cavage-http-signatures-10\" target=\"_blank\">https://tools.ietf.org/html/draft-cavage-http-signatures-10</a>). The request signature needs to be sent in the 'Signature' HTTP header as described in the RFC. Additional requirements from Nordea \n - The only allowed algorithm is RSA-SHA256 \n- The key size for the used RSA key pair has to be at least 2048 bit \n- The keyId is the clientId of your application originating from the Nordea Developer Portal \n- We require the following headers to be used in the signature \n* Request without body: (request-target) X-Nordea-Originating-Host X-Nordea-Originating-Date \n* Request with body: (request-target) X-Nordea-Originating-Host X-Nordea-Originating-Date Content-type Digest \n* The request-target is a combination of the HTTP action verb and the request URI path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "X-IBM-Client-Id",
+            "in": "header",
+            "description": "Id of the Client",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "X-IBM-Client-Secret",
+            "in": "header",
+            "description": "Secret password generated for the Client",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "X-Nordea-Originating-Date",
+            "in": "header",
+            "description": "HTTP header element for date and time represented as RFC 7231 Full Dates (GMT). Example date: **Wed, 24 Apr 2019 14:00:37 GMT**. It is similar to standard HTTP 'Date' expect that it allows to set it under JavaScript in browser while standard 'Date' is forbidden",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "X-Nordea-Originating-Host",
+            "in": "header",
+            "description": "HTTP header element for specification of the domain name of the server. It is similar to standard HTTP 'Host' header but it won't be overridden by proxies. It also allows to set it under JavaScript in browser while standard 'Host' is forbidden",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "X-Nordea-Originating-User-Agent",
+            "in": "header",
+            "description": "End user (i.e. PSU) agent information, to be provided if TPP is in session with the PSU",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Nordea-Originating-User-Ip",
+            "in": "header",
+            "description": "End user (i.e. PSU) IP address, to be provided if TPP is in session with the PSU",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "desc",
+            "in": "query",
+            "description": "Choose a sorting order. If true - descending, if false - ascending. Default: true.",
+            "required": false,
+            "type": "boolean",
+            "x-availabilityStatus": "Stable"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Number of a page (starting with 0) with payments which you want to retrieve. Default: 0.",
+            "required": false,
+            "type": "integer",
+            "format": "int32",
+            "x-availabilityStatus": "Stable"
+          },
+          {
+            "name": "parameter",
+            "in": "query",
+            "description": "Choose a parameter which should be used to sort payments with. Default: creation_date.",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "amount",
+              "creation_date"
+            ],
+            "x-availabilityStatus": "Stable"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/PaymentListResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized with failure code:\n* error.apikey.missing = Missing API key. This operation requires API key, but it was missing.\n* error.token = Unspecified error with supplied token.\n* error.token.invalid = Missing access token or token did not authorized requested operation. This operation requires valid access token, but it was missing.\n* error.token.expired = Access token has expired.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden with failure code:\n* error.resource.denied = Requested resource is not authorized by access token.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Resource not found",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2": [
+              "PAYMENTS_MULTIPLE"
+            ],
+            "DecoupledAuth": [
+              "PAYMENTS_MULTIPLE"
+            ]
+          }
+        ],
+        "deprecated": false,
+        "x-availabilityInfo": "V4 - eIDAS support",
+        "x-availabilityStatus": "Stable"
+      },
+      "post": {
+        "tags": [
+          "payments-v4"
+        ],
+        "summary": "Initiate a domestic payment",
+        "operationId": "paymentInitiateUsingPOST_1",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Digest",
+            "in": "header",
+            "description": "The Digest Header header as defined in [RFC3230] contains a Hash of the message body. The only hash algorithms that may be used to calculate the Digest within the context of this specification are SHA-256 and SHA-512 as defined in [RFC5843]. For POST with 'application/x-www-form-urlencoded' content type Digest should be calculated for normalized string created from request parameters like this: 'param1&#61;value1&#38;param2&#61;value2'. It is important that parameters should be placed in alphabetic order",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Signature",
+            "in": "header",
+            "description": "A signature of request by the TPP on application level. The process of signing a request is described in 'Signing HTTP Messages' RFC draft version 10 (<a href=\"https://tools.ietf.org/html/draft-cavage-http-signatures-10\" target=\"_blank\">https://tools.ietf.org/html/draft-cavage-http-signatures-10</a>). The request signature needs to be sent in the 'Signature' HTTP header as described in the RFC. Additional requirements from Nordea \n - The only allowed algorithm is RSA-SHA256 \n- The key size for the used RSA key pair has to be at least 2048 bit \n- The keyId is the clientId of your application originating from the Nordea Developer Portal \n- We require the following headers to be used in the signature \n* Request without body: (request-target) X-Nordea-Originating-Host X-Nordea-Originating-Date \n* Request with body: (request-target) X-Nordea-Originating-Host X-Nordea-Originating-Date Content-type Digest \n* The request-target is a combination of the HTTP action verb and the request URI path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "X-IBM-Client-Id",
+            "in": "header",
+            "description": "Id of the Client",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "X-IBM-Client-Secret",
+            "in": "header",
+            "description": "Secret password generated for the Client",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "X-Nordea-Originating-Date",
+            "in": "header",
+            "description": "HTTP header element for date and time represented as RFC 7231 Full Dates (GMT). Example date: **Wed, 24 Apr 2019 14:00:37 GMT**. It is similar to standard HTTP 'Date' expect that it allows to set it under JavaScript in browser while standard 'Date' is forbidden",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "X-Nordea-Originating-Host",
+            "in": "header",
+            "description": "HTTP header element for specification of the domain name of the server. It is similar to standard HTTP 'Host' header but it won't be overridden by proxies. It also allows to set it under JavaScript in browser while standard 'Host' is forbidden",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "X-Nordea-Originating-User-Agent",
+            "in": "header",
+            "description": "End user (i.e. PSU) agent information, to be provided if TPP is in session with the PSU",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Nordea-Originating-User-Ip",
+            "in": "header",
+            "description": "End user (i.e. PSU) IP address, to be provided if TPP is in session with the PSU",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Response-Scenarios",
+            "in": "header",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "AuthorizationSkipAccessControl"
+            ],
+            "x-availabilityStatus": "SandboxOnly"
+          },
+          {
+            "in": "body",
+            "name": "createPaymentRequestV4",
+            "description": "Request to create a new payment",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreatePaymentRequest"
+            },
+            "x-availabilityInfo": "V4 - eIDAS support",
+            "x-availabilityStatus": "Stable"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "schema": {
+              "$ref": "#/definitions/PaymentResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized with failure code:\n* error.apikey.missing = Missing API key. This operation requires API key, but it was missing.\n* error.token = Unspecified error with supplied token.\n* error.token.invalid = Missing access token or token did not authorized requested operation. This operation requires valid access token, but it was missing.\n* error.token.expired = Access token has expired.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden with failure code:\n* error.resource.denied = Requested resource is not authorized by access token.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Resource not found",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2": [
+              "PAYMENTS_MULTIPLE"
+            ],
+            "DecoupledAuth": [
+              "PAYMENTS_MULTIPLE"
+            ]
+          }
+        ],
+        "deprecated": false,
+        "x-availabilityInfo": "V4 - eIDAS support",
+        "x-availabilityStatus": "Stable"
+      }
+    },
+    "/v4/payments/domestic/confirm": {
+      "put": {
+        "tags": [
+          "payments-v4"
+        ],
+        "summary": "Confirm multiple previously initiated payments",
+        "operationId": "confirmPaymentsUsingPUT",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Signature",
+            "in": "header",
+            "description": "A signature of request by the TPP on application level. The process of signing a request is described in 'Signing HTTP Messages' RFC draft version 10 (<a href=\"https://tools.ietf.org/html/draft-cavage-http-signatures-10\" target=\"_blank\">https://tools.ietf.org/html/draft-cavage-http-signatures-10</a>). The request signature needs to be sent in the 'Signature' HTTP header as described in the RFC. Additional requirements from Nordea \n - The only allowed algorithm is RSA-SHA256 \n- The key size for the used RSA key pair has to be at least 2048 bit \n- The keyId is the clientId of your application originating from the Nordea Developer Portal \n- We require the following headers to be used in the signature \n* Request without body: (request-target) X-Nordea-Originating-Host X-Nordea-Originating-Date \n* Request with body: (request-target) X-Nordea-Originating-Host X-Nordea-Originating-Date Content-type Digest \n* The request-target is a combination of the HTTP action verb and the request URI path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "X-IBM-Client-Id",
+            "in": "header",
+            "description": "Id of the Client",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "X-IBM-Client-Secret",
+            "in": "header",
+            "description": "Secret password generated for the Client",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "X-Nordea-Originating-Date",
+            "in": "header",
+            "description": "HTTP header element for date and time represented as RFC 7231 Full Dates (GMT). Example date: **Wed, 24 Apr 2019 14:00:37 GMT**. It is similar to standard HTTP 'Date' expect that it allows to set it under JavaScript in browser while standard 'Date' is forbidden",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "X-Nordea-Originating-Host",
+            "in": "header",
+            "description": "HTTP header element for specification of the domain name of the server. It is similar to standard HTTP 'Host' header but it won't be overridden by proxies. It also allows to set it under JavaScript in browser while standard 'Host' is forbidden",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "X-Nordea-Originating-User-Agent",
+            "in": "header",
+            "description": "End user (i.e. PSU) agent information, to be provided if TPP is in session with the PSU",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Nordea-Originating-User-Ip",
+            "in": "header",
+            "description": "End user (i.e. PSU) IP address, to be provided if TPP is in session with the PSU",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "request",
+            "description": "Confirm multiple Payments request",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ConfirmPaymentsListRequest"
+            },
+            "x-availabilityInfo": "V4 - eIDAS support",
+            "x-availabilityStatus": "Stable"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/PaymentListResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized with failure code:\n* error.apikey.missing = Missing API key. This operation requires API key, but it was missing.\n* error.token = Unspecified error with supplied token.\n* error.token.invalid = Missing access token or token did not authorized requested operation. This operation requires valid access token, but it was missing.\n* error.token.expired = Access token has expired.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden with failure code:\n* error.resource.denied = Requested resource is not authorized by access token.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Resource not found",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "409": {
+            "description": "${error.409.description}"
+          }
+        },
+        "security": [
+          {
+            "OAuth2": [
+              "PAYMENTS_MULTIPLE"
+            ],
+            "DecoupledAuth": [
+              "PAYMENTS_MULTIPLE"
+            ]
+          }
+        ],
+        "deprecated": false,
+        "x-availabilityInfo": "V4 - eIDAS support",
+        "x-availabilityStatus": "Stable"
+      }
+    },
+    "/v4/payments/domestic/{paymentId}": {
+      "get": {
+        "tags": [
+          "payments-v4"
+        ],
+        "summary": "Get payment by payment id",
+        "operationId": "getPaymentUsingGET_1",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Signature",
+            "in": "header",
+            "description": "A signature of request by the TPP on application level. The process of signing a request is described in 'Signing HTTP Messages' RFC draft version 10 (<a href=\"https://tools.ietf.org/html/draft-cavage-http-signatures-10\" target=\"_blank\">https://tools.ietf.org/html/draft-cavage-http-signatures-10</a>). The request signature needs to be sent in the 'Signature' HTTP header as described in the RFC. Additional requirements from Nordea \n - The only allowed algorithm is RSA-SHA256 \n- The key size for the used RSA key pair has to be at least 2048 bit \n- The keyId is the clientId of your application originating from the Nordea Developer Portal \n- We require the following headers to be used in the signature \n* Request without body: (request-target) X-Nordea-Originating-Host X-Nordea-Originating-Date \n* Request with body: (request-target) X-Nordea-Originating-Host X-Nordea-Originating-Date Content-type Digest \n* The request-target is a combination of the HTTP action verb and the request URI path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "X-IBM-Client-Id",
+            "in": "header",
+            "description": "Id of the Client",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "X-IBM-Client-Secret",
+            "in": "header",
+            "description": "Secret password generated for the Client",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "X-Nordea-Originating-Date",
+            "in": "header",
+            "description": "HTTP header element for date and time represented as RFC 7231 Full Dates (GMT). Example date: **Wed, 24 Apr 2019 14:00:37 GMT**. It is similar to standard HTTP 'Date' expect that it allows to set it under JavaScript in browser while standard 'Date' is forbidden",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "X-Nordea-Originating-Host",
+            "in": "header",
+            "description": "HTTP header element for specification of the domain name of the server. It is similar to standard HTTP 'Host' header but it won't be overridden by proxies. It also allows to set it under JavaScript in browser while standard 'Host' is forbidden",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "X-Nordea-Originating-User-Agent",
+            "in": "header",
+            "description": "End user (i.e. PSU) agent information, to be provided if TPP is in session with the PSU",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Nordea-Originating-User-Ip",
+            "in": "header",
+            "description": "End user (i.e. PSU) IP address, to be provided if TPP is in session with the PSU",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Response-Scenarios",
+            "in": "header",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "AuthorizationSkipAccessControl"
+            ],
+            "x-availabilityStatus": "SandboxOnly"
+          },
+          {
+            "name": "paymentId",
+            "in": "path",
+            "description": "Payment id of the payment to get",
+            "required": true,
+            "type": "string",
+            "x-availabilityInfo": "V4 - eIDAS support",
+            "x-availabilityStatus": "Stable"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/PaymentResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized with failure code:\n* error.apikey.missing = Missing API key. This operation requires API key, but it was missing.\n* error.token = Unspecified error with supplied token.\n* error.token.invalid = Missing access token or token did not authorized requested operation. This operation requires valid access token, but it was missing.\n* error.token.expired = Access token has expired.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden with failure code:\n* error.resource.denied = Requested resource is not authorized by access token.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Resource not found",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2": [
+              "PAYMENTS_MULTIPLE"
+            ],
+            "DecoupledAuth": [
+              "PAYMENTS_MULTIPLE"
+            ]
+          }
+        ],
+        "deprecated": false,
+        "x-availabilityInfo": "V4 - eIDAS support",
+        "x-availabilityStatus": "Stable"
+      }
+    },
+    "/v4/payments/domestic/{paymentId}/confirm": {
+      "put": {
+        "tags": [
+          "payments-v4"
+        ],
+        "summary": "Confirm a previously initiated payment",
+        "operationId": "paymentConfirmUsingPUT_1",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Signature",
+            "in": "header",
+            "description": "A signature of request by the TPP on application level. The process of signing a request is described in 'Signing HTTP Messages' RFC draft version 10 (<a href=\"https://tools.ietf.org/html/draft-cavage-http-signatures-10\" target=\"_blank\">https://tools.ietf.org/html/draft-cavage-http-signatures-10</a>). The request signature needs to be sent in the 'Signature' HTTP header as described in the RFC. Additional requirements from Nordea \n - The only allowed algorithm is RSA-SHA256 \n- The key size for the used RSA key pair has to be at least 2048 bit \n- The keyId is the clientId of your application originating from the Nordea Developer Portal \n- We require the following headers to be used in the signature \n* Request without body: (request-target) X-Nordea-Originating-Host X-Nordea-Originating-Date \n* Request with body: (request-target) X-Nordea-Originating-Host X-Nordea-Originating-Date Content-type Digest \n* The request-target is a combination of the HTTP action verb and the request URI path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "X-IBM-Client-Id",
+            "in": "header",
+            "description": "Id of the Client",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "X-IBM-Client-Secret",
+            "in": "header",
+            "description": "Secret password generated for the Client",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "X-Nordea-Originating-Date",
+            "in": "header",
+            "description": "HTTP header element for date and time represented as RFC 7231 Full Dates (GMT). Example date: **Wed, 24 Apr 2019 14:00:37 GMT**. It is similar to standard HTTP 'Date' expect that it allows to set it under JavaScript in browser while standard 'Date' is forbidden",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "X-Nordea-Originating-Host",
+            "in": "header",
+            "description": "HTTP header element for specification of the domain name of the server. It is similar to standard HTTP 'Host' header but it won't be overridden by proxies. It also allows to set it under JavaScript in browser while standard 'Host' is forbidden",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "X-Nordea-Originating-User-Agent",
+            "in": "header",
+            "description": "End user (i.e. PSU) agent information, to be provided if TPP is in session with the PSU",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Nordea-Originating-User-Ip",
+            "in": "header",
+            "description": "End user (i.e. PSU) IP address, to be provided if TPP is in session with the PSU",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Response-Scenarios",
+            "in": "header",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "AuthorizationSkipAccessControl",
+              "PaymentSigningExpires",
+              "PaymentMissingFunds",
+              "PaymentOnHold"
+            ],
+            "x-availabilityStatus": "SandboxOnly"
+          },
+          {
+            "name": "paymentId",
+            "in": "path",
+            "description": "Payment id of the payment to confirm",
+            "required": true,
+            "type": "string",
+            "x-availabilityInfo": "Deprecated, please use the new PUT endpoint for signing multiple payments",
+            "x-availabilityStatus": "Deprecated",
+            "x-deprecationInfo": "The endpoint will be terminated by Q3 2020",
+            "x-removalInfo": "Support for Sweden will be completely removed by June 30 2020"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/PaymentResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized with failure code:\n* error.apikey.missing = Missing API key. This operation requires API key, but it was missing.\n* error.token = Unspecified error with supplied token.\n* error.token.invalid = Missing access token or token did not authorized requested operation. This operation requires valid access token, but it was missing.\n* error.token.expired = Access token has expired.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden with failure code:\n* error.resource.denied = Requested resource is not authorized by access token.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Resource not found",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "409": {
+            "description": "${error.409.description}"
+          }
+        },
+        "security": [
+          {
+            "OAuth2": [
+              "PAYMENTS_MULTIPLE"
+            ],
+            "DecoupledAuth": [
+              "PAYMENTS_MULTIPLE"
+            ]
+          }
+        ],
+        "deprecated": true,
+        "x-availabilityInfo": "Deprecated, please use the new PUT endpoint for signing multiple payments",
+        "x-availabilityStatus": "Deprecated",
+        "x-deprecationInfo": "The endpoint will be terminated by Q3 2020",
+        "x-removalInfo": "Support for Sweden will be completely removed by June 30 2020"
+      }
+    }
+  },
+  "securityDefinitions": {
+    "DecoupledAuth": {
+      "type": "oauth2",
+      "authorizationUrl": "/v4/authorize-decoupled",
+      "tokenUrl": "/v4/authorize-decoupled/token",
+      "flow": "accessCode",
+      "scopes": {
+        "ACCOUNTS_BASIC": "Account information",
+        "ACCOUNTS_BALANCES": "Account information with balances",
+        "ACCOUNTS_DETAILS": "Account information with details",
+        "ACCOUNTS_TRANSACTIONS": "Account's transactions",
+        "PAYMENTS_MULTIPLE": "Payments Multiple"
+      },
+      "x-authSubType": "decoupled-auth",
+      "x-codeStatusDescription": "Returns code when authorization second step is finished",
+      "x-codeStatusUrl": "/v4/authorize-decoupled"
+    },
+    "OAuth2": {
+      "type": "oauth2",
+      "authorizationUrl": "/v4/authorize",
+      "tokenUrl": "/v4/authorize/token",
+      "flow": "accessCode",
+      "scopes": {
+        "ACCOUNTS_BASIC": "Account information",
+        "ACCOUNTS_BALANCES": "Account information with balances",
+        "ACCOUNTS_DETAILS": "Account information with details",
+        "ACCOUNTS_TRANSACTIONS": "Account's transactions",
+        "PAYMENTS_MULTIPLE": "Payments Multiple"
+      }
+    }
+  },
+  "definitions": {
+    "AccountNumber": {
+      "type": "object",
+      "required": [
+        "_type",
+        "value"
+      ],
+      "properties": {
+        "_type": {
+          "type": "string",
+          "example": "IBAN | BBAN_SE | BBAN_DK | BBAN_NO | BGNR | PGNR | GIRO_DK",
+          "description": "Type of account number",
+          "enum": [
+            "IBAN",
+            "BBAN_SE",
+            "BBAN_DK",
+            "BBAN_NO",
+            "BGNR",
+            "PGNR",
+            "GIRO_DK"
+          ],
+          "x-availabilityStatus": "Stable"
+        },
+        "currency": {
+          "type": "string",
+          "example": "DKK | SEK | NOK | EUR",
+          "description": "Currency of the payment",
+          "enum": [
+            "DKK",
+            "SEK",
+            "NOK",
+            "EUR"
+          ],
+          "x-availabilityStatus": "Stable"
+        },
+        "value": {
+          "type": "string",
+          "example": "FI1350001520000081",
+          "description": "Actual account number",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "AccountNumber",
+      "description": "Account number"
+    },
+    "ConfirmPaymentsListRequest": {
+      "type": "object",
+      "properties": {
+        "payments_ids": {
+          "type": "array",
+          "description": "A list of paymentIds to be confirmed",
+          "items": {
+            "type": "string"
+          },
+          "x-availabilityStatus": "Stable"
+        },
+        "redirect_url": {
+          "type": "string",
+          "description": "TPP redirection URL, One of the urls from the initial sign up",
+          "x-availabilityStatus": "Stable"
+        },
+        "state": {
+          "type": "string",
+          "description": "Optional info to be returned with the redirection",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "ConfirmPaymentsListRequest"
+    },
+    "CreatePaymentRequest": {
+      "type": "object",
+      "required": [
+        "amount",
+        "creditor",
+        "currency",
+        "debtor"
+      ],
+      "properties": {
+        "amount": {
+          "type": "number",
+          "example": 123.45,
+          "description": "Monetary amount of the payment. Max (digits+decimals): FI SEPA: (9+2); SE:(11+2); DK:(7+2); NO:(7+2)",
+          "x-availabilityStatus": "Stable"
+        },
+        "creditor": {
+          "description": "Creditor of the payment",
+          "$ref": "#/definitions/PaymentCreditor",
+          "x-availabilityStatus": "Stable"
+        },
+        "currency": {
+          "type": "string",
+          "example": "DKK | SEK | NOK | EUR",
+          "description": "Currency code according to ISO 4217. Possible values: FI SEPA:EUR; SE:SEK; DK:DKK; NO:NOK",
+          "enum": [
+            "DKK",
+            "SEK",
+            "NOK",
+            "EUR"
+          ],
+          "x-availabilityStatus": "Stable"
+        },
+        "debtor": {
+          "description": "Debtor of the payment",
+          "$ref": "#/definitions/PaymentDebtor",
+          "x-availabilityStatus": "Stable"
+        },
+        "end_to_end_identification": {
+          "type": "string",
+          "example": "End to end identification",
+          "description": "Free text reference that can be provided by the PSU. This identification is passed on throughout the entire end-to-end chain. Only in scope for Nordea Business DK.",
+          "x-availabilityStatus": "Beta"
+        },
+        "external_id": {
+          "type": "string",
+          "example": "d630b00a-227c-474e-8d20-1fc2b7141fdc",
+          "description": "Unique identification as assigned by a partner to identify the payment.",
+          "x-availabilityStatus": "Stable"
+        },
+        "tpp_messages": {
+          "type": "array",
+          "description": "Additional messages for third parties",
+          "items": {
+            "$ref": "#/definitions/TppMessage"
+          },
+          "x-availabilityStatus": "Beta"
+        },
+        "urgency": {
+          "type": "string",
+          "example": "standard | express | sameday",
+          "description": "Urgency of the payment.\nNB: This field is only supported for DK Domestic payments. For further details on urgencies and cut-offs, refer to the Nordea website.",
+          "enum": [
+            "standard",
+            "express",
+            "sameday"
+          ],
+          "x-availabilityStatus": "Beta"
+        }
+      },
+      "title": "CreatePaymentRequest",
+      "description": "Payment to create"
+    },
+    "ErrorPayload": {
+      "type": "object",
+      "properties": {
+        "failures": {
+          "type": "array",
+          "description": "More details on the occurred error",
+          "items": {
+            "$ref": "#/definitions/Failure"
+          },
+          "x-availabilityStatus": "Stable"
+        },
+        "request": {
+          "description": "Error details",
+          "$ref": "#/definitions/RequestEcho",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "ErrorPayload",
+      "description": "Error response body"
+    },
+    "ErrorResponse": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "description": "Payload",
+          "$ref": "#/definitions/ErrorPayload",
+          "x-availabilityStatus": "Stable"
+        },
+        "group_header": {
+          "description": "Standard format response header",
+          "$ref": "#/definitions/ResponseHeader",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "ErrorResponse",
+      "description": "Error response"
+    },
+    "Failure": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "description": "Failure code",
+          "x-availabilityStatus": "Stable"
+        },
+        "description": {
+          "type": "string",
+          "description": "Failure description",
+          "x-availabilityStatus": "Stable"
+        },
+        "path": {
+          "type": "string",
+          "description": "JSON path of the failing element if applicable",
+          "x-availabilityStatus": "Stable"
+        },
+        "type": {
+          "type": "string",
+          "description": "Type of the validation error, e.g. NotNull",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "Failure",
+      "description": "Validation error"
+    },
+    "Fee": {
+      "type": "object",
+      "properties": {
+        "_type": {
+          "type": "string",
+          "example": "payment_transaction",
+          "description": "Example 'domestic_transaction' only for DK domestic payments",
+          "x-availabilityStatus": "Beta"
+        },
+        "country_code": {
+          "type": "string",
+          "example": "country code",
+          "description": "Country code according to ISO Alpha-2",
+          "enum": [
+            "FI",
+            "SE",
+            "DK",
+            "NO",
+            "DE",
+            "EE",
+            "LV",
+            "LT",
+            "PL",
+            "RU",
+            "LU",
+            "CH",
+            "US",
+            "SG",
+            "GB",
+            "ANY",
+            "UK"
+          ],
+          "x-availabilityStatus": "Beta"
+        },
+        "currency_code": {
+          "type": "string",
+          "example": "DKK",
+          "description": "Currency code according to ISO 4217",
+          "enum": [
+            "DKK",
+            "SEK",
+            "NOK",
+            "EUR"
+          ],
+          "x-availabilityStatus": "Beta"
+        },
+        "value": {
+          "type": "number",
+          "description": "Value of the fee.",
+          "x-availabilityStatus": "Beta"
+        }
+      },
+      "title": "Fee",
+      "description": "An amount the bank will charge for executing the payment"
+    },
+    "Link": {
+      "type": "object",
+      "properties": {
+        "href": {
+          "type": "string",
+          "description": "Relative path to the linked resource",
+          "x-availabilityStatus": "Stable"
+        },
+        "rel": {
+          "type": "string",
+          "description": "Describes the nature of the link, e.g. 'details' for a link to the detailed information of a listed resource.",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "Link",
+      "description": "Context specific link (only GET supported)"
+    },
+    "Pagination": {
+      "type": "object",
+      "properties": {
+        "continuation_key": {
+          "type": "string",
+          "description": "Resource listing may return a continuationKey if there's more results available. Request may be retried with the continuationKey, but otherwise same parameters, in order to get more results.",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "Pagination",
+      "description": "Details of paginated response"
+    },
+    "Payment": {
+      "type": "object",
+      "required": [
+        "_id",
+        "amount",
+        "creditor",
+        "currency",
+        "debtor"
+      ],
+      "properties": {
+        "_id": {
+          "type": "string",
+          "description": "Unique payment identifier assigned for new payment",
+          "x-availabilityStatus": "Stable"
+        },
+        "_links": {
+          "type": "array",
+          "description": "HATEOAS inspired links: 'rel' and 'href'",
+          "items": {
+            "$ref": "#/definitions/Link"
+          },
+          "x-availabilityStatus": "Stable"
+        },
+        "amount": {
+          "type": "number",
+          "example": 123.45,
+          "description": "Monetary amount of the payment. Max (digits+decimals): FI SEPA: (9+2); SE:(11+2); DK:(7+2); NO:(7+2)",
+          "x-availabilityStatus": "Stable"
+        },
+        "creditor": {
+          "description": "Creditor of the payment",
+          "$ref": "#/definitions/PaymentCreditor",
+          "x-availabilityStatus": "Stable"
+        },
+        "currency": {
+          "type": "string",
+          "example": "DKK | SEK | NOK | EUR",
+          "description": "Currency code according to ISO 4217. Possible values: FI SEPA:EUR; SE:SEK; DK:DKK; NO:NOK",
+          "enum": [
+            "DKK",
+            "SEK",
+            "NOK",
+            "EUR"
+          ],
+          "x-availabilityStatus": "Stable"
+        },
+        "debtor": {
+          "description": "Debtor of the payment",
+          "$ref": "#/definitions/PaymentDebtor",
+          "x-availabilityStatus": "Stable"
+        },
+        "end_to_end_identification": {
+          "type": "string",
+          "example": "End to end identification",
+          "description": "Free text reference that can be provided by the PSU. This identification is passed on throughout the entire end-to-end chain. Only in scope for Nordea Business DK.",
+          "x-availabilityStatus": "Beta"
+        },
+        "entry_date_time": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp of payment creation. ISO 8601 format yyyy-mm-ddThh:mm:ss.fffZ",
+          "x-availabilityStatus": "Stable"
+        },
+        "external_id": {
+          "type": "string",
+          "example": "d630b00a-227c-474e-8d20-1fc2b7141fdc",
+          "description": "Unique identification as assigned by a partner to identify the payment.",
+          "x-availabilityStatus": "Stable"
+        },
+        "fee": {
+          "description": "An amount the bank will charge for executing the payment",
+          "$ref": "#/definitions/Fee",
+          "x-availabilityStatus": "Beta"
+        },
+        "payment_status": {
+          "type": "string",
+          "description": "Status of the payment",
+          "enum": [
+            "PendingConfirmation",
+            "PendingUserApproval",
+            "OnHold",
+            "Confirmed",
+            "Rejected",
+            "Paid",
+            "InsufficientFunds",
+            "LimitExceeded",
+            "UserApprovalFailed",
+            "UserApprovalTimeout",
+            "UserApprovalCancelled",
+            "Unknown"
+          ],
+          "x-availabilityStatus": "Stable"
+        },
+        "planned_execution_date": {
+          "type": "string",
+          "format": "date",
+          "description": "Planned execution date will indicate the day the payment will be finalized. If the payment has been pushed due to cut-off, it will be indicated in planned execution date.",
+          "x-availabilityStatus": "Stable"
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp of payment creation. ISO 8601 format yyyy-mm-ddThh:mm:ss.fffZ",
+          "x-availabilityStatus": "Deprecated",
+          "x-deprecationInfo": "Will be removed passed V4"
+        },
+        "tpp_messages": {
+          "type": "array",
+          "description": "Additional messages for third parties",
+          "items": {
+            "$ref": "#/definitions/TppMessage"
+          },
+          "x-availabilityStatus": "Beta"
+        },
+        "urgency": {
+          "type": "string",
+          "example": "standard | express | sameday",
+          "description": "Urgency of the payment.\nNB: This field is only supported for DK Domestic payments. For further details on urgencies and cut-offs, refer to the Nordea website.",
+          "enum": [
+            "standard",
+            "express",
+            "sameday"
+          ],
+          "x-availabilityStatus": "Beta"
+        }
+      },
+      "title": "Payment",
+      "description": "Payment information"
+    },
+    "PaymentCreditor": {
+      "type": "object",
+      "properties": {
+        "account": {
+          "description": "Account of the creditor",
+          "$ref": "#/definitions/AccountNumber",
+          "x-availabilityStatus": "Stable"
+        },
+        "message": {
+          "type": "string",
+          "example": "Message for the beneficiary",
+          "description": "Message for the creditor to appear on their transaction. Max length: FI SEPA:140; SE:12; PGNR:25; BGNR:150; DK: 40; NO: 140",
+          "x-availabilityStatus": "Stable"
+        },
+        "name": {
+          "type": "string",
+          "example": "Beneficiary name",
+          "description": "Name of the creditor. Max length: FI SEPA: 70; SE: 35; DK: Not use; NO: 30",
+          "x-availabilityStatus": "Stable"
+        },
+        "reference": {
+          "description": "Reference for the creditor to appear on their transaction",
+          "$ref": "#/definitions/Reference",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "PaymentCreditor",
+      "description": "Creditor of the payment"
+    },
+    "PaymentDebtor": {
+      "type": "object",
+      "properties": {
+        "account": {
+          "description": "Account number",
+          "$ref": "#/definitions/AccountNumber",
+          "x-availabilityStatus": "Stable"
+        },
+        "message": {
+          "type": "string",
+          "example": "Own message",
+          "description": "Own message to be on the debitor's transaction. Max length 20.\nNB: This field is not supported for SEPA and Norwegian payments and will be ignored.",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "PaymentDebtor",
+      "description": "Debtor of the payment"
+    },
+    "PaymentError": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "type": "string",
+          "description": "Error description",
+          "x-availabilityStatus": "Stable"
+        },
+        "error_description": {
+          "type": "string",
+          "description": "Error description",
+          "x-availabilityStatus": "Stable"
+        },
+        "payment_id": {
+          "type": "string",
+          "description": "Payment ID",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "PaymentError",
+      "description": "Error description "
+    },
+    "PaymentList": {
+      "type": "object",
+      "properties": {
+        "payments": {
+          "type": "array",
+          "description": "List of payments",
+          "items": {
+            "$ref": "#/definitions/Payment"
+          },
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "PaymentList",
+      "description": "List of payments"
+    },
+    "PaymentListResponse": {
+      "type": "object",
+      "properties": {
+        "_links": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Link"
+          },
+          "x-availabilityStatus": "Stable"
+        },
+        "errors": {
+          "type": "array",
+          "description": "Error description",
+          "items": {
+            "$ref": "#/definitions/PaymentError"
+          },
+          "x-availabilityStatus": "Stable"
+        },
+        "group_header": {
+          "description": "Standard format response header",
+          "$ref": "#/definitions/ResponseHeader",
+          "x-availabilityStatus": "Stable"
+        },
+        "response": {
+          "description": "Payload",
+          "$ref": "#/definitions/PaymentList",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "PaymentListResponse",
+      "description": "Get list of payments"
+    },
+    "PaymentResponse": {
+      "type": "object",
+      "properties": {
+        "group_header": {
+          "description": "Standard format response header",
+          "$ref": "#/definitions/ResponseHeader",
+          "x-availabilityStatus": "Stable"
+        },
+        "response": {
+          "description": "Payload",
+          "$ref": "#/definitions/Payment",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "PaymentResponse",
+      "description": "Payment information response"
+    },
+    "Reference": {
+      "type": "object",
+      "required": [
+        "_type"
+      ],
+      "properties": {
+        "_type": {
+          "type": "string",
+          "example": "RF | INVOICE | OCR | 01 | 04 | 15 | 71 | 73 | 75",
+          "description": "Type of the reference number, e.g. RF",
+          "x-availabilityStatus": "Stable"
+        },
+        "value": {
+          "type": "string",
+          "example": "RF18539007547034",
+          "description": "Actual reference number",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "Reference",
+      "description": "Creditor reference number"
+    },
+    "RequestEcho": {
+      "type": "object",
+      "properties": {
+        "url": {
+          "type": "string",
+          "description": "Original request url",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "RequestEcho",
+      "description": "Original request information"
+    },
+    "ResponseHeader": {
+      "type": "object",
+      "properties": {
+        "creation_date_time": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Response creation time",
+          "x-availabilityStatus": "Stable"
+        },
+        "http_code": {
+          "type": "integer",
+          "format": "int32",
+          "example": 200,
+          "description": "HTTP code for response",
+          "x-availabilityStatus": "Stable"
+        },
+        "message_identification": {
+          "type": "string",
+          "description": "Original request id for correlation purposes",
+          "x-availabilityStatus": "Stable"
+        },
+        "message_pagination": {
+          "description": "Details of paginated response",
+          "$ref": "#/definitions/Pagination",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "ResponseHeader",
+      "description": "External response header"
+    },
+    "TppMessage": {
+      "type": "object",
+      "properties": {
+        "category": {
+          "type": "string",
+          "example": "ERROR | WARNING | INFO",
+          "description": "Category of the TPP message, INFO is further information, WARNING is something can be fixed, ERROR possibly non fixable issue",
+          "enum": [
+            "ERROR",
+            "WARNING",
+            "INFO"
+          ],
+          "x-availabilityStatus": "Stable"
+        },
+        "code": {
+          "type": "string",
+          "example": "DS0A | TM01 | AM04",
+          "description": "Additional code that is combined with the text ",
+          "enum": [
+            "DS0A",
+            "NARR",
+            "AM21",
+            "AM04",
+            "TM01",
+            "AM12",
+            "RC06",
+            "RC07",
+            "RC04",
+            "AG06",
+            "BE22",
+            "BE20",
+            "FF06",
+            "BE19",
+            "AM03",
+            "AM11",
+            "CH04",
+            "DT01",
+            "CH03",
+            "FF08",
+            "AC10",
+            "AC02",
+            "AG08",
+            "RR09",
+            "RC11",
+            "FF10",
+            "RR10",
+            "FF05",
+            "CH15",
+            "FF04",
+            "AC11",
+            "AC03",
+            "AC13",
+            "AC14",
+            "AC05",
+            "AC06",
+            "RR07",
+            "DT03",
+            "AM13"
+          ],
+          "x-availabilityStatus": "Stable"
+        },
+        "text": {
+          "type": "string",
+          "example": "Insufficient funds",
+          "description": "Additional explaining text to the TPP",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "TppMessage",
+      "description": "A message object"
+    }
+  }
+}

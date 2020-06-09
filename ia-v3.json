@@ -1,0 +1,1419 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Nordea Authorization API v3",
+    "version": "3.0",
+    "title": "Authorization API",
+    "contact": {
+      "name": "Open Banking team",
+      "url": "https://nordeaopenbanking.com",
+      "email": "support@nordeaopenbanking.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "x-ibm-name": "auth-v3"
+  },
+  "host": "localhost:8079",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "Assets",
+      "description": "Assets V3"
+    },
+    {
+      "name": "Authorization",
+      "description": "Redirect Access Authorization"
+    },
+    {
+      "name": "Decoupled Authorization",
+      "description": "Decoupled Access Authorization (Sweden only)"
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/v3/assets": {
+      "get": {
+        "tags": [
+          "Assets"
+        ],
+        "summary": "Get user assets",
+        "operationId": "getAssetsUsingGET",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "X-Nordea-Originating-User-Agent",
+            "in": "header",
+            "description": "End user (i.e. PSU) agent information, to be provided if TPP is in session with the PSU",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Nordea-Originating-User-Ip",
+            "in": "header",
+            "description": "End user (i.e. PSU) IP address, to be provided if TPP is in session with the PSU",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/AssetResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized with failure code:\n* error.apikey.missing = Missing API key. This operation requires API key, but it was missing.\n* error.token = Unspecified error with supplied token.\n* error.token.invalid = Missing access token or token did not authorized requested operation. This operation requires valid access token, but it was missing.\n* error.token.expired = Access token has expired.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden with failure code:\n* error.resource.denied = Requested resource is not authorized by access token.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Resource not found",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2": [
+              "ACCOUNTS_BASIC",
+              "ACCOUNTS_BALANCES",
+              "ACCOUNTS_DETAILS",
+              "ACCOUNTS_TRANSACTIONS",
+              "PAYMENTS_MULTIPLE"
+            ],
+            "DecoupledAuth": [
+              "ACCOUNTS_BASIC",
+              "ACCOUNTS_BALANCES",
+              "ACCOUNTS_DETAILS",
+              "ACCOUNTS_TRANSACTIONS",
+              "PAYMENTS_MULTIPLE"
+            ]
+          },
+          {
+            "ClientId": []
+          },
+          {
+            "ClientSecret": []
+          }
+        ],
+        "deprecated": true,
+        "x-availabilityInfo": "V3 will be deprecated as it does not support QSealC. Please use V4",
+        "x-availabilityStatus": "Deprecated",
+        "x-deprecationInfo": "V4 will be available by Q3 2019",
+        "x-removalInfo": "V3 support will be completely removed by March 2020"
+      }
+    },
+    "/v3/authorize": {
+      "get": {
+        "tags": [
+          "Authorization"
+        ],
+        "summary": "Redirect Access Authorization",
+        "operationId": "authorization-v3-fi-dk-no",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "X-Nordea-Originating-User-Agent",
+            "in": "header",
+            "description": "End user (i.e. PSU) agent information, to be provided if TPP is in session with the PSU",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Nordea-Originating-User-Ip",
+            "in": "header",
+            "description": "End user (i.e. PSU) IP address, to be provided if TPP is in session with the PSU",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "accounts",
+            "in": "query",
+            "description": "For use in the Sandbox to simulate the Resource Owner selecting a subset of their accounts for which to Grant Access.\nIn the Sandbox, if this parameter isn't passed, the Client will get access to all accounts.",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi",
+            "x-availabilityStatus": "Sandbox Only - Stable"
+          },
+          {
+            "name": "authentication_method",
+            "in": "query",
+            "description": "Parameter with possible values: NEMID_2F (DK only: NemID with username, password and OTC/NMAS), BANKID_NO (NO only: BankID Norway), BANKIDM_NO (NO only: Mobile BankID Norway)",
+            "required": false,
+            "type": "string",
+            "allowEmptyValue": false,
+            "enum": [
+              "NEMID_2F",
+              "BANKID_NO",
+              "BANKIDM_NO"
+            ],
+            "x-availabilityInfo": "V3 will be deprecated as it does not support QSealC. Please use V4",
+            "x-availabilityStatus": "Deprecated",
+            "x-deprecationInfo": "V4 will be available by Q3 2019",
+            "x-removalInfo": "V3 support will be completely removed by March 2020"
+          },
+          {
+            "name": "client_id",
+            "in": "query",
+            "description": "client id issued to the TPP via the Developer Portal for the App in use",
+            "required": true,
+            "type": "string",
+            "x-availabilityInfo": "V3 will be deprecated as it does not support QSealC. Please use V4",
+            "x-availabilityStatus": "Deprecated",
+            "x-deprecationInfo": "V4 will be available by Q3 2019",
+            "x-removalInfo": "V3 support will be completely removed by March 2020"
+          },
+          {
+            "name": "country",
+            "in": "query",
+            "description": "Country is a mandatory parameter with possible values FI, DK or NO",
+            "required": true,
+            "type": "string",
+            "allowEmptyValue": false,
+            "enum": [
+              "FI",
+              "DK",
+              "NO"
+            ],
+            "x-availabilityInfo": "V3 will be deprecated as it does not support QSealC. Please use V4",
+            "x-availabilityStatus": "Deprecated",
+            "x-deprecationInfo": "V4 will be available by Q3 2019",
+            "x-removalInfo": "V3 support will be completely removed by March 2020"
+          },
+          {
+            "name": "duration",
+            "in": "query",
+            "description": "Duration of access authorization in minutes. range: 1 to 129600 minutes (90 days)",
+            "required": true,
+            "type": "integer",
+            "format": "int32",
+            "x-availabilityInfo": "V3 will be deprecated as it does not support QSealC. Please use V4",
+            "x-availabilityStatus": "Deprecated",
+            "x-deprecationInfo": "V4 will be available by Q3 2019",
+            "x-removalInfo": "V3 support will be completely removed by March 2020"
+          },
+          {
+            "name": "language",
+            "in": "query",
+            "description": "If country is FI, the default language is \"fi\", if country is DK, the default language is \"da\", if country is NO, the default language is \"no\"",
+            "required": false,
+            "type": "string",
+            "allowEmptyValue": false,
+            "enum": [
+              "fi",
+              "da",
+              "sv",
+              "en",
+              "no"
+            ],
+            "x-availabilityInfo": "V3 will be deprecated as it does not support QSealC. Please use V4",
+            "x-availabilityStatus": "Deprecated",
+            "x-deprecationInfo": "V4 will be available by Q3 2019",
+            "x-removalInfo": "V3 support will be completely removed by March 2020"
+          },
+          {
+            "name": "max_tx_history",
+            "in": "query",
+            "description": "Maximum transaction history in months. Optional if ACCOUNTS_TRANSACTIONS scope is requested. Default=2 months. range: 1 to 12 months",
+            "required": false,
+            "type": "integer",
+            "format": "int32",
+            "x-availabilityInfo": "V3 will be deprecated as it does not support QSealC. Please use V4",
+            "x-availabilityStatus": "Deprecated",
+            "x-deprecationInfo": "V4 will be available by Q3 2019",
+            "x-removalInfo": "V3 support will be completely removed by March 2020"
+          },
+          {
+            "name": "redirect_uri",
+            "in": "query",
+            "description": "Redirect URI you used when this application was registered with Nordea.",
+            "required": true,
+            "type": "string",
+            "x-availabilityInfo": "V3 will be deprecated as it does not support QSealC. Please use V4",
+            "x-availabilityStatus": "Deprecated",
+            "x-deprecationInfo": "V4 will be available by Q3 2019",
+            "x-removalInfo": "V3 support will be completely removed by March 2020"
+          },
+          {
+            "name": "scope",
+            "in": "query",
+            "description": "scope is a list of one or more of the scopes described below:\n\nAIS scopes:\n- ACCOUNTS_BASIC (note: Must always be present at a minimum, when requesting ACCOUNTS_* scopes)\n- ACCOUNTS_BALANCES\n- ACCOUNTS_DETAILS\n- ACCOUNTS_TRANSACTIONS\n\nPIS scope:\n- PAYMENTS_MULTIPLE",
+            "required": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi",
+            "x-availabilityInfo": "V3 will be deprecated as it does not support QSealC. Please use V4",
+            "x-availabilityStatus": "Deprecated",
+            "x-deprecationInfo": "V4 will be available by Q3 2019",
+            "x-removalInfo": "V3 support will be completely removed by March 2020"
+          },
+          {
+            "name": "state",
+            "in": "query",
+            "description": "The OAuth2 state parameter",
+            "required": true,
+            "type": "string",
+            "x-availabilityInfo": "V3 will be deprecated as it does not support QSealC. Please use V4",
+            "x-availabilityStatus": "Deprecated",
+            "x-deprecationInfo": "V4 will be available by Q3 2019",
+            "x-removalInfo": "V3 support will be completely removed by March 2020"
+          }
+        ],
+        "responses": {
+          "302": {
+            "description": "Redirect to OAuth provider"
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized with failure code:\n* error.apikey.missing = Missing API key. This operation requires API key, but it was missing.\n* error.token = Unspecified error with supplied token.\n* error.token.invalid = Missing access token or token did not authorized requested operation. This operation requires valid access token, but it was missing.\n* error.token.expired = Access token has expired.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden with failure code:\n* error.resource.denied = Requested resource is not authorized by access token.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Resource not found",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "ClientId": []
+          },
+          {
+            "ClientSecret": []
+          }
+        ],
+        "deprecated": true,
+        "x-availabilityInfo": "V3 will be deprecated as it does not support QSealC. Please use V4",
+        "x-availabilityStatus": "Deprecated",
+        "x-deprecationInfo": "V4 will be available by Q3 2019",
+        "x-removalInfo": "V3 support will be completely removed by March 2020"
+      }
+    },
+    "/v3/authorize-decoupled": {
+      "post": {
+        "tags": [
+          "Decoupled Authorization"
+        ],
+        "summary": "Decoupled Access Authorization (Sweden only)",
+        "operationId": "authorization-v3-se",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "X-Nordea-Originating-User-Agent",
+            "in": "header",
+            "description": "End user (i.e. PSU) agent information, to be provided if TPP is in session with the PSU",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Nordea-Originating-User-Ip",
+            "in": "header",
+            "description": "End user (i.e. PSU) IP address, to be provided if TPP is in session with the PSU",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "request",
+            "description": "Request for authorization",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DecoupledAuthRequest"
+            },
+            "x-availabilityInfo": "V3 will be deprecated as it does not support QSealC. Please use V4",
+            "x-availabilityStatus": "Deprecated",
+            "x-deprecationInfo": "V4 will be available by Q3 2019",
+            "x-removalInfo": "V3 support will be completely removed by March 2020"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Authorize",
+            "schema": {
+              "$ref": "#/definitions/AuthorizeResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized with failure code:\n* error.apikey.missing = Missing API key. This operation requires API key, but it was missing.\n* error.token = Unspecified error with supplied token.\n* error.token.invalid = Missing access token or token did not authorized requested operation. This operation requires valid access token, but it was missing.\n* error.token.expired = Access token has expired.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden with failure code:\n* error.resource.denied = Requested resource is not authorized by access token.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Resource not found",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "ClientId": []
+          },
+          {
+            "ClientSecret": []
+          }
+        ],
+        "deprecated": true,
+        "x-availabilityInfo": "V3 will be deprecated as it does not support QSealC. Please use V4",
+        "x-availabilityStatus": "Deprecated",
+        "x-deprecationInfo": "V4 will be available by Q3 2019",
+        "x-removalInfo": "V3 support will be completely removed by March 2020"
+      }
+    },
+    "/v3/authorize-decoupled/token": {
+      "post": {
+        "tags": [
+          "Decoupled Authorization"
+        ],
+        "summary": "Token Exchange (Sweden only)",
+        "operationId": "getTokenUsingPOST",
+        "consumes": [
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "X-Nordea-Originating-User-Agent",
+            "in": "header",
+            "description": "End user (i.e. PSU) agent information, to be provided if TPP is in session with the PSU",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Nordea-Originating-User-Ip",
+            "in": "header",
+            "description": "End user (i.e. PSU) IP address, to be provided if TPP is in session with the PSU",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "code",
+            "in": "formData",
+            "description": "The OAuth2 auth code. Required if grant_type=authorization_code",
+            "required": false,
+            "type": "string",
+            "x-availabilityInfo": "V3 will be deprecated as it does not support QSealC. Please use V4",
+            "x-availabilityStatus": "Deprecated",
+            "x-deprecationInfo": "V4 will be available by Q3 2019",
+            "x-removalInfo": "V3 support will be completely removed by March 2020"
+          },
+          {
+            "name": "grant_type",
+            "in": "formData",
+            "description": "The grant type of request",
+            "required": true,
+            "type": "string",
+            "x-example": "authorization_code",
+            "enum": [
+              "authorization_code",
+              "refresh_token"
+            ],
+            "x-availabilityInfo": "V3 will be deprecated as it does not support QSealC. Please use V4",
+            "x-availabilityStatus": "Deprecated",
+            "x-deprecationInfo": "V4 will be available by Q3 2019",
+            "x-removalInfo": "V3 support will be completely removed by March 2020"
+          },
+          {
+            "name": "redirect_uri",
+            "in": "formData",
+            "description": "Redirect URI you used when this application was registered with Nordea. Required if grant_type=authorization_code",
+            "required": false,
+            "type": "string",
+            "x-availabilityInfo": "V3 will be deprecated as it does not support QSealC. Please use V4",
+            "x-availabilityStatus": "Deprecated",
+            "x-deprecationInfo": "V4 will be available by Q3 2019",
+            "x-removalInfo": "V3 support will be completely removed by March 2020"
+          },
+          {
+            "name": "refresh_token",
+            "in": "formData",
+            "description": "The OAuth2 refresh token. Required if grant_type=refresh_token",
+            "required": false,
+            "type": "string",
+            "x-availabilityInfo": "V3 will be deprecated as it does not support QSealC. Please use V4",
+            "x-availabilityStatus": "Deprecated",
+            "x-deprecationInfo": "V4 will be available by Q3 2019",
+            "x-removalInfo": "V3 support will be completely removed by March 2020"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Exchange authorization code for a access_token",
+            "schema": {
+              "$ref": "#/definitions/AccessTokenResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized with failure code:\n* error.apikey.missing = Missing API key. This operation requires API key, but it was missing.\n* error.token = Unspecified error with supplied token.\n* error.token.invalid = Missing access token or token did not authorized requested operation. This operation requires valid access token, but it was missing.\n* error.token.expired = Access token has expired.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden with failure code:\n* error.resource.denied = Requested resource is not authorized by access token.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Resource not found",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "ClientId": []
+          },
+          {
+            "ClientSecret": []
+          }
+        ],
+        "deprecated": true,
+        "x-availabilityInfo": "V3 will be deprecated as it does not support QSealC. Please use V4",
+        "x-availabilityStatus": "Deprecated",
+        "x-deprecationInfo": "V4 will be available by Q3 2019",
+        "x-removalInfo": "V3 support will be completely removed by March 2020"
+      }
+    },
+    "/v3/authorize-decoupled/{orderRef}": {
+      "get": {
+        "tags": [
+          "Decoupled Authorization"
+        ],
+        "summary": "Polling for Auth Code (Sweden only)",
+        "operationId": "getStatusUsingGET",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "X-Nordea-Originating-User-Agent",
+            "in": "header",
+            "description": "End user (i.e. PSU) agent information, to be provided if TPP is in session with the PSU",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Nordea-Originating-User-Ip",
+            "in": "header",
+            "description": "End user (i.e. PSU) IP address, to be provided if TPP is in session with the PSU",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "orderRef",
+            "in": "path",
+            "description": "Order reference uuid",
+            "required": true,
+            "type": "string",
+            "x-availabilityInfo": "V3 will be deprecated as it does not support QSealC. Please use V4",
+            "x-availabilityStatus": "Deprecated",
+            "x-deprecationInfo": "V4 will be available by Q3 2019",
+            "x-removalInfo": "V3 support will be completely removed by March 2020"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Exchange TPP token for authorization code",
+            "schema": {
+              "$ref": "#/definitions/AuthCodeResponse"
+            }
+          },
+          "304": {
+            "description": "Waiting for customer"
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized with failure code:\n* error.apikey.missing = Missing API key. This operation requires API key, but it was missing.\n* error.token = Unspecified error with supplied token.\n* error.token.invalid = Missing access token or token did not authorized requested operation. This operation requires valid access token, but it was missing.\n* error.token.expired = Access token has expired.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "TPP token is expired or invalid",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Resource not found",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "408": {
+            "description": "The request has timed out"
+          }
+        },
+        "security": [
+          {
+            "ClientId": []
+          },
+          {
+            "ClientSecret": []
+          }
+        ],
+        "deprecated": true,
+        "x-availabilityInfo": "V3 will be deprecated as it does not support QSealC. Please use V4",
+        "x-availabilityStatus": "Deprecated",
+        "x-deprecationInfo": "V4 will be available by Q3 2019",
+        "x-removalInfo": "V3 support will be completely removed by March 2020"
+      }
+    },
+    "/v3/authorize/token": {
+      "post": {
+        "tags": [
+          "Authorization"
+        ],
+        "summary": "Redirect - Token Exchange",
+        "operationId": "accessTokenUsingPOST",
+        "consumes": [
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "X-Nordea-Originating-User-Agent",
+            "in": "header",
+            "description": "End user (i.e. PSU) agent information, to be provided if TPP is in session with the PSU",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Nordea-Originating-User-Ip",
+            "in": "header",
+            "description": "End user (i.e. PSU) IP address, to be provided if TPP is in session with the PSU",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "code",
+            "in": "formData",
+            "description": "The OAuth2 auth code. Required if grant_type=authorization_code",
+            "required": false,
+            "type": "string",
+            "x-availabilityInfo": "V3 will be deprecated as it does not support QSealC. Please use V4",
+            "x-availabilityStatus": "Deprecated",
+            "x-deprecationInfo": "V4 will be available by Q3 2019",
+            "x-removalInfo": "V3 support will be completely removed by March 2020"
+          },
+          {
+            "name": "grant_type",
+            "in": "formData",
+            "description": "The grant type of request",
+            "required": true,
+            "type": "string",
+            "x-example": "authorization_code",
+            "enum": [
+              "authorization_code",
+              "refresh_token"
+            ],
+            "x-availabilityInfo": "V3 will be deprecated as it does not support QSealC. Please use V4",
+            "x-availabilityStatus": "Deprecated",
+            "x-deprecationInfo": "V4 will be available by Q3 2019",
+            "x-removalInfo": "V3 support will be completely removed by March 2020"
+          },
+          {
+            "name": "redirect_uri",
+            "in": "formData",
+            "description": "Redirect URI you used when this application was registered with Nordea. Required if grant_type=authorization_code",
+            "required": false,
+            "type": "string",
+            "x-availabilityInfo": "V3 will be deprecated as it does not support QSealC. Please use V4",
+            "x-availabilityStatus": "Deprecated",
+            "x-deprecationInfo": "V4 will be available by Q3 2019",
+            "x-removalInfo": "V3 support will be completely removed by March 2020"
+          },
+          {
+            "name": "refresh_token",
+            "in": "formData",
+            "description": "The OAuth2 refresh token. Required if grant_type=refresh_token",
+            "required": false,
+            "type": "string",
+            "x-availabilityInfo": "V3 will be deprecated as it does not support QSealC. Please use V4",
+            "x-availabilityStatus": "Deprecated",
+            "x-deprecationInfo": "V4 will be available by Q3 2019",
+            "x-removalInfo": "V3 support will be completely removed by March 2020"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/BearerToken"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized with failure code:\n* error.apikey.missing = Missing API key. This operation requires API key, but it was missing.\n* error.token = Unspecified error with supplied token.\n* error.token.invalid = Missing access token or token did not authorized requested operation. This operation requires valid access token, but it was missing.\n* error.token.expired = Access token has expired.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden with failure code:\n* error.resource.denied = Requested resource is not authorized by access token.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Resource not found",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "ClientId": []
+          },
+          {
+            "ClientSecret": []
+          }
+        ],
+        "deprecated": true,
+        "x-availabilityInfo": "V3 will be deprecated as it does not support QSealC. Please use V4",
+        "x-availabilityStatus": "Deprecated",
+        "x-deprecationInfo": "V4 will be available by Q3 2019",
+        "x-removalInfo": "V3 support will be completely removed by March 2020"
+      }
+    }
+  },
+  "securityDefinitions": {
+    "ClientId": {
+      "type": "apiKey",
+      "name": "X-IBM-Client-Id",
+      "in": "header"
+    },
+    "ClientSecret": {
+      "type": "apiKey",
+      "name": "X-IBM-Client-Secret",
+      "in": "header"
+    },
+    "DecoupledAuth": {
+      "type": "oauth2",
+      "authorizationUrl": "/v3/authorize-decoupled",
+      "tokenUrl": "/v3/authorize-decoupled/token",
+      "flow": "accessCode",
+      "scopes": {
+        "ACCOUNTS_BASIC": "Account information",
+        "ACCOUNTS_BALANCES": "Account information with balances",
+        "ACCOUNTS_DETAILS": "Account information with details",
+        "ACCOUNTS_TRANSACTIONS": "Account's transactions",
+        "PAYMENTS_MULTIPLE": "Payments Multiple"
+      },
+      "x-authSubType": "decoupled-auth",
+      "x-codeStatusDescription": "Returns code when authorization second step is finished",
+      "x-codeStatusUrl": "/v3/authorize-decoupled"
+    },
+    "OAuth2": {
+      "type": "oauth2",
+      "authorizationUrl": "/v3/authorize",
+      "tokenUrl": "/v3/authorize/token",
+      "flow": "accessCode",
+      "scopes": {
+        "ACCOUNTS_BASIC": "Account information",
+        "ACCOUNTS_BALANCES": "Account information with balances",
+        "ACCOUNTS_DETAILS": "Account information with details",
+        "ACCOUNTS_TRANSACTIONS": "Account's transactions",
+        "PAYMENTS_MULTIPLE": "Payments Multiple"
+      }
+    }
+  },
+  "definitions": {
+    "AccessTokenResponse": {
+      "type": "object",
+      "properties": {
+        "group_header": {
+          "description": "Standard format response header",
+          "$ref": "#/definitions/ResponseHeader",
+          "x-availabilityStatus": "Stable"
+        },
+        "response": {
+          "description": "Payload",
+          "$ref": "#/definitions/BearerToken",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "AccessTokenResponse"
+    },
+    "AccountPayload": {
+      "type": "object",
+      "properties": {
+        "account_id": {
+          "type": "string",
+          "x-availabilityStatus": "Stable"
+        },
+        "account_number": {
+          "type": "string",
+          "x-availabilityStatus": "Stable"
+        },
+        "currency": {
+          "type": "string",
+          "enum": [
+            "AED",
+            "AFN",
+            "ALL",
+            "AMD",
+            "ANG",
+            "AOA",
+            "ARS",
+            "AUD",
+            "AWG",
+            "AZN",
+            "BAM",
+            "BBD",
+            "BDT",
+            "BGN",
+            "BHD",
+            "BIF",
+            "BMD",
+            "BND",
+            "BOB",
+            "BOV",
+            "BRL",
+            "BSD",
+            "BTN",
+            "BWP",
+            "BYN",
+            "BYR",
+            "BZD",
+            "CAD",
+            "CDF",
+            "CHE",
+            "CHF",
+            "CHW",
+            "CLF",
+            "CLP",
+            "CNY",
+            "COP",
+            "COU",
+            "CRC",
+            "CUC",
+            "CUP",
+            "CVE",
+            "CZK",
+            "DJF",
+            "DKK",
+            "DOP",
+            "DZD",
+            "EGP",
+            "ERN",
+            "ETB",
+            "EUR",
+            "FJD",
+            "FKP",
+            "GBP",
+            "GGP",
+            "GEL",
+            "GHS",
+            "GIP",
+            "GMD",
+            "GNF",
+            "GTQ",
+            "GYD",
+            "HKD",
+            "HNL",
+            "HRK",
+            "HTG",
+            "HUF",
+            "IDR",
+            "ILS",
+            "IMP",
+            "INR",
+            "IQD",
+            "IRR",
+            "ISK",
+            "JEP",
+            "JMD",
+            "JOD",
+            "JPY",
+            "KES",
+            "KGS",
+            "KHR",
+            "KMF",
+            "KPW",
+            "KRW",
+            "KWD",
+            "KYD",
+            "KZT",
+            "LAK",
+            "LBP",
+            "LKR",
+            "LRD",
+            "LSL",
+            "LYD",
+            "MAD",
+            "MDL",
+            "MGA",
+            "MKD",
+            "MMK",
+            "MNT",
+            "MOP",
+            "MRU",
+            "MUR",
+            "MVR",
+            "MWK",
+            "MXN",
+            "MXV",
+            "MYR",
+            "MZN",
+            "NAD",
+            "NGN",
+            "NIO",
+            "NOK",
+            "NPR",
+            "NZD",
+            "OMR",
+            "PAB",
+            "PEN",
+            "PGK",
+            "PHP",
+            "PKR",
+            "PLN",
+            "PYG",
+            "QAR",
+            "RON",
+            "RSD",
+            "RUB",
+            "RWF",
+            "SAR",
+            "SBD",
+            "SCR",
+            "SDG",
+            "SEK",
+            "SGD",
+            "SHP",
+            "SLL",
+            "SOS",
+            "SPL",
+            "SRD",
+            "SSP",
+            "STN",
+            "SVC",
+            "SYP",
+            "SZL",
+            "THB",
+            "TJS",
+            "TMT",
+            "TND",
+            "TOP",
+            "TRY",
+            "TTD",
+            "TVD",
+            "TWD",
+            "TZS",
+            "UAH",
+            "UGX",
+            "USD",
+            "USN",
+            "UYI",
+            "UYU",
+            "UZS",
+            "VEF",
+            "VND",
+            "VUV",
+            "WST",
+            "XAF",
+            "XAG",
+            "XAU",
+            "XBA",
+            "XBB",
+            "XBC",
+            "XBD",
+            "XCD",
+            "XDR",
+            "XOF",
+            "XPD",
+            "XPF",
+            "XPT",
+            "XSU",
+            "XTS",
+            "XUA",
+            "XXX",
+            "YER",
+            "ZAR",
+            "ZMW",
+            "ZWD",
+            "CHN",
+            "EEK",
+            "LVL",
+            "MRO",
+            "STD",
+            "TRL",
+            "ZWL"
+          ],
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "AccountPayload"
+    },
+    "AssetResponse": {
+      "type": "object",
+      "properties": {
+        "group_header": {
+          "description": "Standard format response header",
+          "$ref": "#/definitions/ResponseHeader",
+          "x-availabilityStatus": "Stable"
+        },
+        "response": {
+          "description": "Payload",
+          "$ref": "#/definitions/AssetsPayload",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "AssetResponse"
+    },
+    "AssetsPayload": {
+      "type": "object",
+      "properties": {
+        "accounts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/AccountPayload"
+          },
+          "x-availabilityStatus": "Stable"
+        },
+        "scopes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "ACCOUNTS_BASIC",
+              "ACCOUNTS_BALANCES",
+              "ACCOUNTS_DETAILS",
+              "ACCOUNTS_TRANSACTIONS",
+              "PAYMENTS_MULTIPLE"
+            ]
+          },
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "AssetsPayload"
+    },
+    "AuthCodeResponse": {
+      "type": "object",
+      "properties": {
+        "group_header": {
+          "description": "Standard format response header",
+          "$ref": "#/definitions/ResponseHeader",
+          "x-availabilityStatus": "Stable"
+        },
+        "response": {
+          "description": "Payload",
+          "$ref": "#/definitions/DecoupledAuthCode",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "AuthCodeResponse"
+    },
+    "AuthorizeResponse": {
+      "type": "object",
+      "properties": {
+        "group_header": {
+          "description": "Standard format response header",
+          "$ref": "#/definitions/ResponseHeader",
+          "x-availabilityStatus": "Stable"
+        },
+        "response": {
+          "description": "Payload",
+          "$ref": "#/definitions/DecoupledAuthResponse",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "AuthorizeResponse"
+    },
+    "BearerToken": {
+      "type": "object",
+      "properties": {
+        "access_token": {
+          "type": "string",
+          "example": "eyJjdHkiOiJKV1QiLCJlbmMiOiJBMTI4R0NNIiwiYWxnIjoiZGlyIn0..EM2YgJGre7OTIpmA.8GmpStB05uh4u_1wrEpyVCV_P5XwTcbL7zF_NsZJaMcZvo3B78gqhDR2lCCGLbTTImM4ILGHEQXO5Q7-obmdacIk9jcRr2eg5lTj_MBk9ch9yCMGh1NLEtXfOuHO1WzLoR6njQLDHdvvA2M3MEnVToqF6NdRI5f1hpWwC75TwUJWG50YTTYUBJskGPuRMLPfuTH-sncyVpI5Pj-XwXgcwOuXq8mz87DE1ZCCxPollReFZFsriQO3FeAqdgKigLaDH_WsoromxG2RAz6u4de-IYwXeWhsyq81SvOICE29kLMl9uxCvp6frYzOHoe7rfSaJiPhWGLn4_l29GimVNepQi1BadFqvHUyr7pUtO4Nx8e3piN7RV4DpMu1mf8_BYJaNUMyaeismu7RS9CmXm8wiEwgxK6f6vSOZxK6X8k7EHNKmZJZyR0q5ZRtFMzNa27tFah5_CybeJ86dJYIoaS1yG4rwBhokM06lVwAUAnpjXSRdoD7VUeNeg70DvTS2rtLa_w0_RLpva-iGkup-GIQyURK_jDZF2dVlRIanA8cwF6PZTA4cVslCd6EScJx9AHG87MmiWs6j0KOLZRyun3N3BEeRrjjcPk_lc3zcd8E2MZB4l-4o69cYvgAk1DpkxB__3IyuVkTEGwxlvT04anjsGLXEiunvQnDlAyEApr4xBeIGA2tAU8sstOQgGQffRj17iXWFgh4n5uHP77wrA4_d1tydAGCBhEVk6tsUVA81cavlwEfF53Yn1SK9bVofKv412tzU8fzNecni0IAsuWsCLGX.z3MMhpzmMp-GwdbTSl2rWQ",
+          "description": "Access token",
+          "x-availabilityStatus": "Stable"
+        },
+        "expires_in": {
+          "type": "integer",
+          "format": "int64",
+          "example": 3600,
+          "description": "Token expiration time",
+          "x-availabilityStatus": "Stable"
+        },
+        "token_type": {
+          "type": "string",
+          "example": "Bearer",
+          "description": "Token type",
+          "x-availabilityStatus": "Stable"
+        },
+        "refresh_token": {
+          "type": "string",
+          "example": "eyJjdHkiOiJKV1QiLCJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiZGlyIn0..9IxfdEexBagh8deitsB4_pSVMs-y7OZ73k07MKTUufBOCUWpuBx3cRyPaGfMvwehEhefL2Ffi_FYhBb-StxF_m59aA2kqJimtSX0mr3Ogd5bLWNc2fXSEHPoKEJyzIVi-V-wjv6hBspUAk008Fq26tzvhjrBoswqUdqfmbksXED02fjMYYYP9Fcn7Jg3JO_AjEswxgqmWGsfhHIdNXrPPGpIfk7R0G0sehignbOjDraxCfYsYmp_6zxh5Ja2QDvsRlhAqdSRgX_I7kEpZFZbtJk-19mYMK7eOidTkLMPuhhg_7UcJSo5PjuFMhgvNJKx8UWiyRFlLAWCdo6CknQgJDGCGTiNCUoHywlZBYVmsPJlQITIOHgjvhQQa6Bk3xVs_r4gVfJiKqI4y96l6Tw9ydHJQrLw-4eJBdjisPpUZlrGgvP_WUYigVzco95kSQcT1WqBHhCMdGchPm0mEPD4BSpzHOvlIqmXaiGSwLC4YxQn_PfWWGGnbPvcfg8GJoX4iR6nv_Excn32mpUWlbl7lo-YD2c45oJVJVqFrADRqtQN-lR84cXmd75Gr7R7IJxgZnH8C6EfrBAiy_QEScsIOoDFESqAvUPCXj8FH9_cdWkeLsLSEkJwLOeLcTF73iXG7h_L_giz3t6zjNRa2WxErOxdYF0G453xQb4nFH1X9gc2jnSInmt1jiZGL3WSSXcCWjTSwQq3WhgVfjVTszMF_3F5NnSPHKuKpYf1Dc1kG_F0egzg2HIwTESZOr1jsmMjfyW42jotjc8JhbnjTU-dOgopCf5jWjzTeXFgdxgow7Am3NQa8R3wudqTQD7q5-ItMhW5mVt8TKk7IFjxd2r5tTJFiIsi8nyXOEujs4GuWtmL8gfqrulA7MgodN-FFXPGpa4KbLCGgO7dr5qY-eYLcg._OZAqZevjU4wIAe7D8aQfw",
+          "description": "Refresh token",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "BearerToken"
+    },
+    "DecoupledAuthCode": {
+      "type": "object",
+      "required": [
+        "code",
+        "state"
+      ],
+      "properties": {
+        "code": {
+          "type": "string",
+          "x-availabilityStatus": "Stable"
+        },
+        "links": {
+          "type": "array",
+          "xml": {
+            "name": "link",
+            "namespace": "http://www.w3.org/2005/Atom",
+            "attribute": false,
+            "wrapped": false
+          },
+          "items": {
+            "$ref": "#/definitions/Link"
+          },
+          "x-availabilityStatus": "Stable"
+        },
+        "state": {
+          "type": "string",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "DecoupledAuthCode"
+    },
+    "DecoupledAuthRequest": {
+      "type": "object",
+      "required": [
+        "duration",
+        "psu_id",
+        "response_type",
+        "scope"
+      ],
+      "properties": {
+        "account_list": {
+          "type": "array",
+          "example": [
+            41351300039,
+            1234567890
+          ],
+          "description": "Account list",
+          "items": {
+            "type": "string"
+          },
+          "x-availabilityStatus": "Stable"
+        },
+        "duration": {
+          "type": "integer",
+          "format": "int32",
+          "example": 3600,
+          "description": "Duration of access authorization in minutes. range: 1 to 129600 minutes (90 days)",
+          "x-availabilityStatus": "Stable"
+        },
+        "language": {
+          "type": "string",
+          "example": "sv, en",
+          "description": "Language of message that will be displayed to client of bankId mobile app, ISO639-1 and 639-2",
+          "x-availabilityStatus": "Stable"
+        },
+        "max_tx_history": {
+          "type": "integer",
+          "format": "int32",
+          "example": 10,
+          "description": "Maximum transaction history in months. Optional if ACCOUNTS_TRANSACTIONS scope is requested. Default=2 months. range: 1 to 12 months",
+          "x-availabilityStatus": "Stable"
+        },
+        "psu_id": {
+          "type": "string",
+          "example": 193805010844,
+          "description": "Personnummer given by the Swedish customer.",
+          "x-availabilityStatus": "Stable"
+        },
+        "redirect_uri": {
+          "type": "string",
+          "example": "http://some.uri",
+          "description": "Redirect URI you used when this application was registered with Nordea.",
+          "x-availabilityStatus": "Stable"
+        },
+        "response_type": {
+          "type": "string",
+          "example": "nordea_token",
+          "description": "Response type, for decoupled authorization this should be 'nordea_token'",
+          "x-availabilityStatus": "Stable"
+        },
+        "scope": {
+          "type": "array",
+          "description": "Scope list. Note: ACCOUNTS_BASIC must be present at a minimum, when requesting ACCOUNTS_* scopes",
+          "items": {
+            "type": "string",
+            "enum": [
+              "ACCOUNTS_BASIC",
+              "ACCOUNTS_BALANCES",
+              "ACCOUNTS_DETAILS",
+              "ACCOUNTS_TRANSACTIONS",
+              "PAYMENTS_MULTIPLE"
+            ]
+          },
+          "x-availabilityStatus": "Stable"
+        },
+        "state": {
+          "type": "string",
+          "example": "anyString",
+          "description": "The OAuth2 state parameter",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "DecoupledAuthRequest"
+    },
+    "DecoupledAuthResponse": {
+      "type": "object",
+      "required": [
+        "order_ref",
+        "status",
+        "tpp_token"
+      ],
+      "properties": {
+        "links": {
+          "type": "array",
+          "xml": {
+            "name": "link",
+            "namespace": "http://www.w3.org/2005/Atom",
+            "attribute": false,
+            "wrapped": false
+          },
+          "items": {
+            "$ref": "#/definitions/Link"
+          },
+          "x-availabilityStatus": "Stable"
+        },
+        "order_ref": {
+          "type": "string",
+          "x-availabilityStatus": "Stable"
+        },
+        "status": {
+          "type": "string",
+          "x-availabilityStatus": "Stable"
+        },
+        "tpp_token": {
+          "type": "string",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "DecoupledAuthResponse"
+    },
+    "ErrorPayload": {
+      "type": "object",
+      "properties": {
+        "failures": {
+          "type": "array",
+          "description": "More details on the occurred error",
+          "items": {
+            "$ref": "#/definitions/Failure"
+          },
+          "x-availabilityStatus": "Stable"
+        },
+        "request": {
+          "description": "Error details",
+          "$ref": "#/definitions/RequestEcho",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "ErrorPayload",
+      "description": "Error response body"
+    },
+    "ErrorResponse": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "description": "Payload",
+          "$ref": "#/definitions/ErrorPayload",
+          "x-availabilityStatus": "Stable"
+        },
+        "group_header": {
+          "description": "Standard format response header",
+          "$ref": "#/definitions/ResponseHeader",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "ErrorResponse",
+      "description": "Error response"
+    },
+    "Failure": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "description": "Failure code",
+          "x-availabilityStatus": "Stable"
+        },
+        "description": {
+          "type": "string",
+          "description": "Failure description",
+          "x-availabilityStatus": "Stable"
+        },
+        "path": {
+          "type": "string",
+          "description": "JSON path of the failing element if applicable",
+          "x-availabilityStatus": "Stable"
+        },
+        "type": {
+          "type": "string",
+          "description": "Type of the validation error, e.g. NotNull",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "Failure",
+      "description": "Validation error"
+    },
+    "Link": {
+      "type": "object",
+      "title": "Link",
+      "xml": {
+        "name": "link",
+        "namespace": "http://www.w3.org/2005/Atom",
+        "attribute": false,
+        "wrapped": false
+      },
+      "description": "Context specific link (only GET supported)"
+    },
+    "Pagination": {
+      "type": "object",
+      "properties": {
+        "continuation_key": {
+          "type": "string",
+          "description": "Resource listing may return a continuationKey if there's more results available. Request may be retried with the continuationKey, but otherwise same parameters, in order to get more results.",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "Pagination",
+      "description": "Details of paginated response"
+    },
+    "RequestEcho": {
+      "type": "object",
+      "properties": {
+        "url": {
+          "type": "string",
+          "description": "Original request url",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "RequestEcho",
+      "description": "Original request information"
+    },
+    "ResponseHeader": {
+      "type": "object",
+      "properties": {
+        "creation_date_time": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Response creation time",
+          "x-availabilityStatus": "Stable"
+        },
+        "http_code": {
+          "type": "integer",
+          "format": "int32",
+          "example": 200,
+          "description": "HTTP code for response",
+          "x-availabilityStatus": "Stable"
+        },
+        "message_identification": {
+          "type": "string",
+          "description": "Original request id for correlation purposes",
+          "x-availabilityStatus": "Stable"
+        },
+        "message_pagination": {
+          "description": "Details of paginated response",
+          "$ref": "#/definitions/Pagination",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "ResponseHeader",
+      "description": "External response header"
+    }
+  }
+}

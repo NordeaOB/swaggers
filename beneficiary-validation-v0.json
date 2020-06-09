@@ -1,0 +1,474 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "Beneficiary Validation API service can be used to verify if the creditor name matches the name of the account holder at the beneficiary bank. A validation (POST) request opens a case at corresponding creditor bank to get a statement of validation. The validation process can take a few business days, which means the service API has another interface for polling the results. A validation result can currently only be a match or mismatch. The retention period of the results is 30 days. After the 30-day period is up, the results are deleted.",
+        "version": "0.0.7",
+        "title": "Beneficiary Validation API service",
+        "contact": {
+            "name": "Large Corporate Digital",
+            "url": "https://wiki.itgit.oneadr.net/display/DSCBB",
+            "email": "e-markets@nordea.com"
+        },
+        "license": {
+            "name": "(C) Nordea"
+        }
+    },
+    "host": "localhost:8080",
+    "basePath": "/payment-creditors/v1",
+    "tags": [
+        {
+            "name": "ndf-payment-creditor-contract",
+            "description": "Payment Creditor Resource"
+        }
+    ],
+    "paths": {
+        "/prevalidations": {
+            "get": {
+                "tags": [
+                    "ndf-payment-creditor-prevalidations-contract",
+                    "ndf-payment-creditor-contract"
+                ],
+                "summary": "Get all the pending and/or closed requests, their statuses and reference-ids sent for creditor account pre-validation by my company.",
+                "description": "The results are returned for the past 30 days. Request statuses can be filtered further by providing PENDING or CLOSED as caseStatus a URI parameter.",
+                "operationId": "getPaymentCreditorPrevalidationsByStatusUsingGET",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Nordea customer access token as an OAuth2 bearer token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "status",
+                        "in": "query",
+                        "description": "Case status can be either PENDING or CLOSED or else defaults to both types",
+                        "required": false,
+                        "type": "string",
+                        "allowEmptyValue": false
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/PaymentCreditorsEnvelope"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request - If there was an issue with the request payload.",
+                        "schema": {
+                            "$ref": "#/definitions/InvalidRequest"
+                        }
+                    },
+                    "404": {
+                        "description": "Resource not found",
+                        "schema": {
+                            "$ref": "#/definitions/ResourceNotFound"
+                        }
+                    }
+                },
+                "deprecated": false
+            },
+            "post": {
+                "tags": [
+                    "ndf-payment-creditor-prevalidations-contract",
+                    "ndf-payment-creditor-contract"
+                ],
+                "summary": "Submit a pre-validation request including creditor payment routing details",
+                "description": "Creditor name, account number and creditor bank BIC are mandatory values in the request body. For account numbers, both IBAN and BBAN formats are allowed.",
+                "operationId": "createPaymentCreditorPrevalidationUsingPOST",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Nordea customer access token as an OAuth2 bearer token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "body",
+                        "name": "paymentcreditorprevalidation",
+                        "description": "Payment creditor pre-validation request including creditor payment routing details",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/PaymentCreditorPrevalidationRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/PaymentCreditorsEnvelope"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request - If there was an issue with the request payload.",
+                        "schema": {
+                            "$ref": "#/definitions/InvalidRequest"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error - The request could not be delivered",
+                        "schema": {
+                            "$ref": "#/definitions/InternalServerError"
+                        }
+                    }
+                },
+                "deprecated": false
+            }
+        },
+        "/prevalidations/{id}": {
+            "get": {
+                "tags": [
+                    "ndf-payment-creditor-prevalidations-contract",
+                    "ndf-payment-creditor-contract"
+                ],
+                "summary": "Get a specific pre-validation request, its status and pre-validation result with provided end-to-end reference id",
+                "description": "This API endpoint provides currently the same level information as /prevalidations but limited to only one pre-validation item",
+                "operationId": "getPaymentCreditorPrevalidationByIdUsingGET",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Nordea customer access token as an OAuth2 bearer token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Unique reference id returned by the pre-validation POST request",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/PaymentCreditorsEnvelope"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request - If there was an issue with the request payload.",
+                        "schema": {
+                            "$ref": "#/definitions/InvalidRequest"
+                        }
+                    },
+                    "404": {
+                        "description": "Resource not found",
+                        "schema": {
+                            "$ref": "#/definitions/ResourceNotFound"
+                        }
+                    }
+                },
+                "deprecated": false
+            }
+        }
+    },
+    "definitions": {
+        "Address": {
+            "type": "object",
+            "properties": {
+                "address_line": {
+                    "type": "array",
+                    "example": [
+                        "Aleksis Kiven katu 7",
+                        "Vallila"
+                    ],
+                    "description": "Street address line(s) in addition",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "city": {
+                    "type": "string",
+                    "example": "Helsinki",
+                    "description": "City or locality"
+                },
+                "postal_code": {
+                    "type": "string",
+                    "example": "00500",
+                    "description": "Zip code or postal code"
+                },
+                "country_code": {
+                    "type": "string",
+                    "example": "FI",
+                    "description": "Country code as two-character(ISO 3166)"
+                }
+            },
+            "title": "Address",
+            "description": "Address components"
+        },
+        "InternalServerError": {
+            "type": "object",
+            "required": [
+                "error",
+                "error_description",
+                "http_status"
+            ],
+            "properties": {
+                "error": {
+                    "type": "string",
+                    "example": "internal_server_error",
+                    "description": "Error code",
+                    "enum": [
+                        "internal_server_error"
+                    ]
+                },
+                "error_description": {
+                    "type": "string",
+                    "example": "Something went wrong. Please try again later.",
+                    "description": "The human readable description of the error."
+                },
+                "error_reason": {
+                    "type": "string",
+                    "description": "The detailed reason that can be used for the logging and problem solving purposes."
+                },
+                "http_status": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "HTTP status",
+                    "enum": [
+                        500
+                    ]
+                }
+            },
+            "title": "InternalServerError"
+        },
+        "InvalidRequest": {
+            "type": "object",
+            "required": [
+                "error",
+                "error_description",
+                "http_status"
+            ],
+            "properties": {
+                "error": {
+                    "type": "string",
+                    "example": "invalid_request",
+                    "description": "Error code",
+                    "enum": [
+                        "invalid_request"
+                    ]
+                },
+                "error_description": {
+                    "type": "string",
+                    "example": "The client request was invalid.",
+                    "description": "The human readable description of the error."
+                },
+                "error_reason": {
+                    "type": "string",
+                    "description": "The detailed reason that can be used for the logging and problem solving purposes."
+                },
+                "http_status": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "HTTP status",
+                    "enum": [
+                        400
+                    ]
+                }
+            },
+            "title": "InvalidRequest"
+        },
+        "PaymentCreditorPrevalidation": {
+            "type": "object",
+            "properties": {
+                "additional_notes": {
+                    "type": "object",
+                    "description": "Additional notes related to pre-validation result from Swift GPI",
+                    "additionalProperties": {
+                        "type": "string"
+                    }
+                },
+                "case_status": {
+                    "type": "string",
+                    "example": "PENDING_CREATED",
+                    "description": "Status of the pre-validation case (or request) being resolved",
+                    "enum": [
+                        "pending_created",
+                        "pending_beneficiarybank_response",
+                        "pending_beneficiarybank_response_reminded",
+                        "closed_timeout",
+                        "closed_resolved"
+                    ]
+                },
+                "creditor_account_number": {
+                    "type": "string",
+                    "example": "FI4250001510000023",
+                    "description": "Account number of the creditor in IBAN / BBAN format"
+                },
+                "expiry_timestamp": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2020-01-04T00:00:00Z",
+                    "description": "The calculated expiryDate for the request"
+                },
+                "id": {
+                    "type": "string",
+                    "example": "fdb5ad4e-0f39-4c99-9c0e-10a2500e67c8",
+                    "description": "An unique end to end reference for the pre-validation query"
+                },
+                "last_modified_timestamp": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2020-01-11T00:00:00Z",
+                    "description": "The time of last status modification linked to the pre-validation request"
+                },
+                "original_request_timestamp": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2020-01-01T00:00:00Z",
+                    "description": "The time of original request date"
+                },
+                "prevalidation_result": {
+                    "type": "string",
+                    "example": "BENEFICIARY_VALIDATION_MATCH",
+                    "description": "Result of the final pre-validation resolution",
+                    "enum": [
+                        "pending",
+                        "invalid_request",
+                        "beneficiary_validation_match",
+                        "beneficiary_validation_mismatch",
+                        "beneficiary_validation_incomplete",
+                        "beneficiary_bank_refusal"
+                    ]
+                },
+                "value_added_tax_number": {
+                    "type": "string",
+                    "example": "FI28583949",
+                    "description": "Creditor company VAT number."
+                }
+            },
+            "title": "PaymentCreditorPrevalidation",
+            "description": "API model of PaymentCreditorPrevalidation response"
+        },
+        "PaymentCreditorPrevalidationRequest": {
+            "type": "object",
+            "required": [
+                "creditor_account_number",
+                "creditor_bank_bic",
+                "creditor_name"
+            ],
+            "properties": {
+                "business_id": {
+                    "type": "string",
+                    "example": "2858394-9",
+                    "description": "Creditor company business identity code."
+                },
+                "creditor_account_number": {
+                    "type": "string",
+                    "example": "FI4250001510000023",
+                    "description": "Account number of the creditor either in IBAN or BBAN format. "
+                },
+                "creditor_address": {
+                    "description": "Address lines of the creditor / payment beneficiary.  A PO box number should not be used as an address",
+                    "$ref": "#/definitions/Address"
+                },
+                "creditor_bank_bic": {
+                    "type": "string",
+                    "example": "NDEAFIHH",
+                    "description": "Business Identifier Code of the creditor bank, which identifies the bank. The value is either 8 or 11 characters long."
+                },
+                "creditor_bank_clearing_code": {
+                    "type": "string",
+                    "description": "Clearing code of the creditor bank"
+                },
+                "creditor_bank_name": {
+                    "type": "string",
+                    "description": "Name of the creditor bank"
+                },
+                "creditor_name": {
+                    "type": "string",
+                    "description": "Full name of the creditor / payment beneficiary"
+                },
+                "expiry": {
+                    "type": "integer",
+                    "format": "int32",
+                    "example": 3,
+                    "description": "The wait time for the response as business days. Minimum value for asynchronous calls is 3 days, whereas default is 7.Value 0 is reserved for acceptance of only real-time responses over Swift GPI in later stage."
+                },
+                "value_added_tax_number": {
+                    "type": "string",
+                    "example": "FI28583949",
+                    "description": "Creditor company VAT number."
+                }
+            },
+            "title": "PaymentCreditorPrevalidationRequest",
+            "description": "API model of PaymentCreditorPrevalidation request"
+        },
+        "PaymentCreditorsEnvelope": {
+            "type": "object",
+            "required": [
+                "prevalidations"
+            ],
+            "properties": {
+                "disclaimer": {
+                    "type": "string",
+                    "example": "The service provider does not provide any guarantee on the outcome of an actual transaction being sent to this account.",
+                    "description": "Disclaimer information of Nordea bank regarding pre-validations"
+                },
+                "prevalidations": {
+                    "type": "array",
+                    "description": "An array of elements.",
+                    "items": {
+                        "$ref": "#/definitions/PaymentCreditorPrevalidation"
+                    }
+                }
+            },
+            "title": "PaymentCreditorsEnvelope",
+            "description": "A Collection of PayentCreditorPrevalidation response elements"
+        },
+        "ResourceNotFound": {
+            "type": "object",
+            "required": [
+                "error",
+                "error_description",
+                "http_status"
+            ],
+            "properties": {
+                "error": {
+                    "type": "string",
+                    "example": "resource_not_found",
+                    "description": "Error code",
+                    "enum": [
+                        "resource_not_found"
+                    ]
+                },
+                "error_description": {
+                    "type": "string",
+                    "example": "The requested resource was not found.",
+                    "description": "The human readable description of the error."
+                },
+                "error_reason": {
+                    "type": "string",
+                    "description": "The detailed reason that can be used for the logging and problem solving purposes."
+                },
+                "http_status": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "HTTP status",
+                    "enum": [
+                        404
+                    ]
+                }
+            },
+            "title": "ResourceNotFound"
+        }
+    }
+}

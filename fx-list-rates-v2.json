@@ -1,0 +1,496 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "API based access to Foreign Exchange markets from your own systems.",
+    "version": "2.0.1.6",
+    "title": "FX List Rates API",
+    "contact": {
+      "name": "e-Trading Business Support",
+      "email": "e-tradingsystems@nordea.com"
+    }
+  },
+  "host": "localhost:8080",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "listed-rates-companies-API",
+      "description": "Retrieve all available company ids for pricing for your user via this endpoint"
+    },
+    {
+      "name": "listed-rates-prices-API",
+      "description": "Request tradable list rate quotes via this endpoint"
+    },
+    {
+      "name": "listed-rates-trading-API",
+      "description": "Send trades on list rates and request status on orders via this endpoint"
+    }
+  ],
+  "paths": {
+    "/listed-rates-pricing/v2/companies": {
+      "get": {
+        "x-auth-options": [
+          "NO-AUTH"
+        ],
+        "x-auth-versions": [
+
+        ],
+        "tags": [
+          "listed-rates-companies-API"
+        ],
+        "summary": "Retrieve all mapped companies that are available for pricing & trading on listed rates.",
+        "operationId": "getUserCompaniesUsingGET",
+        "produces": [
+          "*/*"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "object",
+              "required": [
+                "company_id"
+              ],
+              "properties": {
+                "company_id": {
+                  "type": "array",
+                  "description": "array of companies ids",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "title": "Company list",
+              "description": "list of companies ids"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/OpenBankingError"
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "$ref": "#/definitions/OpenBankingError"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/OpenBankingError"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/listed-rates-pricing/v2/prices/{companyId}/{currencyPair}": {
+      "get": {
+        "x-auth-options": [
+          "NO-AUTH"
+        ],
+        "x-auth-versions": [
+
+        ],
+        "tags": [
+          "listed-rates-prices-API"
+        ],
+        "summary": "Retrieve tradable FX rates valid for a predetermined period of time.",
+        "operationId": "getListedRatesUsingGET",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "path",
+            "description": "Nordea Markets Company ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "currencyPair",
+            "in": "path",
+            "description": "Currency pair e.g. EUR/USD",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/RateResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "schema": {
+              "$ref": "#/definitions/OpenBankingError"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/OpenBankingError"
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "$ref": "#/definitions/OpenBankingError"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/OpenBankingError"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/listed-rates-trading/v2/orders": {
+      "post": {
+        "x-auth-options": [
+          "NO-AUTH"
+        ],
+        "x-auth-versions": [
+
+        ],
+        "tags": [
+          "listed-rates-trading-API"
+        ],
+        "summary": "Execute a trade on a given rate ID.",
+        "operationId": "sendOrderUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "order",
+            "description": "FX Trade on a given list rate",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Order"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success : trade received for execution",
+            "schema": {
+              "$ref": "#/definitions/TradeReport"
+            }
+          },
+          "201": {
+            "description": "Created : trade created for execution",
+            "schema": {
+              "$ref": "#/definitions/TradeReport"
+            }
+          },
+          "400": {
+            "description": "Bad request : trade not executed",
+            "schema": {
+              "$ref": "#/definitions/OpenBankingError"
+            }
+          },
+          "401": {
+            "description": "Unauthorized : trade not executed",
+            "schema": {
+              "$ref": "#/definitions/OpenBankingError"
+            }
+          },
+          "403": {
+            "description": "Forbidden : trade not executed",
+            "schema": {
+              "$ref": "#/definitions/OpenBankingError"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/OpenBankingError"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/listed-rates-trading/v2/orders/status/{companyId}/{clientOrderId}": {
+      "get": {
+        "x-auth-options": [
+          "NO-AUTH"
+        ],
+        "x-auth-versions": [
+
+        ],
+        "tags": [
+          "listed-rates-trading-API"
+        ],
+        "summary": "Retrieve the status of a previously executed order",
+        "operationId": "getOrderStatusUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "clientOrderId",
+            "in": "path",
+            "description": "Client Order ID of a previously submitted order",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "companyId",
+            "in": "path",
+            "description": "Company Id of the previously submitted order",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "orderStatusReqId",
+            "in": "query",
+            "description": "Optional Order status request ID to uniquely identify this request",
+            "required": false,
+            "type": "string",
+            "allowEmptyValue": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success : order status returned",
+            "schema": {
+              "$ref": "#/definitions/TradeReport"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad request : unable to return order status.",
+            "schema": {
+              "$ref": "#/definitions/OpenBankingError"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/OpenBankingError"
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "$ref": "#/definitions/OpenBankingError"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/OpenBankingError"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    }
+  },
+  "definitions": {
+    "OpenBankingError": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "type": "string"
+        },
+        "error_description": {
+          "type": "string"
+        },
+        "error_reason": {
+          "type": "string"
+        },
+        "http_status": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "title": "OpenBankingError"
+    },
+    "Order": {
+      "type": "object",
+      "required": [
+        "amount_currency",
+        "client_order_id",
+        "company_id",
+        "from_currency",
+        "order_amount",
+        "rate_id",
+        "to_currency"
+      ],
+      "properties": {
+        "amount_currency": {
+          "type": "string",
+          "example": "SEK",
+          "description": "The currency that order quantity is suppied in. It is possible to sell X SEK by buying 10000.25 EUR as an example."
+        },
+        "client_order_id": {
+          "type": "string",
+          "example": "594df134-739b-4c46-bc71a",
+          "description": "Unique client specified order id of max 24 characters"
+        },
+        "company_id": {
+          "type": "string",
+          "example": "EREGSE",
+          "description": "The Nordea Markets company id as provided and mapped by FX Sales"
+        },
+        "from_currency": {
+          "type": "string",
+          "example": "SEK",
+          "description": "The currency you intend to sell"
+        },
+        "order_amount": {
+          "type": "number",
+          "example": 10000.25,
+          "description": "The order quantity"
+        },
+        "rate_id": {
+          "type": "string",
+          "example": "3f607568-7cb7-4ecd-a27f-1918115631f6",
+          "description": "Reference to the rate ID retrieved in an earlier request"
+        },
+        "to_currency": {
+          "type": "string",
+          "example": "EUR",
+          "description": "The currency you intend to buy"
+        }
+      },
+      "title": "Order",
+      "description": "A buy or sell FX trade on a specific rate id"
+    },
+    "RateResponse": {
+      "type": "object",
+      "required": [
+        "buy_rate",
+        "company_id",
+        "currency_pair",
+        "rate_id",
+        "sell_rate",
+        "tenor",
+        "valid_until"
+      ],
+      "properties": {
+        "buy_rate": {
+          "type": "number",
+          "example": 10.512,
+          "description": "The bank offer price for this currency pair. The client buys base currency from Nordea at this price (e.g. EUR in EUR/SEK)."
+        },
+        "company_id": {
+          "type": "string",
+          "example": "EREGSE",
+          "description": "The Nordea Markets company id that this rate is assigned for."
+        },
+        "currency_pair": {
+          "type": "string",
+          "example": "EURSEK",
+          "description": "The currency pair of the FX rate"
+        },
+        "rate_id": {
+          "type": "string",
+          "example": "3f607568-7cb7-4ecd-a27f-1918115631f6",
+          "description": "The unique 36-character UUID of a tradable FX rate"
+        },
+        "sell_rate": {
+          "type": "number",
+          "example": 10.497,
+          "description": "The bank bid price for this currency pair. The client sells base currency to Nordea at this price (e.g. EUR in EUR/SEK)."
+        },
+        "tenor": {
+          "type": "string",
+          "example": "SPOT",
+          "description": "The tenor of the FX rate: TODAY, TOM or SPOT"
+        },
+        "valid_until": {
+          "type": "string",
+          "example": "2019-02-08T22:00:00Z",
+          "description": "UTC timestamp of rate expiration time"
+        }
+      },
+      "title": "RateResponse",
+      "description": "An FX rate that is tradable until the valid until rate. Note: rate can expire prematurely under significant market volatility)"
+    },
+    "TradeReport": {
+      "type": "object",
+      "required": [
+        "client_order_id",
+        "company_id",
+        "order_status"
+      ],
+      "properties": {
+        "client_order_id": {
+          "type": "string",
+          "example": "594df134-739b-4c46-bc71a",
+          "description": "Echoed back from the Order"
+        },
+        "company_id": {
+          "type": "string",
+          "example": "EREGSE",
+          "description": "Echoed back from the Order"
+        },
+        "currency_pair": {
+          "type": "string",
+          "example": "EUR/SEK",
+          "description": "The currency pair of the rate used in the order"
+        },
+        "fx_rate": {
+          "type": "number",
+          "example": 10.5185,
+          "description": "The dealt FX rate of the order"
+        },
+        "order_reject_reason": {
+          "type": "string",
+          "example": "Trading on an expired rate",
+          "description": "Textual rejection reason if order is rejected"
+        },
+        "order_status": {
+          "type": "string",
+          "example": "FILLED",
+          "description": "FILLED, REJECTED, or PENDING. If an order is marked PENDING, it is considered received by Nordeabut not yet booked to the market. Nordea will book the trade at soonest possible time",
+          "enum": [
+            "FILLED",
+            "PENDING",
+            "REJECTED"
+          ]
+        },
+        "order_status_request_id": {
+          "type": "string",
+          "example": "4c432c73-4678-46b2-adeb-00247d5f98b1",
+          "description": "Echoed back if provided in order status request"
+        },
+        "transaction_time": {
+          "type": "string",
+          "example": "2019-02-08T08:13:12.841Z",
+          "description": "UTC timestamp of transaction time"
+        },
+        "value_date": {
+          "type": "string",
+          "example": 20190211,
+          "description": "yyyyMMdd of when the FX order settles"
+        }
+      },
+      "title": "TradeReport",
+      "description": "Trade report providing confirmation or rejection details of a submitted order"
+    }
+  }
+}

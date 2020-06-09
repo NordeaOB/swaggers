@@ -1,0 +1,342 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Api giving an detailed and segmented overview of a customers' policy.",
+    "version": "0.3.1-SNAPSHOT",
+    "title": "Nlpdf Policy API",
+    "contact": {
+      "name": "Team Picnic",
+      "url": "https://wiki.itgit.oneadr.net/display/nlpno/NLPNO+API+Architecture",
+      "email": "team-picnic@nordea.com"
+    },
+    "license": {
+      "name": "(C) Nordea"
+    }
+  },
+  "host": "localhost:8080",
+  "basePath": "/engagements/policy-info",
+  "tags": [
+    {
+      "name": "Stakeholders",
+      "description": "Stakeholder Resource"
+    }
+  ],
+  "paths": {
+    "/v1/policies/{agreement-id}/stakeholders/mock": {
+      "get": {
+        "tags": [
+          "Stakeholders"
+        ],
+        "summary": "Gets all the stakeholders associated with this policy.",
+        "description": "mocked",
+        "operationId": "getStakeholdersMockedUsingGET",
+        "produces": [
+          "application/json;charset=UTF-8"
+        ],
+        "parameters": [
+          {
+            "name": "agreement-id",
+            "in": "path",
+            "description": "agreement-id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "stakeholder-flavour",
+            "in": "query",
+            "description": "The flavour or type of this stakeholder.",
+            "required": false,
+            "type": "string",
+            "allowEmptyValue": false,
+            "x-example": "BENEFICIARY",
+            "enum": [
+              "owner",
+              "payer",
+              "beneficiary",
+              "insured",
+              "all"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request succeeded.",
+            "schema": {
+              "$ref": "#/definitions/StakeholdersEnvelope"
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "schema": {
+              "$ref": "#/definitions/InvalidRequest"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/InvalidRequest"
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "$ref": "#/definitions/InvalidRequest"
+            }
+          },
+          "404": {
+            "description": "Stakeholder Not Found",
+            "schema": {
+              "$ref": "#/definitions/InvalidRequest"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    }
+  },
+  "definitions": {
+    "Address": {
+      "type": "object",
+      "required": [
+        "locale",
+        "postal_code",
+        "street_address"
+      ],
+      "properties": {
+        "locale": {
+          "example": "no_NO",
+          "description": "The Locale of this Address.",
+          "$ref": "#/definitions/Locale"
+        },
+        "postal_code": {
+          "type": "string",
+          "example": 5050,
+          "description": "The postalCode of this Address."
+        },
+        "postal_place": {
+          "type": "string",
+          "example": "Bergen",
+          "description": "The postalPlace of this Address."
+        },
+        "street_address": {
+          "type": "string",
+          "example": "Yellow Brick Road 19",
+          "description": "The streetAddress of this Address."
+        }
+      },
+      "title": "Address",
+      "description": "This model forms an address-object."
+    },
+    "Character": {
+      "type": "object",
+      "title": "Character"
+    },
+    "InvalidRequest": {
+      "type": "object",
+      "required": [
+        "error",
+        "error_description",
+        "http_status"
+      ],
+      "properties": {
+        "error": {
+          "type": "string",
+          "example": "invalid_request",
+          "description": "Error code",
+          "enum": [
+            "invalid_request"
+          ]
+        },
+        "error_description": {
+          "type": "string",
+          "example": "The client request was invalid.",
+          "description": "The human readable description of the error."
+        },
+        "error_reason": {
+          "type": "string",
+          "description": "The detailed reason that can be used for the logging and problem solving purposes."
+        },
+        "http_status": {
+          "type": "integer",
+          "format": "int32",
+          "description": "HTTP status",
+          "enum": [
+            400
+          ]
+        }
+      },
+      "title": "InvalidRequest"
+    },
+    "Locale": {
+      "type": "object",
+      "properties": {
+        "country": {
+          "type": "string"
+        },
+        "displayCountry": {
+          "type": "string"
+        },
+        "displayLanguage": {
+          "type": "string"
+        },
+        "displayName": {
+          "type": "string"
+        },
+        "displayScript": {
+          "type": "string"
+        },
+        "displayVariant": {
+          "type": "string"
+        },
+        "extensionKeys": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Character"
+          }
+        },
+        "iso3Country": {
+          "type": "string"
+        },
+        "iso3Language": {
+          "type": "string"
+        },
+        "language": {
+          "type": "string"
+        },
+        "script": {
+          "type": "string"
+        },
+        "unicodeLocaleAttributes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "unicodeLocaleKeys": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "variant": {
+          "type": "string"
+        }
+      },
+      "title": "Locale"
+    },
+    "Stakeholder": {
+      "type": "object",
+      "required": [
+        "agreement_id",
+        "created",
+        "first_name",
+        "last_name",
+        "stakeholder_flavour",
+        "stakeholder_identities"
+      ],
+      "properties": {
+        "address": {
+          "description": "The Address of this Stakeholder.",
+          "$ref": "#/definitions/Address"
+        },
+        "agreement_id": {
+          "type": "string",
+          "example": 51393601,
+          "description": "The agreement id where this stakeholder is represented."
+        },
+        "created": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2018-01-15",
+          "description": "Date this stakeholder was created/registered."
+        },
+        "first_name": {
+          "type": "string",
+          "example": "Art",
+          "description": "The firstName of this Stakeholder."
+        },
+        "last_name": {
+          "type": "string",
+          "example": "Vandelay",
+          "description": "The lastName of this Stakeholder."
+        },
+        "middle_name": {
+          "type": "string",
+          "example": "Doe",
+          "description": "The middleName of this Stakeholder."
+        },
+        "social_security_number": {
+          "type": "string",
+          "example": 51393601,
+          "description": "The agreement id where this stakeholder is represented."
+        },
+        "stakeholder_flavour": {
+          "type": "string",
+          "example": "BENEFICIARY",
+          "description": "Must be of a specific flavour.",
+          "enum": [
+            "owner",
+            "payer",
+            "beneficiary",
+            "insured",
+            "all"
+          ]
+        },
+        "stakeholder_identities": {
+          "type": "array",
+          "example": "SocialSecurityNumber",
+          "description": "One or more stakeholder-identities associated with this Stakeholder.",
+          "items": {
+            "$ref": "#/definitions/StakeholderIdentity"
+          }
+        }
+      },
+      "title": "Stakeholder",
+      "description": "This model is used as the entity representation of a Stakeholder in a given scenario, such as a Beneficiary on a life-insurance policy"
+    },
+    "StakeholderIdentity": {
+      "type": "object",
+      "required": [
+        "identity",
+        "identity_type"
+      ],
+      "properties": {
+        "identity": {
+          "type": "string",
+          "example": 2412199932587,
+          "description": "The unique id of this StakeholderIdentity."
+        },
+        "identity_type": {
+          "type": "string",
+          "description": "The identityType of this StakeholderIdentity.",
+          "enum": [
+            "social_security_number",
+            "organization_number",
+            "customer_number",
+            "agreement_id",
+            "generic"
+          ]
+        }
+      },
+      "title": "StakeholderIdentity",
+      "description": "A unique identity for a Stakeholder, identified by an id and a type."
+    },
+    "StakeholdersEnvelope": {
+      "type": "object",
+      "required": [
+        "stakeholders"
+      ],
+      "properties": {
+        "stakeholders": {
+          "type": "array",
+          "description": "An array of Stakeholders.",
+          "items": {
+            "$ref": "#/definitions/Stakeholder"
+          }
+        }
+      },
+      "title": "StakeholdersEnvelope",
+      "description": "A Collection of Stakeholders associated with this policy"
+    }
+  }
+}

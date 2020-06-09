@@ -1,0 +1,452 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "API based access to Foreign Exchange markets from your own systems.",
+    "version": "1.0.0",
+    "title": "FX Market Order API",
+    "contact": {
+      "name": "e-Trading Business Support",
+      "email": "e-tradingsystems@nordea.com"
+    }
+  },
+  "host": "localhost:8080",
+  "basePath": "/fx-market-order-api",
+  "tags": [
+    {
+      "name": "market-order-API",
+      "description": "Execute SPOT/FWD/SWAP trades via this API at current market rates"
+    }
+  ],
+  "paths": {
+    "/v1/spot-fwd": {
+      "post": {
+        "x-auth-options": [
+          "NO-AUTH"
+        ],
+        "x-auth-versions": [
+
+        ],
+        "tags": [
+          "market-order-API"
+        ],
+        "summary": "Execute an FX SPOT or an FX forward trade at the current market price.",
+        "operationId": "executeUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "param1",
+            "description": "FX SPOT or forward Trade",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/MarketOrder"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success : trade executed",
+            "schema": {
+              "$ref": "#/definitions/TradeReport"
+            }
+          },
+          "201": {
+            "description": "Created : trade executed",
+            "schema": {
+              "$ref": "#/definitions/TradeReport"
+            }
+          },
+          "400": {
+            "description": "Bad request : trade not executed",
+            "schema": {
+              "$ref": "#/definitions/OpenBankingError"
+            }
+          },
+          "401": {
+            "description": "Unauthorized : trade not executed",
+            "schema": {
+              "$ref": "#/definitions/OpenBankingError"
+            }
+          },
+          "403": {
+            "description": "Forbidden : trade not executed",
+            "schema": {
+              "$ref": "#/definitions/OpenBankingError"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/OpenBankingError"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/v1/swap": {
+      "post": {
+        "x-auth-options": [
+          "NO-AUTH"
+        ],
+        "x-auth-versions": [
+
+        ],
+        "tags": [
+          "market-order-API"
+        ],
+        "summary": "Execute an FX SWAP trade at the current market price.",
+        "operationId": "executeSwapUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "param1",
+            "description": "FX SWAP Trade Details",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Swap"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success : trade executed",
+            "schema": {
+              "$ref": "#/definitions/TradeReport"
+            }
+          },
+          "201": {
+            "description": "Created : trade executed",
+            "schema": {
+              "$ref": "#/definitions/TradeReport"
+            }
+          },
+          "400": {
+            "description": "Bad request : trade not executed",
+            "schema": {
+              "$ref": "#/definitions/OpenBankingError"
+            }
+          },
+          "401": {
+            "description": "Unauthorized : trade not executed",
+            "schema": {
+              "$ref": "#/definitions/OpenBankingError"
+            }
+          },
+          "403": {
+            "description": "Forbidden : trade not executed",
+            "schema": {
+              "$ref": "#/definitions/OpenBankingError"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/OpenBankingError"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    }
+  },
+  "definitions": {
+    "Leg": {
+      "type": "object",
+      "required": [
+        "all_in_rate",
+        "contra_amount",
+        "forward_points",
+        "leg_amount",
+        "value_date"
+      ],
+      "properties": {
+        "all_in_rate": {
+          "type": "number",
+          "example": "10.1081 or 10.021",
+          "description": "The total FX rate used in the trade, consisting of the SPOT rate and forward points"
+        },
+        "contra_amount": {
+          "type": "number",
+          "example": 101053.53,
+          "description": "The converted amount of this leg in the opposite currency."
+        },
+        "forward_points": {
+          "type": "number",
+          "example": "0.003 or -0.003",
+          "description": "The forward points of the trade. Note: can be negative"
+        },
+        "leg_amount": {
+          "type": "number",
+          "example": 10000.25,
+          "description": "The entered order quantity of this leg."
+        },
+        "side": {
+          "type": "string",
+          "example": "CLIENT_BUY",
+          "description": "The traded side of this leg by the client: BUY or SELL base currency.",
+          "enum": [
+            "CLIENT_BUY",
+            "CLIENT_SELL"
+          ]
+        },
+        "value_date": {
+          "type": "string",
+          "example": "SPOT or 20191122",
+          "description": "A valid FX Tenor such as SPOT, 2W, 4M, etc. or a specific settlement date in yyyyMMdd format, representing the value date of this leg."
+        }
+      },
+      "title": "Leg",
+      "description": "Represents a leg in a confirmed TradeReport."
+    },
+    "MarketOrder": {
+      "type": "object",
+      "required": [
+        "amount_currency",
+        "client_order_id",
+        "company_id",
+        "currency_pair",
+        "order_amount",
+        "settl_date",
+        "side"
+      ],
+      "properties": {
+        "amount_currency": {
+          "type": "string",
+          "example": "USD",
+          "description": "The currency that order quantity is in. For example, if the value is USD in EUR/USD BUY trade, the client is effectively buying X EUR with 10000.25 USD"
+        },
+        "client_order_id": {
+          "type": "string",
+          "example": "594df134-739b-4c46-bc71a",
+          "description": "Unique client specified order id of max 24 characters"
+        },
+        "company_id": {
+          "type": "string",
+          "example": "EREGSE",
+          "description": "The Nordea Markets company id as provided and mapped by FX Sales"
+        },
+        "currency_pair": {
+          "type": "string",
+          "example": "EUR/USD",
+          "description": "The currency pair of the order"
+        },
+        "order_amount": {
+          "type": "number",
+          "example": 10000.25,
+          "description": "The amount to be traded"
+        },
+        "settl_date": {
+          "type": "string",
+          "example": "SPOT or 20191122",
+          "description": "A valid FX Tenor such as SPOT, 2W, 4M, etc. or a specific settlement date in yyyyMMdd format."
+        },
+        "settlement_accounts": {
+          "type": "array",
+          "description": "Optional settlement bank accounts per currency",
+          "items": {
+            "$ref": "#/definitions/SettleAccount"
+          }
+        },
+        "side": {
+          "type": "string",
+          "example": "CLIENT_BUY",
+          "description": "The intended side of the trade by the client: BUY or SELL base currency. If executing an FX swap, the side represents the near leg side. In a BUY/SELL swap, the far leg would thus be CLIENT_SELL",
+          "enum": [
+            "CLIENT_BUY",
+            "CLIENT_SELL"
+          ]
+        }
+      },
+      "title": "MarketOrder",
+      "description": "A buy or sell FX spot or forward trade to be executed at current market price"
+    },
+    "OpenBankingError": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "type": "string"
+        },
+        "error_description": {
+          "type": "string"
+        },
+        "error_reason": {
+          "type": "string"
+        },
+        "http_status": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "title": "OpenBankingError"
+    },
+    "SettleAccount": {
+      "type": "object",
+      "required": [
+        "currency",
+        "iban_account_number"
+      ],
+      "properties": {
+        "currency": {
+          "type": "string",
+          "example": "EUR",
+          "description": "Currency identifier for the settlement account"
+        },
+        "iban_account_number": {
+          "type": "string",
+          "example": "DK9520000123456789",
+          "description": "IBAN account number for settlement of this currency"
+        }
+      },
+      "title": "SettleAccount",
+      "description": "Settlement bank account for a given currency. Invalid currency account specification will result in a trade rejection"
+    },
+    "Swap": {
+      "type": "object",
+      "required": [
+        "amount_currency",
+        "client_order_id",
+        "company_id",
+        "currency_pair",
+        "order_amount",
+        "order_amount_far_leg",
+        "settl_date",
+        "settl_date_far_leg",
+        "side"
+      ],
+      "properties": {
+        "amount_currency": {
+          "type": "string",
+          "example": "USD",
+          "description": "The currency that order quantity is in. For example, if the value is USD in EUR/USD BUY trade, the client is effectively buying X EUR with 10000.25 USD"
+        },
+        "client_order_id": {
+          "type": "string",
+          "example": "594df134-739b-4c46-bc71a",
+          "description": "Unique client specified order id of max 24 characters"
+        },
+        "company_id": {
+          "type": "string",
+          "example": "EREGSE",
+          "description": "The Nordea Markets company id as provided and mapped by FX Sales"
+        },
+        "currency_pair": {
+          "type": "string",
+          "example": "EUR/USD",
+          "description": "The currency pair of the order"
+        },
+        "order_amount": {
+          "type": "number",
+          "example": 10000.25,
+          "description": "The amount to be traded"
+        },
+        "order_amount_far_leg": {
+          "type": "number",
+          "example": 10000.25,
+          "description": "If executing an FX Swap, this represents the order quantity of the far leg, not necessarily equal to the near leg order quantity"
+        },
+        "settl_date": {
+          "type": "string",
+          "example": "SPOT or 20191122",
+          "description": "A valid FX Tenor such as SPOT, 2W, 4M, etc. or a specific settlement date in yyyyMMdd format."
+        },
+        "settl_date_far_leg": {
+          "type": "string",
+          "example": "SPOT or yyyyMMdd (e.g. 20191122)",
+          "description": "Represents the FX tenor or specific settlement date of the far leg of the trade."
+        },
+        "settlement_accounts": {
+          "type": "array",
+          "description": "Optional settlement bank accounts per currency",
+          "items": {
+            "$ref": "#/definitions/SettleAccount"
+          }
+        },
+        "side": {
+          "type": "string",
+          "example": "CLIENT_BUY",
+          "description": "The intended side of the trade by the client: BUY or SELL base currency. If executing an FX swap, the side represents the near leg side. In a BUY/SELL swap, the far leg would thus be CLIENT_SELL",
+          "enum": [
+            "CLIENT_BUY",
+            "CLIENT_SELL"
+          ]
+        }
+      },
+      "title": "Swap",
+      "description": "A buy/sell or a sell/buy FX swap to be executed at current market price"
+    },
+    "TradeReport": {
+      "type": "object",
+      "required": [
+        "client_order_id",
+        "order_status"
+      ],
+      "properties": {
+        "client_order_id": {
+          "type": "string",
+          "example": "594df134-739b-4c46-bc71a",
+          "description": "Echoed back from the original order"
+        },
+        "company_id": {
+          "type": "string",
+          "example": "EREGSE",
+          "description": "The Nordea Markets company id used in the order. Not present in a rejection scenario."
+        },
+        "currency_pair": {
+          "type": "string",
+          "example": "EUR/USD",
+          "description": "The currency pair of the order. Not present in a rejection scenario."
+        },
+        "legs": {
+          "type": "array",
+          "description": "The execution details of each leg. SPOT and forward trades will have one leg, whereas a swap trade will have two legs. Rejected trades will have zero legs. ",
+          "items": {
+            "$ref": "#/definitions/Leg"
+          }
+        },
+        "nordea_order_id": {
+          "type": "string",
+          "example": "25152124N0",
+          "description": "Unique identifier of the order on Nordea's side. Only present in confirmed orders."
+        },
+        "nordea_transaction_reference": {
+          "type": "string",
+          "example": "aaa35134-bce2-dda2-a36jg",
+          "description": "The Nordea transaction reference. Use this if you need to ask about rejected orders. "
+        },
+        "order_status": {
+          "type": "string",
+          "example": "CONFIRMED or REJECTED",
+          "description": "Indicates whether an order was successful or rejected.",
+          "enum": [
+            "CONFIRMED",
+            "REJECTED"
+          ]
+        },
+        "reject_reason": {
+          "type": "string",
+          "example": "Client order id is a duplicate",
+          "description": "Reason for order rejection. Only present in rejected orders."
+        },
+        "spot_rate": {
+          "type": "number",
+          "example": 10.1051,
+          "description": "The SPOT rate used in the trade. If the trade is a SPOT trade, this will be equivalent to the all-in rate. Not present in a rejection scenario."
+        }
+      },
+      "title": "TradeReport",
+      "description": "An execution report containing the Market Order confirmation or rejection details, sent in response to a MarketOrder latest after 90 seconds from initial call"
+    }
+  }
+}

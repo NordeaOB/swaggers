@@ -1,0 +1,251 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "Automatically retrieve indicative market prices for FX Spot, Forward, and Swap products from your own systems.",
+        "version": "1.0.0",
+        "title": "FX Pricing API",
+        "contact": {
+            "name": "e-Trading Business Support",
+            "email": "e-tradingsystems@nordea.com"
+        },
+        "x-auth-options": "NO-AUTH",
+        "x-auth-versions": [],
+        "x-documentation": ["xs2a-business-fx_pricing_api-v1-doc", "xs2a-business-fx_pricing_api-v1-swagger"],
+        "x-ibm-name": "fx-pricing-api",
+        "x-nordea-api-console-available": "true",
+        "x-nordea-category-name": "BUSINESS API PRODUCTS",
+        "x-nordea-description": "Display indicative FX market prices in your systems or use them as a reference for trade decisions. ",
+        "x-nordea-feature-categories": [{
+                "features": [{
+                        "isSvgIcon": true,
+                        "heading": "Trading based on market situation",
+                        "icon": "choices",
+                        "content": "Create a trading application that trades only under the right market conditions"
+                    }, {
+                        "isSvgIcon": true,
+                        "heading": "Display FX prices",
+                        "icon": "choices",
+                        "content": "Display real-time FX prices to your customers or use them as a part of your pricing strategy"
+                    }
+                ],
+                "title": "Use cases"
+            }, {
+                "features": [{
+                        "isSvgIcon": true,
+                        "heading": "Real-time FX quotes",
+                        "icon": "cup",
+                        "content": "Retrieve real-time indicative FX rates that represent current market conditions"
+                    }
+                ],
+                "title": "Functionality"
+            }
+        ],
+        "x-nordea-icon-class-name": "fx-icon",
+        "x-nordea-name": "FX Pricing API",
+        "x-nordea-order": "18",
+        "x-nordea-quote": "Built to help you gain insight into FX Markets",
+        "x-nordea-short-description": "FX Pricing API",
+        "x-nordea-version": "1.0.0",
+        "x-version": "1.0.0"
+    },
+    "host": "($catalog.host)",
+    "basePath": "/fx-pricing-api",
+    "tags": [{
+            "name": "indicative-pricing-API",
+            "description": "Retrieve indicative market prices for FX Spot, Forwards and Swaps."
+        }
+    ],
+    "paths": {
+        "/v1/prices/forwards": {
+            "get": {
+                "tags": ["indicative-pricing-API"],
+                "summary": "Retrieve an indicative FX Forward rate for a specified company id and one or more currency pairs in one request  for a list of tenors or value dates",
+                "operationId": "getForwardQuoteUsingGET",
+                "produces": ["application/json"],
+                "parameters": [{
+                        "name": "company-id",
+                        "in": "query",
+                        "description": "Nordea Markets Company ID",
+                        "required": true,
+                        "type": "string",
+                        "allowEmptyValue": false,
+                        "x-example": "COMPANY_B"
+                    }, {
+                        "name": "currency-pairs",
+                        "in": "query",
+                        "description": "Single currency pair e.g. EURDKK, or a comma-separated list of multipe currency pairs in one request",
+                        "required": true,
+                        "type": "string",
+                        "allowEmptyValue": false,
+                        "x-example": "EURDKK,EURSEK"
+                    }, {
+                        "name": "value-dates",
+                        "in": "query",
+                        "description": "Value date as a tenor or yyyyMMdd calendar date",
+                        "required": true,
+                        "type": "string",
+                        "allowEmptyValue": false,
+                        "x-example": "1M,2M"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/IndicativeQuote"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/OpenBankingError"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/OpenBankingError"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/OpenBankingError"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/OpenBankingError"
+                        }
+                    }
+                },
+                "deprecated": false
+            }
+        },
+        "/v1/prices/spot": {
+            "get": {
+                "tags": ["indicative-pricing-API"],
+                "summary": "Retrieve an indicative FX SPOT rate for a specified company id and one or more currency pairs in one request",
+                "operationId": "getSpotQuoteUsingGET",
+                "produces": ["application/json"],
+                "parameters": [{
+                        "name": "company-id",
+                        "in": "query",
+                        "description": "Nordea Markets Company ID",
+                        "required": true,
+                        "type": "string",
+                        "allowEmptyValue": false,
+                        "x-example": "COMPANY_B"
+                    }, {
+                        "name": "currency-pairs",
+                        "in": "query",
+                        "description": "Single currency pair e.g. EURDKK, or a comma-separated list of multipe currency pairs in one request",
+                        "required": true,
+                        "type": "string",
+                        "allowEmptyValue": false,
+                        "x-example": "EURDKK,EURSEK"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/IndicativeQuote"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/OpenBankingError"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/OpenBankingError"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/OpenBankingError"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/OpenBankingError"
+                        }
+                    }
+                },
+                "deprecated": false
+            }
+        }
+    },
+    "definitions": {
+        "IndicativeQuote": {
+            "type": "object",
+            "required": ["buy_rate", "currency_pair", "mid_rate", "quote_id", "quote_timestamp", "sell_rate", "settl_date"],
+            "properties": {
+                "buy_rate": {
+                    "type": "number",
+                    "format": "double",
+                    "example": 7.47838,
+                    "description": "The bank offer price for this currency pair. The client buys base currency from Nordea at this price (e.g. EUR in EUR/DKK)."
+                },
+                "currency_pair": {
+                    "type": "string",
+                    "example": "EURDKK"
+                },
+                "mid_rate": {
+                    "type": "number",
+                    "format": "double",
+                    "example": 7.4634,
+                    "description": "The mid rate of this rate. Calculated as (bid + ask) / 2"
+                },
+                "quote_id": {
+                    "type": "string",
+                    "example": 3,
+                    "description": "Nordea request id for a specific request for quote. This ID is generated by Nordea and can be used for quote identification purposes"
+                },
+                "quote_timestamp": {
+                    "type": "string",
+                    "example": "2019-07-10T22:15:07Z",
+                    "description": "The UTC timestamp of when this quote was first produced. Note: If the market is not moving, this timestamp may differ from timestamp of your request, especially for more exotic currencies during evenings and nights"
+                },
+                "sell_rate": {
+                    "type": "number",
+                    "format": "double",
+                    "example": 7.44842,
+                    "description": "The bank bid price for this currency pair. The client sells base currency to Nordea at this price (e.g. EUR in EUR/DKK)."
+                },
+                "settl_date": {
+                    "type": "string",
+                    "example": "SPOT"
+                }
+            },
+            "title": "IndicativeQuote",
+            "description": "An indicative quote representing the price of an FX or Money Market instrument"
+        },
+        "OpenBankingError": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string"
+                },
+                "error_description": {
+                    "type": "string"
+                },
+                "error_reason": {
+                    "type": "string"
+                },
+                "http_status": {
+                    "type": "integer",
+                    "format": "int32"
+                }
+            },
+            "title": "OpenBankingError"
+        }
+    }
+}
