@@ -1,0 +1,1159 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Nordea Card Information Services API v4",
+    "version": "4.0",
+    "title": "Cards API",
+    "contact": {
+      "name": "Open Banking team",
+      "url": "https://nordeaopenbanking.com",
+      "email": "support@nordeaopenbanking.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "x-ibm-name": "cards-v4",
+    "x-version": "4.0"
+  },
+  "host": "api.nordeaopenbanking.com",
+  "basePath": "/personal",
+  "tags": [
+    {
+      "name": "cards-v4",
+      "description": "Customer credit cards"
+    }
+  ],
+  "paths": {
+    "/v4/cards": {
+      "get": {
+        "tags": [
+          "cards-v4"
+        ],
+        "summary": "Get information about all credit cards",
+        "operationId": "getCreditCardsUsingGET",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Signature",
+            "in": "header",
+            "description": "A signature of request by the TPP on application level. The process of signing a request is described in 'Signing HTTP Messages' RFC draft version 10 (<a href=\"https://tools.ietf.org/html/draft-cavage-http-signatures-10\" target=\"_blank\">https://tools.ietf.org/html/draft-cavage-http-signatures-10</a>). The request signature needs to be sent in the 'Signature' HTTP header as described in the RFC. Additional requirements from Nordea \n - The only allowed algorithm is RSA-SHA256 \n- The key size for the used RSA key pair has to be at least 2048 bit \n- The keyId is the clientId of your application originating from the Nordea Developer Portal \n- We require the following headers to be used in the signature \n* Request without body: (request-target) X-Nordea-Originating-Host X-Nordea-Originating-Date \n* Request with body: (request-target) X-Nordea-Originating-Host X-Nordea-Originating-Date Content-type Digest \n* The request-target is a combination of the HTTP action verb and the request URI path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "X-IBM-Client-Id",
+            "in": "header",
+            "description": "Id of the Client",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "X-IBM-Client-Secret",
+            "in": "header",
+            "description": "Secret password generated for the Client",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "X-Nordea-Originating-Date",
+            "in": "header",
+            "description": "HTTP header element for date and time represented as RFC 7231 Full Dates (GMT). Example date: **Wed, 24 Apr 2019 14:00:37 GMT**. It is similar to standard HTTP 'Date' expect that it allows to set it under JavaScript in browser while standard 'Date' is forbidden",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "X-Nordea-Originating-Host",
+            "in": "header",
+            "description": "HTTP header element for specification of the domain name of the server. It is similar to standard HTTP 'Host' header but it won't be overridden by proxies. It also allows to set it under JavaScript in browser while standard 'Host' is forbidden",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "X-Nordea-Originating-User-Agent",
+            "in": "header",
+            "description": "End user (i.e. PSU) agent information, to be provided if TPP is in session with the PSU",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Nordea-Originating-User-Ip",
+            "in": "header",
+            "description": "End user (i.e. PSU) IP address, to be provided if TPP is in session with the PSU",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of credit cards",
+            "schema": {
+              "$ref": "#/definitions/CardListResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized with failure code:\n* error.apikey.missing = Missing API key. This operation requires API key, but it was missing.\n* error.token = Unspecified error with supplied token.\n* error.token.invalid = Missing access token or token did not authorized requested operation. This operation requires valid access token, but it was missing.\n* error.token.expired = Access token has expired.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Login failure",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Resource not found",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2": [
+              "CARDS_INFORMATION"
+            ],
+            "DecoupledAuth": [
+              "CARDS_INFORMATION"
+            ]
+          }
+        ],
+        "deprecated": false,
+        "x-availabilityInfo": "V4 - eIDAS support",
+        "x-availabilityStatus": "Stable"
+      }
+    },
+    "/v4/cards/{card_id}": {
+      "get": {
+        "tags": [
+          "cards-v4"
+        ],
+        "summary": "Get information about a single credit card",
+        "operationId": "getCreditCardUsingGET",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Signature",
+            "in": "header",
+            "description": "A signature of request by the TPP on application level. The process of signing a request is described in 'Signing HTTP Messages' RFC draft version 10 (<a href=\"https://tools.ietf.org/html/draft-cavage-http-signatures-10\" target=\"_blank\">https://tools.ietf.org/html/draft-cavage-http-signatures-10</a>). The request signature needs to be sent in the 'Signature' HTTP header as described in the RFC. Additional requirements from Nordea \n - The only allowed algorithm is RSA-SHA256 \n- The key size for the used RSA key pair has to be at least 2048 bit \n- The keyId is the clientId of your application originating from the Nordea Developer Portal \n- We require the following headers to be used in the signature \n* Request without body: (request-target) X-Nordea-Originating-Host X-Nordea-Originating-Date \n* Request with body: (request-target) X-Nordea-Originating-Host X-Nordea-Originating-Date Content-type Digest \n* The request-target is a combination of the HTTP action verb and the request URI path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "X-IBM-Client-Id",
+            "in": "header",
+            "description": "Id of the Client",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "X-IBM-Client-Secret",
+            "in": "header",
+            "description": "Secret password generated for the Client",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "X-Nordea-Originating-Date",
+            "in": "header",
+            "description": "HTTP header element for date and time represented as RFC 7231 Full Dates (GMT). Example date: **Wed, 24 Apr 2019 14:00:37 GMT**. It is similar to standard HTTP 'Date' expect that it allows to set it under JavaScript in browser while standard 'Date' is forbidden",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "X-Nordea-Originating-Host",
+            "in": "header",
+            "description": "HTTP header element for specification of the domain name of the server. It is similar to standard HTTP 'Host' header but it won't be overridden by proxies. It also allows to set it under JavaScript in browser while standard 'Host' is forbidden",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "X-Nordea-Originating-User-Agent",
+            "in": "header",
+            "description": "End user (i.e. PSU) agent information, to be provided if TPP is in session with the PSU",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Nordea-Originating-User-Ip",
+            "in": "header",
+            "description": "End user (i.e. PSU) IP address, to be provided if TPP is in session with the PSU",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "card_id",
+            "in": "path",
+            "description": "Credit card ID",
+            "required": true,
+            "type": "string",
+            "x-availabilityInfo": "V4 - eIDAS support",
+            "x-availabilityStatus": "Stable"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Credit card",
+            "schema": {
+              "$ref": "#/definitions/CardDetailsResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized with failure code:\n* error.apikey.missing = Missing API key. This operation requires API key, but it was missing.\n* error.token = Unspecified error with supplied token.\n* error.token.invalid = Missing access token or token did not authorized requested operation. This operation requires valid access token, but it was missing.\n* error.token.expired = Access token has expired.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Login failure",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Credit card not found",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2": [
+              "CARDS_INFORMATION"
+            ],
+            "DecoupledAuth": [
+              "CARDS_INFORMATION"
+            ]
+          }
+        ],
+        "deprecated": false,
+        "x-availabilityInfo": "V4 - eIDAS support",
+        "x-availabilityStatus": "Stable"
+      }
+    },
+    "/v4/cards/{card_id}/transactions": {
+      "get": {
+        "tags": [
+          "cards-v4"
+        ],
+        "summary": "List card transactions",
+        "operationId": "getCreditCardTransactionsUsingGET",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Signature",
+            "in": "header",
+            "description": "A signature of request by the TPP on application level. The process of signing a request is described in 'Signing HTTP Messages' RFC draft version 10 (<a href=\"https://tools.ietf.org/html/draft-cavage-http-signatures-10\" target=\"_blank\">https://tools.ietf.org/html/draft-cavage-http-signatures-10</a>). The request signature needs to be sent in the 'Signature' HTTP header as described in the RFC. Additional requirements from Nordea \n - The only allowed algorithm is RSA-SHA256 \n- The key size for the used RSA key pair has to be at least 2048 bit \n- The keyId is the clientId of your application originating from the Nordea Developer Portal \n- We require the following headers to be used in the signature \n* Request without body: (request-target) X-Nordea-Originating-Host X-Nordea-Originating-Date \n* Request with body: (request-target) X-Nordea-Originating-Host X-Nordea-Originating-Date Content-type Digest \n* The request-target is a combination of the HTTP action verb and the request URI path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "X-IBM-Client-Id",
+            "in": "header",
+            "description": "Id of the Client",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "X-IBM-Client-Secret",
+            "in": "header",
+            "description": "Secret password generated for the Client",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "X-Nordea-Originating-Date",
+            "in": "header",
+            "description": "HTTP header element for date and time represented as RFC 7231 Full Dates (GMT). Example date: **Wed, 24 Apr 2019 14:00:37 GMT**. It is similar to standard HTTP 'Date' expect that it allows to set it under JavaScript in browser while standard 'Date' is forbidden",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "X-Nordea-Originating-Host",
+            "in": "header",
+            "description": "HTTP header element for specification of the domain name of the server. It is similar to standard HTTP 'Host' header but it won't be overridden by proxies. It also allows to set it under JavaScript in browser while standard 'Host' is forbidden",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "X-Nordea-Originating-User-Agent",
+            "in": "header",
+            "description": "End user (i.e. PSU) agent information, to be provided if TPP is in session with the PSU",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Nordea-Originating-User-Ip",
+            "in": "header",
+            "description": "End user (i.e. PSU) IP address, to be provided if TPP is in session with the PSU",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "card_id",
+            "in": "path",
+            "description": "Credit card ID",
+            "required": true,
+            "type": "string",
+            "x-availabilityInfo": "V4 - eIDAS support",
+            "x-availabilityStatus": "Stable"
+          },
+          {
+            "name": "continuation_key",
+            "in": "query",
+            "description": "continuation_key",
+            "required": false,
+            "type": "string",
+            "x-availabilityInfo": "V4 - eIDAS support",
+            "x-availabilityStatus": "Stable"
+          },
+          {
+            "name": "from_date",
+            "in": "query",
+            "description": "Transaction history start date",
+            "required": false,
+            "type": "string",
+            "format": "date",
+            "x-availabilityInfo": "V4 - eIDAS support",
+            "x-availabilityStatus": "Stable"
+          },
+          {
+            "name": "to_date",
+            "in": "query",
+            "description": "Transaction history end date",
+            "required": false,
+            "type": "string",
+            "format": "date",
+            "x-availabilityInfo": "V4 - eIDAS support",
+            "x-availabilityStatus": "Stable"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of credit card transactions",
+            "schema": {
+              "$ref": "#/definitions/CardTransactionListResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized with failure code:\n* error.apikey.missing = Missing API key. This operation requires API key, but it was missing.\n* error.token = Unspecified error with supplied token.\n* error.token.invalid = Missing access token or token did not authorized requested operation. This operation requires valid access token, but it was missing.\n* error.token.expired = Access token has expired.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Login failure",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Credit card not found",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2": [
+              "CARDS_TRANSACTIONS"
+            ],
+            "DecoupledAuth": [
+              "CARDS_TRANSACTIONS"
+            ]
+          }
+        ],
+        "deprecated": false,
+        "x-availabilityInfo": "V4 - eIDAS support",
+        "x-availabilityStatus": "Stable"
+      }
+    }
+  },
+  "securityDefinitions": {
+    "DecoupledAuth": {
+      "type": "oauth2",
+      "authorizationUrl": "/v4/authorize-decoupled",
+      "tokenUrl": "/v4/authorize-decoupled/token",
+      "flow": "accessCode",
+      "scopes": {
+        "CARDS_INFORMATION": "Credit card information",
+        "CARDS_TRANSACTIONS": "Credit card transactions"
+      },
+      "x-authSubType": "decoupled-auth",
+      "x-codeStatusDescription": "Returns code when authorization second step is finished",
+      "x-codeStatusUrl": "/v4/authorize-decoupled"
+    },
+    "OAuth2": {
+      "type": "oauth2",
+      "authorizationUrl": "/v4/authorize",
+      "tokenUrl": "/v4/authorize/token",
+      "flow": "accessCode",
+      "scopes": {
+        "CARDS_INFORMATION": "Credit card information",
+        "CARDS_TRANSACTIONS": "Credit card transactions"
+      }
+    }
+  },
+  "definitions": {
+    "CardDetailsResponse": {
+      "type": "object",
+      "properties": {
+        "group_header": {
+          "description": "Standard format response header",
+          "$ref": "#/definitions/ResponseHeader",
+          "x-availabilityStatus": "Stable"
+        },
+        "response": {
+          "description": "Payload",
+          "$ref": "#/definitions/CreditCard",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "CardDetailsResponse",
+      "description": "Credit card response"
+    },
+    "CardListResponse": {
+      "type": "object",
+      "properties": {
+        "group_header": {
+          "description": "Standard format response header",
+          "$ref": "#/definitions/ResponseHeader",
+          "x-availabilityStatus": "Stable"
+        },
+        "response": {
+          "description": "Payload",
+          "$ref": "#/definitions/CreditCardList",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "CardListResponse",
+      "description": "Credit card list response"
+    },
+    "CardTransactionListResponse": {
+      "type": "object",
+      "properties": {
+        "group_header": {
+          "description": "Standard format response header",
+          "$ref": "#/definitions/ResponseHeader",
+          "x-availabilityStatus": "Stable"
+        },
+        "response": {
+          "description": "Payload",
+          "$ref": "#/definitions/CreditCardTransactionList",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "CardTransactionListResponse",
+      "description": "Credit card transaction list response"
+    },
+    "CreditCard": {
+      "type": "object",
+      "properties": {
+        "card_monthly_spending_limit": {
+          "type": "number",
+          "description": "Card monthly spending limit",
+          "x-availabilityInfo": "V4 - eIDAS support",
+          "x-availabilityStatus": "Stable"
+        },
+        "cardholder_name": {
+          "type": "string",
+          "description": "Name of the credit card holder",
+          "x-availabilityInfo": "V4 - eIDAS support",
+          "x-availabilityStatus": "Stable"
+        },
+        "credit_account_number": {
+          "type": "string",
+          "description": "Credit account number",
+          "x-availabilityInfo": "V4 - eIDAS support",
+          "x-availabilityStatus": "Stable"
+        },
+        "credit_available_balance": {
+          "type": "number",
+          "description": "Available balance on the credit card",
+          "x-availabilityInfo": "V4 - eIDAS support",
+          "x-availabilityStatus": "Stable"
+        },
+        "credit_booked_balance": {
+          "type": "number",
+          "description": "Booked balance on the credit card",
+          "x-availabilityInfo": "V4 - eIDAS support",
+          "x-availabilityStatus": "Stable"
+        },
+        "credit_limit": {
+          "type": "number",
+          "description": "Credit limit of the credit card",
+          "x-availabilityInfo": "V4 - eIDAS support",
+          "x-availabilityStatus": "Stable"
+        },
+        "id": {
+          "type": "string",
+          "description": "Credit card ID",
+          "x-availabilityInfo": "V4 - eIDAS support",
+          "x-availabilityStatus": "Stable"
+        },
+        "main_cardholder_name": {
+          "type": "string",
+          "description": "Name of the main card holder",
+          "x-availabilityInfo": "V4 - eIDAS support",
+          "x-availabilityStatus": "Stable"
+        },
+        "masked_credit_card_number": {
+          "type": "string",
+          "description": "Masked credit card number",
+          "x-availabilityInfo": "V4 - eIDAS support",
+          "x-availabilityStatus": "Stable"
+        },
+        "masked_debit_card_number": {
+          "type": "string",
+          "description": "Masked debit card number",
+          "x-availabilityInfo": "V4 - eIDAS support",
+          "x-availabilityStatus": "Stable"
+        },
+        "product_name": {
+          "type": "string",
+          "description": "Credit card product name",
+          "x-availabilityInfo": "V4 - eIDAS support",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "CreditCard",
+      "description": "Credit card"
+    },
+    "CreditCardList": {
+      "type": "object",
+      "properties": {
+        "cards": {
+          "type": "array",
+          "description": "List of credit cards",
+          "items": {
+            "$ref": "#/definitions/CreditCard"
+          },
+          "x-availabilityInfo": "V4 - eIDAS support",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "CreditCardList",
+      "description": "List of credit cards"
+    },
+    "CreditCardTransaction": {
+      "type": "object",
+      "properties": {
+        "amount": {
+          "type": "number",
+          "description": "Monetary amount of the credit card transaction in the card's currency",
+          "x-availabilityInfo": "V4 - eIDAS support",
+          "x-availabilityStatus": "Stable"
+        },
+        "beneficiary": {
+          "type": "string",
+          "description": "Beneficiary of the credit card transaction",
+          "x-availabilityInfo": "V4 - eIDAS support",
+          "x-availabilityStatus": "Stable"
+        },
+        "booking_date": {
+          "type": "string",
+          "description": "Booking date of the credit card transaction",
+          "x-availabilityInfo": "V4 - eIDAS support",
+          "x-availabilityStatus": "Stable"
+        },
+        "currency": {
+          "type": "string",
+          "description": "Credit card transaction currency",
+          "enum": [
+            "AED",
+            "AFN",
+            "ALL",
+            "AMD",
+            "ANG",
+            "AOA",
+            "ARS",
+            "AUD",
+            "AWG",
+            "AZN",
+            "BAM",
+            "BBD",
+            "BDT",
+            "BGN",
+            "BHD",
+            "BIF",
+            "BMD",
+            "BND",
+            "BOB",
+            "BOV",
+            "BRL",
+            "BSD",
+            "BTN",
+            "BWP",
+            "BYN",
+            "BYR",
+            "BZD",
+            "CAD",
+            "CDF",
+            "CHE",
+            "CHF",
+            "CHW",
+            "CLF",
+            "CLP",
+            "CNY",
+            "COP",
+            "COU",
+            "CRC",
+            "CUC",
+            "CUP",
+            "CVE",
+            "CZK",
+            "DJF",
+            "DKK",
+            "DOP",
+            "DZD",
+            "EGP",
+            "ERN",
+            "ETB",
+            "EUR",
+            "FJD",
+            "FKP",
+            "GBP",
+            "GGP",
+            "GEL",
+            "GHS",
+            "GIP",
+            "GMD",
+            "GNF",
+            "GTQ",
+            "GYD",
+            "HKD",
+            "HNL",
+            "HRK",
+            "HTG",
+            "HUF",
+            "IDR",
+            "ILS",
+            "IMP",
+            "INR",
+            "IQD",
+            "IRR",
+            "ISK",
+            "JEP",
+            "JMD",
+            "JOD",
+            "JPY",
+            "KES",
+            "KGS",
+            "KHR",
+            "KMF",
+            "KPW",
+            "KRW",
+            "KWD",
+            "KYD",
+            "KZT",
+            "LAK",
+            "LBP",
+            "LKR",
+            "LRD",
+            "LSL",
+            "LYD",
+            "MAD",
+            "MDL",
+            "MGA",
+            "MKD",
+            "MMK",
+            "MNT",
+            "MOP",
+            "MRU",
+            "MUR",
+            "MVR",
+            "MWK",
+            "MXN",
+            "MXV",
+            "MYR",
+            "MZN",
+            "NAD",
+            "NGN",
+            "NIO",
+            "NOK",
+            "NPR",
+            "NZD",
+            "OMR",
+            "PAB",
+            "PEN",
+            "PGK",
+            "PHP",
+            "PKR",
+            "PLN",
+            "PYG",
+            "QAR",
+            "RON",
+            "RSD",
+            "RUB",
+            "RWF",
+            "SAR",
+            "SBD",
+            "SCR",
+            "SDG",
+            "SEK",
+            "SGD",
+            "SHP",
+            "SLL",
+            "SOS",
+            "SPL",
+            "SRD",
+            "SSP",
+            "STN",
+            "SVC",
+            "SYP",
+            "SZL",
+            "THB",
+            "TJS",
+            "TMT",
+            "TND",
+            "TOP",
+            "TRY",
+            "TTD",
+            "TVD",
+            "TWD",
+            "TZS",
+            "UAH",
+            "UGX",
+            "USD",
+            "USN",
+            "UYI",
+            "UYU",
+            "UZS",
+            "VEF",
+            "VND",
+            "VUV",
+            "WST",
+            "XAF",
+            "XAG",
+            "XAU",
+            "XBA",
+            "XBB",
+            "XBC",
+            "XBD",
+            "XCD",
+            "XDR",
+            "XOF",
+            "XPD",
+            "XPF",
+            "XPT",
+            "XSU",
+            "XTS",
+            "XUA",
+            "XXX",
+            "YER",
+            "ZAR",
+            "ZMW",
+            "ZWD",
+            "CHN",
+            "EEK",
+            "LVL",
+            "MRO",
+            "STD",
+            "TRL",
+            "ZWL"
+          ],
+          "x-availabilityInfo": "V4 - eIDAS support",
+          "x-availabilityStatus": "Stable"
+        },
+        "id": {
+          "type": "string",
+          "description": "Credit card transaction ID",
+          "x-availabilityInfo": "V4 - eIDAS support",
+          "x-availabilityStatus": "Stable"
+        },
+        "masked_credit_card_number": {
+          "type": "string",
+          "description": "Masked credit card number",
+          "x-availabilityInfo": "V4 - eIDAS support",
+          "x-availabilityStatus": "Stable"
+        },
+        "original_amount": {
+          "type": "number",
+          "description": "Monetary amount of the credit card transaction in the original transaction currency",
+          "x-availabilityInfo": "V4 - eIDAS support",
+          "x-availabilityStatus": "Stable"
+        },
+        "original_currency": {
+          "type": "string",
+          "description": "Original credit card transaction currency",
+          "enum": [
+            "AED",
+            "AFN",
+            "ALL",
+            "AMD",
+            "ANG",
+            "AOA",
+            "ARS",
+            "AUD",
+            "AWG",
+            "AZN",
+            "BAM",
+            "BBD",
+            "BDT",
+            "BGN",
+            "BHD",
+            "BIF",
+            "BMD",
+            "BND",
+            "BOB",
+            "BOV",
+            "BRL",
+            "BSD",
+            "BTN",
+            "BWP",
+            "BYN",
+            "BYR",
+            "BZD",
+            "CAD",
+            "CDF",
+            "CHE",
+            "CHF",
+            "CHW",
+            "CLF",
+            "CLP",
+            "CNY",
+            "COP",
+            "COU",
+            "CRC",
+            "CUC",
+            "CUP",
+            "CVE",
+            "CZK",
+            "DJF",
+            "DKK",
+            "DOP",
+            "DZD",
+            "EGP",
+            "ERN",
+            "ETB",
+            "EUR",
+            "FJD",
+            "FKP",
+            "GBP",
+            "GGP",
+            "GEL",
+            "GHS",
+            "GIP",
+            "GMD",
+            "GNF",
+            "GTQ",
+            "GYD",
+            "HKD",
+            "HNL",
+            "HRK",
+            "HTG",
+            "HUF",
+            "IDR",
+            "ILS",
+            "IMP",
+            "INR",
+            "IQD",
+            "IRR",
+            "ISK",
+            "JEP",
+            "JMD",
+            "JOD",
+            "JPY",
+            "KES",
+            "KGS",
+            "KHR",
+            "KMF",
+            "KPW",
+            "KRW",
+            "KWD",
+            "KYD",
+            "KZT",
+            "LAK",
+            "LBP",
+            "LKR",
+            "LRD",
+            "LSL",
+            "LYD",
+            "MAD",
+            "MDL",
+            "MGA",
+            "MKD",
+            "MMK",
+            "MNT",
+            "MOP",
+            "MRU",
+            "MUR",
+            "MVR",
+            "MWK",
+            "MXN",
+            "MXV",
+            "MYR",
+            "MZN",
+            "NAD",
+            "NGN",
+            "NIO",
+            "NOK",
+            "NPR",
+            "NZD",
+            "OMR",
+            "PAB",
+            "PEN",
+            "PGK",
+            "PHP",
+            "PKR",
+            "PLN",
+            "PYG",
+            "QAR",
+            "RON",
+            "RSD",
+            "RUB",
+            "RWF",
+            "SAR",
+            "SBD",
+            "SCR",
+            "SDG",
+            "SEK",
+            "SGD",
+            "SHP",
+            "SLL",
+            "SOS",
+            "SPL",
+            "SRD",
+            "SSP",
+            "STN",
+            "SVC",
+            "SYP",
+            "SZL",
+            "THB",
+            "TJS",
+            "TMT",
+            "TND",
+            "TOP",
+            "TRY",
+            "TTD",
+            "TVD",
+            "TWD",
+            "TZS",
+            "UAH",
+            "UGX",
+            "USD",
+            "USN",
+            "UYI",
+            "UYU",
+            "UZS",
+            "VEF",
+            "VND",
+            "VUV",
+            "WST",
+            "XAF",
+            "XAG",
+            "XAU",
+            "XBA",
+            "XBB",
+            "XBC",
+            "XBD",
+            "XCD",
+            "XDR",
+            "XOF",
+            "XPD",
+            "XPF",
+            "XPT",
+            "XSU",
+            "XTS",
+            "XUA",
+            "XXX",
+            "YER",
+            "ZAR",
+            "ZMW",
+            "ZWD",
+            "CHN",
+            "EEK",
+            "LVL",
+            "MRO",
+            "STD",
+            "TRL",
+            "ZWL"
+          ],
+          "x-availabilityInfo": "V4 - eIDAS support",
+          "x-availabilityStatus": "Stable"
+        },
+        "transaction_date": {
+          "type": "string",
+          "description": "Transaction date of the credit card transaction",
+          "x-availabilityInfo": "V4 - eIDAS support",
+          "x-availabilityStatus": "Stable"
+        },
+        "transaction_type": {
+          "type": "string",
+          "description": "Credit card transaction type",
+          "x-availabilityInfo": "V4 - eIDAS support",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "CreditCardTransaction",
+      "description": "Credit card transaction"
+    },
+    "CreditCardTransactionList": {
+      "type": "object",
+      "properties": {
+        "continuation_key": {
+          "type": "string",
+          "x-availabilityInfo": "V4 - eIDAS support",
+          "x-availabilityStatus": "Stable"
+        },
+        "transactions": {
+          "type": "array",
+          "description": "List of credit card transactions",
+          "items": {
+            "$ref": "#/definitions/CreditCardTransaction"
+          },
+          "x-availabilityInfo": "V4 - eIDAS support",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "CreditCardTransactionList",
+      "description": "List of credit card transactions"
+    },
+    "ErrorPayload": {
+      "type": "object",
+      "properties": {
+        "failures": {
+          "type": "array",
+          "description": "More details on the occurred error",
+          "items": {
+            "$ref": "#/definitions/Failure"
+          },
+          "x-availabilityStatus": "Stable"
+        },
+        "request": {
+          "description": "Error details",
+          "$ref": "#/definitions/RequestEcho",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "ErrorPayload",
+      "description": "Error response body"
+    },
+    "ErrorResponse": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "description": "Payload",
+          "$ref": "#/definitions/ErrorPayload",
+          "x-availabilityStatus": "Stable"
+        },
+        "group_header": {
+          "description": "Standard format response header",
+          "$ref": "#/definitions/ResponseHeader",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "ErrorResponse",
+      "description": "Error response"
+    },
+    "Failure": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "description": "Failure code",
+          "x-availabilityStatus": "Stable"
+        },
+        "description": {
+          "type": "string",
+          "description": "Failure description",
+          "x-availabilityStatus": "Stable"
+        },
+        "path": {
+          "type": "string",
+          "description": "JSON path of the failing element if applicable",
+          "x-availabilityStatus": "Stable"
+        },
+        "type": {
+          "type": "string",
+          "description": "Type of the validation error, e.g. NotNull",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "Failure",
+      "description": "Validation error"
+    },
+    "Pagination": {
+      "type": "object",
+      "properties": {
+        "continuation_key": {
+          "type": "string",
+          "description": "Resource listing may return a continuationKey if there's more results available. Request may be retried with the continuationKey, but otherwise same parameters, in order to get more results.",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "Pagination",
+      "description": "Details of paginated response"
+    },
+    "RequestEcho": {
+      "type": "object",
+      "properties": {
+        "url": {
+          "type": "string",
+          "description": "Original request url",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "RequestEcho",
+      "description": "Original request information"
+    },
+    "ResponseHeader": {
+      "type": "object",
+      "properties": {
+        "creation_date_time": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Response creation time",
+          "x-availabilityStatus": "Stable"
+        },
+        "http_code": {
+          "type": "integer",
+          "format": "int32",
+          "example": 200,
+          "description": "HTTP code for response",
+          "x-availabilityStatus": "Stable"
+        },
+        "message_identification": {
+          "type": "string",
+          "description": "Original request id for correlation purposes",
+          "x-availabilityStatus": "Stable"
+        },
+        "message_pagination": {
+          "description": "Details of paginated response",
+          "$ref": "#/definitions/Pagination",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "ResponseHeader",
+      "description": "External response header"
+    }
+  }
+}

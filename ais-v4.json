@@ -1,0 +1,1192 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Nordea Account Information Services API v4",
+    "version": "4.0",
+    "title": "Accounts API",
+    "contact": {
+      "name": "Open Banking team",
+      "url": "https://nordeaopenbanking.com",
+      "email": "support@nordeaopenbanking.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "x-ibm-name": "ais-v4",
+    "x-version": "4.0"
+  },
+  "host": "api.nordeaopenbanking.com",
+  "basePath": "/personal",
+  "tags": [
+    {
+      "name": "Customer accounts",
+      "description": "Customer accounts"
+    }
+  ],
+  "paths": {
+    "/v4/accounts": {
+      "get": {
+        "tags": [
+          "Customer accounts"
+        ],
+        "summary": "Get list of accounts",
+        "operationId": "accountListUsingGET_1",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Signature",
+            "in": "header",
+            "description": "A signature of request by the TPP on application level. The process of signing a request is described in 'Signing HTTP Messages' RFC draft version 10 (<a href=\"https://tools.ietf.org/html/draft-cavage-http-signatures-10\" target=\"_blank\">https://tools.ietf.org/html/draft-cavage-http-signatures-10</a>). The request signature needs to be sent in the 'Signature' HTTP header as described in the RFC. Additional requirements from Nordea \n - The only allowed algorithm is RSA-SHA256 \n- The key size for the used RSA key pair has to be at least 2048 bit \n- The keyId is the clientId of your application originating from the Nordea Developer Portal \n- We require the following headers to be used in the signature \n* Request without body: (request-target) X-Nordea-Originating-Host X-Nordea-Originating-Date \n* Request with body: (request-target) X-Nordea-Originating-Host X-Nordea-Originating-Date Content-type Digest \n* The request-target is a combination of the HTTP action verb and the request URI path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "X-IBM-Client-Id",
+            "in": "header",
+            "description": "Id of the Client",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "X-IBM-Client-Secret",
+            "in": "header",
+            "description": "Secret password generated for the Client",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "X-Nordea-Originating-Date",
+            "in": "header",
+            "description": "HTTP header element for date and time represented as RFC 7231 Full Dates (GMT). Example date: **Wed, 24 Apr 2019 14:00:37 GMT**. It is similar to standard HTTP 'Date' expect that it allows to set it under JavaScript in browser while standard 'Date' is forbidden",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "X-Nordea-Originating-Host",
+            "in": "header",
+            "description": "HTTP header element for specification of the domain name of the server. It is similar to standard HTTP 'Host' header but it won't be overridden by proxies. It also allows to set it under JavaScript in browser while standard 'Host' is forbidden",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "X-Nordea-Originating-User-Agent",
+            "in": "header",
+            "description": "End user (i.e. PSU) agent information, to be provided if TPP is in session with the PSU",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Nordea-Originating-User-Ip",
+            "in": "header",
+            "description": "End user (i.e. PSU) IP address, to be provided if TPP is in session with the PSU",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/AccountListResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized with failure code:\n* error.apikey.missing = Missing API key. This operation requires API key, but it was missing.\n* error.token = Unspecified error with supplied token.\n* error.token.invalid = Missing access token or token did not authorized requested operation. This operation requires valid access token, but it was missing.\n* error.token.expired = Access token has expired.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden with failure code:\n* error.resource.denied = Requested resource is not authorized by access token.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Resource not found",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2": [
+              "ACCOUNTS_BASIC",
+              "ACCOUNTS_BALANCES",
+              "ACCOUNTS_DETAILS"
+            ],
+            "DecoupledAuth": [
+              "ACCOUNTS_BASIC",
+              "ACCOUNTS_BALANCES",
+              "ACCOUNTS_DETAILS"
+            ]
+          }
+        ],
+        "deprecated": false,
+        "x-availabilityInfo": "V4 - eIDAS support",
+        "x-availabilityStatus": "Stable"
+      }
+    },
+    "/v4/accounts/{id}": {
+      "get": {
+        "tags": [
+          "Customer accounts"
+        ],
+        "summary": "Get account details by account id",
+        "operationId": "accountDetailsUsingGET_1",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Signature",
+            "in": "header",
+            "description": "A signature of request by the TPP on application level. The process of signing a request is described in 'Signing HTTP Messages' RFC draft version 10 (<a href=\"https://tools.ietf.org/html/draft-cavage-http-signatures-10\" target=\"_blank\">https://tools.ietf.org/html/draft-cavage-http-signatures-10</a>). The request signature needs to be sent in the 'Signature' HTTP header as described in the RFC. Additional requirements from Nordea \n - The only allowed algorithm is RSA-SHA256 \n- The key size for the used RSA key pair has to be at least 2048 bit \n- The keyId is the clientId of your application originating from the Nordea Developer Portal \n- We require the following headers to be used in the signature \n* Request without body: (request-target) X-Nordea-Originating-Host X-Nordea-Originating-Date \n* Request with body: (request-target) X-Nordea-Originating-Host X-Nordea-Originating-Date Content-type Digest \n* The request-target is a combination of the HTTP action verb and the request URI path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "X-IBM-Client-Id",
+            "in": "header",
+            "description": "Id of the Client",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "X-IBM-Client-Secret",
+            "in": "header",
+            "description": "Secret password generated for the Client",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "X-Nordea-Originating-Date",
+            "in": "header",
+            "description": "HTTP header element for date and time represented as RFC 7231 Full Dates (GMT). Example date: **Wed, 24 Apr 2019 14:00:37 GMT**. It is similar to standard HTTP 'Date' expect that it allows to set it under JavaScript in browser while standard 'Date' is forbidden",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "X-Nordea-Originating-Host",
+            "in": "header",
+            "description": "HTTP header element for specification of the domain name of the server. It is similar to standard HTTP 'Host' header but it won't be overridden by proxies. It also allows to set it under JavaScript in browser while standard 'Host' is forbidden",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "X-Nordea-Originating-User-Agent",
+            "in": "header",
+            "description": "End user (i.e. PSU) agent information, to be provided if TPP is in session with the PSU",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Nordea-Originating-User-Ip",
+            "in": "header",
+            "description": "End user (i.e. PSU) IP address, to be provided if TPP is in session with the PSU",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Internal, technical account identifier",
+            "required": true,
+            "type": "string",
+            "x-availabilityInfo": "V4 - eIDAS support",
+            "x-availabilityStatus": "Stable"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/AccountDetailsResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized with failure code:\n* error.apikey.missing = Missing API key. This operation requires API key, but it was missing.\n* error.token = Unspecified error with supplied token.\n* error.token.invalid = Missing access token or token did not authorized requested operation. This operation requires valid access token, but it was missing.\n* error.token.expired = Access token has expired.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden with failure code:\n* error.resource.denied = Requested resource is not authorized by access token.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Resource not found",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2": [
+              "ACCOUNTS_BASIC",
+              "ACCOUNTS_BALANCES",
+              "ACCOUNTS_DETAILS"
+            ],
+            "DecoupledAuth": [
+              "ACCOUNTS_BASIC",
+              "ACCOUNTS_BALANCES",
+              "ACCOUNTS_DETAILS"
+            ]
+          }
+        ],
+        "deprecated": false,
+        "x-availabilityInfo": "V4 - eIDAS support",
+        "x-availabilityStatus": "Stable"
+      }
+    },
+    "/v4/accounts/{id}/transactions": {
+      "get": {
+        "tags": [
+          "Customer accounts"
+        ],
+        "summary": "Get account transactions",
+        "operationId": "transactionListUsingGET_1",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Signature",
+            "in": "header",
+            "description": "A signature of request by the TPP on application level. The process of signing a request is described in 'Signing HTTP Messages' RFC draft version 10 (<a href=\"https://tools.ietf.org/html/draft-cavage-http-signatures-10\" target=\"_blank\">https://tools.ietf.org/html/draft-cavage-http-signatures-10</a>). The request signature needs to be sent in the 'Signature' HTTP header as described in the RFC. Additional requirements from Nordea \n - The only allowed algorithm is RSA-SHA256 \n- The key size for the used RSA key pair has to be at least 2048 bit \n- The keyId is the clientId of your application originating from the Nordea Developer Portal \n- We require the following headers to be used in the signature \n* Request without body: (request-target) X-Nordea-Originating-Host X-Nordea-Originating-Date \n* Request with body: (request-target) X-Nordea-Originating-Host X-Nordea-Originating-Date Content-type Digest \n* The request-target is a combination of the HTTP action verb and the request URI path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "X-IBM-Client-Id",
+            "in": "header",
+            "description": "Id of the Client",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "X-IBM-Client-Secret",
+            "in": "header",
+            "description": "Secret password generated for the Client",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "X-Nordea-Originating-Date",
+            "in": "header",
+            "description": "HTTP header element for date and time represented as RFC 7231 Full Dates (GMT). Example date: **Wed, 24 Apr 2019 14:00:37 GMT**. It is similar to standard HTTP 'Date' expect that it allows to set it under JavaScript in browser while standard 'Date' is forbidden",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "X-Nordea-Originating-Host",
+            "in": "header",
+            "description": "HTTP header element for specification of the domain name of the server. It is similar to standard HTTP 'Host' header but it won't be overridden by proxies. It also allows to set it under JavaScript in browser while standard 'Host' is forbidden",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "X-Nordea-Originating-User-Agent",
+            "in": "header",
+            "description": "End user (i.e. PSU) agent information, to be provided if TPP is in session with the PSU",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Nordea-Originating-User-Ip",
+            "in": "header",
+            "description": "End user (i.e. PSU) IP address, to be provided if TPP is in session with the PSU",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "continuation_key",
+            "in": "query",
+            "description": "Resource listing may return a continuationKey if there's more results available. Request may be retried with the continuationKey, but otherwise same parameters, in order to get more results.",
+            "required": false,
+            "type": "string",
+            "allowEmptyValue": false,
+            "x-availabilityInfo": "V4 - eIDAS support",
+            "x-availabilityStatus": "Stable"
+          },
+          {
+            "name": "from_date",
+            "in": "query",
+            "description": "List transactions starting from and including this date",
+            "required": false,
+            "type": "string",
+            "format": "date",
+            "allowEmptyValue": false,
+            "x-availabilityInfo": "V4 - eIDAS support",
+            "x-availabilityStatus": "Stable"
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Internal, technical account identifier",
+            "required": true,
+            "type": "string",
+            "x-availabilityInfo": "V4 - eIDAS support",
+            "x-availabilityStatus": "Stable"
+          },
+          {
+            "name": "language",
+            "in": "query",
+            "description": "Preferred language for textual values, possible values are: fi, sv, en, da",
+            "required": false,
+            "type": "string",
+            "x-availabilityInfo": "V4 - eIDAS support",
+            "x-availabilityStatus": "Stable"
+          },
+          {
+            "name": "to_date",
+            "in": "query",
+            "description": "List transactions until and including this date",
+            "required": false,
+            "type": "string",
+            "format": "date",
+            "allowEmptyValue": false,
+            "x-availabilityInfo": "V4 - eIDAS support",
+            "x-availabilityStatus": "Stable"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/TransactionListResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized with failure code:\n* error.apikey.missing = Missing API key. This operation requires API key, but it was missing.\n* error.token = Unspecified error with supplied token.\n* error.token.invalid = Missing access token or token did not authorized requested operation. This operation requires valid access token, but it was missing.\n* error.token.expired = Access token has expired.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden with failure code:\n* error.resource.denied = Requested resource is not authorized by access token.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Resource not found",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2": [
+              "ACCOUNTS_BASIC",
+              "ACCOUNTS_TRANSACTIONS"
+            ],
+            "DecoupledAuth": [
+              "ACCOUNTS_BASIC",
+              "ACCOUNTS_TRANSACTIONS"
+            ]
+          }
+        ],
+        "deprecated": false,
+        "x-availabilityInfo": "V4 - eIDAS support",
+        "x-availabilityStatus": "Stable"
+      }
+    }
+  },
+  "securityDefinitions": {
+    "DecoupledAuth": {
+      "type": "oauth2",
+      "authorizationUrl": "/v4/authorize-decoupled",
+      "tokenUrl": "/v4/authorize-decoupled/token",
+      "flow": "accessCode",
+      "scopes": {
+        "ACCOUNTS_BASIC": "Account information",
+        "ACCOUNTS_BALANCES": "Account information with balances",
+        "ACCOUNTS_DETAILS": "Account information with details",
+        "ACCOUNTS_TRANSACTIONS": "Account's transactions",
+        "PAYMENTS_MULTIPLE": "Payments Multiple"
+      },
+      "x-authSubType": "decoupled-auth",
+      "x-codeStatusDescription": "Returns code when authorization second step is finished",
+      "x-codeStatusUrl": "/v4/authorize-decoupled"
+    },
+    "OAuth2": {
+      "type": "oauth2",
+      "authorizationUrl": "/v4/authorize",
+      "tokenUrl": "/v4/authorize/token",
+      "flow": "accessCode",
+      "scopes": {
+        "ACCOUNTS_BASIC": "Account information",
+        "ACCOUNTS_BALANCES": "Account information with balances",
+        "ACCOUNTS_DETAILS": "Account information with details",
+        "ACCOUNTS_TRANSACTIONS": "Account's transactions",
+        "PAYMENTS_MULTIPLE": "Payments Multiple"
+      }
+    }
+  },
+  "definitions": {
+    "AccountDetails": {
+      "type": "object",
+      "required": [
+        "_id",
+        "account_name",
+        "account_numbers",
+        "account_type",
+        "available_balance",
+        "bank",
+        "booked_balance",
+        "country",
+        "currency",
+        "product",
+        "status"
+      ],
+      "properties": {
+        "_id": {
+          "type": "string",
+          "description": "Internal, technical account identifier",
+          "x-accessScopes": [
+            "ACCOUNTS_BASIC"
+          ],
+          "x-availabilityInfo": "V4 - eIDAS support",
+          "x-availabilityStatus": "Stable"
+        },
+        "_links": {
+          "type": "array",
+          "description": "HATEOAS inspired links: 'rel' and 'href'",
+          "items": {
+            "$ref": "#/definitions/Link"
+          },
+          "x-availabilityStatus": "Stable"
+        },
+        "account_name": {
+          "type": "string",
+          "description": "Account name",
+          "x-accessScopes": [
+            "ACCOUNTS_DETAILS"
+          ],
+          "x-availabilityInfo": "V4 - eIDAS support",
+          "x-availabilityStatus": "Stable"
+        },
+        "account_numbers": {
+          "type": "array",
+          "description": "Account numbers",
+          "items": {
+            "$ref": "#/definitions/AccountNumber"
+          },
+          "x-accessScopes": [
+            "ACCOUNTS_BASIC"
+          ],
+          "x-availabilityInfo": "V4 - eIDAS support",
+          "x-availabilityStatus": "Stable"
+        },
+        "account_type": {
+          "type": "string",
+          "description": "Account type",
+          "enum": [
+            "Current",
+            "Savings"
+          ],
+          "x-accessScopes": [
+            "ACCOUNTS_DETAILS"
+          ],
+          "x-availabilityInfo": "V4 - eIDAS support",
+          "x-availabilityStatus": "Stable"
+        },
+        "available_balance": {
+          "type": "number",
+          "description": "Available balance indicates the funds which are available to the account holder at the time of the query",
+          "x-accessScopes": [
+            "ACCOUNTS_BALANCES"
+          ],
+          "x-availabilityInfo": "V4 - eIDAS support",
+          "x-availabilityStatus": "Stable"
+        },
+        "bank": {
+          "description": "Details of bank servicing account",
+          "$ref": "#/definitions/BankInfo",
+          "x-accessScopes": [
+            "ACCOUNTS_DETAILS"
+          ],
+          "x-availabilityInfo": "V4 - eIDAS support",
+          "x-availabilityStatus": "Stable"
+        },
+        "booked_balance": {
+          "type": "number",
+          "description": "Booked balance includes all transactions entered on the account at the time of the query",
+          "x-accessScopes": [
+            "ACCOUNTS_BALANCES"
+          ],
+          "x-availabilityInfo": "V4 - eIDAS support",
+          "x-availabilityStatus": "Stable"
+        },
+        "country": {
+          "type": "string",
+          "description": "Country code where the account is held according to ISO ALPHA-2",
+          "enum": [
+            "FI",
+            "SE",
+            "DK",
+            "NO"
+          ],
+          "x-accessScopes": [
+            "ACCOUNTS_DETAILS"
+          ],
+          "x-availabilityInfo": "V4 - eIDAS support",
+          "x-availabilityStatus": "Stable"
+        },
+        "credit_limit": {
+          "type": "number",
+          "description": "Amount of credit extended to account holder beyond account booked balance",
+          "x-accessScopes": [
+            "ACCOUNTS_DETAILS"
+          ],
+          "x-availabilityInfo": "V4 - eIDAS support",
+          "x-availabilityStatus": "Stable"
+        },
+        "currency": {
+          "type": "string",
+          "description": "Currency code according to ISO 4217",
+          "x-accessScopes": [
+            "ACCOUNTS_BASIC"
+          ],
+          "x-availabilityInfo": "V4 - eIDAS support",
+          "x-availabilityStatus": "Stable"
+        },
+        "latest_transaction_booking_date": {
+          "type": "string",
+          "format": "date",
+          "description": "Date of last transaction booked to the account",
+          "x-accessScopes": [
+            "ACCOUNTS_DETAILS"
+          ],
+          "x-availabilityInfo": "V4 - eIDAS support",
+          "x-availabilityStatus": "Stable"
+        },
+        "product": {
+          "type": "string",
+          "description": "Name of the banking product delivered by this account",
+          "x-accessScopes": [
+            "ACCOUNTS_DETAILS"
+          ],
+          "x-availabilityInfo": "V4 - eIDAS support",
+          "x-availabilityStatus": "Stable"
+        },
+        "status": {
+          "type": "string",
+          "description": "Status of account",
+          "enum": [
+            "OPEN",
+            "CLOSED"
+          ],
+          "x-accessScopes": [
+            "ACCOUNTS_DETAILS"
+          ],
+          "x-availabilityInfo": "V4 - eIDAS support",
+          "x-availabilityStatus": "Stable"
+        },
+        "value_dated_balance": {
+          "type": "number",
+          "description": "Value dated balance is the balance on the basis of which interest is calculated on the account",
+          "x-accessScopes": [
+            "ACCOUNTS_BALANCES"
+          ],
+          "x-availabilityInfo": "V4 - eIDAS support",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "AccountDetails",
+      "description": "Detailed account information"
+    },
+    "AccountDetailsResponse": {
+      "type": "object",
+      "properties": {
+        "group_header": {
+          "description": "Standard format response header",
+          "$ref": "#/definitions/ResponseHeader",
+          "x-availabilityStatus": "Stable"
+        },
+        "response": {
+          "description": "Payload",
+          "$ref": "#/definitions/AccountDetails",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "AccountDetailsResponse",
+      "description": "Account details response"
+    },
+    "AccountList": {
+      "type": "object",
+      "properties": {
+        "_links": {
+          "type": "array",
+          "description": "HATEOAS inspired links: 'rel' and 'href'",
+          "items": {
+            "$ref": "#/definitions/Link"
+          },
+          "x-availabilityStatus": "Stable"
+        },
+        "accounts": {
+          "type": "array",
+          "description": "List of accounts",
+          "items": {
+            "$ref": "#/definitions/AccountDetails"
+          },
+          "x-accessScopes": [
+            "ACCOUNTS_BASIC"
+          ],
+          "x-availabilityInfo": "V4 - eIDAS support",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "AccountList",
+      "description": "List of accounts"
+    },
+    "AccountListResponse": {
+      "type": "object",
+      "properties": {
+        "group_header": {
+          "description": "Standard format response header",
+          "$ref": "#/definitions/ResponseHeader",
+          "x-availabilityStatus": "Stable"
+        },
+        "response": {
+          "description": "Payload",
+          "$ref": "#/definitions/AccountList",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "AccountListResponse",
+      "description": "Account list response"
+    },
+    "AccountNumber": {
+      "type": "object",
+      "required": [
+        "_type",
+        "value"
+      ],
+      "properties": {
+        "_type": {
+          "type": "string",
+          "description": "Type of account number",
+          "enum": [
+            "IBAN",
+            "BBAN_NO",
+            "BBAN_SE",
+            "BBAN_DK"
+          ],
+          "x-accessScopes": [
+            "ACCOUNTS_BASIC"
+          ],
+          "x-availabilityStatus": "Stable"
+        },
+        "value": {
+          "type": "string",
+          "example": "FI1350001520000081",
+          "description": "Actual account number",
+          "x-accessScopes": [
+            "ACCOUNTS_BASIC"
+          ],
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "AccountNumber",
+      "description": "Account number"
+    },
+    "BankInfo": {
+      "type": "object",
+      "required": [
+        "bic",
+        "country",
+        "name"
+      ],
+      "properties": {
+        "bic": {
+          "type": "string",
+          "description": "Business Identifier Code of account servicing institution according to ISO 9362.",
+          "enum": [
+            "NDEAFIHH",
+            "NDEASESS",
+            "NDEADKKK",
+            "NDEANOKK"
+          ],
+          "x-accessScopes": [
+            "ACCOUNTS_DETAILS"
+          ],
+          "x-availabilityStatus": "Stable"
+        },
+        "country": {
+          "type": "string",
+          "description": "Country code according to ISO Alpha-2",
+          "enum": [
+            "FI",
+            "SE",
+            "DK",
+            "NO"
+          ],
+          "x-accessScopes": [
+            "ACCOUNTS_DETAILS"
+          ],
+          "x-availabilityStatus": "Stable"
+        },
+        "name": {
+          "type": "string",
+          "description": "Nordea",
+          "x-accessScopes": [
+            "ACCOUNTS_DETAILS"
+          ],
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "BankInfo",
+      "description": "Bank information"
+    },
+    "ErrorPayload": {
+      "type": "object",
+      "properties": {
+        "failures": {
+          "type": "array",
+          "description": "More details on the occurred error",
+          "items": {
+            "$ref": "#/definitions/Failure"
+          },
+          "x-availabilityStatus": "Stable"
+        },
+        "request": {
+          "description": "Error details",
+          "$ref": "#/definitions/RequestEcho",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "ErrorPayload",
+      "description": "Error response body"
+    },
+    "ErrorResponse": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "description": "Payload",
+          "$ref": "#/definitions/ErrorPayload",
+          "x-availabilityStatus": "Stable"
+        },
+        "group_header": {
+          "description": "Standard format response header",
+          "$ref": "#/definitions/ResponseHeader",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "ErrorResponse",
+      "description": "Error response"
+    },
+    "Failure": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "description": "Failure code",
+          "x-availabilityStatus": "Stable"
+        },
+        "description": {
+          "type": "string",
+          "description": "Failure description",
+          "x-availabilityStatus": "Stable"
+        },
+        "path": {
+          "type": "string",
+          "description": "JSON path of the failing element if applicable",
+          "x-availabilityStatus": "Stable"
+        },
+        "type": {
+          "type": "string",
+          "description": "Type of the validation error, e.g. NotNull",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "Failure",
+      "description": "Validation error"
+    },
+    "Link": {
+      "type": "object",
+      "properties": {
+        "href": {
+          "type": "string",
+          "description": "Relative path to the linked resource",
+          "x-availabilityStatus": "Stable"
+        },
+        "rel": {
+          "type": "string",
+          "description": "Describes the nature of the link, e.g. 'details' for a link to the detailed information of a listed resource.",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "Link",
+      "description": "Context specific link (only GET supported)"
+    },
+    "Pagination": {
+      "type": "object",
+      "properties": {
+        "continuation_key": {
+          "type": "string",
+          "description": "Resource listing may return a continuationKey if there's more results available. Request may be retried with the continuationKey, but otherwise same parameters, in order to get more results.",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "Pagination",
+      "description": "Details of paginated response"
+    },
+    "RequestEcho": {
+      "type": "object",
+      "properties": {
+        "url": {
+          "type": "string",
+          "description": "Original request url",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "RequestEcho",
+      "description": "Original request information"
+    },
+    "ResponseHeader": {
+      "type": "object",
+      "properties": {
+        "creation_date_time": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Response creation time",
+          "x-availabilityStatus": "Stable"
+        },
+        "http_code": {
+          "type": "integer",
+          "format": "int32",
+          "example": 200,
+          "description": "HTTP code for response",
+          "x-availabilityStatus": "Stable"
+        },
+        "message_identification": {
+          "type": "string",
+          "description": "Original request id for correlation purposes",
+          "x-availabilityStatus": "Stable"
+        },
+        "message_pagination": {
+          "description": "Details of paginated response",
+          "$ref": "#/definitions/Pagination",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "ResponseHeader",
+      "description": "External response header"
+    },
+    "Transaction": {
+      "type": "object",
+      "required": [
+        "booking_date",
+        "currency",
+        "status",
+        "transaction_id"
+      ],
+      "properties": {
+        "amount": {
+          "type": "number",
+          "description": "Negative amount indicates debit transaction",
+          "x-accessScopes": [
+            "ACCOUNTS_TRANSACTIONS"
+          ],
+          "x-availabilityInfo": "V4 - eIDAS support",
+          "x-availabilityStatus": "Stable"
+        },
+        "balance_after_transaction": {
+          "type": "number",
+          "description": "Balance after transaction. Exemption for Denmark: it can take up to 24 hours for the balance to be updated after a transaction is made. Exemption for Finland: not available.",
+          "x-accessScopes": [
+            "ACCOUNTS_TRANSACTIONS"
+          ],
+          "x-availabilityInfo": "V4 - eIDAS support",
+          "x-availabilityStatus": "Stable",
+          "x-notSupportedCountries": [
+            "FI"
+          ]
+        },
+        "booking_date": {
+          "type": "string",
+          "format": "date",
+          "description": "Date transaction was booked to the account ledger",
+          "x-accessScopes": [
+            "ACCOUNTS_TRANSACTIONS"
+          ],
+          "x-availabilityInfo": "V4 - eIDAS support",
+          "x-availabilityStatus": "Stable"
+        },
+        "card_number": {
+          "type": "string",
+          "description": "4 digits of card number of the transaction",
+          "x-accessScopes": [
+            "ACCOUNTS_TRANSACTIONS"
+          ],
+          "x-availabilityInfo": "V4 - eIDAS support",
+          "x-availabilityStatus": "Stable",
+          "x-notSupportedCountries": [
+            "DK"
+          ]
+        },
+        "counterparty_account": {
+          "type": "string",
+          "description": "Counterparty account details",
+          "x-accessScopes": [
+            "ACCOUNTS_TRANSACTIONS"
+          ],
+          "x-availabilityInfo": "V4 - eIDAS support",
+          "x-availabilityStatus": "Stable"
+        },
+        "counterparty_name": {
+          "type": "string",
+          "description": "Counterparty name",
+          "x-accessScopes": [
+            "ACCOUNTS_TRANSACTIONS"
+          ],
+          "x-availabilityInfo": "V4 - eIDAS support",
+          "x-availabilityStatus": "Stable",
+          "x-notSupportedCountries": [
+            "DK"
+          ]
+        },
+        "currency": {
+          "type": "string",
+          "description": "Currency code according to ISO 4217",
+          "x-accessScopes": [
+            "ACCOUNTS_TRANSACTIONS"
+          ],
+          "x-availabilityInfo": "V4 - eIDAS support",
+          "x-availabilityStatus": "Stable"
+        },
+        "currency_rate": {
+          "type": "number",
+          "description": "Currency code according to ISO 4217",
+          "x-accessScopes": [
+            "ACCOUNTS_TRANSACTIONS"
+          ],
+          "x-availabilityInfo": "V4 - eIDAS support",
+          "x-availabilityStatus": "Stable"
+        },
+        "message": {
+          "type": "string",
+          "description": "Message from remitter to beneficiary. In Finland this may alternatively include a short description of the transaction e.g. 'Automaattiotto'",
+          "x-accessScopes": [
+            "ACCOUNTS_TRANSACTIONS"
+          ],
+          "x-availabilityInfo": "V4 - eIDAS support",
+          "x-availabilityStatus": "Stable",
+          "x-notSupportedCountries": [
+            "DK"
+          ]
+        },
+        "narrative": {
+          "type": "string",
+          "description": "Transaction narrative (customer custom message)",
+          "x-accessScopes": [
+            "ACCOUNTS_TRANSACTIONS"
+          ],
+          "x-availabilityInfo": "V4 - eIDAS support",
+          "x-availabilityStatus": "Stable"
+        },
+        "original_currency": {
+          "type": "string",
+          "description": "Currency code according to ISO 4217",
+          "x-accessScopes": [
+            "ACCOUNTS_TRANSACTIONS"
+          ],
+          "x-availabilityInfo": "V4 - eIDAS support",
+          "x-availabilityStatus": "Stable"
+        },
+        "original_currency_amount": {
+          "type": "number",
+          "description": "Foreign transaction amount in original currency",
+          "x-accessScopes": [
+            "ACCOUNTS_TRANSACTIONS"
+          ],
+          "x-availabilityInfo": "V4 - eIDAS support",
+          "x-availabilityStatus": "Stable"
+        },
+        "own_message": {
+          "type": "string",
+          "description": "Text message for the account holder's own use",
+          "x-accessScopes": [
+            "ACCOUNTS_TRANSACTIONS"
+          ],
+          "x-availabilityInfo": "V4 - eIDAS support",
+          "x-availabilityStatus": "Stable",
+          "x-notSupportedCountries": [
+            "FI",
+            "DK"
+          ]
+        },
+        "payment_date": {
+          "type": "string",
+          "format": "date",
+          "description": "Payment date of the transaction",
+          "x-accessScopes": [
+            "ACCOUNTS_TRANSACTIONS"
+          ],
+          "x-availabilityInfo": "V4 - eIDAS support",
+          "x-availabilityStatus": "Stable",
+          "x-notSupportedCountries": [
+            "DK"
+          ]
+        },
+        "reference": {
+          "type": "string",
+          "description": "Reference number",
+          "x-accessScopes": [
+            "ACCOUNTS_TRANSACTIONS"
+          ],
+          "x-availabilityInfo": "V4 - eIDAS support",
+          "x-availabilityStatus": "Stable",
+          "x-notSupportedCountries": [
+            "DK"
+          ]
+        },
+        "status": {
+          "type": "string",
+          "description": "Status of the transaction",
+          "enum": [
+            "reserved",
+            "billed",
+            "confirmed"
+          ],
+          "x-accessScopes": [
+            "ACCOUNTS_TRANSACTIONS"
+          ],
+          "x-availabilityInfo": "V4 - eIDAS support",
+          "x-availabilityStatus": "Stable"
+        },
+        "transaction_date": {
+          "type": "string",
+          "format": "date",
+          "description": "Date on which transaction was enacted",
+          "x-accessScopes": [
+            "ACCOUNTS_TRANSACTIONS"
+          ],
+          "x-availabilityInfo": "V4 - eIDAS support",
+          "x-availabilityStatus": "Stable"
+        },
+        "transaction_id": {
+          "type": "string",
+          "description": "Unique transaction identifier as defined by the bank. Exemption for Denmark is that the transaction identifier changes when the transaction is finally booked",
+          "x-accessScopes": [
+            "ACCOUNTS_TRANSACTIONS"
+          ],
+          "x-availabilityInfo": "V4 - eIDAS support",
+          "x-availabilityStatus": "Stable"
+        },
+        "type_description": {
+          "type": "string",
+          "example": "ATM Cash Withdrawal",
+          "description": "Description of the type of transaction, e.g. Cash withdrawal, Account transfer, etc. (localized)",
+          "x-accessScopes": [
+            "ACCOUNTS_TRANSACTIONS"
+          ],
+          "x-availabilityInfo": "V4 - eIDAS support",
+          "x-availabilityStatus": "Stable"
+        },
+        "value_date": {
+          "type": "string",
+          "format": "date",
+          "description": "Value date of the transaction, used for interest calculation",
+          "x-accessScopes": [
+            "ACCOUNTS_TRANSACTIONS"
+          ],
+          "x-availabilityInfo": "V4 - eIDAS support",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "Transaction",
+      "description": "Transaction details"
+    },
+    "TransactionList": {
+      "type": "object",
+      "properties": {
+        "_links": {
+          "type": "array",
+          "description": "HATEOAS inspired links: 'rel' and 'href'",
+          "items": {
+            "$ref": "#/definitions/Link"
+          },
+          "x-availabilityStatus": "Stable"
+        },
+        "transactions": {
+          "type": "array",
+          "description": "Listed transactions",
+          "items": {
+            "$ref": "#/definitions/Transaction"
+          },
+          "x-accessScopes": [
+            "ACCOUNTS_TRANSACTIONS"
+          ],
+          "x-availabilityInfo": "V4 - eIDAS support",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "TransactionList",
+      "description": "List of transactions"
+    },
+    "TransactionListResponse": {
+      "type": "object",
+      "properties": {
+        "group_header": {
+          "description": "Standard format response header",
+          "$ref": "#/definitions/ResponseHeader",
+          "x-availabilityStatus": "Stable"
+        },
+        "response": {
+          "description": "Payload",
+          "$ref": "#/definitions/TransactionList",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "TransactionListResponse",
+      "description": "Transaction history response"
+    }
+  }
+}
