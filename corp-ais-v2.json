@@ -2,7 +2,7 @@
   "swagger": "2.0",
   "info": {
     "description": "Corporate Accounts API",
-    "version": "2.0",
+    "version": "2.6",
     "title": "Corporate Accounts API",
     "contact": {
       "name": "Open Banking team",
@@ -14,9 +14,9 @@
       "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
     },
     "x-ibm-name": "corporate-ais-v2",
-    "x-version": "2.0"
+    "x-version": "2.6"
   },
-  "host": "api.nordeaopenbanking.com",
+  "host": "https://api.nordeaopenbanking.com",
   "basePath": "/corporate/",
   "tags": [
     {
@@ -597,7 +597,7 @@
         "account_list": {
           "type": "array",
           "example": [
-
+            "SE0295000099604213908314"
           ],
           "description": "Account List",
           "items": {
@@ -608,7 +608,7 @@
         "country_list": {
           "type": "array",
           "example": [
-
+            "SEK"
           ],
           "description": "Country List",
           "items": {
@@ -619,7 +619,7 @@
         "currency_list": {
           "type": "array",
           "example": [
-
+            "SE"
           ],
           "description": "Currency List",
           "items": {
