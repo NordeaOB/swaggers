@@ -16,7 +16,7 @@
     "x-ibm-name": "auth-v5",
     "x-version": "5.0"
   },
-  "host": "api.open-dev01.nordea.apigw.apim.qaoneadr.local:8443",
+  "host": "api.nordeaopenbanking.com",
   "basePath": "/personal",
   "tags": [
     {
