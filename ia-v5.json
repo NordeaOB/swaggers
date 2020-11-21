@@ -412,8 +412,7 @@
                 },
                 "scope": {
                     "type": "array",
-                    "example": [ACCOUNTS_BASIC,ACCOUNTS_BALANCES
-                    ],
+                    "example": ["ACCOUNTS_BASIC","ACCOUNTS_BALANCES"],
                     "description": "Scope list. Note: ACCOUNTS_BASIC must be present at a minimum, when requesting ACCOUNTS_* scopes",
                     "items": {
                         "type": "string",
