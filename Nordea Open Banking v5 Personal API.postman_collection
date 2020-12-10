@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "6602f9d0-bd18-430b-8170-a42476825dff",
+		"_postman_id": "acd6b596-2fbc-4666-922e-300e4fbabcd5",
 		"name": "Nordea Open Banking v5 API",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -452,9 +452,469 @@
 							}
 						}
 					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "New Decoupled Auth Flow (Only SE)",
+					"item": [
+						{
+							"name": "Start authentication",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "e1ba9e60-81eb-478e-bcdb-860bf56ee7aa",
+										"exec": [
+											"if(responseCode.code === 200){\r",
+											"    var jsonData = JSON.parse(responseBody);\r",
+											"    tests[\"Session id is returned\"] = responseBody.has(\"session_id\");\r",
+											"        if(responseBody.has(\"session_id\")) postman.setEnvironmentVariable(\"session_id\", jsonData[\"session_id\"]);\r",
+											"    tests[\"Auto start token is returned\"] = responseBody.has(\"auto_start_token\");\r",
+											"        if(responseBody.has(\"auto_start_token\")) postman.setEnvironmentVariable(\"auto_start_token\", jsonData[\"auto_start_token\"]);\r",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "X-IBM-Client-Id",
+										"value": "{{X-IBM-Client-ID}}",
+										"type": "text"
+									},
+									{
+										"key": "X-IBM-Client-Secret",
+										"value": "{{X-IBM-Client-Secret}}",
+										"type": "text"
+									},
+									{
+										"key": "X-Nordea-Originating-Date",
+										"value": "{{X-Nordea-Originating-Date}}",
+										"type": "text"
+									},
+									{
+										"key": "X-Nordea-Originating-Host",
+										"value": "{{X-Nordea-Originating-Host}}",
+										"type": "text"
+									},
+									{
+										"key": "Signature",
+										"value": "{{Signature}}",
+										"type": "text"
+									},
+									{
+										"key": "Digest",
+										"value": "{{Digest}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"authentication_method\": \"BANKID_SE\",\r\n  \"country\": \"SE\",\r\n  \"psu_id\": \"12345678953\",\r\n  \"response_type\": \"code\"\r\n}"
+								},
+								"url": {
+									"raw": "https://api.nordeaopenbanking.com/personal/v5/decoupled/authentications",
+									"protocol": "https",
+									"host": [
+										"api",
+										"nordeaopenbanking",
+										"com"
+									],
+									"path": [
+										"personal",
+										"v5",
+										"decoupled",
+										"authentications"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Poll for status",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "1b7e6114-9053-409b-8bf9-fc567f4d9fe4",
+										"exec": [
+											"if(responseCode.code === 200){\r",
+											"     tests[\"code is returned\"] = responseBody.has(\"code\");\r",
+											"        var jsonData = JSON.parse(responseBody);\r",
+											"        if(responseBody.has(\"code\")) postman.setEnvironmentVariable(\"code\", jsonData[\"code\"]);\r",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "X-IBM-Client-Id",
+										"value": "{{X-IBM-Client-ID}}",
+										"type": "text"
+									},
+									{
+										"key": "X-IBM-Client-Secret",
+										"value": "{{X-IBM-Client-Secret}}",
+										"type": "text"
+									},
+									{
+										"key": "X-Nordea-Originating-Date",
+										"value": "{{X-Nordea-Originating-Date}}",
+										"type": "text"
+									},
+									{
+										"key": "X-Nordea-Originating-Host",
+										"value": "{{X-Nordea-Originating-Host}}",
+										"type": "text"
+									},
+									{
+										"key": "Signature",
+										"value": "{{Signature}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "https://api.nordeaopenbanking.com/personal/v5/decoupled/authentications/{{session_id}}",
+									"protocol": "https",
+									"host": [
+										"api",
+										"nordeaopenbanking",
+										"com"
+									],
+									"path": [
+										"personal",
+										"v5",
+										"decoupled",
+										"authentications",
+										"{{session_id}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Authorize",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "cadd5fef-1699-42ea-b926-2054733b28d1",
+										"exec": [
+											"if(responseCode.code === 200){\r",
+											"     tests[\"code is returned\"] = responseBody.has(\"code\");\r",
+											"        var jsonData = JSON.parse(responseBody);\r",
+											"        if(responseBody.has(\"code\")) postman.setEnvironmentVariable(\"authorized_code\", jsonData[\"code\"]);\r",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "X-IBM-Client-Id",
+										"value": "{{X-IBM-Client-ID}}",
+										"type": "text"
+									},
+									{
+										"key": "X-IBM-Client-Secret",
+										"value": "{{X-IBM-Client-Secret}}",
+										"type": "text"
+									},
+									{
+										"key": "X-Nordea-Originating-Date",
+										"value": "{{X-Nordea-Originating-Date}}",
+										"type": "text"
+									},
+									{
+										"key": "X-Nordea-Originating-Host",
+										"value": "{{X-Nordea-Originating-Host}}",
+										"type": "text"
+									},
+									{
+										"key": "Signature",
+										"value": "{{Signature}}",
+										"type": "text"
+									},
+									{
+										"key": "Digest",
+										"value": "{{Digest}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"account_list\": [\r\n    \"ALL\"\r\n  ],\r\n  \"code\": \"{{code}}\",\r\n  \"duration\": 3600,\r\n  \"response_type\": \"nordea_token\",\r\n  \"scope\": [\r\n    \"ACCOUNTS_BASIC\",\r\n    \"ACCOUNTS_BALANCES\",\r\n    \"ACCOUNTS_DETAILS\",\r\n    \"ACCOUNTS_TRANSACTIONS\",\r\n    \"PAYMENTS_MULTIPLE\"\r\n  ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://api.nordeaopenbanking.com/personal/v5/decoupled/authorizations",
+									"protocol": "https",
+									"host": [
+										"api",
+										"nordeaopenbanking",
+										"com"
+									],
+									"path": [
+										"personal",
+										"v5",
+										"decoupled",
+										"authorizations"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Exchange code for token",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "7d07da77-dbc9-42d6-9aab-c406535f9a57",
+										"exec": [
+											"var jsonData = JSON.parse(responseBody);\r",
+											"pm.environment.set(\"access_token\", jsonData.access_token);\r",
+											"pm.environment.set(\"refresh_token\", jsonData.refresh_token);\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/x-www-form-urlencoded",
+										"type": "text"
+									},
+									{
+										"key": "X-IBM-Client-Id",
+										"value": "{{X-IBM-Client-ID}}",
+										"type": "text"
+									},
+									{
+										"key": "X-IBM-Client-Secret",
+										"value": "{{X-IBM-Client-Secret}}",
+										"type": "text"
+									},
+									{
+										"key": "X-Nordea-Originating-Date",
+										"value": "{{X-Nordea-Originating-Date}}",
+										"type": "text"
+									},
+									{
+										"key": "X-Nordea-Originating-Host",
+										"value": "{{X-Nordea-Originating-Host}}",
+										"type": "text"
+									},
+									{
+										"key": "Signature",
+										"value": "{{Signature}}",
+										"type": "text"
+									},
+									{
+										"key": "Digest",
+										"value": "{{Digest}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "code",
+											"value": "{{authorized_code}}",
+											"type": "text"
+										},
+										{
+											"key": "grant_type",
+											"value": "authorization_code",
+											"type": "text"
+										}
+									],
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://api.nordeaopenbanking.com/personal/v5/decoupled/token",
+									"protocol": "https",
+									"host": [
+										"api",
+										"nordeaopenbanking",
+										"com"
+									],
+									"path": [
+										"personal",
+										"v5",
+										"decoupled",
+										"token"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "New Token With Refresh Token",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "7d07da77-dbc9-42d6-9aab-c406535f9a57",
+										"exec": [
+											"var jsonData = JSON.parse(responseBody);\r",
+											"pm.environment.set(\"access_token\", jsonData.access_token);\r",
+											"pm.environment.set(\"refresh_token\", jsonData.refresh_token);\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/x-www-form-urlencoded"
+									},
+									{
+										"key": "X-IBM-Client-Id",
+										"type": "text",
+										"value": "{{X-IBM-Client-ID}}"
+									},
+									{
+										"key": "X-IBM-Client-Secret",
+										"type": "text",
+										"value": "{{X-IBM-Client-Secret}}"
+									},
+									{
+										"key": "X-Nordea-Originating-Date",
+										"type": "text",
+										"value": "{{X-Nordea-Originating-Date}}"
+									},
+									{
+										"key": "X-Nordea-Originating-Host",
+										"type": "text",
+										"value": "{{X-Nordea-Originating-Host}}"
+									},
+									{
+										"key": "Signature",
+										"type": "text",
+										"value": "{{Signature}}"
+									},
+									{
+										"key": "Digest",
+										"type": "text",
+										"value": "{{Digest}}"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "grant_type",
+											"value": "refresh_token",
+											"type": "text"
+										},
+										{
+											"key": "refresh_token",
+											"value": "{{refresh_token}}",
+											"type": "text"
+										}
+									],
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://api.nordeaopenbanking.com/personal/v5/decoupled/token",
+									"protocol": "https",
+									"host": [
+										"api",
+										"nordeaopenbanking",
+										"com"
+									],
+									"path": [
+										"personal",
+										"v5",
+										"decoupled",
+										"token"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "1240e8d1-5ae2-4798-a2d5-b04becf3037c",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "4bbe5943-a0e7-4a11-9b85-d576bfb7104a",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				}
-			]
+			],
+			"protocolProfileBehavior": {}
 		}
 	],
 	"event": [
@@ -29800,5 +30260,6 @@
 				]
 			}
 		}
-	]
+	],
+	"protocolProfileBehavior": {}
 }
