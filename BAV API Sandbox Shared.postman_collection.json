@@ -1,0 +1,198 @@
+{
+	"info": {
+		"_postman_id": "1a14cc26-58b9-48b0-98b9-2fe2951ccb0c",
+		"name": "BAV API SANDBOX SHARED",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "CreatePrevalidationBasedonIBAN",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "",
+						"type": "text"
+					},
+					{
+						"key": "X-IBM-Client-Id",
+						"value": "",
+						"type": "text"
+					},
+					{
+						"key": "X-IBM-Client-Secret",
+						"value": "",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"creditor_account_number\":\"DK5000400440116243\",\"creditor_name\":\"Test Creditor Name\",\"business_id\":\"2858394-9\",\"value_added_tax_number\":\"FI2112345600000666\",\"creditor_address\":{\"address_line\":[\"addressline1 \"],\"city\":\"Helsinki\",\"postal_code\":\"01000\",\"country_code\":\"FI\"},\"creditor_bank_bic\":\"NDEADKKK\",\"expiry\":5}"
+				},
+				"url": {
+					"raw": "https://api.nordeaopenbanking.com/payment-creditors/v2/prevalidations",
+					"protocol": "https",
+					"host": [
+						"api",
+						"nordeaopenbanking",
+						"com"
+					],
+					"path": [
+						"payment-creditors",
+						"v2",
+						"prevalidations"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetPrevalidationsById",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "",
+						"type": "text"
+					},
+					{
+						"key": "X-IBM-Client-Id",
+						"value": "",
+						"type": "text"
+					},
+					{
+						"key": "X-IBM-Client-Secret",
+						"value": "",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://api.nordeaopenbanking.com/payment-creditors/v2/prevalidations/a5764857-ae35-34dc-8f25-a9c9e73aa898",
+					"protocol": "https",
+					"host": [
+						"api",
+						"nordeaopenbanking",
+						"com"
+					],
+					"path": [
+						"payment-creditors",
+						"v2",
+						"prevalidations",
+						"a5764857-ae35-34dc-8f25-a9c9e73aa898"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetPrevalidationsByStatusPending",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": ""
+					},
+					{
+						"key": "X-IBM-Client-Id",
+						"type": "text",
+						"value": ""
+					},
+					{
+						"key": "X-IBM-Client-Secret",
+						"type": "text",
+						"value": ""
+					}
+				],
+				"url": {
+					"raw": "https://api.nordeaopenbanking.com/payment-creditors/v2/prevalidations?status=PENDING",
+					"protocol": "https",
+					"host": [
+						"api",
+						"nordeaopenbanking",
+						"com"
+					],
+					"path": [
+						"payment-creditors",
+						"v2",
+						"prevalidations"
+					],
+					"query": [
+						{
+							"key": "status",
+							"value": "PENDING"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetPrevalidationsAll",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "",
+						"type": "text"
+					},
+					{
+						"key": "X-IBM-Client-Id",
+						"value": "",
+						"type": "text"
+					},
+					{
+						"key": "X-IBM-Client-Secret",
+						"value": "",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://api.nordeaopenbanking.com/payment-creditors/v2/prevalidations?status=",
+					"protocol": "https",
+					"host": [
+						"api",
+						"nordeaopenbanking",
+						"com"
+					],
+					"path": [
+						"payment-creditors",
+						"v2",
+						"prevalidations"
+					],
+					"query": [
+						{
+							"key": "status",
+							"value": ""
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
