@@ -1,0 +1,953 @@
+{
+	"info": {
+		"_postman_id": "cda451b6-45a7-4a59-8bce-245ccaf1d48a",
+		"name": "OBI Household PIS API-v5 Cross Border and Common API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Sweden",
+			"item": [
+				{
+					"name": "POST CrossBorder with Bban Creditor",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var responseJsonData = JSON.parse(responseBody);",
+									"",
+									"postman.setEnvironmentVariable(\"payment-id-cross-border-bban\", responseJsonData.response._id);",
+									"",
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token_se}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "X-IBM-Client-Id",
+								"type": "text",
+								"value": "{{X-IBM-Client-ID}}"
+							},
+							{
+								"key": "X-IBM-Client-Secret",
+								"type": "text",
+								"value": "{{X-IBM-Client-Secret}}"
+							},
+							{
+								"key": "Signature",
+								"type": "text",
+								"value": "SKIP_SIGNATURE_VALIDATION_FOR_SANDBOX"
+							},
+							{
+								"key": "Digest",
+								"type": "text",
+								"value": "{{Digest}}",
+								"disabled": true
+							},
+							{
+								"key": "X-Nordea-Originating-Date",
+								"value": "{{X-Nordea-Originating-Date}}",
+								"type": "text"
+							},
+							{
+								"key": "X-Nordea-Originating-Host",
+								"value": "{{X-Nordea-Originating-Host}}",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "X-Nordea-Originating-User-Ip",
+								"value": "{{X-Nordea-Originating-User-Ip}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"central_bank_reporting_code\": \"101\",\r\n  \"charge_bearer\": \"shar\",\r\n  \"creditor\": {\r\n    \"account\": {\r\n      \"_type\": \"BBAN_OTHER\",\r\n      \"value\": \"9860024501\"\r\n    },\r\n    \"bank\": {\r\n      \"address\": {\r\n        \"line1\": \"270 Park Avenue\",\r\n        \"line2\": \"New York, 1234\",\r\n        \"line3\": \"USA\"\r\n      },\r\n      \"country\": \"US\",\r\n      \"bank_code\": \"FW021000021\",\r\n      \"bic\": \"CHASUS33\",\r\n      \"name\": \"JPMORGAN CHASE BANK, N.A.\"\r\n    },\r\n    \"creditor_address\": {\r\n      \"line1\": \"47 ANYVILLE RD NW, 2\",\r\n      \"line2\": \"ANYTOWN AZ 01234\",\r\n      \"line3\": \"USA\"\r\n    },\r\n    \"country\": \"US\",\r\n    \"message\": \"Invoice 5071\",\r\n    \"name\": \"Creditor Name\"\r\n  },\r\n  \"debtor\": {\r\n    \"account\": {\r\n      \"_type\": \"BBAN_SE\",\r\n      \"currency\": \"SEK\",\r\n      \"value\": \"41351300039\"\r\n    },\r\n    \"message\": \"Debtor Msg\"\r\n  },\r\n  \"external_id\": \"{{$randomUUID}}\",\r\n  \"instructed_amount\": {\r\n    \"amount\": 534.45,\r\n    \"currency\": \"USD\"\r\n  },\r\n  \"requested_execution_date\": \"2021-07-29\",\r\n  \"urgency\": \"standard\"\r\n}"
+						},
+						"url": {
+							"raw": "{{host}}/v5/payments/cross-border-credit-transfers",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"v5",
+								"payments",
+								"cross-border-credit-transfers"
+							]
+						},
+						"description": "Add an environment with a variable host that points to the specific environment fex. https://api-gw.obac.dev01.qaoneadr.local"
+					},
+					"response": []
+				},
+				{
+					"name": "POST CrossBorder with IBAN creditor",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"",
+									"postman.setEnvironmentVariable(\"payment-id-cross-border-iban\", jsonData.response._id);",
+									"",
+									"",
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token_se}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "X-IBM-Client-Id",
+								"type": "text",
+								"value": "{{X-IBM-Client-ID}}"
+							},
+							{
+								"key": "X-IBM-Client-Secret",
+								"type": "text",
+								"value": "{{X-IBM-Client-Secret}}"
+							},
+							{
+								"key": "Signature",
+								"type": "text",
+								"value": "SKIP_SIGNATURE_VALIDATION_FOR_SANDBOX"
+							},
+							{
+								"key": "Digest",
+								"type": "text",
+								"value": "{{Digest}}",
+								"disabled": true
+							},
+							{
+								"key": "X-Nordea-Originating-Date",
+								"value": "{{X-Nordea-Originating-Date}}",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "X-Nordea-Originating-Host",
+								"value": "{{X-Nordea-Originating-Host}}",
+								"type": "text"
+							},
+							{
+								"key": "X-Nordea-Originating-User-Ip",
+								"value": "{{X-Nordea-Originating-User-Ip}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"central_bank_reporting_code\": \"101\",\r\n  \"charge_bearer\": \"shar\",\r\n  \"creditor\": {\r\n    \"account\": {\r\n      \"_type\": \"IBAN\",\r\n      \"value\": \"HU42117730161111101800000000\"\r\n    },\r\n    \"bank\": {\r\n      \"address\": {\r\n        \"line1\": \"NADOR STREET 16\",\r\n        \"line2\": \"Budapest, 1051\",\r\n        \"line3\": \"Hungary\"\r\n      },\r\n      \"country\": \"HU\",\r\n      \"bank_code\": null,\r\n      \"bic\": null,\r\n      \"name\": \"OTP BANK PLC.\"\r\n    },\r\n    \"creditor_address\": {\r\n      \"line1\": \"Budapest Street\",\r\n      \"line2\": \"Budapest 1234\",\r\n      \"line3\": \"Hungary\"\r\n    },\r\n    \"country\": \"HU\",\r\n    \"message\": \"Invoice 5071\",\r\n    \"name\": \"Creditor Name\"\r\n  },\r\n  \"debtor\": {\r\n    \"account\": {\r\n      \"_type\": \"BBAN_SE\",\r\n      \"currency\": \"SEK\",\r\n      \"value\": \"41351300039\"\r\n    },\r\n    \"message\": \"Debtor Msg\"\r\n  },\r\n  \"external_id\": \"{{$randomUUID}}\",\r\n  \"instructed_amount\": {\r\n    \"amount\": 534.45,\r\n    \"currency\": \"USD\"\r\n  },\r\n  \"requested_execution_date\": \"2021-07-29\",\r\n  \"urgency\": \"standard\"\r\n}"
+						},
+						"url": {
+							"raw": "{{host}}/v5/payments/cross-border-credit-transfers",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"v5",
+								"payments",
+								"cross-border-credit-transfers"
+							]
+						},
+						"description": "Add an environment with a variable host that points to the specific environment fex. https://api-gw.obac.dev01.qaoneadr.local"
+					},
+					"response": []
+				},
+				{
+					"name": "GET Payment Details by Id (Cross Border Iban)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token_se}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "X-IBM-Client-Id",
+								"type": "text",
+								"value": "{{X-IBM-Client-ID}}"
+							},
+							{
+								"key": "X-IBM-Client-Secret",
+								"type": "text",
+								"value": "{{X-IBM-Client-Secret}}"
+							},
+							{
+								"key": "Signature",
+								"type": "text",
+								"value": "SKIP_SIGNATURE_VALIDATION_FOR_SANDBOX"
+							},
+							{
+								"key": "X-Nordea-Originating-Date",
+								"value": "",
+								"type": "text"
+							},
+							{
+								"key": "X-Nordea-Originating-Host",
+								"value": "",
+								"type": "text"
+							},
+							{
+								"key": "X-Nordea-Originating-User-Ip",
+								"value": "{{X-Nordea-Originating-User-Ip}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{host}}/v5/payments/{{payment-id-cross-border-iban}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"v5",
+								"payments",
+								"{{payment-id-cross-border-iban}}"
+							]
+						},
+						"description": "Add an environment with a variable host that points to the specific environment fex. https://api-gw.obac.dev01.qaoneadr.local"
+					},
+					"response": []
+				},
+				{
+					"name": "GET Payment Details by Id (Cross Border BBAN)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token_se}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "X-IBM-Client-Id",
+								"type": "text",
+								"value": "{{X-IBM-Client-ID}}"
+							},
+							{
+								"key": "X-IBM-Client-Secret",
+								"type": "text",
+								"value": "{{X-IBM-Client-Secret}}"
+							},
+							{
+								"key": "Signature",
+								"type": "text",
+								"value": "SKIP_SIGNATURE_VALIDATION_FOR_SANDBOX"
+							},
+							{
+								"key": "X-Nordea-Originating-Date",
+								"value": "",
+								"type": "text"
+							},
+							{
+								"key": "X-Nordea-Originating-Host",
+								"value": "",
+								"type": "text"
+							},
+							{
+								"key": "X-Nordea-Originating-User-Ip",
+								"value": "{{X-Nordea-Originating-User-Ip}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{host}}/v5/payments/{{payment-id-cross-border-bban}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"v5",
+								"payments",
+								"{{payment-id-cross-border-bban}}"
+							]
+						},
+						"description": "Add an environment with a variable host that points to the specific environment fex. https://api-gw.obac.dev01.qaoneadr.local"
+					},
+					"response": []
+				},
+				{
+					"name": "GET All Payments (all types)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token_se}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "X-IBM-Client-Id",
+								"type": "text",
+								"value": "{{X-IBM-Client-ID}}"
+							},
+							{
+								"key": "X-IBM-Client-Secret",
+								"type": "text",
+								"value": "{{X-IBM-Client-Secret}}"
+							},
+							{
+								"key": "Signature",
+								"type": "text",
+								"value": "SKIP_SIGNATURE_VALIDATION_FOR_SANDBOX"
+							},
+							{
+								"key": "X-Nordea-Originating-Date",
+								"value": "",
+								"type": "text"
+							},
+							{
+								"key": "X-Nordea-Originating-Host",
+								"value": "",
+								"type": "text"
+							},
+							{
+								"key": "X-Nordea-Originating-User-Ip",
+								"value": "{{X-Nordea-Originating-User-Ip}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{host}}/v5/payments/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"v5",
+								"payments",
+								""
+							]
+						},
+						"description": "Add an environment with a variable host that points to the specific environment fex. https://api-gw.obac.dev01.qaoneadr.local"
+					},
+					"response": []
+				},
+				{
+					"name": "GET All Cross Border payments",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token_se}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "X-IBM-Client-Id",
+								"type": "text",
+								"value": "{{X-IBM-Client-ID}}"
+							},
+							{
+								"key": "X-IBM-Client-Secret",
+								"type": "text",
+								"value": "{{X-IBM-Client-Secret}}"
+							},
+							{
+								"key": "Signature",
+								"type": "text",
+								"value": "SKIP_SIGNATURE_VALIDATION_FOR_SANDBOX"
+							},
+							{
+								"key": "X-Nordea-Originating-Date",
+								"value": "",
+								"type": "text"
+							},
+							{
+								"key": "X-Nordea-Originating-Host",
+								"value": "",
+								"type": "text"
+							},
+							{
+								"key": "X-Nordea-Originating-User-Ip",
+								"value": "{{X-Nordea-Originating-User-Ip}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{host}}/v5/payments/cross-border-credit-transfers",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"v5",
+								"payments",
+								"cross-border-credit-transfers"
+							]
+						},
+						"description": "Add an environment with a variable host that points to the specific environment fex. https://api-gw.obac.dev01.qaoneadr.local"
+					},
+					"response": []
+				},
+				{
+					"name": "PUT Confirm List of Payments",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"",
+									"",
+									"",
+									"pm.test(\"Body matches string\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"_id\");",
+									"});",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token_se}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "X-IBM-Client-Id",
+								"type": "text",
+								"value": "{{X-IBM-Client-ID}}"
+							},
+							{
+								"key": "X-IBM-Client-Secret",
+								"type": "text",
+								"value": "{{X-IBM-Client-Secret}}"
+							},
+							{
+								"key": "Signature",
+								"type": "text",
+								"value": "SKIP_SIGNATURE_VALIDATION_FOR_SANDBOX"
+							},
+							{
+								"key": "X-Nordea-Originating-User-Ip",
+								"value": "{{X-Nordea-Originating-User-Ip}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"payments_ids\" :  [\n\t\t\"{{payment-id-cross-border-iban}}\",\n        \"{{payment-id-cross-border-bban}}\"\n\t\t]\n}\n// payment ids of other types can also be part of the same request"
+						},
+						"url": {
+							"raw": "{{host}}/v5/payments/confirm",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"v5",
+								"payments",
+								"confirm"
+							]
+						},
+						"description": "Add an environment with a variable host that points to the specific environment fex. https://api-gw.obac.dev01.qaoneadr.local"
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE List of Payments",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"",
+									"",
+									"",
+									"pm.test(\"Body matches string\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"_id\");",
+									"});",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token_se}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "X-IBM-Client-Id",
+								"type": "text",
+								"value": "{{X-IBM-Client-ID}}"
+							},
+							{
+								"key": "X-IBM-Client-Secret",
+								"type": "text",
+								"value": "{{X-IBM-Client-Secret}}"
+							},
+							{
+								"key": "Signature",
+								"type": "text",
+								"value": "SKIP_SIGNATURE_VALIDATION_FOR_SANDBOX"
+							},
+							{
+								"key": "X-Nordea-Originating-User-Ip",
+								"value": "{{X-Nordea-Originating-User-Ip}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"payments\": [\n    {\n      \"payment_id\": \"{{payment-id-cross-border-iban}}\"\n    },\n    {\n      \"payment_id\": \"{{payment-id-cross-border-bban}}\"\n    }\n  ]\n}\n// payment ids of other types can also be part of the same request"
+						},
+						"url": {
+							"raw": "{{host}}/v5/payments",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"v5",
+								"payments"
+							]
+						},
+						"description": "Add an environment with a variable host that points to the specific environment fex. https://api-gw.obac.dev01.qaoneadr.local"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "000_Start OAuth SE",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var location = postman.getResponseHeader(\"Location\");",
+							"var index = location.indexOf(\"code=\");",
+							"var end = location.indexOf(\"&sta\")",
+							"console.log(index);",
+							"",
+							"postman.setEnvironmentVariable(\"code\",location.substring(index+5,end));",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-IBM-Client-Id",
+						"value": "{{X-IBM-Client-ID}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{host}}/v4/authorize?state={{$guid}}&client_id={{X-IBM-Client-ID}}&redirect_uri={{redirect_uri}}&scope=ACCOUNTS_BASIC%2CACCOUNTS_BALANCES%2CACCOUNTS_DETAILS%2CACCOUNTS_TRANSACTIONS%2CPAYMENTS_MULTIPLE&duration=126000&language=en&country=SE",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"v4",
+						"authorize"
+					],
+					"query": [
+						{
+							"key": "state",
+							"value": "{{$guid}}"
+						},
+						{
+							"key": "client_id",
+							"value": "{{X-IBM-Client-ID}}"
+						},
+						{
+							"key": "redirect_uri",
+							"value": "{{redirect_uri}}"
+						},
+						{
+							"key": "scope",
+							"value": "ACCOUNTS_BASIC%2CACCOUNTS_BALANCES%2CACCOUNTS_DETAILS%2CACCOUNTS_TRANSACTIONS%2CPAYMENTS_MULTIPLE"
+						},
+						{
+							"key": "duration",
+							"value": "126000"
+						},
+						{
+							"key": "language",
+							"value": "en"
+						},
+						{
+							"key": "accounts",
+							"value": "20301544117544",
+							"disabled": true
+						},
+						{
+							"key": "country",
+							"value": "SE"
+						}
+					]
+				},
+				"description": "Start Oauth, remember: settings > follow redirects = off"
+			},
+			"response": []
+		},
+		{
+			"name": "001_ExchangeToken SE",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"pm.environment.set(\"access_token_se\", jsonData.access_token);",
+							"pm.environment.set(\"refresh_token_se\", jsonData.refresh_token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					},
+					{
+						"key": "X-IBM-Client-ID",
+						"value": "{{X-IBM-Client-ID}}",
+						"type": "text"
+					},
+					{
+						"key": "X-IBM-Client-Secret",
+						"value": "{{X-IBM-Client-Secret}}",
+						"type": "text"
+					},
+					{
+						"key": "X-Response-Scenarios",
+						"value": "AuthenticationSkipUI",
+						"type": "text"
+					},
+					{
+						"key": "Signature",
+						"value": "SKIP_SIGNATURE_VALIDATION_FOR_SANDBOX",
+						"type": "text"
+					},
+					{
+						"key": "X-Nordea-Originating-Host",
+						"value": "{{X-Nordea-Originating-Host}}",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "X-Nordea-Originating-Date",
+						"value": "{{X-Nordea-Originating-Date}}",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "Digest",
+						"value": "{{Digest}}",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "code",
+							"value": "{{code}}",
+							"type": "text"
+						},
+						{
+							"key": "redirect_uri",
+							"value": "{{redirect_uri}}",
+							"type": "text"
+						},
+						{
+							"key": "grant_type",
+							"value": "authorization_code",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{host}}/v4/authorize/token",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"v4",
+						"authorize",
+						"token"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
