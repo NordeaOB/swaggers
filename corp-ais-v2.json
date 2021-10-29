@@ -2,7 +2,7 @@
   "swagger": "2.0",
   "info": {
     "description": "Corporate Accounts API",
-    "version": "2.7",
+    "version": "2.8",
     "title": "Corporate Accounts API",
     "contact": {
       "name": "Open Banking team",
@@ -14,9 +14,9 @@
       "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
     },
     "x-ibm-name": "corporate-ais-v2",
-    "x-version": "2.7"
+    "x-version": "2.8"
   },
-  "host": "https://api.dev.nordeaopenbanking.com",
+  "host": "api.nordeaopenbanking.com",
   "basePath": "/corporate/",
   "tags": [
     {
@@ -482,7 +482,6 @@
             "description": "List transactions starting from and including this date",
             "required": false,
             "type": "string",
-            "format": "date",
             "x-availabilityStatus": "Stable"
           },
           {
@@ -507,7 +506,6 @@
             "description": "List transactions until and including this date",
             "required": false,
             "type": "string",
-            "format": "date",
             "x-availabilityStatus": "Stable"
           }
         ],
@@ -697,6 +695,12 @@
           "description": "Booked balance includes all transactions entered on the account at the time of the query",
           "x-availabilityStatus": "Stable"
         },
+        "branch_code": {
+          "type": "string",
+          "description": "Local branch code",
+          "x-availabilityInfo": "Currently only available in Sandbox",
+          "x-availabilityStatus": "Beta"
+        },
         "country": {
           "type": "string",
           "example": "SE",
@@ -742,7 +746,8 @@
             "CT",
             "CS",
             "SA",
-            "TR"
+            "TR",
+            "TA"
           ],
           "x-availabilityInfo": "Currently only available in Sandbox",
           "x-availabilityStatus": "Beta"
@@ -919,11 +924,6 @@
       "title": "Link",
       "description": "Context specific link (only GET supported)"
     },
-    "Pagination": {
-      "type": "object",
-      "title": "Pagination",
-      "description": "Details of paginated response"
-    },
     "RequestEcho": {
       "type": "object",
       "properties": {
@@ -955,11 +955,6 @@
         "message_identification": {
           "type": "string",
           "description": "Original request id for correlation purposes",
-          "x-availabilityStatus": "Stable"
-        },
-        "message_pagination": {
-          "description": "Details of paginated response",
-          "$ref": "#/definitions/Pagination",
           "x-availabilityStatus": "Stable"
         }
       },
@@ -1062,7 +1057,7 @@
         },
         "message": {
           "type": "string",
-          "description": "Message from remitter to beneficiary. In Finland this may alternatively include a short description of the transaction e.g. 'Automaattiotto'",
+          "description": "A short message text provided by the remitter to the beneficiary",
           "x-availabilityStatus": "Stable"
         },
         "narrative": {
@@ -1136,6 +1131,31 @@
           "type": "string",
           "example": "ATM Cash Withdrawal",
           "description": "Description of the type of transaction, e.g. Cash withdrawal, Account transfer, etc. (localized)",
+          "x-availabilityStatus": "Stable"
+        },
+        "ultimate_creditor_address": {
+          "type": "string",
+          "description": "Address of ultimate party to which an amount of money is due.",
+          "x-availabilityStatus": "Stable"
+        },
+        "ultimate_creditor_id": {
+          "type": "string",
+          "description": "Id of ultimate party to which an amount of money is due.",
+          "x-availabilityStatus": "Stable"
+        },
+        "ultimate_creditor_name": {
+          "type": "string",
+          "description": "Name of ultimate party to which an amount of money is due.",
+          "x-availabilityStatus": "Stable"
+        },
+        "ultimate_debtor_id": {
+          "type": "string",
+          "description": "Id of ultimate party that owes an amount of money to (ultimate) creditor.",
+          "x-availabilityStatus": "Stable"
+        },
+        "ultimate_debtor_name": {
+          "type": "string",
+          "description": "Name of ultimate party that owes an amount of money to (ultimate) creditor.",
           "x-availabilityStatus": "Stable"
         },
         "value_date": {
