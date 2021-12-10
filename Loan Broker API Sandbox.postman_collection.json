@@ -1,0 +1,235 @@
+{
+	"info": {
+		"_postman_id": "aaab22c4-b57e-4ec1-8a6d-f72091a83beb",
+		"name": "BROKER-API SANDBOX",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "apply_for_loan",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "{{clientIdKey}}",
+						"value": "{{clientIdValue}}",
+						"type": "text"
+					},
+					{
+						"key": "{{clientPasswordKey}}",
+						"value": "{{clientPasswordValue}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"loan_application\": {\r\n        \"application_income_and_debt\": {\r\n            \"external_debts\": [],\r\n            \"house_hold_aggregate_gross_income\": 900000,\r\n            \"main_applicant_income\": {\r\n                \"annual_gross_income\": 900000\r\n            },\r\n            \"number_of_external_debts\": 0\r\n        },\r\n        \"extra_information_data\": {},\r\n        \"loan_data\": {\r\n            \"campaign_code\": \"50040221\",\r\n            \"loan_amount\": 50000,\r\n            \"loan_insurance\": false,\r\n            \"loan_purpose\": 10,\r\n            \"product_code\": \"UsikretLån\",\r\n            \"repayment_period\": 36\r\n        },\r\n        \"primary_applicant_data\": {\r\n            \"accomodation_information\": {\r\n                \"accomodation_type\": 1,\r\n                \"address_since\": \"1212\",\r\n                \"civil_status\": 1,\r\n                \"number_of_children\": 0,\r\n                \"rent\": 600\r\n            },\r\n            \"email\": \"john.smiths@consult.nordea.com\",\r\n            \"employed_since\": \"1212\",\r\n            \"employer\": \"JOHN SMITHS AS\",\r\n            \"firstname\": \"John\",\r\n            \"lastname\": \"Smiths\",\r\n            \"mobile_phone\": \"799999999\",\r\n            \"ssn\": \"02065613851\",\r\n            \"type_of_employment\": 1\r\n        }\r\n    },\r\n    \"transaction_id\": \"123456\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://api.{{environmentPath}}.nordeaopenbanking.com/non-collateral-consumer-loans/v1/obp/loans",
+					"protocol": "https",
+					"host": [
+						"api",
+						"{{environmentPath}}",
+						"nordeaopenbanking",
+						"com"
+					],
+					"path": [
+						"non-collateral-consumer-loans",
+						"v1",
+						"obp",
+						"loans"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get_loan_status",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "{{clientIdKey}}",
+						"value": "{{clientIdValue}}",
+						"type": "text"
+					},
+					{
+						"key": "{{clientPasswordKey}}",
+						"value": "{{clientPasswordValue}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://api.{{environmentPath}}.nordeaopenbanking.com/non-collateral-consumer-loans/v1/obp/loans/bf746860-8333-11eb-968a-5e61ddfafbde",
+					"protocol": "https",
+					"host": [
+						"api",
+						"{{environmentPath}}",
+						"nordeaopenbanking",
+						"com"
+					],
+					"path": [
+						"non-collateral-consumer-loans",
+						"v1",
+						"obp",
+						"loans",
+						"bf746860-8333-11eb-968a-5e61ddfafbde"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "accept_for_loans",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "{{clientIdKey}}",
+						"value": "{{clientIdValue}}",
+						"type": "text"
+					},
+					{
+						"key": "{{clientPasswordKey}}",
+						"value": "{{clientPasswordValue}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://api.{{environmentPath}}.nordeaopenbanking.com/non-collateral-consumer-loans/v1/obp/loans/bf746860-8333-11eb-968a-5e61ddfafbde/accept",
+					"protocol": "https",
+					"host": [
+						"api",
+						"{{environmentPath}}",
+						"nordeaopenbanking",
+						"com"
+					],
+					"path": [
+						"non-collateral-consumer-loans",
+						"v1",
+						"obp",
+						"loans",
+						"bf746860-8333-11eb-968a-5e61ddfafbde",
+						"accept"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "bad_request",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "{{clientIdKey}}",
+						"value": "{{clientIdValue}}",
+						"type": "text"
+					},
+					{
+						"key": "{{clientPasswordKey}}",
+						"value": "{{clientPasswordValue}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://api.{{environmentPath}}.nordeaopenbanking.com/non-collateral-consumer-loans/v1/obp/loans/bf74s860-8333-11eb-968a-5e61ddfafbhh/accept",
+					"protocol": "https",
+					"host": [
+						"api",
+						"{{environmentPath}}",
+						"nordeaopenbanking",
+						"com"
+					],
+					"path": [
+						"non-collateral-consumer-loans",
+						"v1",
+						"obp",
+						"loans",
+						"bf74s860-8333-11eb-968a-5e61ddfafbhh",
+						"accept"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "reject_loan_offer",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "{{clientIdKey}}",
+						"value": "{{clientIdValue}}",
+						"type": "text"
+					},
+					{
+						"key": "{{clientPasswordKey}}",
+						"value": "{{clientPasswordValue}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://api.{{environmentPath}}.nordeaopenbanking.com/non-collateral-consumer-loans/v1/obp/loans/2a5215b7-77ee-425a-94b6-e7293d6c77be/reject",
+					"protocol": "https",
+					"host": [
+						"api",
+						"{{environmentPath}}",
+						"nordeaopenbanking",
+						"com"
+					],
+					"path": [
+						"non-collateral-consumer-loans",
+						"v1",
+						"obp",
+						"loans",
+						"2a5215b7-77ee-425a-94b6-e7293d6c77be",
+						"reject"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "basic"
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
