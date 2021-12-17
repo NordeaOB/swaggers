@@ -1,0 +1,245 @@
+{
+	"info": {
+		"_postman_id": "b2638719-88b1-48d6-b795-fd181044ede0",
+		"name": "BAV API SANDBOX SHARED v3",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "CreatePrevalidationBasedonIBAN",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlciIsImlzcyI6ImRiZi1sb2NhbEB2MSIsImNsaWVudF9pZCI6ImNsaWVudCIsInNjb3BlIjpbImJhdiJdLCJhbSI6Im10YSIsImFsIjoiMyIsImNoIjoiZGJmIiwiYyI6IkZJIiwic2lkIjoiM2U1Y2JkYWYtZDdhNy00YzIzLWJjNDQtZGFlNmEzMDYxYzI1IiwidWlkIjoiMTIzNDUiLCJzc24iOiIxMjM0NSIsImFpZCI6MTIzNDUsInNnbSI6InBhcnRuZXIiLCJqdGkiOiJyYW5kb21qdGkiLCJudHQiOiJleHQiLCJjcmlzcyI6Im5vcmRlYSIsIm5iZiI6MTYyMzA1ODgyNywiZXhwIjoyNjIzMDU4ODI2LCJpYXQiOjE2MjMwNTg4Mjd9.GypchSWWqFEPJl3VK25l5FcPHYF5_ZGTNBPjS0782duIfBySc6v4KSjpDz3crQ976NMefImnye8WJ0hhywXfnbDwogk_ZvR7y5bL1AcK0uf4R2RFmHdmHqUVsZ-szcCERy0jix6QM0kCdmo-x7DjHo-3zVDRVgwq3rjQYmjwCmo",
+						"type": "text"
+					},
+					{
+						"key": "X-IBM-Client-Id",
+						"value": "",
+						"type": "text"
+					},
+					{
+						"key": "X-IBM-Client-Secret",
+						"value": "",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"creditor_account_number\": \"DK5000400440116243\",\r\n    \"creditor_name\": \"Test Creditor Name\",\r\n    \"business_id\": \"2858394-9\",\r\n    \"value_added_tax_number\": \"FI2112345600000666\",\r\n    \"creditor_address\": {\r\n        \"address_line\": [\r\n            \"Street 112 \"\r\n        ],\r\n        \"city\": \"Helsinki\",\r\n        \"postal_code\": \"01000\",\r\n        \"country_code\": \"FI\"\r\n    },\r\n    \"creditor_bank_bic\": \"NDEADKKK\",\r\n    \"expiry\": 5\r\n}"
+				},
+				"url": {
+					"raw": "https://api.nordeaopenbanking.com/payment-creditors/v3/prevalidations",
+					"protocol": "https",
+					"host": [
+						"api",
+						"nordeaopenbanking",
+						"com"
+					],
+					"path": [
+						"payment-creditors",
+						"v3",
+						"prevalidations"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetPrevalidationsById",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlciIsImlzcyI6ImRiZi1sb2NhbEB2MSIsImNsaWVudF9pZCI6ImNsaWVudCIsInNjb3BlIjpbImJhdiJdLCJhbSI6Im10YSIsImFsIjoiMyIsImNoIjoiZGJmIiwiYyI6IkZJIiwic2lkIjoiM2U1Y2JkYWYtZDdhNy00YzIzLWJjNDQtZGFlNmEzMDYxYzI1IiwidWlkIjoiMTIzNDUiLCJzc24iOiIxMjM0NSIsImFpZCI6MTIzNDUsInNnbSI6InBhcnRuZXIiLCJqdGkiOiJyYW5kb21qdGkiLCJudHQiOiJleHQiLCJjcmlzcyI6Im5vcmRlYSIsIm5iZiI6MTYyMzA1ODgyNywiZXhwIjoyNjIzMDU4ODI2LCJpYXQiOjE2MjMwNTg4Mjd9.GypchSWWqFEPJl3VK25l5FcPHYF5_ZGTNBPjS0782duIfBySc6v4KSjpDz3crQ976NMefImnye8WJ0hhywXfnbDwogk_ZvR7y5bL1AcK0uf4R2RFmHdmHqUVsZ-szcCERy0jix6QM0kCdmo-x7DjHo-3zVDRVgwq3rjQYmjwCmo",
+						"type": "text"
+					},
+					{
+						"key": "X-IBM-Client-Id",
+						"value": "",
+						"type": "text"
+					},
+					{
+						"key": "X-IBM-Client-Secret",
+						"value": "",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://api.nordeaopenbanking.com/payment-creditors/v3/prevalidations/a5764857-ae35-34dc-8f25-a9c9e73aa898",
+					"protocol": "https",
+					"host": [
+						"api",
+						"nordeaopenbanking",
+						"com"
+					],
+					"path": [
+						"payment-creditors",
+						"v3",
+						"prevalidations",
+						"a5764857-ae35-34dc-8f25-a9c9e73aa898"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetPrevalidationsByStatusPending",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer eyJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlciIsImlzcyI6ImRiZi1sb2NhbEB2MSIsImNsaWVudF9pZCI6ImNsaWVudCIsInNjb3BlIjpbImJhdiJdLCJhbSI6Im10YSIsImFsIjoiMyIsImNoIjoiZGJmIiwiYyI6IkZJIiwic2lkIjoiM2U1Y2JkYWYtZDdhNy00YzIzLWJjNDQtZGFlNmEzMDYxYzI1IiwidWlkIjoiMTIzNDUiLCJzc24iOiIxMjM0NSIsImFpZCI6MTIzNDUsInNnbSI6InBhcnRuZXIiLCJqdGkiOiJyYW5kb21qdGkiLCJudHQiOiJleHQiLCJjcmlzcyI6Im5vcmRlYSIsIm5iZiI6MTYyMzA1ODgyNywiZXhwIjoyNjIzMDU4ODI2LCJpYXQiOjE2MjMwNTg4Mjd9.GypchSWWqFEPJl3VK25l5FcPHYF5_ZGTNBPjS0782duIfBySc6v4KSjpDz3crQ976NMefImnye8WJ0hhywXfnbDwogk_ZvR7y5bL1AcK0uf4R2RFmHdmHqUVsZ-szcCERy0jix6QM0kCdmo-x7DjHo-3zVDRVgwq3rjQYmjwCmo"
+					},
+					{
+						"key": "X-IBM-Client-Id",
+						"type": "text",
+						"value": ""
+					},
+					{
+						"key": "X-IBM-Client-Secret",
+						"type": "text",
+						"value": ""
+					}
+				],
+				"url": {
+					"raw": "https://api.nordeaopenbanking.com/payment-creditors/v3/prevalidations?status=PENDING",
+					"protocol": "https",
+					"host": [
+						"api",
+						"nordeaopenbanking",
+						"com"
+					],
+					"path": [
+						"payment-creditors",
+						"v3",
+						"prevalidations"
+					],
+					"query": [
+						{
+							"key": "status",
+							"value": "PENDING"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetPrevalidationsAll",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlciIsImlzcyI6ImRiZi1sb2NhbEB2MSIsImNsaWVudF9pZCI6ImNsaWVudCIsInNjb3BlIjpbImJhdiJdLCJhbSI6Im10YSIsImFsIjoiMyIsImNoIjoiZGJmIiwiYyI6IkZJIiwic2lkIjoiM2U1Y2JkYWYtZDdhNy00YzIzLWJjNDQtZGFlNmEzMDYxYzI1IiwidWlkIjoiMTIzNDUiLCJzc24iOiIxMjM0NSIsImFpZCI6MTIzNDUsInNnbSI6InBhcnRuZXIiLCJqdGkiOiJyYW5kb21qdGkiLCJudHQiOiJleHQiLCJjcmlzcyI6Im5vcmRlYSIsIm5iZiI6MTYyMzA1ODgyNywiZXhwIjoyNjIzMDU4ODI2LCJpYXQiOjE2MjMwNTg4Mjd9.GypchSWWqFEPJl3VK25l5FcPHYF5_ZGTNBPjS0782duIfBySc6v4KSjpDz3crQ976NMefImnye8WJ0hhywXfnbDwogk_ZvR7y5bL1AcK0uf4R2RFmHdmHqUVsZ-szcCERy0jix6QM0kCdmo-x7DjHo-3zVDRVgwq3rjQYmjwCmo",
+						"type": "text"
+					},
+					{
+						"key": "X-IBM-Client-Id",
+						"value": "",
+						"type": "text"
+					},
+					{
+						"key": "X-IBM-Client-Secret",
+						"value": "",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://api.nordeaopenbanking.com/payment-creditors/v3/prevalidations?status=",
+					"protocol": "https",
+					"host": [
+						"api",
+						"nordeaopenbanking",
+						"com"
+					],
+					"path": [
+						"payment-creditors",
+						"v3",
+						"prevalidations"
+					],
+					"query": [
+						{
+							"key": "status",
+							"value": ""
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UpdatePrevalidations_onlySandbox",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer eyJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlciIsImlzcyI6ImRiZi1sb2NhbEB2MSIsImNsaWVudF9pZCI6ImNsaWVudCIsInNjb3BlIjpbImJhdiJdLCJhbSI6Im10YSIsImFsIjoiMyIsImNoIjoiZGJmIiwiYyI6IkZJIiwic2lkIjoiM2U1Y2JkYWYtZDdhNy00YzIzLWJjNDQtZGFlNmEzMDYxYzI1IiwidWlkIjoiMTIzNDUiLCJzc24iOiIxMjM0NSIsImFpZCI6MTIzNDUsInNnbSI6InBhcnRuZXIiLCJqdGkiOiJyYW5kb21qdGkiLCJudHQiOiJleHQiLCJjcmlzcyI6Im5vcmRlYSIsIm5iZiI6MTYyMzA1ODgyNywiZXhwIjoyNjIzMDU4ODI2LCJpYXQiOjE2MjMwNTg4Mjd9.GypchSWWqFEPJl3VK25l5FcPHYF5_ZGTNBPjS0782duIfBySc6v4KSjpDz3crQ976NMefImnye8WJ0hhywXfnbDwogk_ZvR7y5bL1AcK0uf4R2RFmHdmHqUVsZ-szcCERy0jix6QM0kCdmo-x7DjHo-3zVDRVgwq3rjQYmjwCmo"
+					},
+					{
+						"key": "X-IBM-Client-Id",
+						"value": "",
+						"type": "text"
+					},
+					{
+						"key": "X-IBM-Client-Secret",
+						"value": "",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"id\":\"a5764857-ae35-34dc-8f25-a9c9e73aa898\",\"case_status\":\"CLOSED_TIMEOUT\",\"prevalidation_result\":\"BENEFICIARY_BANK_REFUSAL\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://api.nordeaopenbanking.com/payment-creditors/v3/prevalidations",
+					"protocol": "https",
+					"host": [
+						"api",
+						"nordeaopenbanking",
+						"com"
+					],
+					"path": [
+						"payment-creditors",
+						"v3",
+						"prevalidations"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
