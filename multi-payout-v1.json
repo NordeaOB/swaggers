@@ -1,0 +1,3300 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Nordea Multi Payout API v1",
+    "version": "1.0",
+    "title": "Multi Payout API",
+    "contact": {
+      "name": "Open Banking team",
+      "url": "https://nordeaopenbanking.com",
+      "email": "support@nordeaopenbanking.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "x-ibm-name": "multi-payout-v1",
+    "x-version": "1.0"
+  },
+  "host": "api.nordeaopenbanking.com",
+  "basePath": "/corporate",
+  "tags": [
+    {
+      "name": "Multi-Payout Initiation",
+      "description": "Create multi level payments"
+    },
+    {
+      "name": "Multi-Payout Report",
+      "description": "ISO20022 PAIN.002 format credit transfer report"
+    }
+  ],
+  "paths": {
+    "/premium/v1/multi-payout": {
+      "post": {
+        "tags": [
+          "Multi-Payout Initiation"
+        ],
+        "summary": "Initiate Multi-Payout Credit Transfers, pain.001",
+        "operationId": "initiateMultiPayoutUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Bearer &lt;Access Token&gt; Token provided to TPP in authorization flow",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "X-IBM-Client-Id",
+            "in": "header",
+            "description": "Id of the Client",
+            "required": true,
+            "type": "string",
+            "x-availabilityStatus": "Beta"
+          },
+          {
+            "name": "X-IBM-Client-Secret",
+            "in": "header",
+            "description": "Secret password generated for the Client",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "X-Nordea-Originating-User-Agent",
+            "in": "header",
+            "description": "End user (i.e. PSU) agent information, to be provided if TPP is in session with the PSU",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Nordea-Originating-User-Ip",
+            "in": "header",
+            "description": "End user (i.e. PSU) IP address, to be provided if TPP is in session with the PSU",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Nordea-Signing-Key",
+            "in": "header",
+            "description": "Signing Key used for signing payment requests. It is only valid for a certain period of time and needs to be recreated upon expiration.",
+            "required": true,
+            "type": "string",
+            "x-availabilityStatus": "Beta"
+          },
+          {
+            "in": "body",
+            "name": "request",
+            "description": "Request to create a new payment.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Pain00100103CustomerCreditTransferInitiationV03"
+            },
+            "x-availabilityStatus": "Beta"
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Accepted",
+            "schema": {
+              "$ref": "#/definitions/MultiPayoutInitiationResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized with failure code:\n* error.apikey.missing = Missing API key. This operation requires API key, but it was missing.\n* error.token = Unspecified error with supplied token.\n* error.token.invalid = Missing access token or token did not authorized requested operation. This operation requires valid access token, but it was missing.\n* error.token.expired = Access token has expired.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden with failure code:\n* error.resource.denied = Requested resource is not authorized by access token.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Resource not found",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "413": {
+            "description": "Rejected",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2": [
+              "ACCOUNTS_BASIC",
+              "ACCOUNTS_BALANCES",
+              "ACCOUNTS_DETAILS",
+              "ACCOUNTS_TRANSACTIONS",
+              "PAYMENTS_MULTIPLE"
+            ],
+            "DecoupledAuth": [
+              "ACCOUNTS_BASIC",
+              "ACCOUNTS_BALANCES",
+              "ACCOUNTS_DETAILS",
+              "ACCOUNTS_TRANSACTIONS",
+              "PAYMENTS_MULTIPLE"
+            ]
+          }
+        ],
+        "deprecated": false,
+        "x-availabilityStatus": "Beta",
+        "x-isPolymorphic": "true"
+      }
+    },
+    "/premium/v1/multi-payout/{id}": {
+      "get": {
+        "tags": [
+          "Multi-Payout Report"
+        ],
+        "summary": "Credit Transfers report, pain.002",
+        "description": "Get status report for a multi-payout",
+        "operationId": "getMultiPayoutReportUsingGET",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Bearer &lt;Access Token&gt; Token provided to TPP in authorization flow",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "X-IBM-Client-Id",
+            "in": "header",
+            "description": "Id of the Client",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "X-IBM-Client-Secret",
+            "in": "header",
+            "description": "Secret password generated for the Client",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "X-Nordea-Originating-User-Agent",
+            "in": "header",
+            "description": "End user (i.e. PSU) agent information, to be provided if TPP is in session with the PSU",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Nordea-Originating-User-Ip",
+            "in": "header",
+            "description": "End user (i.e. PSU) IP address, to be provided if TPP is in session with the PSU",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Get status report for a multi-payout",
+            "required": true,
+            "type": "string",
+            "x-availabilityStatus": "Beta"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Multi-Payout status report",
+            "schema": {
+              "$ref": "#/definitions/Pain00200103CustomerPaymentStatusReportV03"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized with failure code:\n* error.apikey.missing = Missing API key. This operation requires API key, but it was missing.\n* error.token = Unspecified error with supplied token.\n* error.token.invalid = Missing access token or token did not authorized requested operation. This operation requires valid access token, but it was missing.\n* error.token.expired = Access token has expired.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden with failure code:\n* error.resource.denied = Requested resource is not authorized by access token.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Resource not found",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2": [
+              "ACCOUNTS_BASIC",
+              "ACCOUNTS_BALANCES",
+              "ACCOUNTS_DETAILS",
+              "ACCOUNTS_TRANSACTIONS",
+              "PAYMENTS_MULTIPLE"
+            ],
+            "DecoupledAuth": [
+              "ACCOUNTS_BASIC",
+              "ACCOUNTS_BALANCES",
+              "ACCOUNTS_DETAILS",
+              "ACCOUNTS_TRANSACTIONS",
+              "PAYMENTS_MULTIPLE"
+            ]
+          }
+        ],
+        "deprecated": false,
+        "x-availabilityStatus": "Beta",
+        "x-isPolymorphic": "true"
+      }
+    }
+  },
+  "securityDefinitions": {
+    "ClientId": {
+      "type": "apiKey",
+      "name": "X-IBM-Client-Id",
+      "in": "header"
+    },
+    "ClientSecret": {
+      "type": "apiKey",
+      "name": "X-IBM-Client-Secret",
+      "in": "header"
+    },
+    "DecoupledAuth": {
+      "type": "oauth2",
+      "authorizationUrl": "/v2/authorize",
+      "tokenUrl": "/v2/authorize/token",
+      "flow": "accessCode",
+      "scopes": {
+        "ACCOUNTS_BASIC": "Account information",
+        "ACCOUNTS_BALANCES": "Account information with balances",
+        "ACCOUNTS_DETAILS": "Account information with details",
+        "ACCOUNTS_TRANSACTIONS": "Account's transactions",
+        "PAYMENTS_MULTIPLE": "Payments Multiple"
+      },
+      "x-addAuthorizerDescription": "Send authorization request to relevant agreement administrator",
+      "x-addAuthorizerUrl": "/v2/authorize",
+      "x-authSubType": "decoupled-auth",
+      "x-codeStatusDescription": "Returns code when authorization second step is finished",
+      "x-codeStatusUrl": "/v2/authorize"
+    }
+  },
+  "definitions": {
+    "AccountIdentification4Choice": {
+      "type": "object",
+      "properties": {
+        "iban": {
+          "type": "string",
+          "description": "International Bank Account Number (IBAN) - identifier used internationally by financial institutions to uniquely identify the account of a customer. Further specifications of the format and content of the IBAN can be found in the standard ISO 13616 \"Banking and related financial services - International Bank Account Number (IBAN)\" version 1997-10-01, or later revisions.",
+          "x-availabilityStatus": "Stable"
+        },
+        "other": {
+          "description": "Unique identification of an account, as assigned by the account servicer, using an identification scheme.",
+          "$ref": "#/definitions/GenericAccountIdentification1",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "AccountIdentification4Choice",
+      "description": "Specifies the unique identification of an account as assigned by the account servicer."
+    },
+    "AccountSchemeName1Choice": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "description": "Name of the identification scheme, in a coded form as published in an external list.",
+          "x-availabilityStatus": "Stable"
+        },
+        "proprietary": {
+          "type": "string",
+          "description": "Name of the identification scheme, in a free text form.",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "AccountSchemeName1Choice",
+      "description": "Sets of elements to identify a name of the identification scheme."
+    },
+    "ActiveOrHistoricCurrencyAndAmount": {
+      "type": "object",
+      "properties": {
+        "amount": {
+          "type": "number",
+          "description": "${ActiveOrHistoricCurrencyAndAmount.amount.description}",
+          "x-availabilityStatus": "Stable"
+        },
+        "currency": {
+          "type": "string",
+          "description": "${ActiveOrHistoricCurrencyAndAmount.currency.description}",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "ActiveOrHistoricCurrencyAndAmount",
+      "description": "A number of monetary units specified in an active or a historic currency where the unit of currency is explicit and compliant with ISO 4217."
+    },
+    "AmendmentInformationDetails6": {
+      "type": "object",
+      "properties": {
+        "original_creditor_agent": {
+          "description": "Original creditor agent that has been modified.",
+          "$ref": "#/definitions/BranchAndFinancialInstitutionIdentification4",
+          "x-availabilityStatus": "Stable"
+        },
+        "original_creditor_agent_account": {
+          "description": "Original creditor agent acount that has been modified.",
+          "$ref": "#/definitions/CashAccount16",
+          "x-availabilityStatus": "Stable"
+        },
+        "original_creditor_scheme_identification": {
+          "description": "Original creditor scheme identification that has been modified.",
+          "$ref": "#/definitions/PartyIdentification32",
+          "x-availabilityStatus": "Stable"
+        },
+        "original_debtor": {
+          "description": "Original debtor that has been modified.",
+          "$ref": "#/definitions/PartyIdentification32",
+          "x-availabilityStatus": "Stable"
+        },
+        "original_debtor_account": {
+          "description": "Original debtor account that has been modified.",
+          "$ref": "#/definitions/CashAccount16",
+          "x-availabilityStatus": "Stable"
+        },
+        "original_debtor_agent": {
+          "description": "Original debtor agent that has been modified.",
+          "$ref": "#/definitions/BranchAndFinancialInstitutionIdentification4",
+          "x-availabilityStatus": "Stable"
+        },
+        "original_debtor_agent_account": {
+          "description": "Original debtor agent account that has been modified.",
+          "$ref": "#/definitions/CashAccount16",
+          "x-availabilityStatus": "Stable"
+        },
+        "original_final_collection_date": {
+          "type": "string",
+          "format": "date",
+          "description": "Original final collection date that has been modified.",
+          "x-availabilityStatus": "Stable"
+        },
+        "original_frequency": {
+          "type": "string",
+          "description": "Original frequency that has been modified.",
+          "enum": [
+            "YEAR",
+            "MNTH",
+            "QURT",
+            "MIAN",
+            "WEEK",
+            "DAIL",
+            "ADHO",
+            "INDA"
+          ],
+          "x-availabilityStatus": "Stable"
+        },
+        "original_mandate_identification": {
+          "type": "string",
+          "description": "Unique identification, as assigned by the creditor, to unambiguously identify the original mandate.",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "AmendmentInformationDetails6",
+      "description": "Set of elements used to provide the list of direct debit mandate elements that have been modified when the amendment indicator has been set."
+    },
+    "AmountType3Choice": {
+      "type": "object",
+      "properties": {
+        "equivalent_amount": {
+          "description": "Amount of money to be moved between the debtor and creditor, expressed in the currency of the debtor's account, and the currency in which the amount is to be moved.",
+          "$ref": "#/definitions/EquivalentAmount2",
+          "x-availabilityStatus": "Stable"
+        },
+        "instructed_amount": {
+          "description": "Amount of money to be moved between the debtor and creditor, before deduction of charges, expressed in the currency as ordered by the initiating party.",
+          "$ref": "#/definitions/ActiveOrHistoricCurrencyAndAmount",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "AmountType3Choice",
+      "description": "Specifies the amount of money to be moved between the debtor and creditor, before deduction of charges, expressed in the currency as ordered by the initiating party."
+    },
+    "Authorisation1Choice": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "description": "Specifies the authorisation, in a coded form.",
+          "enum": [
+            "AUTH",
+            "FDET",
+            "FSUM",
+            "ILEV"
+          ],
+          "x-availabilityStatus": "Stable"
+        },
+        "proprietary": {
+          "type": "string",
+          "description": "Specifies the authorisation, in a free text form.",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "Authorisation1Choice",
+      "description": "Provides the details on the user identification or any user key that allows to check if the initiating party is allowed to issue the transaction."
+    },
+    "BranchAndFinancialInstitutionIdentification4": {
+      "type": "object",
+      "required": [
+        "financial_institution_identification"
+      ],
+      "properties": {
+        "branch_identification": {
+          "description": "Identifies a specific branch of a financial institution.\n\nUsage: This component should be used in case the identification information in the financial institution component does not provide identification up to branch level.",
+          "$ref": "#/definitions/BranchData2",
+          "x-availabilityStatus": "Stable"
+        },
+        "financial_institution_identification": {
+          "description": "Unique and unambiguous identification of a financial institution, as assigned under an internationally recognised or proprietary identification scheme.",
+          "$ref": "#/definitions/FinancialInstitutionIdentification7",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "BranchAndFinancialInstitutionIdentification4",
+      "description": "Set of elements used to uniquely and unambiguously identify a financial institution or a branch of a financial institution."
+    },
+    "BranchData2": {
+      "type": "object",
+      "properties": {
+        "identification": {
+          "type": "string",
+          "description": "Unique and unambiguous identification of a branch of a financial institution.",
+          "x-availabilityStatus": "Stable"
+        },
+        "name": {
+          "type": "string",
+          "description": "Name by which an agent is known and which is usually used to identify that agent.",
+          "x-availabilityStatus": "Stable"
+        },
+        "postal_address": {
+          "description": "Information that locates and identifies a specific address, as defined by postal services.",
+          "$ref": "#/definitions/PostalAddress6",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "BranchData2",
+      "description": "Information that locates and identifies a specific branch of a financial institution."
+    },
+    "CashAccount16": {
+      "type": "object",
+      "required": [
+        "identification"
+      ],
+      "properties": {
+        "currency": {
+          "type": "string",
+          "description": "Identification of the currency in which the account is held. \n\nUsage: Currency should only be used in case one and the same account number covers several currencies\nand the initiating party needs to identify which currency needs to be used for settlement on the account.",
+          "x-availabilityStatus": "Stable"
+        },
+        "identification": {
+          "description": "Unique and unambiguous identification for the account between the account owner and the account servicer.",
+          "$ref": "#/definitions/AccountIdentification4Choice",
+          "x-availabilityStatus": "Stable"
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the account, as assigned by the account servicing institution, in agreement with the account owner in order to provide an additional means of identification of the account.\n\nUsage: The account name is different from the account owner name. The account name is used in certain user communities to provide a means of identifying the account, in addition to the account owner's identity and the account number.",
+          "x-availabilityStatus": "Stable"
+        },
+        "type": {
+          "description": "Specifies the nature, or use of the account.",
+          "$ref": "#/definitions/CashAccountType2",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "CashAccount16",
+      "description": "Set of elements used to identify an account."
+    },
+    "CashAccountType2": {
+      "type": "object",
+      "required": [
+        "code",
+        "proprietary"
+      ],
+      "properties": {
+        "code": {
+          "type": "string",
+          "description": "Account type, in a coded form.",
+          "enum": [
+            "CASH",
+            "CHAR",
+            "COMM",
+            "TAXE",
+            "CISH",
+            "TRAS",
+            "SACC",
+            "CACC",
+            "SVGS",
+            "ONDP",
+            "MGLD",
+            "NREX",
+            "MOMA",
+            "LOAN",
+            "SLRY",
+            "ODFT"
+          ],
+          "x-availabilityStatus": "Stable"
+        },
+        "proprietary": {
+          "type": "string",
+          "description": "Nature or use of the account in a proprietary form.",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "CashAccountType2",
+      "description": "Nature or use of the account."
+    },
+    "CategoryPurpose1Choice": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "description": "Category purpose, as published in an external category purpose code list.",
+          "x-availabilityStatus": "Stable"
+        },
+        "proprietary": {
+          "type": "string",
+          "description": "Category purpose, in a proprietary form.",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "CategoryPurpose1Choice",
+      "description": "Specifies the high level purpose of the instruction based on a set of pre-defined categories. Usage: This is used by the initiating party to provide information concerning the processing of the payment. It is likely to trigger special processing by any of the agents involved in the payment chain."
+    },
+    "ChargesInformation5": {
+      "type": "object",
+      "required": [
+        "amount",
+        "party"
+      ],
+      "properties": {
+        "amount": {
+          "description": "Transaction charges to be paid by the charge bearer.",
+          "$ref": "#/definitions/ActiveOrHistoricCurrencyAndAmount",
+          "x-availabilityStatus": "Stable"
+        },
+        "party": {
+          "description": "Party that takes the transaction charges or to which the transaction charges are due.",
+          "$ref": "#/definitions/BranchAndFinancialInstitutionIdentification4",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "ChargesInformation5",
+      "description": "Set of elements used to provide information on the charges related to the payment transaction."
+    },
+    "Cheque6": {
+      "type": "object",
+      "properties": {
+        "cheque_from": {
+          "description": "Identifies the party that ordered the issuance of the cheque.",
+          "$ref": "#/definitions/NameAndAddress10",
+          "x-availabilityStatus": "Stable"
+        },
+        "cheque_maturity_date": {
+          "type": "string",
+          "format": "date",
+          "description": "Date when the draft becomes payable and the debtor's account is debited.",
+          "x-availabilityStatus": "Stable"
+        },
+        "cheque_number": {
+          "type": "string",
+          "description": "Unique and unambiguous identifier for a cheque as assigned by the agent.",
+          "x-availabilityStatus": "Stable"
+        },
+        "cheque_type": {
+          "type": "string",
+          "description": "Specifies the type of cheque to be issued.",
+          "enum": [
+            "CCHQ",
+            "CCCH",
+            "BCHQ",
+            "DRFT",
+            "ELDR"
+          ],
+          "x-availabilityStatus": "Stable"
+        },
+        "deliver_to": {
+          "description": "Party to whom the debtor's agent needs to send the cheque.",
+          "$ref": "#/definitions/NameAndAddress10",
+          "x-availabilityStatus": "Stable"
+        },
+        "delivery_method": {
+          "description": "Specifies the delivery method of the cheque by the debtor's agent.",
+          "$ref": "#/definitions/ChequeDeliveryMethod1Choice",
+          "x-availabilityStatus": "Stable"
+        },
+        "forms_code": {
+          "type": "string",
+          "description": "Identifies, in a coded form, the cheque layout, company logo and digitised signature to be used to print the cheque, as agreed between the initiating party and the debtor's agent.",
+          "x-availabilityStatus": "Stable"
+        },
+        "instruction_priority": {
+          "type": "string",
+          "description": "Urgency or order of importance that the originator would like the recipient of the payment instruction to apply to the processing of the payment instruction.",
+          "enum": [
+            "HIGH",
+            "NORM"
+          ],
+          "x-availabilityStatus": "Stable"
+        },
+        "memo_field": {
+          "type": "array",
+          "description": "Information that needs to be printed on a cheque, used by the payer to add miscellaneous information.",
+          "items": {
+            "type": "string"
+          },
+          "x-availabilityStatus": "Stable"
+        },
+        "print_location": {
+          "type": "string",
+          "description": "Specifies the print location of the cheque.",
+          "x-availabilityStatus": "Stable"
+        },
+        "regional_clearing_zone": {
+          "type": "string",
+          "description": "Regional area in which the cheque can be cleared, when a country has no nation-wide cheque clearing organisation.",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "Cheque6",
+      "description": "Set of characteristics related to a cheque instruction, such as cheque type or cheque number."
+    },
+    "ChequeDeliveryMethod1Choice": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "description": "Specifies the delivery method of the cheque by the debtor's agent.",
+          "enum": [
+            "MLDB",
+            "MLCD",
+            "MLFA",
+            "CRDB",
+            "CRCD",
+            "CRFA",
+            "PUDB",
+            "PUCD",
+            "PUFA",
+            "RGDB",
+            "RGCD",
+            "RGFA"
+          ],
+          "x-availabilityStatus": "Stable"
+        },
+        "proprietary": {
+          "type": "string",
+          "description": "Specifies a proprietary delivery method of the cheque by the debtor's agent.",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "ChequeDeliveryMethod1Choice",
+      "description": "Set of characteristics related to a cheque instruction, such as cheque type or cheque number."
+    },
+    "ClearingSystemIdentification2Choice": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "description": "Identification of a clearing system, in a coded form as published in an external list.",
+          "x-availabilityStatus": "Stable"
+        },
+        "proprietary": {
+          "type": "string",
+          "description": "Identification code for a clearing system, that has not yet been identified in the list of clearing systems.",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "ClearingSystemIdentification2Choice",
+      "description": "Choice of a clearing system identifier."
+    },
+    "ClearingSystemIdentification3Choice": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "description": "Infrastructure through which the payment instruction is processed, as published in an external clearing system identification code list.",
+          "x-availabilityStatus": "Stable"
+        },
+        "proprietary": {
+          "type": "string",
+          "description": "Clearing system identification in a proprietary form.",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "ClearingSystemIdentification3Choice",
+      "description": "Specifies the clearing system identification."
+    },
+    "ClearingSystemMemberIdentification2": {
+      "type": "object",
+      "required": [
+        "member_identification"
+      ],
+      "properties": {
+        "clearing_system_identification": {
+          "description": "Specification of a pre-agreed offering between clearing agents or the channel through which the payment instruction is processed.",
+          "$ref": "#/definitions/ClearingSystemIdentification2Choice",
+          "x-availabilityStatus": "Stable"
+        },
+        "member_identification": {
+          "type": "string",
+          "description": "Identification of a member of a clearing system.",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "ClearingSystemMemberIdentification2",
+      "description": "Unique identification, as assigned by a clearing system, to unambiguously identify a member of the clearing system."
+    },
+    "ContactDetails2": {
+      "type": "object",
+      "properties": {
+        "email_address": {
+          "type": "string",
+          "description": "Address for electronic mail (e-mail).",
+          "x-availabilityStatus": "Stable"
+        },
+        "fax_number": {
+          "type": "string",
+          "description": "Collection of information that identifies a FAX number, as defined by telecom services.",
+          "x-availabilityStatus": "Stable"
+        },
+        "mobile_number": {
+          "type": "string",
+          "description": "Collection of information that identifies a mobile phone number, as defined by telecom services.",
+          "x-availabilityStatus": "Stable"
+        },
+        "name": {
+          "type": "string",
+          "description": "Name by which a party is known and which is usually used to identify that party.",
+          "x-availabilityStatus": "Stable"
+        },
+        "name_prefix": {
+          "type": "string",
+          "description": "Specifies the terms used to formally address a person.",
+          "enum": [
+            "DOCT",
+            "MIST",
+            "MISS",
+            "MADM"
+          ],
+          "x-availabilityStatus": "Stable"
+        },
+        "other": {
+          "type": "string",
+          "description": "Contact details in another form.",
+          "x-availabilityStatus": "Stable"
+        },
+        "phone_number": {
+          "type": "string",
+          "description": "Collection of information that identifies a phone number, as defined by telecom services.",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "ContactDetails2",
+      "description": "Communication device number or electronic address used for communication."
+    },
+    "CreditTransferTransactionInformation10": {
+      "type": "object",
+      "required": [
+        "amount",
+        "payment_identification"
+      ],
+      "properties": {
+        "amount": {
+          "description": "Amount of money to be moved between the debtor and creditor, before deduction of charges, expressed in the currency as ordered by the initiating party.",
+          "$ref": "#/definitions/AmountType3Choice",
+          "x-availabilityStatus": "Stable"
+        },
+        "charge_bearer": {
+          "type": "string",
+          "description": "Specifies which party/parties will bear the charges associated with the processing of the payment transaction.",
+          "enum": [
+            "DEBT",
+            "CRED",
+            "SHAR",
+            "SLEV"
+          ],
+          "x-availabilityStatus": "Stable"
+        },
+        "cheque_instruction": {
+          "description": "Set of elements needed to issue a cheque.",
+          "$ref": "#/definitions/Cheque6",
+          "x-availabilityStatus": "Stable"
+        },
+        "creditor": {
+          "description": "Party to which an amount of money is due.",
+          "$ref": "#/definitions/PartyIdentification32",
+          "x-availabilityStatus": "Stable"
+        },
+        "creditor_account": {
+          "description": "Unambiguous identification of the account of the creditor to which a credit entry will be posted as a result of the payment transaction.",
+          "$ref": "#/definitions/CashAccount16",
+          "x-availabilityStatus": "Stable"
+        },
+        "creditor_agent": {
+          "description": "Financial institution servicing an account for the creditor.",
+          "$ref": "#/definitions/BranchAndFinancialInstitutionIdentification4",
+          "x-availabilityStatus": "Stable"
+        },
+        "creditor_agent_account": {
+          "description": "Unambiguous identification of the account of the creditor agent at its servicing agent to which a credit entry will be made as a result of the payment transaction.",
+          "$ref": "#/definitions/CashAccount16",
+          "x-availabilityStatus": "Stable"
+        },
+        "exchange_rate_information": {
+          "description": "Set of elements used to provide details on the currency exchange rate and contract.",
+          "$ref": "#/definitions/ExchangeRateInformation1",
+          "x-availabilityStatus": "Stable"
+        },
+        "instruction_for_creditor_agent": {
+          "type": "array",
+          "description": "Further information related to the processing of the payment instruction, provided by the initiating party, and intended for the creditor agent.",
+          "items": {
+            "$ref": "#/definitions/InstructionForCreditorAgent1"
+          },
+          "x-availabilityStatus": "Stable"
+        },
+        "instruction_for_debtor_agent": {
+          "type": "string",
+          "description": "Further information related to the processing of the payment instruction, that may need to be acted upon by the debtor agent, depending on agreement between debtor and the debtor agent.",
+          "x-availabilityStatus": "Stable"
+        },
+        "intermediary_agent1": {
+          "description": "Agent between the debtor's agent and the creditor's agent.\n\nUsage: If more than one intermediary agent is present, then IntermediaryAgent1 identifies the agent between the DebtorAgent and the IntermediaryAgent2.",
+          "$ref": "#/definitions/BranchAndFinancialInstitutionIdentification4",
+          "x-availabilityStatus": "Stable"
+        },
+        "intermediary_agent1_account": {
+          "description": "Unambiguous identification of the account of the intermediary agent 1 at its servicing agent in the payment chain.",
+          "$ref": "#/definitions/CashAccount16",
+          "x-availabilityStatus": "Stable"
+        },
+        "intermediary_agent2": {
+          "description": "Agent between the debtor's agent and the creditor's agent.\n\nUsage: If more than two intermediary agents are present, then IntermediaryAgent2 identifies the agent between the IntermediaryAgent1 and the IntermediaryAgent3.",
+          "$ref": "#/definitions/BranchAndFinancialInstitutionIdentification4",
+          "x-availabilityStatus": "Stable"
+        },
+        "intermediary_agent2_account": {
+          "description": "Unambiguous identification of the account of the intermediary agent 2 at its servicing agent in the payment chain.",
+          "$ref": "#/definitions/CashAccount16",
+          "x-availabilityStatus": "Stable"
+        },
+        "intermediary_agent3": {
+          "description": "Agent between the debtor's agent and the creditor's agent.\n\nUsage: If IntermediaryAgent3 is present, then it identifies the agent between the IntermediaryAgent 2 and the CreditorAgent.",
+          "$ref": "#/definitions/BranchAndFinancialInstitutionIdentification4",
+          "x-availabilityStatus": "Stable"
+        },
+        "intermediary_agent3_account": {
+          "description": "Unambiguous identification of the account of the intermediary agent 3 at its servicing agent in the payment chain.",
+          "$ref": "#/definitions/CashAccount16",
+          "x-availabilityStatus": "Stable"
+        },
+        "payment_identification": {
+          "description": "Set of elements used to reference a payment instruction.",
+          "$ref": "#/definitions/PaymentIdentification1",
+          "x-availabilityStatus": "Stable"
+        },
+        "payment_type_information": {
+          "description": "Set of elements used to further specify the type of transaction.",
+          "$ref": "#/definitions/PaymentTypeInformation19",
+          "x-availabilityStatus": "Stable"
+        },
+        "purpose": {
+          "description": "Underlying reason for the payment transaction.\nUsage: Purpose is used by the end-customers, that is initiating party, (ultimate) debtor, (ultimate) creditor to provide information concerning the nature of the payment. Purpose is a content element, which is not used for processing by any of the agents involved in the payment chain.",
+          "$ref": "#/definitions/Purpose2Choice",
+          "x-availabilityStatus": "Stable"
+        },
+        "regulatory_reporting": {
+          "type": "array",
+          "description": "Information needed due to regulatory and statutory requirements.",
+          "items": {
+            "$ref": "#/definitions/RegulatoryReporting3"
+          },
+          "x-availabilityStatus": "Stable"
+        },
+        "related_remittance_information": {
+          "type": "array",
+          "description": "Set of elements used to provide information related to the handling of the remittance information by any of the agents in the transaction processing chain.",
+          "items": {
+            "$ref": "#/definitions/RemittanceLocation2"
+          },
+          "x-availabilityStatus": "Stable"
+        },
+        "remittance_information": {
+          "description": "Information supplied to enable the matching of an entry with the items that the transfer is intended to settle, such as commercial invoices in an accounts' receivable system.",
+          "$ref": "#/definitions/RemittanceInformation5",
+          "x-availabilityStatus": "Stable"
+        },
+        "tax": {
+          "description": "Set of elements used to provide details on the tax.",
+          "$ref": "#/definitions/TaxInformation3",
+          "x-availabilityStatus": "Stable"
+        },
+        "ultimate_creditor": {
+          "description": "Ultimate party to which an amount of money is due.",
+          "$ref": "#/definitions/PartyIdentification32",
+          "x-availabilityStatus": "Stable"
+        },
+        "ultimate_debtor": {
+          "description": "Ultimate party that owes an amount of money to the (ultimate) creditor.",
+          "$ref": "#/definitions/PartyIdentification32",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "CreditTransferTransactionInformation10",
+      "description": "Set of elements used to provide information specific to the individual transaction(s) included in the message."
+    },
+    "CreditorReferenceInformation2": {
+      "type": "object",
+      "properties": {
+        "reference": {
+          "type": "string",
+          "description": "Unique reference, as assigned by the creditor, to unambiguously refer to the payment transaction.\n\nUsage: If available, the initiating party should provide this reference in the structured remittance information, to enable reconciliation by the creditor upon receipt of the amount of money.\n\nIf the business context requires the use of a creditor reference or a payment remit identification, and only one identifier can be passed through the end-to-end chain, the creditor's reference or payment remittance identification should be quoted in the end-to-end transaction identification.",
+          "x-availabilityStatus": "Stable"
+        },
+        "type": {
+          "description": "Specifies the type of creditor reference.",
+          "$ref": "#/definitions/CreditorReferenceType2",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "CreditorReferenceInformation2",
+      "description": "Reference information provided by the creditor to allow the identification of the underlying documents."
+    },
+    "CreditorReferenceType1Choice": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "description": "Type of creditor reference, in a coded form.",
+          "enum": [
+            "RADM",
+            "RPIN",
+            "FXDR",
+            "DISP",
+            "PUOR",
+            "SCOR"
+          ],
+          "x-availabilityStatus": "Stable"
+        },
+        "proprietary": {
+          "type": "string",
+          "description": "Creditor reference type, in a proprietary form.",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "CreditorReferenceType1Choice",
+      "description": "Specifies the type of document referred by the creditor."
+    },
+    "CreditorReferenceType2": {
+      "type": "object",
+      "required": [
+        "code_or_proprietary"
+      ],
+      "properties": {
+        "code_or_proprietary": {
+          "description": "Coded or proprietary format creditor reference type.",
+          "$ref": "#/definitions/CreditorReferenceType1Choice",
+          "x-availabilityStatus": "Stable"
+        },
+        "issuer": {
+          "type": "string",
+          "description": "Entity that assigns the credit reference type.",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "CreditorReferenceType2",
+      "description": "Specifies the type of creditor reference."
+    },
+    "DateAndPlaceOfBirth": {
+      "type": "object",
+      "required": [
+        "birth_date",
+        "city_of_birth",
+        "country_of_birth"
+      ],
+      "properties": {
+        "birth_date": {
+          "type": "string",
+          "format": "date",
+          "description": "Date on which a person is born.",
+          "x-availabilityStatus": "Stable"
+        },
+        "city_of_birth": {
+          "type": "string",
+          "description": "City where a person was born.",
+          "x-availabilityStatus": "Stable"
+        },
+        "country_of_birth": {
+          "type": "string",
+          "description": "Country where a person was born.",
+          "x-availabilityStatus": "Stable"
+        },
+        "province_of_birth": {
+          "type": "string",
+          "description": "Province where a person was born.",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "DateAndPlaceOfBirth",
+      "description": "Date and place of birth of a person."
+    },
+    "DatePeriodDetails": {
+      "type": "object",
+      "required": [
+        "from_date",
+        "to_date"
+      ],
+      "properties": {
+        "from_date": {
+          "type": "string",
+          "format": "date",
+          "description": "Start date of the range.",
+          "x-availabilityStatus": "Stable"
+        },
+        "to_date": {
+          "type": "string",
+          "format": "date",
+          "description": "End date of the range.",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "DatePeriodDetails",
+      "description": "Range of time defined by a start date and an end date."
+    },
+    "DocumentAdjustment1": {
+      "type": "object",
+      "required": [
+        "amount"
+      ],
+      "properties": {
+        "additional_information": {
+          "type": "string",
+          "description": "Provides further details on the document adjustment.",
+          "x-availabilityStatus": "Stable"
+        },
+        "amount": {
+          "description": "Amount of money of the document adjustment.",
+          "$ref": "#/definitions/ActiveOrHistoricCurrencyAndAmount",
+          "x-availabilityStatus": "Stable"
+        },
+        "credit_debit_indicator": {
+          "type": "string",
+          "description": "Specifies whether the adjustment must be subtracted or added to the total amount.",
+          "enum": [
+            "DBIT",
+            "CRDT"
+          ],
+          "x-availabilityStatus": "Stable"
+        },
+        "reason": {
+          "type": "string",
+          "description": "Specifies the reason for the adjustment.",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "DocumentAdjustment1",
+      "description": "Set of elements used to provide information on the amount and reason of the document adjustment."
+    },
+    "EquivalentAmount2": {
+      "type": "object",
+      "required": [
+        "amount",
+        "currency_of_transfer"
+      ],
+      "properties": {
+        "amount": {
+          "description": "Amount of money to be moved between debtor and creditor, before deduction of charges, expressed in the currency of the debtor's account, and to be moved in a different currency.\nUsage: The first agent will convert the equivalent amount into the amount to be moved.",
+          "$ref": "#/definitions/ActiveOrHistoricCurrencyAndAmount",
+          "x-availabilityStatus": "Stable"
+        },
+        "currency_of_transfer": {
+          "type": "string",
+          "description": "Specifies the currency of the to be transferred amount, which is different from the currency of the debtor's account.",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "EquivalentAmount2",
+      "description": "Amount of money to be moved between the debtor and creditor, expressed in the currency of the debtor's account, and the currency in which the amount is to be moved."
+    },
+    "ErrorPayload": {
+      "type": "object",
+      "properties": {
+        "failures": {
+          "type": "array",
+          "description": "More details on the occurred error",
+          "items": {
+            "$ref": "#/definitions/Failure"
+          },
+          "x-availabilityStatus": "Stable"
+        },
+        "request": {
+          "description": "Error details",
+          "$ref": "#/definitions/RequestEcho",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "ErrorPayload",
+      "description": "Error response body"
+    },
+    "ErrorResponse": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "description": "Payload",
+          "$ref": "#/definitions/ErrorPayload",
+          "x-availabilityStatus": "Stable"
+        },
+        "group_header": {
+          "description": "Standard format response header",
+          "$ref": "#/definitions/ResponseHeader",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "ErrorResponse",
+      "description": "Error response"
+    },
+    "ExchangeRateInformation1": {
+      "type": "object",
+      "properties": {
+        "contract_identification": {
+          "type": "string",
+          "description": "Unique and unambiguous reference to the foreign exchange contract agreed between the initiating party/creditor and the debtor agent.",
+          "x-availabilityStatus": "Stable"
+        },
+        "exchange_rate": {
+          "type": "number",
+          "description": "The factor used for conversion of an amount from one currency to another. This reflects the price at which one currency was bought with another currency.",
+          "x-availabilityStatus": "Stable"
+        },
+        "rate_type": {
+          "type": "string",
+          "description": "Specifies the type used to complete the currency exchange.",
+          "enum": [
+            "SPOT",
+            "SALE",
+            "AGRD"
+          ],
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "ExchangeRateInformation1",
+      "description": "Further detailed information on the exchange rate that has been used in the payment transaction."
+    },
+    "Failure": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "description": "Failure code",
+          "x-availabilityStatus": "Stable"
+        },
+        "description": {
+          "type": "string",
+          "description": "Failure description",
+          "x-availabilityStatus": "Stable"
+        },
+        "path": {
+          "type": "string",
+          "description": "JSON path of the failing element if applicable",
+          "x-availabilityStatus": "Stable"
+        },
+        "type": {
+          "type": "string",
+          "description": "Type of the validation error, e.g. NotNull",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "Failure",
+      "description": "Validation error"
+    },
+    "FinancialIdentificationSchemeName1Choice": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "description": "Name of the identification scheme, in a coded form as published in an external list.",
+          "x-availabilityStatus": "Stable"
+        },
+        "proprietary": {
+          "type": "string",
+          "description": "Name of the identification scheme, in a free text form.",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "FinancialIdentificationSchemeName1Choice",
+      "description": "Sets of elements to identify a name of the organisation identification scheme."
+    },
+    "FinancialInstitutionIdentification7": {
+      "type": "object",
+      "properties": {
+        "clearing_system_member_identification": {
+          "description": "Information used to identify a member within a clearing system.",
+          "$ref": "#/definitions/ClearingSystemMemberIdentification2",
+          "x-availabilityStatus": "Stable"
+        },
+        "name": {
+          "type": "string",
+          "description": "Name by which an agent is known and which is usually used to identify that agent.",
+          "x-availabilityStatus": "Stable"
+        },
+        "other": {
+          "description": "Unique identification of an agent, as assigned by an institution, using an identification scheme.",
+          "$ref": "#/definitions/GenericFinancialIdentification1",
+          "x-availabilityStatus": "Stable"
+        },
+        "postal_address": {
+          "description": "Information that locates and identifies a specific address, as defined by postal services.",
+          "$ref": "#/definitions/PostalAddress6",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "FinancialInstitutionIdentification7",
+      "description": "Set of elements used to identify a financial institution."
+    },
+    "GenericAccountIdentification1": {
+      "type": "object",
+      "required": [
+        "identification"
+      ],
+      "properties": {
+        "identification": {
+          "type": "string",
+          "description": "Identification assigned by an institution.",
+          "x-availabilityStatus": "Stable"
+        },
+        "issuer": {
+          "type": "string",
+          "description": "Entity that assigns the identification.",
+          "x-availabilityStatus": "Stable"
+        },
+        "scheme_name": {
+          "description": "Name of the identification scheme.",
+          "$ref": "#/definitions/AccountSchemeName1Choice",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "GenericAccountIdentification1",
+      "description": "Information related to a generic account identification."
+    },
+    "GenericFinancialIdentification1": {
+      "type": "object",
+      "required": [
+        "identification"
+      ],
+      "properties": {
+        "identification": {
+          "type": "string",
+          "description": "Unique and unambiguous identification of a person.",
+          "x-availabilityStatus": "Stable"
+        },
+        "issuer": {
+          "type": "string",
+          "description": "Entity that assigns the identification.",
+          "x-availabilityStatus": "Stable"
+        },
+        "scheme_name": {
+          "description": "Name of the identification scheme.",
+          "$ref": "#/definitions/FinancialIdentificationSchemeName1Choice",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "GenericFinancialIdentification1",
+      "description": "Information related to an identification of a financial institution."
+    },
+    "GenericOrganisationIdentification1": {
+      "type": "object",
+      "required": [
+        "identification"
+      ],
+      "properties": {
+        "identification": {
+          "type": "string",
+          "description": "Identification assigned by an institution.",
+          "x-availabilityStatus": "Stable"
+        },
+        "issuer": {
+          "type": "string",
+          "description": "Entity that assigns the identification.",
+          "x-availabilityStatus": "Stable"
+        },
+        "scheme_name": {
+          "description": "Name of the identification scheme.",
+          "$ref": "#/definitions/OrganisationIdentificationSchemeName1Choice",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "GenericOrganisationIdentification1",
+      "description": "Information related to an identification of an organisation."
+    },
+    "GenericPersonIdentification1": {
+      "type": "object",
+      "required": [
+        "identification"
+      ],
+      "properties": {
+        "identification": {
+          "type": "string",
+          "description": "Unique and unambiguous identification of a person.",
+          "x-availabilityStatus": "Stable"
+        },
+        "issuer": {
+          "type": "string",
+          "description": "Entity that assigns the identification.",
+          "x-availabilityStatus": "Stable"
+        },
+        "scheme_name": {
+          "description": "Name of the identification scheme.",
+          "$ref": "#/definitions/PersonIdentificationSchemeName1Choice",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "GenericPersonIdentification1",
+      "description": "Information related to an identification of a person."
+    },
+    "GroupHeader32": {
+      "type": "object",
+      "required": [
+        "creation_date_time",
+        "initiating_party",
+        "message_identification",
+        "number_of_transactions"
+      ],
+      "properties": {
+        "authorisation": {
+          "type": "array",
+          "description": "User identification or any user key to be used to check whether the initiating party is allowed to initiate transactions from the account specified in the message.\n\nUsage: The content is not of a technical nature, but reflects the organisational structure at the initiating side.\nThe authorisation element can typically be used in relay scenarios, payment initiations, payment returns or payment reversals that are initiated on behalf of a party different from the initiating party.",
+          "items": {
+            "$ref": "#/definitions/Authorisation1Choice"
+          },
+          "x-availabilityStatus": "Stable"
+        },
+        "control_sum": {
+          "type": "number",
+          "description": "Total of all individual amounts included in the message, irrespective of currencies.",
+          "x-availabilityStatus": "Stable"
+        },
+        "creation_date_time": {
+          "type": "string",
+          "description": "Date and time at which the message was created.",
+          "x-availabilityStatus": "Stable"
+        },
+        "forwarding_agent": {
+          "description": "Financial institution that receives the instruction from the initiating party and forwards it to the next agent in the payment chain for execution.",
+          "$ref": "#/definitions/BranchAndFinancialInstitutionIdentification4",
+          "x-availabilityStatus": "Stable"
+        },
+        "initiating_party": {
+          "description": "Party that initiates the payment.\n\nUsage: This can either be the debtor or the party that initiates the credit transfer on behalf of the debtor.",
+          "$ref": "#/definitions/PartyIdentification32",
+          "x-availabilityStatus": "Stable"
+        },
+        "message_identification": {
+          "type": "string",
+          "description": "Point to point reference, as assigned by the instructing party, and sent to the next party in the chain to unambiguously identify the message.\nUsage: The instructing party has to make sure that message_identification is unique per instructed party for a pre-agreed period.",
+          "x-availabilityStatus": "Stable"
+        },
+        "number_of_transactions": {
+          "type": "string",
+          "description": "Number of individual transactions contained in the message.",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "GroupHeader32",
+      "description": "Set of characteristics shared by all individual transactions included in the message."
+    },
+    "GroupHeader36": {
+      "type": "object",
+      "required": [
+        "creation_date_time",
+        "message_identification"
+      ],
+      "properties": {
+        "creation_date_time": {
+          "type": "string",
+          "description": "Date and time at which the message was created.",
+          "x-availabilityStatus": "Stable"
+        },
+        "creditor_agent": {
+          "description": "Financial institution servicing an account for the creditor.",
+          "$ref": "#/definitions/BranchAndFinancialInstitutionIdentification4",
+          "x-availabilityStatus": "Stable"
+        },
+        "debtor_agent": {
+          "description": "Financial institution servicing an account for the debtor.",
+          "$ref": "#/definitions/BranchAndFinancialInstitutionIdentification4",
+          "x-availabilityStatus": "Stable"
+        },
+        "forwarding_agent": {
+          "description": "Financial institution that receives the instruction from the initiating party and forwards it to the next agent in the payment chain.",
+          "$ref": "#/definitions/BranchAndFinancialInstitutionIdentification4",
+          "x-availabilityStatus": "Stable"
+        },
+        "initiating_party": {
+          "description": "Party that initiates the status message.",
+          "$ref": "#/definitions/PartyIdentification32",
+          "x-availabilityStatus": "Stable"
+        },
+        "message_identification": {
+          "type": "string",
+          "description": "Point to point reference, as assigned by the instructing party, and sent to the next party in the chain to unambiguously identify the message.\nUsage: The instructing party has to make sure that 'message_identification' is unique per instructed party for a pre-agreed period.",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "GroupHeader36",
+      "description": "Set of characteristics shared by all individual transactions included in the message."
+    },
+    "InitiationResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "${InitiationResponse.id.description}",
+          "x-availabilityStatus": "Stable"
+        },
+        "links": {
+          "type": "array",
+          "description": "${LinkSupportImpl.links.description}",
+          "items": {
+            "$ref": "#/definitions/Link"
+          },
+          "x-availabilityStatus": "Stable"
+        },
+        "status": {
+          "type": "string",
+          "description": "${InitiationResponse.status.description}",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "InitiationResponse",
+      "description": "Response containing a handle for the Multi-Payout"
+    },
+    "InstructionForCreditorAgent1": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "description": "Coded information related to the processing of the payment instruction, provided by the initiating party, and intended for the creditor's agent.",
+          "enum": [
+            "CHQB",
+            "HOLD",
+            "PHOB",
+            "TELB"
+          ],
+          "x-availabilityStatus": "Stable"
+        },
+        "instruction_information": {
+          "type": "string",
+          "description": "Further information complementing the coded instruction or instruction to the creditor's agent that is bilaterally agreed or specific to a user community.",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "InstructionForCreditorAgent1",
+      "description": "Further information related to the processing of the payment instruction that may need to be acted upon by the creditor's agent. The instruction may relate to a level of service, or may be an instruction that has to be executed by the creditor's agent, or may be information required by the creditor's agent."
+    },
+    "Link": {
+      "type": "object",
+      "properties": {
+        "href": {
+          "type": "string",
+          "description": "${Link.href.description}",
+          "x-availabilityStatus": "Stable"
+        },
+        "rel": {
+          "type": "string",
+          "description": "${Link.rel.description}",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "Link",
+      "description": "${Link.description}"
+    },
+    "LocalInstrument2Choice": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "description": "Specifies the local instrument, as published in an external local instrument code list.",
+          "x-availabilityStatus": "Stable"
+        },
+        "proprietary": {
+          "type": "string",
+          "description": "Specifies the local instrument, as a proprietary code.",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "LocalInstrument2Choice",
+      "description": "Set of elements that further identifies the type of local instruments being requested by the initiating party."
+    },
+    "MandateRelatedInformation6": {
+      "type": "object",
+      "properties": {
+        "amendment_indicator": {
+          "type": "boolean",
+          "description": "Indicator notifying whether the underlying mandate is amended or not.",
+          "x-availabilityStatus": "Stable"
+        },
+        "amendment_information_details": {
+          "description": "List of mandate elements that have been modified.",
+          "$ref": "#/definitions/AmendmentInformationDetails6",
+          "x-availabilityStatus": "Stable"
+        },
+        "date_of_signature": {
+          "type": "string",
+          "format": "date",
+          "description": "Date on which the direct debit mandate has been signed by the debtor.",
+          "x-availabilityStatus": "Stable"
+        },
+        "electronic_signature": {
+          "type": "string",
+          "description": "Additional security provisions, such as a digital signature, as provided by the debtor.",
+          "x-availabilityStatus": "Stable"
+        },
+        "final_collection_date": {
+          "type": "string",
+          "format": "date",
+          "description": "Date of the final collection of a direct debit as per the mandate.",
+          "x-availabilityStatus": "Stable"
+        },
+        "first_collection_date": {
+          "type": "string",
+          "format": "date",
+          "description": "Date of the first collection of a direct debit as per the mandate.",
+          "x-availabilityStatus": "Stable"
+        },
+        "frequency": {
+          "type": "string",
+          "description": "Regularity with which direct debit instructions are to be created and processed.",
+          "enum": [
+            "YEAR",
+            "MNTH",
+            "QURT",
+            "MIAN",
+            "WEEK",
+            "DAIL",
+            "ADHO",
+            "INDA"
+          ],
+          "x-availabilityStatus": "Stable"
+        },
+        "mandate_identification": {
+          "type": "string",
+          "description": "Unique identification, as assigned by the creditor, to unambiguously identify the mandate.",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "MandateRelatedInformation6",
+      "description": "Set of elements used to provide further details related to a direct debit mandate signed between the creditor and the debtor."
+    },
+    "MultiPayoutInitiationReportResponse": {
+      "type": "object",
+      "properties": {
+        "group_header": {
+          "description": "Standard format response header",
+          "$ref": "#/definitions/ResponseHeader",
+          "x-availabilityStatus": "Stable"
+        },
+        "response": {
+          "description": "Payload",
+          "$ref": "#/definitions/Pain00200103CustomerPaymentStatusReportV03",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "MultiPayoutInitiationReportResponse",
+      "description": "Nordea Openbanking Multi-Payout Report response"
+    },
+    "MultiPayoutInitiationResponse": {
+      "type": "object",
+      "properties": {
+        "group_header": {
+          "description": "Standard format response header",
+          "$ref": "#/definitions/ResponseHeader",
+          "x-availabilityStatus": "Stable"
+        },
+        "response": {
+          "description": "Payload",
+          "$ref": "#/definitions/InitiationResponse",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "MultiPayoutInitiationResponse",
+      "description": "Nordea Openbanking Multi-Payout initiation response type"
+    },
+    "NameAndAddress10": {
+      "type": "object",
+      "required": [
+        "address",
+        "name"
+      ],
+      "properties": {
+        "address": {
+          "description": "Postal address of a party.",
+          "$ref": "#/definitions/PostalAddress6",
+          "x-availabilityStatus": "Stable"
+        },
+        "name": {
+          "type": "string",
+          "description": "Name by which a party is known and is usually used to identify that party.",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "NameAndAddress10",
+      "description": "Information that locates and identifies a party."
+    },
+    "NumberOfTransactionsPerStatus3": {
+      "type": "object",
+      "required": [
+        "detailed_number_of_transactions",
+        "detailed_status"
+      ],
+      "properties": {
+        "detailed_control_sum": {
+          "type": "number",
+          "description": "Total of all individual amounts included in the message, irrespective of currencies, detailed per status.",
+          "x-availabilityStatus": "Stable"
+        },
+        "detailed_number_of_transactions": {
+          "type": "string",
+          "description": "Number of individual transactions contained in the message, detailed per status.",
+          "x-availabilityStatus": "Stable"
+        },
+        "detailed_status": {
+          "type": "string",
+          "description": "Common transaction status for all individual transactions reported.",
+          "enum": [
+            "ACTC",
+            "RJCT",
+            "PDNG",
+            "ACCP",
+            "ACSP",
+            "ACSC",
+            "ACWC"
+          ],
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "NumberOfTransactionsPerStatus3",
+      "description": "Set of elements used to provide detailed information on the number of transactions that are reported with a specific transaction status."
+    },
+    "OrganisationIdentification4": {
+      "type": "object",
+      "properties": {
+        "bic_or_bei": {
+          "type": "string",
+          "description": "Code allocated to a financial institution or non financial institution by the ISO 9362 Registration Authority as described in ISO 9362 \"Banking - Banking telecommunication messages - Business identifier code (BIC)\".",
+          "x-availabilityStatus": "Stable"
+        },
+        "other": {
+          "type": "array",
+          "description": "Unique identification of an organisation, as assigned by an institution, using an identification scheme.",
+          "items": {
+            "$ref": "#/definitions/GenericOrganisationIdentification1"
+          },
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "OrganisationIdentification4",
+      "description": "Unique and unambiguous way to identify an organisation."
+    },
+    "OrganisationIdentificationSchemeName1Choice": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "description": "Name of the identification scheme, in a coded form as published in an external list.",
+          "x-availabilityStatus": "Stable"
+        },
+        "proprietary": {
+          "type": "string",
+          "description": "Name of the identification scheme, in a free text form.",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "OrganisationIdentificationSchemeName1Choice",
+      "description": "Sets of elements to identify a name of the organisation identification scheme."
+    },
+    "OriginalGroupInformation20": {
+      "type": "object",
+      "required": [
+        "original_message_identification",
+        "original_message_name_identification"
+      ],
+      "properties": {
+        "group_status": {
+          "type": "string",
+          "description": "Specifies the status of a group of transactions.",
+          "enum": [
+            "ACTC",
+            "RCVD",
+            "PART",
+            "RJCT",
+            "PDNG",
+            "ACCP",
+            "ACSP",
+            "ACSC",
+            "ACWC"
+          ],
+          "x-availabilityStatus": "Stable"
+        },
+        "number_of_transactions_per_status": {
+          "type": "array",
+          "description": "Detailed information on the number of transactions for each identical transaction status.",
+          "items": {
+            "$ref": "#/definitions/NumberOfTransactionsPerStatus3"
+          },
+          "x-availabilityStatus": "Stable"
+        },
+        "original_control_sum": {
+          "type": "number",
+          "description": "Total of all individual amounts included in the original message, irrespective of currencies.",
+          "x-availabilityStatus": "Stable"
+        },
+        "original_creation_date_time": {
+          "type": "string",
+          "description": "Date and time at which the original message was created.",
+          "x-availabilityStatus": "Stable"
+        },
+        "original_message_identification": {
+          "type": "string",
+          "description": "Point to point reference, as assigned by the original instructing party, to unambiguously identify the original message.",
+          "x-availabilityStatus": "Stable"
+        },
+        "original_message_name_identification": {
+          "type": "string",
+          "description": "Specifies the original message name identifier to which the message refers.",
+          "x-availabilityStatus": "Stable"
+        },
+        "original_number_of_transactions": {
+          "type": "string",
+          "description": "Number of individual transactions contained in the original message.",
+          "x-availabilityStatus": "Stable"
+        },
+        "status_reason_information": {
+          "type": "array",
+          "description": "Set of elements used to provide detailed information on the status reason.",
+          "items": {
+            "$ref": "#/definitions/StatusReasonInformation8"
+          },
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "OriginalGroupInformation20",
+      "description": "Set of elements used to provide information on the original group, to which the message refers."
+    },
+    "OriginalPaymentInformation1": {
+      "type": "object",
+      "required": [
+        "original_payment_information_identification"
+      ],
+      "properties": {
+        "number_of_transactions_per_status": {
+          "type": "array",
+          "description": "Detailed information on the number of transactions for each identical transaction status.",
+          "items": {
+            "$ref": "#/definitions/NumberOfTransactionsPerStatus3"
+          },
+          "x-availabilityStatus": "Stable"
+        },
+        "original_control_sum": {
+          "type": "number",
+          "description": "Total of all individual amounts included in the original payment information group, irrespective of currencies.",
+          "x-availabilityStatus": "Stable"
+        },
+        "original_number_of_transactions": {
+          "type": "string",
+          "description": "Number of individual transactions contained in the original payment information group.",
+          "x-availabilityStatus": "Stable"
+        },
+        "original_payment_information_identification": {
+          "type": "string",
+          "description": "Unique identification, as assigned by the original sending party, to unambiguously identify the original payment information group.",
+          "x-availabilityStatus": "Stable"
+        },
+        "payment_information_status": {
+          "type": "string",
+          "description": "Specifies the status of the payment information group.",
+          "enum": [
+            "ACTC",
+            "RCVD",
+            "PART",
+            "RJCT",
+            "PDNG",
+            "ACCP",
+            "ACSP",
+            "ACSC",
+            "ACWC"
+          ],
+          "x-availabilityStatus": "Stable"
+        },
+        "status_reason_information": {
+          "type": "array",
+          "description": "Set of elements used to provide detailed information on the status reason.",
+          "items": {
+            "$ref": "#/definitions/StatusReasonInformation8"
+          },
+          "x-availabilityStatus": "Stable"
+        },
+        "transaction_information_and_status": {
+          "type": "array",
+          "description": "Set of elements used to provide information on the original transactions to which the status report message refers.",
+          "items": {
+            "$ref": "#/definitions/PaymentTransactionInformation25"
+          },
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "OriginalPaymentInformation1",
+      "description": "Set of elements used to provide information on the original transactions, to which the status report message refers."
+    },
+    "OriginalTransactionReference13": {
+      "type": "object",
+      "properties": {
+        "amount": {
+          "description": "Amount of money to be moved between the debtor and creditor, before deduction of charges, expressed in the currency as ordered by the initiating party.",
+          "$ref": "#/definitions/AmountType3Choice",
+          "x-availabilityStatus": "Stable"
+        },
+        "creditor": {
+          "description": "Party to which an amount of money is due.",
+          "$ref": "#/definitions/PartyIdentification32",
+          "x-availabilityStatus": "Stable"
+        },
+        "creditor_account": {
+          "description": "Unambiguous identification of the account of the creditor to which a credit entry will be posted as a result of the payment transaction.",
+          "$ref": "#/definitions/CashAccount16",
+          "x-availabilityStatus": "Stable"
+        },
+        "creditor_agent": {
+          "description": "Financial institution servicing an account for the creditor.",
+          "$ref": "#/definitions/BranchAndFinancialInstitutionIdentification4",
+          "x-availabilityStatus": "Stable"
+        },
+        "creditor_agent_account": {
+          "description": "Unambiguous identification of the account of the creditor agent at its servicing agent to which a credit entry will be made as a result of the payment transaction.",
+          "$ref": "#/definitions/CashAccount16",
+          "x-availabilityStatus": "Stable"
+        },
+        "creditor_scheme_identification": {
+          "description": "Credit party that signs the mandate.",
+          "$ref": "#/definitions/PartyIdentification32",
+          "x-availabilityStatus": "Stable"
+        },
+        "debtor": {
+          "description": "Party that owes an amount of money to the (ultimate) creditor.",
+          "$ref": "#/definitions/PartyIdentification32",
+          "x-availabilityStatus": "Stable"
+        },
+        "debtor_account": {
+          "description": "Unambiguous identification of the account of the debtor to which a debit entry will be made as a result of the transaction.",
+          "$ref": "#/definitions/CashAccount16",
+          "x-availabilityStatus": "Stable"
+        },
+        "debtor_agent": {
+          "description": "Financial institution servicing an account for the debtor.",
+          "$ref": "#/definitions/BranchAndFinancialInstitutionIdentification4",
+          "x-availabilityStatus": "Stable"
+        },
+        "debtor_agent_account": {
+          "description": "Unambiguous identification of the account of the debtor agent at its servicing agent in the payment chain.",
+          "$ref": "#/definitions/CashAccount16",
+          "x-availabilityStatus": "Stable"
+        },
+        "interbank_settlement_amount": {
+          "description": "Amount of money moved between the instructing agent and the instructed agent.",
+          "$ref": "#/definitions/ActiveOrHistoricCurrencyAndAmount",
+          "x-availabilityStatus": "Stable"
+        },
+        "interbank_settlement_date": {
+          "type": "string",
+          "format": "date",
+          "description": "Date on which the amount of money ceases to be available to the agent that owes it and when the amount of money becomes available to the agent to which it is due.",
+          "x-availabilityStatus": "Stable"
+        },
+        "mandate_related_information": {
+          "description": "Set of elements used to provide further details of the mandate signed between the creditor and the debtor.",
+          "$ref": "#/definitions/MandateRelatedInformation6",
+          "x-availabilityStatus": "Stable"
+        },
+        "payment_method": {
+          "type": "string",
+          "description": "Specifies the means of payment that will be used to move the amount of money.",
+          "enum": [
+            "CHK",
+            "TRF",
+            "DD",
+            "TRA"
+          ],
+          "x-availabilityStatus": "Stable"
+        },
+        "payment_type_information": {
+          "description": "Set of elements used to further specify the type of transaction.",
+          "$ref": "#/definitions/PaymentTypeInformation22",
+          "x-availabilityStatus": "Stable"
+        },
+        "remittance_information": {
+          "description": "Information supplied to enable the matching of an entry with the items that the transfer is intended to settle, such as commercial invoices in an accounts' receivable system.",
+          "$ref": "#/definitions/RemittanceInformation5",
+          "x-availabilityStatus": "Stable"
+        },
+        "requested_collection_date": {
+          "type": "string",
+          "format": "date",
+          "description": "Date and time at which the creditor requests that the amount of money is to be collected from the debtor.",
+          "x-availabilityStatus": "Stable"
+        },
+        "requested_execution_date": {
+          "type": "string",
+          "format": "date",
+          "description": "Date at which the initiating party requests the clearing agent to process the payment. \nUsage: This is the date on which the debtor's account is to be debited. If payment by cheque, the date when the cheque must be generated by the bank.",
+          "x-availabilityStatus": "Stable"
+        },
+        "settlement_information": {
+          "description": "Specifies the details on how the settlement of the original transaction(s) between the instructing agent and the instructed agent was completed.",
+          "$ref": "#/definitions/SettlementInformation13",
+          "x-availabilityStatus": "Stable"
+        },
+        "ultimate_creditor": {
+          "description": "Ultimate party to which an amount of money is due.",
+          "$ref": "#/definitions/PartyIdentification32",
+          "x-availabilityStatus": "Stable"
+        },
+        "ultimate_debtor": {
+          "description": "Ultimate party that owes an amount of money to the (ultimate) creditor.",
+          "$ref": "#/definitions/PartyIdentification32",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "OriginalTransactionReference13",
+      "description": "Set of key elements used to refer the original transaction."
+    },
+    "Pain00100103CustomerCreditTransferInitiationV03": {
+      "type": "object",
+      "required": [
+        "group_header",
+        "payment_information"
+      ],
+      "properties": {
+        "@business_area": {
+          "type": "string",
+          "description": "${Pain00100103CustomerCreditTransferInitiationV03.atBusinessArea.description}",
+          "x-availabilityStatus": "Stable"
+        },
+        "@flavour": {
+          "type": "string",
+          "description": "${Pain00100103CustomerCreditTransferInitiationV03.atFlavour.description}",
+          "x-availabilityStatus": "Stable"
+        },
+        "@message_functionality": {
+          "type": "string",
+          "description": "${Pain00100103CustomerCreditTransferInitiationV03.atMessageFunctionality.description}",
+          "x-availabilityStatus": "Stable"
+        },
+        "@name": {
+          "type": "string",
+          "description": "${Pain00100103CustomerCreditTransferInitiationV03.atName.description}",
+          "x-availabilityStatus": "Stable"
+        },
+        "@version": {
+          "type": "string",
+          "description": "${Pain00100103CustomerCreditTransferInitiationV03.atVersion.description}",
+          "x-availabilityStatus": "Stable"
+        },
+        "group_header": {
+          "description": "Set of characteristics shared by all individual transactions included in the message.",
+          "$ref": "#/definitions/GroupHeader32",
+          "x-availabilityStatus": "Stable"
+        },
+        "payment_information": {
+          "type": "array",
+          "description": "Set of characteristics that applies to the debit side of the payment transactions included in the credit transfer initiation.",
+          "items": {
+            "$ref": "#/definitions/PaymentInstructionInformation3"
+          },
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "Pain00100103CustomerCreditTransferInitiationV03",
+      "description": "Scope  The CustomerCreditTransferInitiation message is sent by the initiating party to the forwarding agent or debtor agent. It is used to request movement of funds from the debtor account to a creditor.  Usage  The CustomerCreditTransferInitiation message can contain one or more customer credit transfer instructions.  The CustomerCreditTransferInitiation message is used to exchange:  - One or more instances of a credit transfer initiation;  - Payment transactions that result in book transfers at the debtor agent or payments to another financial institution;  - Payment transactions that result in an electronic cash transfer to the creditor account or in the emission of a cheque.  The message can be used in a direct or a relay scenario:  - In a direct scenario, the message is sent directly to the debtor agent. The debtor agent is the account servicer of the debtor.  - In a relay scenario, the message is sent to a forwarding agent. The forwarding agent acts as a concentrating financial institution. It will forward the CustomerCreditTransferInitiation message to the debtor agent.  The message can also be used by an initiating party that has authority to send the message on behalf of the debtor. This caters for example for the scenario of a payments factory initiating all payments on behalf of a large corporate.  The CustomerCreditTransferInitiation message can be used in domestic and cross-border scenarios.  The CustomerCreditTransferInitiation message must not be used by the debtor agent to execute the credit transfer instruction(s). The FIToFICustomerCreditTransfer message must be used instead."
+    },
+    "Pain00200103CustomerPaymentStatusReportV03": {
+      "type": "object",
+      "required": [
+        "group_header",
+        "original_group_information_and_status"
+      ],
+      "properties": {
+        "@business_area": {
+          "type": "string",
+          "description": "${Pain00200103CustomerPaymentStatusReportV03.atBusinessArea.description}",
+          "x-availabilityStatus": "Stable"
+        },
+        "@flavour": {
+          "type": "string",
+          "description": "${Pain00200103CustomerPaymentStatusReportV03.atFlavour.description}",
+          "x-availabilityStatus": "Stable"
+        },
+        "@message_functionality": {
+          "type": "string",
+          "description": "${Pain00200103CustomerPaymentStatusReportV03.atMessageFunctionality.description}",
+          "x-availabilityStatus": "Stable"
+        },
+        "@name": {
+          "type": "string",
+          "description": "${Pain00200103CustomerPaymentStatusReportV03.atName.description}",
+          "x-availabilityStatus": "Stable"
+        },
+        "@version": {
+          "type": "string",
+          "description": "${Pain00200103CustomerPaymentStatusReportV03.atVersion.description}",
+          "x-availabilityStatus": "Stable"
+        },
+        "group_header": {
+          "description": "Set of characteristics shared by all individual transactions included in the status report message.",
+          "$ref": "#/definitions/GroupHeader36",
+          "x-availabilityStatus": "Stable"
+        },
+        "original_group_information_and_status": {
+          "description": "Original group information concerning the group of transactions, to which the status report message refers to.",
+          "$ref": "#/definitions/OriginalGroupInformation20",
+          "x-availabilityStatus": "Stable"
+        },
+        "original_payment_information_and_status": {
+          "type": "array",
+          "description": "Information concerning the original payment information, to which the status report message refers.",
+          "items": {
+            "$ref": "#/definitions/OriginalPaymentInformation1"
+          },
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "Pain00200103CustomerPaymentStatusReportV03",
+      "description": "Scope  The CustomerPaymentStatusReport message is sent by an instructed agent to the previous party in the payment chain. It is used to inform this party about the positive or negative status of an instruction (either single or file). It is also used to report on a pending instruction.  Usage  The CustomerPaymentStatusReport message is exchanged between an agent and a non-financial institution customer to provide status information on instructions previously sent. Its usage will always be governed by a bilateral agreement between the agent and the non-financial institution customer.  The CustomerPaymentStatusReport message can be used to provide information about the status (e.g. rejection, acceptance) of the initiation of a credit transfer, a direct debit, as well as on the initiation of other customer instructions.  The CustomerPaymentStatusReport message refers to the original instruction(s) by means of references only or by means of references and a set of elements from the original instruction.  The CustomerPaymentStatusReport message can be used in domestic and cross-border scenarios."
+    },
+    "Party6Choice": {
+      "type": "object",
+      "properties": {
+        "organisation_identification": {
+          "description": "Unique and unambiguous way to identify an organisation.",
+          "$ref": "#/definitions/OrganisationIdentification4",
+          "x-availabilityStatus": "Stable"
+        },
+        "private_identification": {
+          "description": "Unique and unambiguous identification of a person, for example a passport.",
+          "$ref": "#/definitions/PersonIdentification5",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "Party6Choice",
+      "description": "Nature or use of the account."
+    },
+    "PartyIdentification32": {
+      "type": "object",
+      "properties": {
+        "contact_details": {
+          "description": "Set of elements used to indicate how to contact the party.",
+          "$ref": "#/definitions/ContactDetails2",
+          "x-availabilityStatus": "Stable"
+        },
+        "country_of_residence": {
+          "type": "string",
+          "description": "Country in which a person resides (the place of a person's home). In the case of a company, it is the country from which the affairs of that company are directed.",
+          "x-availabilityStatus": "Stable"
+        },
+        "identification": {
+          "description": "Unique and unambiguous identification of a party.",
+          "$ref": "#/definitions/Party6Choice",
+          "x-availabilityStatus": "Stable"
+        },
+        "name": {
+          "type": "string",
+          "description": "Name by which a party is known and which is usually used to identify that party.",
+          "x-availabilityStatus": "Stable"
+        },
+        "postal_address": {
+          "description": "Information that locates and identifies a specific address, as defined by postal services.",
+          "$ref": "#/definitions/PostalAddress6",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "PartyIdentification32",
+      "description": "Set of elements used to identify a person or an organisation."
+    },
+    "PaymentIdentification1": {
+      "type": "object",
+      "required": [
+        "end_to_end_identification"
+      ],
+      "properties": {
+        "end_to_end_identification": {
+          "type": "string",
+          "description": "Unique identification assigned by the initiating party to unambiguously identify the transaction. This identification is passed on, unchanged, throughout the entire end-to-end chain.\n\nUsage: The end-to-end identification can be used for reconciliation or to link tasks relating to the transaction. It can be included in several messages related to the transaction.",
+          "x-availabilityStatus": "Stable"
+        },
+        "instruction_identification": {
+          "type": "string",
+          "description": "Unique identification as assigned by an instructing party for an instructed party to unambiguously identify the instruction.\n\nUsage: The instruction identification is a point to point reference that can be used between the instructing party and the instructed party to refer to the individual instruction. It can be included in several messages related to the instruction.",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "PaymentIdentification1",
+      "description": "Set of elements used to provide further means of referencing a payment transaction."
+    },
+    "PaymentInstructionInformation3": {
+      "type": "object",
+      "required": [
+        "credit_transfer_transaction_information",
+        "debtor",
+        "debtor_account",
+        "debtor_agent",
+        "payment_information_identification",
+        "payment_method",
+        "requested_execution_date"
+      ],
+      "properties": {
+        "batch_booking": {
+          "type": "boolean",
+          "description": "Identifies whether a single entry per individual transaction or a batch entry for the sum of the amounts of all transactions within the group of a message is requested.\nUsage: Batch booking is used to request and not order a possible batch booking.",
+          "x-availabilityStatus": "Stable"
+        },
+        "charge_bearer": {
+          "type": "string",
+          "description": "Specifies which party/parties will bear the charges associated with the processing of the payment transaction.",
+          "enum": [
+            "DEBT",
+            "CRED",
+            "SHAR",
+            "SLEV"
+          ],
+          "x-availabilityStatus": "Stable"
+        },
+        "charges_account": {
+          "description": "Account used to process charges associated with a transaction.\n\nUsage: Charges account should be used when charges have to be booked to an account different from the account identified in debtor's account.",
+          "$ref": "#/definitions/CashAccount16",
+          "x-availabilityStatus": "Stable"
+        },
+        "charges_account_agent": {
+          "description": "Agent that services a charges account.\n\nUsage: Charges account agent should only be used when the charges account agent is different from the debtor agent.",
+          "$ref": "#/definitions/BranchAndFinancialInstitutionIdentification4",
+          "x-availabilityStatus": "Stable"
+        },
+        "control_sum": {
+          "type": "number",
+          "description": "Total of all individual amounts included in the group, irrespective of currencies.",
+          "x-availabilityStatus": "Stable"
+        },
+        "credit_transfer_transaction_information": {
+          "type": "array",
+          "description": "Set of elements used to provide information on the individual transaction(s) included in the message.",
+          "items": {
+            "$ref": "#/definitions/CreditTransferTransactionInformation10"
+          },
+          "x-availabilityStatus": "Stable"
+        },
+        "debtor": {
+          "description": "Party that owes an amount of money to the (ultimate) creditor.",
+          "$ref": "#/definitions/PartyIdentification32",
+          "x-availabilityStatus": "Stable"
+        },
+        "debtor_account": {
+          "description": "Unambiguous identification of the account of the debtor to which a debit entry will be made as a result of the transaction.",
+          "$ref": "#/definitions/CashAccount16",
+          "x-availabilityStatus": "Stable"
+        },
+        "debtor_agent": {
+          "description": "Financial institution servicing an account for the debtor.",
+          "$ref": "#/definitions/BranchAndFinancialInstitutionIdentification4",
+          "x-availabilityStatus": "Stable"
+        },
+        "debtor_agent_account": {
+          "description": "Unambiguous identification of the account of the debtor agent at its servicing agent in the payment chain.",
+          "$ref": "#/definitions/CashAccount16",
+          "x-availabilityStatus": "Stable"
+        },
+        "number_of_transactions": {
+          "type": "string",
+          "description": "Number of individual transactions contained in the paymnet information group.",
+          "x-availabilityStatus": "Stable"
+        },
+        "payment_information_identification": {
+          "type": "string",
+          "description": "Unique identification, as assigned by a sending party, to unambiguously identify the payment information group within the message.",
+          "x-availabilityStatus": "Stable"
+        },
+        "payment_method": {
+          "type": "string",
+          "description": "Specifies the means of payment that will be used to move the amount of money.",
+          "enum": [
+            "CHK",
+            "TRF",
+            "TRA"
+          ],
+          "x-availabilityStatus": "Stable"
+        },
+        "payment_type_information": {
+          "description": "Set of elements used to further specify the type of transaction.",
+          "$ref": "#/definitions/PaymentTypeInformation19",
+          "x-availabilityStatus": "Stable"
+        },
+        "pooling_adjustment_date": {
+          "type": "string",
+          "format": "date",
+          "description": "Date used for the correction of the value date of a cash pool movement that has been posted with a different value date.",
+          "x-availabilityStatus": "Stable"
+        },
+        "requested_execution_date": {
+          "type": "string",
+          "format": "date",
+          "description": "Date at which the initiating party requests the clearing agent to process the payment. \nUsage: This is the date on which the debtor's account is to be debited. If payment by cheque, the date when the cheque must be generated by the bank.",
+          "x-availabilityStatus": "Stable"
+        },
+        "ultimate_debtor": {
+          "description": "Ultimate party that owes an amount of money to the (ultimate) creditor.",
+          "$ref": "#/definitions/PartyIdentification32",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "PaymentInstructionInformation3",
+      "description": "Set of characteristics that apply to the debit side of the payment transactions included in the credit transfer initiation."
+    },
+    "PaymentTransactionInformation25": {
+      "type": "object",
+      "properties": {
+        "acceptance_date_time": {
+          "type": "string",
+          "description": "Point in time when the payment order from the initiating party meets the processing conditions of the account servicing agent. This means that the account servicing agent has received the payment order and has applied checks such as authorisation, availability of funds.",
+          "x-availabilityStatus": "Stable"
+        },
+        "account_servicer_reference": {
+          "type": "string",
+          "description": "Unique reference, as assigned by the account servicing institution, to unambiguously identify the instruction.",
+          "x-availabilityStatus": "Stable"
+        },
+        "charges_information": {
+          "type": "array",
+          "description": "Provides information on the charges related to the processing of the rejection of the instruction.\nUsage: This is passed on for information purposes only. Settlement of the charges will be done separately.",
+          "items": {
+            "$ref": "#/definitions/ChargesInformation5"
+          },
+          "x-availabilityStatus": "Stable"
+        },
+        "clearing_system_reference": {
+          "type": "string",
+          "description": "Unique reference, as assigned by a clearing system, to unambiguously identify the instruction.",
+          "x-availabilityStatus": "Stable"
+        },
+        "original_end_to_end_identification": {
+          "type": "string",
+          "description": "Unique identification, as assigned by the original initiating party, to unambiguously identify the original transaction.",
+          "x-availabilityStatus": "Stable"
+        },
+        "original_instruction_identification": {
+          "type": "string",
+          "description": "Unique identification, as assigned by the original instructing party for the original instructed party, to unambiguously identify the original instruction.",
+          "x-availabilityStatus": "Stable"
+        },
+        "original_transaction_reference": {
+          "description": "Set of key elements used to identify the original transaction that is being referred to.",
+          "$ref": "#/definitions/OriginalTransactionReference13",
+          "x-availabilityStatus": "Stable"
+        },
+        "status_identification": {
+          "type": "string",
+          "description": "Unique identification, as assigned by an instructing party for an instructed party, to unambiguously identify the reported status.\nUsage: The instructing party is the party sending the status message and not the party that sent the original instruction that is being reported on.",
+          "x-availabilityStatus": "Stable"
+        },
+        "status_reason_information": {
+          "type": "array",
+          "description": "Set of elements used to provide detailed information on the status reason.",
+          "items": {
+            "$ref": "#/definitions/StatusReasonInformation8"
+          },
+          "x-availabilityStatus": "Stable"
+        },
+        "transaction_status": {
+          "type": "string",
+          "description": "Specifies the status of a transaction, in a coded form.",
+          "enum": [
+            "ACTC",
+            "RJCT",
+            "PDNG",
+            "ACCP",
+            "ACSP",
+            "ACSC",
+            "ACWC"
+          ],
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "PaymentTransactionInformation25",
+      "description": "Set of elements used to provide information on the original transactions, to which the status report message refers."
+    },
+    "PaymentTypeInformation19": {
+      "type": "object",
+      "properties": {
+        "category_purpose": {
+          "description": "Specifies the high level purpose of the instruction based on a set of pre-defined categories.\nUsage: This is used by the initiating party to provide information concerning the processing of the payment. It is likely to trigger special processing by any of the agents involved in the payment chain.",
+          "$ref": "#/definitions/CategoryPurpose1Choice",
+          "x-availabilityStatus": "Stable"
+        },
+        "instruction_priority": {
+          "type": "string",
+          "description": "Indicator of the urgency or order of importance that the instructing party would like the instructed party to apply to the processing of the instruction.",
+          "enum": [
+            "HIGH",
+            "NORM"
+          ],
+          "x-availabilityStatus": "Stable"
+        },
+        "local_instrument": {
+          "description": "User community specific instrument.\n\nUsage: This element is used to specify a local instrument, local clearing option and/or further qualify the service or service level.",
+          "$ref": "#/definitions/LocalInstrument2Choice",
+          "x-availabilityStatus": "Stable"
+        },
+        "service_level": {
+          "description": "Agreement under which or rules under which the transaction should be processed.",
+          "$ref": "#/definitions/ServiceLevel8Choice",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "PaymentTypeInformation19",
+      "description": "Set of elements used to provide further details of the type of payment."
+    },
+    "PaymentTypeInformation22": {
+      "type": "object",
+      "properties": {
+        "category_purpose": {
+          "description": "Specifies the high level purpose of the instruction based on a set of pre-defined categories.\nUsage: This is used by the initiating party to provide information concerning the processing of the payment. It is likely to trigger special processing by any of the agents involved in the payment chain.",
+          "$ref": "#/definitions/CategoryPurpose1Choice",
+          "x-availabilityStatus": "Stable"
+        },
+        "clearing_channel": {
+          "type": "string",
+          "description": "Specifies the clearing channel to be used to process the payment instruction.",
+          "enum": [
+            "RTGS",
+            "RTNS",
+            "MPNS",
+            "BOOK"
+          ],
+          "x-availabilityStatus": "Stable"
+        },
+        "instruction_priority": {
+          "type": "string",
+          "description": "Indicator of the urgency or order of importance that the instructing party would like the instructed party to apply to the processing of the instruction.",
+          "enum": [
+            "HIGH",
+            "NORM"
+          ],
+          "x-availabilityStatus": "Stable"
+        },
+        "local_instrument": {
+          "description": "User community specific instrument.\n\nUsage: This element is used to specify a local instrument, local clearing option and/or further qualify the service or service level.",
+          "$ref": "#/definitions/LocalInstrument2Choice",
+          "x-availabilityStatus": "Stable"
+        },
+        "sequence_type": {
+          "type": "string",
+          "description": "Identifies the direct debit sequence, such as first, recurrent, final or one-off.",
+          "enum": [
+            "FRST",
+            "RCUR",
+            "FNAL",
+            "OOFF"
+          ],
+          "x-availabilityStatus": "Stable"
+        },
+        "service_level": {
+          "description": "Agreement under which or rules under which the transaction should be processed.",
+          "$ref": "#/definitions/ServiceLevel8Choice",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "PaymentTypeInformation22",
+      "description": "Set of elements used to provide further details of the type of payment."
+    },
+    "PersonIdentification5": {
+      "type": "object",
+      "properties": {
+        "date_and_place_of_birth": {
+          "description": "Date and place of birth of a person.",
+          "$ref": "#/definitions/DateAndPlaceOfBirth",
+          "x-availabilityStatus": "Stable"
+        },
+        "other": {
+          "type": "array",
+          "description": "Unique identification of a person, as assigned by an institution, using an identification scheme.",
+          "items": {
+            "$ref": "#/definitions/GenericPersonIdentification1"
+          },
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "PersonIdentification5",
+      "description": "Unique and unambiguous way to identify a person."
+    },
+    "PersonIdentificationSchemeName1Choice": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "description": "Name of the identification scheme, in a coded form as published in an external list.",
+          "x-availabilityStatus": "Stable"
+        },
+        "proprietary": {
+          "type": "string",
+          "description": "Name of the identification scheme, in a free text form.",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "PersonIdentificationSchemeName1Choice",
+      "description": "Sets of elements to identify a name of the identification scheme."
+    },
+    "PostalAddress6": {
+      "type": "object",
+      "properties": {
+        "address_line": {
+          "type": "array",
+          "description": "Information that locates and identifies a specific address, as defined by postal services, presented in free format text.",
+          "items": {
+            "type": "string"
+          },
+          "x-availabilityStatus": "Stable"
+        },
+        "address_type": {
+          "type": "string",
+          "description": "Identifies the nature of the postal address.",
+          "enum": [
+            "HOME",
+            "BIZZ",
+            "ADDR",
+            "PBOX",
+            "MLTO",
+            "DLVY"
+          ],
+          "x-availabilityStatus": "Stable"
+        },
+        "building_number": {
+          "type": "string",
+          "description": "Number that identifies the position of a building on a street.",
+          "x-availabilityStatus": "Stable"
+        },
+        "country": {
+          "type": "string",
+          "description": "Nation with its own government.",
+          "x-availabilityStatus": "Stable"
+        },
+        "country_sub_division": {
+          "type": "string",
+          "description": "Identifies a subdivision of a country such as state, region, county.",
+          "x-availabilityStatus": "Stable"
+        },
+        "department": {
+          "type": "string",
+          "description": "Identification of a division of a large organisation or building.",
+          "x-availabilityStatus": "Stable"
+        },
+        "post_code": {
+          "type": "string",
+          "description": "Identifier consisting of a group of letters and/or numbers that is added to a postal address to assist the sorting of mail.",
+          "x-availabilityStatus": "Stable"
+        },
+        "street_name": {
+          "type": "string",
+          "description": "Name of a street or thoroughfare.",
+          "x-availabilityStatus": "Stable"
+        },
+        "sub_department": {
+          "type": "string",
+          "description": "Identification of a sub-division of a large organisation or building.",
+          "x-availabilityStatus": "Stable"
+        },
+        "town_name": {
+          "type": "string",
+          "description": "Name of a built-up area, with defined boundaries, and a local government.",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "PostalAddress6",
+      "description": "Information that locates and identifies a specific address, as defined by postal services."
+    },
+    "Purpose2Choice": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "description": "Underlying reason for the payment transaction, as published in an external purpose code list.",
+          "x-availabilityStatus": "Stable"
+        },
+        "proprietary": {
+          "type": "string",
+          "description": "Purpose, in a proprietary form.",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "Purpose2Choice",
+      "description": "Specifies the underlying reason for the payment transaction. Usage: Purpose is used by the end-customers, that is initiating party, (ultimate) debtor, (ultimate) creditor to provide information concerning the nature of the payment. Purpose is a content element, which is not used for processing by any of the agents involved in the payment chain."
+    },
+    "ReferredDocumentInformation3": {
+      "type": "object",
+      "properties": {
+        "number": {
+          "type": "string",
+          "description": "Unique and unambiguous identification of the referred document.",
+          "x-availabilityStatus": "Stable"
+        },
+        "related_date": {
+          "type": "string",
+          "format": "date",
+          "description": "Date associated with the referred document.",
+          "x-availabilityStatus": "Stable"
+        },
+        "type": {
+          "description": "Specifies the type of referred document.",
+          "$ref": "#/definitions/ReferredDocumentType2",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "ReferredDocumentInformation3",
+      "description": "Set of elements used to identify the documents referred to in the remittance information."
+    },
+    "ReferredDocumentType1Choice": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "description": "Document type in a coded form.",
+          "enum": [
+            "MSIN",
+            "CNFA",
+            "DNFA",
+            "CINV",
+            "CREN",
+            "DEBN",
+            "HIRI",
+            "SBIN",
+            "CMCN",
+            "SOAC",
+            "DISP",
+            "BOLD",
+            "VCHR",
+            "AROI",
+            "TSUT"
+          ],
+          "x-availabilityStatus": "Stable"
+        },
+        "proprietary": {
+          "type": "string",
+          "description": "Proprietary identification of the type of the remittance document.",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "ReferredDocumentType1Choice",
+      "description": "Specifies the type of the document referred in the remittance information."
+    },
+    "ReferredDocumentType2": {
+      "type": "object",
+      "required": [
+        "code_or_proprietary"
+      ],
+      "properties": {
+        "code_or_proprietary": {
+          "description": "Provides the type details of the referred document.",
+          "$ref": "#/definitions/ReferredDocumentType1Choice",
+          "x-availabilityStatus": "Stable"
+        },
+        "issuer": {
+          "type": "string",
+          "description": "Identification of the issuer of the reference document type.",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "ReferredDocumentType2",
+      "description": "Specifies the type of the document referred in the remittance information."
+    },
+    "RegulatoryAuthority2": {
+      "type": "object",
+      "properties": {
+        "country": {
+          "type": "string",
+          "description": "Country of the entity that requires the regulatory reporting information.",
+          "x-availabilityStatus": "Stable"
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the entity requiring the regulatory reporting information.",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "RegulatoryAuthority2",
+      "description": "Entity requiring the regulatory reporting information."
+    },
+    "RegulatoryReporting3": {
+      "type": "object",
+      "properties": {
+        "authority": {
+          "description": "Entity requiring the regulatory reporting information.",
+          "$ref": "#/definitions/RegulatoryAuthority2",
+          "x-availabilityStatus": "Stable"
+        },
+        "debit_credit_reporting_indicator": {
+          "type": "string",
+          "description": "Identifies whether the regulatory reporting information applies to the debit side, to the credit side or to both debit and credit sides of the transaction.",
+          "enum": [
+            "CRED",
+            "DEBT",
+            "BOTH"
+          ],
+          "x-availabilityStatus": "Stable"
+        },
+        "details": {
+          "type": "array",
+          "description": "Set of elements used to provide details on the regulatory reporting information.",
+          "items": {
+            "$ref": "#/definitions/StructuredRegulatoryReporting3"
+          },
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "RegulatoryReporting3",
+      "description": "Information needed due to regulatory and/or statutory requirements."
+    },
+    "RemittanceAmount1": {
+      "type": "object",
+      "properties": {
+        "adjustment_amount_and_reason": {
+          "type": "array",
+          "description": "Set of elements used to provide information on the amount and reason of the document adjustment.",
+          "items": {
+            "$ref": "#/definitions/DocumentAdjustment1"
+          },
+          "x-availabilityStatus": "Stable"
+        },
+        "credit_note_amount": {
+          "description": "Amount specified for the referred document is the amount of a credit note.",
+          "$ref": "#/definitions/ActiveOrHistoricCurrencyAndAmount",
+          "x-availabilityStatus": "Stable"
+        },
+        "discount_applied_amount": {
+          "description": "Amount of money that results from the application of an agreed discount to the amount due and payable to the creditor.",
+          "$ref": "#/definitions/ActiveOrHistoricCurrencyAndAmount",
+          "x-availabilityStatus": "Stable"
+        },
+        "due_payable_amount": {
+          "description": "Amount specified is the exact amount due and payable to the creditor.",
+          "$ref": "#/definitions/ActiveOrHistoricCurrencyAndAmount",
+          "x-availabilityStatus": "Stable"
+        },
+        "remitted_amount": {
+          "description": "Amount of money remitted for the referred document.",
+          "$ref": "#/definitions/ActiveOrHistoricCurrencyAndAmount",
+          "x-availabilityStatus": "Stable"
+        },
+        "tax_amount": {
+          "description": "Quantity of cash resulting from the calculation of the tax.",
+          "$ref": "#/definitions/ActiveOrHistoricCurrencyAndAmount",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "RemittanceAmount1",
+      "description": "Nature of the amount and currency on a document referred to in the remittance section, typically either the original amount due/payable or the amount actually remitted for the referenced document."
+    },
+    "RemittanceInformation5": {
+      "type": "object",
+      "properties": {
+        "structured": {
+          "type": "array",
+          "description": "Information supplied to enable the matching/reconciliation of an entry with the items that the payment is intended to settle, such as commercial invoices in an accounts' receivable system, in a structured form.",
+          "items": {
+            "$ref": "#/definitions/StructuredRemittanceInformation7"
+          },
+          "x-availabilityStatus": "Stable"
+        },
+        "unstructured": {
+          "type": "array",
+          "description": "Information supplied to enable the matching/reconciliation of an entry with the items that the payment is intended to settle, such as commercial invoices in an accounts' receivable system, in an unstructured form.",
+          "items": {
+            "type": "string"
+          },
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "RemittanceInformation5",
+      "description": "Information supplied to enable the matching/reconciliation of an entry with the items that the payment is intended to settle, such as commercial invoices in an accounts' receivable system."
+    },
+    "RemittanceLocation2": {
+      "type": "object",
+      "properties": {
+        "remittance_identification": {
+          "type": "string",
+          "description": "Unique identification, as assigned by the initiating party, to unambiguously identify the remittance information sent separately from the payment instruction, such as a remittance advice.",
+          "x-availabilityStatus": "Stable"
+        },
+        "remittance_location_electronic_address": {
+          "type": "string",
+          "description": "Electronic address to which an agent is to send the remittance information.",
+          "x-availabilityStatus": "Stable"
+        },
+        "remittance_location_method": {
+          "type": "string",
+          "description": "Method used to deliver the remittance advice information.",
+          "enum": [
+            "FAXI",
+            "EDIC",
+            "URID",
+            "EMAL",
+            "POST",
+            "SMSM"
+          ],
+          "x-availabilityStatus": "Stable"
+        },
+        "remittance_location_postal_address": {
+          "description": "Postal address to which an agent is to send the remittance information.",
+          "$ref": "#/definitions/NameAndAddress10",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "RemittanceLocation2",
+      "description": "Set of elements used to provide information on the remittance advice."
+    },
+    "RequestEcho": {
+      "type": "object",
+      "properties": {
+        "url": {
+          "type": "string",
+          "description": "Original request url",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "RequestEcho",
+      "description": "Original request information"
+    },
+    "ResponseHeader": {
+      "type": "object",
+      "properties": {
+        "creation_date_time": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Response creation time",
+          "x-availabilityStatus": "Stable"
+        },
+        "http_code": {
+          "type": "integer",
+          "format": "int32",
+          "example": 200,
+          "description": "HTTP code for response",
+          "x-availabilityStatus": "Stable"
+        },
+        "message_identification": {
+          "type": "string",
+          "description": "Original request id for correlation purposes",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "ResponseHeader",
+      "description": "External response header"
+    },
+    "ServiceLevel8Choice": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "description": "Specifies a pre-agreed service or level of service between the parties, as published in an external service level code list.",
+          "x-availabilityStatus": "Stable"
+        },
+        "proprietary": {
+          "type": "string",
+          "description": "Specifies a pre-agreed service or level of service between the parties, as a proprietary code.",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "ServiceLevel8Choice",
+      "description": "Specifies the service level of the transaction."
+    },
+    "SettlementInformation13": {
+      "type": "object",
+      "required": [
+        "settlement_method"
+      ],
+      "properties": {
+        "clearing_system": {
+          "description": "Specification of a pre-agreed offering between clearing agents or the channel through which the payment instruction is processed.",
+          "$ref": "#/definitions/ClearingSystemIdentification3Choice",
+          "x-availabilityStatus": "Stable"
+        },
+        "instructed_reimbursement_agent": {
+          "description": "Agent at which the instructed agent will be reimbursed.\nUsage: If InstructedReimbursementAgent contains a branch of the InstructedAgent, then the party in InstructedAgent will claim reimbursement from that branch/will be paid by that branch.\nUsage: If InstructingAgent and InstructedAgent have the same reimbursement agent, then only InstructingReimbursementAgent must be used.",
+          "$ref": "#/definitions/BranchAndFinancialInstitutionIdentification4",
+          "x-availabilityStatus": "Stable"
+        },
+        "instructed_reimbursement_agent_account": {
+          "description": "Unambiguous identification of the account of the instructed reimbursement agent account at its servicing agent in the payment chain.",
+          "$ref": "#/definitions/CashAccount16",
+          "x-availabilityStatus": "Stable"
+        },
+        "instructing_reimbursement_agent": {
+          "description": "Agent through which the instructing agent will reimburse the instructed agent.\n\nUsage: If InstructingAgent and InstructedAgent have the same reimbursement agent, then only InstructingReimbursementAgent must be used.",
+          "$ref": "#/definitions/BranchAndFinancialInstitutionIdentification4",
+          "x-availabilityStatus": "Stable"
+        },
+        "instructing_reimbursement_agent_account": {
+          "description": "Unambiguous identification of the account of the instructing reimbursement agent account at its servicing agent in the payment chain.",
+          "$ref": "#/definitions/CashAccount16",
+          "x-availabilityStatus": "Stable"
+        },
+        "settlement_account": {
+          "description": "A specific purpose account used to post debit and credit entries as a result of the transaction.",
+          "$ref": "#/definitions/CashAccount16",
+          "x-availabilityStatus": "Stable"
+        },
+        "settlement_method": {
+          "type": "string",
+          "description": "Method used to settle the (batch of) payment instructions.",
+          "enum": [
+            "INDA",
+            "INGA",
+            "COVE",
+            "CLRG"
+          ],
+          "x-availabilityStatus": "Stable"
+        },
+        "third_reimbursement_agent": {
+          "description": "Agent at which the instructed agent will be reimbursed.\nUsage: If ThirdReimbursementAgent contains a branch of the InstructedAgent, then the party in InstructedAgent will claim reimbursement from that branch/will be paid by that branch.",
+          "$ref": "#/definitions/BranchAndFinancialInstitutionIdentification4",
+          "x-availabilityStatus": "Stable"
+        },
+        "third_reimbursement_agent_account": {
+          "description": "Unambiguous identification of the account of the third reimbursement agent account at its servicing agent in the payment chain.",
+          "$ref": "#/definitions/CashAccount16",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "SettlementInformation13",
+      "description": "Set of elements used to provide information on the settlement of the instruction."
+    },
+    "StatusReason6Choice": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "description": "Reason for the status, as published in an external reason code list.",
+          "x-availabilityStatus": "Stable"
+        },
+        "proprietary": {
+          "type": "string",
+          "description": "Reason for the status, in a proprietary form.",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "StatusReason6Choice",
+      "description": "Specifies the reason for the status of the transaction."
+    },
+    "StatusReasonInformation8": {
+      "type": "object",
+      "properties": {
+        "additional_information": {
+          "type": "array",
+          "description": "Further details on the status reason.\n\nUsage: Additional information can be used for several purposes such as the reporting of repaired information.",
+          "items": {
+            "type": "string"
+          },
+          "x-availabilityStatus": "Stable"
+        },
+        "originator": {
+          "description": "Party that issues the status.",
+          "$ref": "#/definitions/PartyIdentification32",
+          "x-availabilityStatus": "Stable"
+        },
+        "reason": {
+          "description": "Specifies the reason for the status report.",
+          "$ref": "#/definitions/StatusReason6Choice",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "StatusReasonInformation8",
+      "description": "Set of elements used to provide information on the status reason of the transaction."
+    },
+    "StructuredRegulatoryReporting3": {
+      "type": "object",
+      "properties": {
+        "amount": {
+          "description": "Amount of money to be reported for regulatory and statutory requirements.",
+          "$ref": "#/definitions/ActiveOrHistoricCurrencyAndAmount",
+          "x-availabilityStatus": "Stable"
+        },
+        "code": {
+          "type": "string",
+          "description": "Specifies the nature, purpose, and reason for the transaction to be reported for regulatory and statutory requirements in a coded form.",
+          "x-availabilityStatus": "Stable"
+        },
+        "country": {
+          "type": "string",
+          "description": "Country related to the specified type of regulatory reporting details.",
+          "x-availabilityStatus": "Stable"
+        },
+        "date": {
+          "type": "string",
+          "format": "date",
+          "description": "Date related to the specified type of regulatory reporting details.",
+          "x-availabilityStatus": "Stable"
+        },
+        "information": {
+          "type": "array",
+          "description": "Additional details that cater for specific domestic regulatory requirements.",
+          "items": {
+            "type": "string"
+          },
+          "x-availabilityStatus": "Stable"
+        },
+        "type": {
+          "type": "string",
+          "description": "Specifies the type of the information supplied in the regulatory reporting details.",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "StructuredRegulatoryReporting3",
+      "description": "Information needed due to regulatory and statutory requirements."
+    },
+    "StructuredRemittanceInformation7": {
+      "type": "object",
+      "properties": {
+        "additional_remittance_information": {
+          "type": "array",
+          "description": "Additional information, in free text form, to complement the structured remittance information.",
+          "items": {
+            "type": "string"
+          },
+          "x-availabilityStatus": "Stable"
+        },
+        "creditor_reference_information": {
+          "description": "Reference information provided by the creditor to allow the identification of the underlying documents.",
+          "$ref": "#/definitions/CreditorReferenceInformation2",
+          "x-availabilityStatus": "Stable"
+        },
+        "invoicee": {
+          "description": "Identification of the party to whom an invoice is issued, when it is different from the debtor or ultimate debtor.",
+          "$ref": "#/definitions/PartyIdentification32",
+          "x-availabilityStatus": "Stable"
+        },
+        "invoicer": {
+          "description": "Identification of the organisation issuing the invoice, when it is different from the creditor or ultimate creditor.",
+          "$ref": "#/definitions/PartyIdentification32",
+          "x-availabilityStatus": "Stable"
+        },
+        "referred_document_amount": {
+          "description": "Set of elements used to provide details on the amounts of the referred document.",
+          "$ref": "#/definitions/RemittanceAmount1",
+          "x-availabilityStatus": "Stable"
+        },
+        "referred_document_information": {
+          "type": "array",
+          "description": "Set of elements used to identify the documents referred to in the remittance information.",
+          "items": {
+            "$ref": "#/definitions/ReferredDocumentInformation3"
+          },
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "StructuredRemittanceInformation7",
+      "description": "Information supplied to enable the matching/reconciliation of an entry with the items that the payment is intended to settle, such as commercial invoices in an accounts' receivable system, in a structured form."
+    },
+    "TaxAmount1": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "type": "array",
+          "description": "Set of elements used to provide details on the tax period and amount.",
+          "items": {
+            "$ref": "#/definitions/TaxRecordDetails1"
+          },
+          "x-availabilityStatus": "Stable"
+        },
+        "rate": {
+          "type": "number",
+          "description": "Rate used to calculate the tax.",
+          "x-availabilityStatus": "Stable"
+        },
+        "taxable_base_amount": {
+          "description": "Amount of money on which the tax is based.",
+          "$ref": "#/definitions/ActiveOrHistoricCurrencyAndAmount",
+          "x-availabilityStatus": "Stable"
+        },
+        "total_amount": {
+          "description": "Total amount that is the result of the calculation of the tax for the record.",
+          "$ref": "#/definitions/ActiveOrHistoricCurrencyAndAmount",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "TaxAmount1",
+      "description": "Set of elements used to provide information on the tax amount(s) of tax record."
+    },
+    "TaxAuthorisation1": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Name of the debtor or the debtor's authorised representative.",
+          "x-availabilityStatus": "Stable"
+        },
+        "title": {
+          "type": "string",
+          "description": "Title or position of debtor or the debtor's authorised representative.",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "TaxAuthorisation1",
+      "description": "Details of the authorised tax paying party."
+    },
+    "TaxInformation3": {
+      "type": "object",
+      "properties": {
+        "administration_zone": {
+          "type": "string",
+          "description": "Territorial part of a country to which the tax payment is related.",
+          "x-availabilityStatus": "Stable"
+        },
+        "creditor": {
+          "description": "Party on the credit side of the transaction to which the tax applies.",
+          "$ref": "#/definitions/TaxParty1",
+          "x-availabilityStatus": "Stable"
+        },
+        "date": {
+          "type": "string",
+          "format": "date",
+          "description": "Date by which tax is due.",
+          "x-availabilityStatus": "Stable"
+        },
+        "debtor": {
+          "description": "Set of elements used to identify the party on the debit side of the transaction to which the tax applies.",
+          "$ref": "#/definitions/TaxParty2",
+          "x-availabilityStatus": "Stable"
+        },
+        "method": {
+          "type": "string",
+          "description": "Method used to indicate the underlying business or how the tax is paid.",
+          "x-availabilityStatus": "Stable"
+        },
+        "record": {
+          "type": "array",
+          "description": "Record of tax details.",
+          "items": {
+            "$ref": "#/definitions/TaxRecord1"
+          },
+          "x-availabilityStatus": "Stable"
+        },
+        "reference_number": {
+          "type": "string",
+          "description": "Tax reference information that is specific to a taxing agency.",
+          "x-availabilityStatus": "Stable"
+        },
+        "sequence_number": {
+          "type": "number",
+          "description": "Sequential number of the tax report.",
+          "x-availabilityStatus": "Stable"
+        },
+        "total_tax_amount": {
+          "description": "Total amount of money as result of the calculation of the tax.",
+          "$ref": "#/definitions/ActiveOrHistoricCurrencyAndAmount",
+          "x-availabilityStatus": "Stable"
+        },
+        "total_taxable_base_amount": {
+          "description": "Total amount of money on which the tax is based.",
+          "$ref": "#/definitions/ActiveOrHistoricCurrencyAndAmount",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "TaxInformation3",
+      "description": "Details about tax paid, or to be paid, to the government in accordance with the law, including pre-defined parameters such as thresholds and type of account."
+    },
+    "TaxParty1": {
+      "type": "object",
+      "properties": {
+        "registration_identification": {
+          "type": "string",
+          "description": "Unique identification, as assigned by an organisation, to unambiguously identify a party.",
+          "x-availabilityStatus": "Stable"
+        },
+        "tax_identification": {
+          "type": "string",
+          "description": "Tax identification number of the creditor.",
+          "x-availabilityStatus": "Stable"
+        },
+        "tax_type": {
+          "type": "string",
+          "description": "Type of tax payer.",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "TaxParty1",
+      "description": "Details about the entity involved in the tax paid or to be paid."
+    },
+    "TaxParty2": {
+      "type": "object",
+      "properties": {
+        "authorisation": {
+          "description": "Details of the authorised tax paying party.",
+          "$ref": "#/definitions/TaxAuthorisation1",
+          "x-availabilityStatus": "Stable"
+        },
+        "registration_identification": {
+          "type": "string",
+          "description": "Unique identification, as assigned by an organisation, to unambiguously identify a party.",
+          "x-availabilityStatus": "Stable"
+        },
+        "tax_identification": {
+          "type": "string",
+          "description": "Tax identification number of the debtor.",
+          "x-availabilityStatus": "Stable"
+        },
+        "tax_type": {
+          "type": "string",
+          "description": "Type of tax payer.",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "TaxParty2",
+      "description": "Details about the entity involved in the tax paid or to be paid."
+    },
+    "TaxPeriod1": {
+      "type": "object",
+      "properties": {
+        "from_to_date": {
+          "description": "Range of time between a start date and an end date for which the tax report is provided.",
+          "$ref": "#/definitions/DatePeriodDetails",
+          "x-availabilityStatus": "Stable"
+        },
+        "type": {
+          "type": "string",
+          "description": "Identification of the period related to the tax payment.",
+          "enum": [
+            "MM01",
+            "MM02",
+            "MM03",
+            "MM04",
+            "MM05",
+            "MM06",
+            "MM07",
+            "MM08",
+            "MM09",
+            "MM10",
+            "MM11",
+            "MM12",
+            "QTR1",
+            "QTR2",
+            "QTR3",
+            "QTR4",
+            "HLF1",
+            "HLF2"
+          ],
+          "x-availabilityStatus": "Stable"
+        },
+        "year": {
+          "type": "string",
+          "format": "date",
+          "description": "Year related to the tax payment.",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "TaxPeriod1",
+      "description": "Period of time details related to the tax payment."
+    },
+    "TaxRecord1": {
+      "type": "object",
+      "properties": {
+        "additional_information": {
+          "type": "string",
+          "description": "Further details of the tax record.",
+          "x-availabilityStatus": "Stable"
+        },
+        "category": {
+          "type": "string",
+          "description": "Specifies the tax code as published by the tax authority.",
+          "x-availabilityStatus": "Stable"
+        },
+        "category_details": {
+          "type": "string",
+          "description": "Provides further details of the category tax code.",
+          "x-availabilityStatus": "Stable"
+        },
+        "certificate_identification": {
+          "type": "string",
+          "description": "Identification number of the tax report as assigned by the taxing authority.",
+          "x-availabilityStatus": "Stable"
+        },
+        "debtor_status": {
+          "type": "string",
+          "description": "Code provided by local authority to identify the status of the party that has drawn up the settlement document.",
+          "x-availabilityStatus": "Stable"
+        },
+        "forms_code": {
+          "type": "string",
+          "description": "Identifies, in a coded form, on which template the tax report is to be provided.",
+          "x-availabilityStatus": "Stable"
+        },
+        "period": {
+          "description": "Set of elements used to provide details on the period of time related to the tax payment.",
+          "$ref": "#/definitions/TaxPeriod1",
+          "x-availabilityStatus": "Stable"
+        },
+        "tax_amount": {
+          "description": "Set of elements used to provide information on the amount of the tax record.",
+          "$ref": "#/definitions/TaxAmount1",
+          "x-availabilityStatus": "Stable"
+        },
+        "type": {
+          "type": "string",
+          "description": "High level code to identify the type of tax details.",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "TaxRecord1",
+      "description": "Set of elements used to define the tax record."
+    },
+    "TaxRecordDetails1": {
+      "type": "object",
+      "required": [
+        "amount"
+      ],
+      "properties": {
+        "amount": {
+          "description": "Underlying tax amount related to the specified period.",
+          "$ref": "#/definitions/ActiveOrHistoricCurrencyAndAmount",
+          "x-availabilityStatus": "Stable"
+        },
+        "period": {
+          "description": "Set of elements used to provide details on the period of time related to the tax payment.",
+          "$ref": "#/definitions/TaxPeriod1",
+          "x-availabilityStatus": "Stable"
+        }
+      },
+      "title": "TaxRecordDetails1",
+      "description": "Provides information on the individual tax amount(s) per period of the tax record."
+    }
+  }
+}
