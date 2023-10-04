@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "edd559a9-33c0-421f-93fd-812024ab4f24",
-		"name": "BAV API SANDBOX SHARED v3",
+		"_postman_id": "3b922bfd-db86-4ea5-ac05-8b414690462a",
+		"name": "BAV API SANDBOX SHARED v4",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -28,10 +28,10 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"creditor_account_number\": \"DK5000400440116243\",\r\n    \"creditor_name\": \"Test Creditor Name\",\r\n    \"business_id\": \"2858394-9\",\r\n    \"value_added_tax_number\": \"FI2112345600000666\",\r\n    \"creditor_address\": {\r\n        \"address_line\": [\r\n            \"Street 112 \"\r\n        ],\r\n        \"city\": \"Helsinki\",\r\n        \"postal_code\": \"01000\",\r\n        \"country_code\": \"FI\"\r\n    },\r\n    \"creditor_bank_bic\": \"NDEADKKK\",\r\n    \"expiry\": 5\r\n}"
+					"raw": "{\r\n    \"creditor_account_number\": \"DK5000400440116243\",\r\n    \"creditor_name\": \"Test Creditor Name\",\r\n    \"business_id\": \"2858394-9\",\r\n    \"value_added_tax_number\": \"FI2112345600000666\",\r\n    \"creditor_address\": {\r\n        \"address_line\": [\r\n            \"Street 112 \"\r\n        ],\r\n        \"city\": \"Helsinki\",\r\n        \"postal_code\": \"01000\",\r\n        \"country_code\": \"FI\"\r\n    },\r\n    \"debtor_country\": \"FI\",\r\n    \"creditor_bank_bic\": \"NDEADKKK\",\r\n    \"expiry\": 5\r\n}"
 				},
 				"url": {
-					"raw": "https://api.nordeaopenbanking.com/payment-creditors/v3/prevalidations",
+					"raw": "https://api.nordeaopenbanking.com/payment-creditors/v4/prevalidations",
 					"protocol": "https",
 					"host": [
 						"api",
@@ -40,7 +40,7 @@
 					],
 					"path": [
 						"payment-creditors",
-						"v3",
+						"v4",
 						"prevalidations"
 					]
 				}
@@ -69,7 +69,7 @@
 					}
 				],
 				"url": {
-					"raw": "https://api.nordeaopenbanking.com/payment-creditors/v3/prevalidations/b6a6f661-5882-48df-a642-8ad2a8d6b6fa",
+					"raw": "https://api.nordeaopenbanking.com/payment-creditors/v4/prevalidations/b6a6f661-5882-48df-a642-8ad2a8d6b6fa",
 					"protocol": "https",
 					"host": [
 						"api",
@@ -78,7 +78,7 @@
 					],
 					"path": [
 						"payment-creditors",
-						"v3",
+						"v4",
 						"prevalidations",
 						"b6a6f661-5882-48df-a642-8ad2a8d6b6fa"
 					]
@@ -108,7 +108,7 @@
 					}
 				],
 				"url": {
-					"raw": "https://api.nordeaopenbanking.com/payment-creditors/v3/prevalidations?status=PENDING",
+					"raw": "https://api.nordeaopenbanking.com/payment-creditors/v4/prevalidations?status=PENDING",
 					"protocol": "https",
 					"host": [
 						"api",
@@ -117,7 +117,7 @@
 					],
 					"path": [
 						"payment-creditors",
-						"v3",
+						"v4",
 						"prevalidations"
 					],
 					"query": [
@@ -152,7 +152,7 @@
 					}
 				],
 				"url": {
-					"raw": "https://api.nordeaopenbanking.com/payment-creditors/v3/prevalidations?status=",
+					"raw": "https://api.nordeaopenbanking.com/payment-creditors/v4/prevalidations?status=",
 					"protocol": "https",
 					"host": [
 						"api",
@@ -161,7 +161,7 @@
 					],
 					"path": [
 						"payment-creditors",
-						"v3",
+						"v4",
 						"prevalidations"
 					],
 					"query": [
@@ -200,7 +200,7 @@
 					}
 				},
 				"url": {
-					"raw": "https://api.nordeaopenbanking.com/payment-creditors/v3/prevalidations",
+					"raw": "https://api.nordeaopenbanking.com/payment-creditors/v4/prevalidations",
 					"protocol": "https",
 					"host": [
 						"api",
@@ -209,7 +209,7 @@
 					],
 					"path": [
 						"payment-creditors",
-						"v3",
+						"v4",
 						"prevalidations"
 					]
 				}
