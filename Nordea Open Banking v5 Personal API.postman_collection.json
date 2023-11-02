@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "597e22e5-bb98-474b-a0aa-dc1d8aa87771",
+		"_postman_id": "492443d4-e685-44da-97ff-46b97bae9e20",
 		"name": "Nordea Open Banking v5 API copy",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -17,7 +17,6 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "d9ac38c9-42f2-4abb-9a41-ccb640e1ec4c",
 										"exec": [
 											"var location = postman.getResponseHeader(\"Location\");",
 											"var index = location.indexOf(\"code=\");",
@@ -47,6 +46,26 @@
 										"key": "X-IBM-Client-Secret",
 										"value": "{{X-IBM-Client-Secret}}",
 										"description": "Client Secret issued to the TPP via Developer Portal"
+									},
+									{
+										"key": "Digest",
+										"value": "{{Digest}}",
+										"type": "default"
+									},
+									{
+										"key": "X-Nordea-Originating-Date",
+										"value": "{{X-Nordea-Originating-Date}}",
+										"type": "default"
+									},
+									{
+										"key": "X-Nordea-Originating-Host",
+										"value": "{{X-Nordea-Originating-Host}}",
+										"type": "default"
+									},
+									{
+										"key": "Signature",
+										"value": "{{Signature}}",
+										"type": "default"
 									}
 								],
 								"body": {
@@ -68,7 +87,112 @@
 									]
 								}
 							},
-							"response": []
+							"response": [
+								{
+									"name": "Start Oauth",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"description": "Json body"
+											},
+											{
+												"key": "X-IBM-Client-Id",
+												"value": "{{X-IBM-Client-ID}}",
+												"description": "Client ID issued to the TPP via Developer Portal"
+											},
+											{
+												"key": "X-IBM-Client-Secret",
+												"value": "{{X-IBM-Client-Secret}}",
+												"description": "Client Secret issued to the TPP via Developer Portal"
+											},
+											{
+												"key": "Digest",
+												"value": "{{Digest}}",
+												"type": "default"
+											},
+											{
+												"key": "X-Nordea-Originating-Date",
+												"value": "{{X-Nordea-Originating-Date}}",
+												"type": "default"
+											},
+											{
+												"key": "X-Nordea-Originating-Host",
+												"value": "{{X-Nordea-Originating-Host}}",
+												"type": "default"
+											},
+											{
+												"key": "Signature",
+												"value": "{{Signature}}",
+												"type": "default"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"account_list\": [\r\n    \"ALL\"\r\n  ],\r\n  \"authentication_method\": \"BANKID_SE\",\r\n  \"country\": \"DK\",\r\n  \"duration\": 3600,\r\n  \"language\": \"en\",\r\n  \"max_tx_history\": 10,\r\n  \"redirect_uri\": \"{{redirect_uri}}\",\r\n  \"scope\": [\r\n    \"ACCOUNTS_BASIC\",\r\n    \"ACCOUNTS_BALANCES\",\r\n    \"ACCOUNTS_TRANSACTIONS\",\r\n    \"PAYMENTS_MULTIPLE\"\r\n  ],\r\n  \"skip_account_selection\": true,\r\n  \"state\": \"anyString\"\r\n}"
+										},
+										"url": {
+											"raw": "https://api.nordeaopenbanking.com/personal/v5/authorize",
+											"protocol": "https",
+											"host": [
+												"api",
+												"nordeaopenbanking",
+												"com"
+											],
+											"path": [
+												"personal",
+												"v5",
+												"authorize"
+											]
+										}
+									},
+									"status": "Unauthorized",
+									"code": 401,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Date",
+											"value": "Tue, 24 Oct 2023 09:46:09 GMT"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										},
+										{
+											"key": "Content-Length",
+											"value": "271"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Strict-Transport-Security",
+											"value": "max-age=15724800; includeSubDomains"
+										},
+										{
+											"key": "X-Global-Transaction-ID",
+											"value": "dd51bf1b6537926106d97bc3"
+										},
+										{
+											"key": "X-RateLimit-Limit",
+											"value": "name=default-rate,10000;"
+										},
+										{
+											"key": "X-RateLimit-Remaining",
+											"value": "name=default-rate,9991;"
+										},
+										{
+											"key": "Content-Encoding",
+											"value": "gzip"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"group_header\": {\n        \"message_identification\": \"86424026910155a5b1d395dfa025cd63\",\n        \"creation_date_time\": \"2023-10-24T09:46:09.283928788Z\",\n        \"http_code\": 401\n    },\n    \"error\": {\n        \"request\": {\n            \"url\": \"/v5/authorize\"\n        },\n        \"failures\": [\n            {\n                \"code\": \"error.signature.invalid\",\n                \"description\": \"KeyId claim doesn't match to Client Id from X-IBM-Client-Id header.\"\n            }\n        ]\n    }\n}"
+								}
+							]
 						},
 						{
 							"name": "Exchange Token",
@@ -76,7 +200,6 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "16feebbb-1e9e-4021-abda-c70b11bf4012",
 										"exec": [
 											""
 										],
@@ -86,7 +209,6 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "921355e2-1226-4505-8429-50bb442ec6cc",
 										"exec": [
 											"var jsonData = JSON.parse(responseBody);",
 											"",
@@ -190,7 +312,6 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "6e904681-a22b-4d04-999a-eb773b141dfe",
 										"exec": [
 											"var jsonData = JSON.parse(responseBody);",
 											"",
@@ -289,7 +410,6 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "064b5a24-4078-4942-bc31-6ef5f64ea166",
 										"exec": [
 											""
 										],
@@ -299,7 +419,6 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "96fa107f-50ac-4888-975d-0b00540ff0f3",
 										"exec": [
 											""
 										],
@@ -434,7 +553,6 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "46bf275b-7d26-43ac-956d-bfa65454a9fe",
 								"type": "text/javascript",
 								"exec": [
 									""
@@ -444,16 +562,13 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "f7721797-e243-404c-880e-4391ab83e52b",
 								"type": "text/javascript",
 								"exec": [
 									""
 								]
 							}
 						}
-					],
-					"protocolProfileBehavior": {},
-					"_postman_isSubFolder": true
+					]
 				},
 				{
 					"name": "New Decoupled Auth Flow (For SE, FI, NO, DK)",
@@ -464,7 +579,6 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "e1ba9e60-81eb-478e-bcdb-860bf56ee7aa",
 										"exec": [
 											"if(responseCode.code === 200){\r",
 											"    var jsonData = JSON.parse(responseBody);\r",
@@ -545,7 +659,6 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "1b7e6114-9053-409b-8bf9-fc567f4d9fe4",
 										"exec": [
 											"if(responseCode.code === 200){\r",
 											"     tests[\"code is returned\"] = responseBody.has(\"code\");\r",
@@ -616,7 +729,6 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "cadd5fef-1699-42ea-b926-2054733b28d1",
 										"exec": [
 											"if(responseCode.code === 200){\r",
 											"     tests[\"code is returned\"] = responseBody.has(\"code\");\r",
@@ -703,7 +815,6 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "cadd5fef-1699-42ea-b926-2054733b28d1",
 										"exec": [
 											"if(responseCode.code === 200){\r",
 											"     tests[\"code is returned\"] = responseBody.has(\"code\");\r",
@@ -788,7 +899,6 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "7d07da77-dbc9-42d6-9aab-c406535f9a57",
 										"exec": [
 											"var jsonData = JSON.parse(responseBody);\r",
 											"pm.environment.set(\"access_token\", jsonData.access_token);\r",
@@ -883,7 +993,6 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "7d07da77-dbc9-42d6-9aab-c406535f9a57",
 										"exec": [
 											"var jsonData = JSON.parse(responseBody);\r",
 											"pm.environment.set(\"access_token\", jsonData.access_token);\r",
@@ -977,7 +1086,6 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "1240e8d1-5ae2-4798-a2d5-b04becf3037c",
 								"type": "text/javascript",
 								"exec": [
 									""
@@ -987,16 +1095,13 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "4bbe5943-a0e7-4a11-9b85-d576bfb7104a",
 								"type": "text/javascript",
 								"exec": [
 									""
 								]
 							}
 						}
-					],
-					"protocolProfileBehavior": {},
-					"_postman_isSubFolder": true
+					]
 				},
 				{
 					"name": "Confirmation Of Funds",
@@ -1010,7 +1115,6 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "6e904681-a22b-4d04-999a-eb773b141dfe",
 												"exec": [
 													"var location = postman.getResponseHeader(\"Location\");",
 													"var index = location.indexOf(\"code=\");",
@@ -1100,7 +1204,6 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "16feebbb-1e9e-4021-abda-c70b11bf4012",
 												"exec": [
 													""
 												],
@@ -1110,7 +1213,6 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "921355e2-1226-4505-8429-50bb442ec6cc",
 												"exec": [
 													"var jsonData = JSON.parse(responseBody);",
 													"",
@@ -1214,7 +1316,6 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "16feebbb-1e9e-4021-abda-c70b11bf4012",
 												"exec": [
 													""
 												],
@@ -1224,7 +1325,6 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "921355e2-1226-4505-8429-50bb442ec6cc",
 												"exec": [
 													"var jsonData = JSON.parse(responseBody);",
 													"",
@@ -1322,7 +1422,6 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "064b5a24-4078-4942-bc31-6ef5f64ea166",
 												"exec": [
 													""
 												],
@@ -1332,7 +1431,6 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "96fa107f-50ac-4888-975d-0b00540ff0f3",
 												"exec": [
 													""
 												],
@@ -1480,9 +1578,7 @@
 									},
 									"response": []
 								}
-							],
-							"protocolProfileBehavior": {},
-							"_postman_isSubFolder": true
+							]
 						},
 						{
 							"name": "Funds Confirmation Request (for DK, FI, NO, SE)",
@@ -1493,7 +1589,6 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "6e904681-a22b-4d04-999a-eb773b141dfe",
 												"exec": [
 													""
 												],
@@ -1577,23 +1672,17 @@
 									},
 									"response": []
 								}
-							],
-							"protocolProfileBehavior": {},
-							"_postman_isSubFolder": true
+							]
 						}
-					],
-					"protocolProfileBehavior": {},
-					"_postman_isSubFolder": true
+					]
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		}
 	],
 	"event": [
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "070578ac-7aa0-4571-a47e-3c79eda13a9c",
 				"type": "text/javascript",
 				"exec": [
 					"// Forge library OBI logic is at the bottom",
@@ -30925,13 +31014,11 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "5d4ab661-80d2-49e7-a2da-44f0b778c64f",
 				"type": "text/javascript",
 				"exec": [
 					""
 				]
 			}
 		}
-	],
-	"protocolProfileBehavior": {}
+	]
 }
