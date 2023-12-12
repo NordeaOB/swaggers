@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "e25a6cb2-a547-46c7-b0eb-b171812d20da",
+		"_postman_id": "3fbaafca-a5a4-4072-ac8c-46b1a7f81ea1",
 		"name": "Premium Corporate Access Authorization API with Accounts API and Payments API",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -4572,12 +4572,12 @@
 							],
 							"query": [
 								{
-									"key": "creation_from_date",
+									"key": "creation_from_timestamp",
 									"value": "2020-01-01T00:00:00Z",
 									"disabled": true
 								},
 								{
-									"key": "creation_to_date",
+									"key": "creation_to_timestamp",
 									"value": "2021-04-30T23:59:59",
 									"disabled": true
 								},
@@ -4587,13 +4587,23 @@
 									"disabled": true
 								},
 								{
-									"key": "from_execution_date",
-									"value": "2020-01-01T00:00:00",
+									"key": "execution_from_date",
+									"value": "2020-01-01",
 									"disabled": true
 								},
 								{
-									"key": "to_execution_date",
-									"value": "2021-04-30T23:59:59",
+									"key": "execution_to_date",
+									"value": "2021-04-30",
+									"disabled": true
+								},
+								{
+									"key": "requested_execution_from_date",
+									"value": "2021-01-01",
+									"disabled": true
+								},
+								{
+									"key": "requested_execution_to_date",
+									"value": "2021-12-31",
 									"disabled": true
 								},
 								{
