@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "ae01d24f-1765-4bb5-9ba9-c7b7def0014b",
+		"_postman_id": "edb07413-a5af-4b04-b921-d02ff6282b07",
 		"name": "Corporate Access Authorization API with Accounts API and Payments API",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -1035,7 +1035,8 @@
 									"script": {
 										"exec": [
 											"var jsonData = pm.response.json();",
-											"pm.environment.set(\"payment_id\", jsonData.response._id);"
+											"pm.environment.set(\"payment_id\", jsonData.response._id);",
+											"pm.environment.set(\"authentication_id\", jsonData.response.authentication_id);"
 										],
 										"type": "text/javascript"
 									}
@@ -1046,35 +1047,55 @@
 								"header": [
 									{
 										"key": "Content-Type",
-										"value": "application/json"
+										"value": "application/json",
+										"type": "text"
 									},
 									{
 										"key": "Authorization",
-										"value": "Bearer {{access_token}}"
+										"value": "Bearer {{access_token}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Id",
-										"value": "{{X-IBM-Client-ID}}"
+										"value": "{{X-IBM-Client-ID}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Secret",
-										"value": "{{X-IBM-Client-Secret}}"
+										"value": "{{X-IBM-Client-Secret}}",
+										"type": "text"
 									},
 									{
 										"key": "Signature",
-										"value": "{{Signature}}"
+										"value": "{{Signature}}",
+										"type": "text"
 									},
 									{
 										"key": "Digest",
-										"value": "{{Digest}}"
+										"value": "{{Digest}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Date",
-										"value": "{{X-Nordea-Originating-Date}}"
+										"value": "{{X-Nordea-Originating-Date}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Host",
-										"value": "{{X-Nordea-Originating-Host}}"
+										"value": "{{X-Nordea-Originating-Host}}",
+										"type": "text"
+									},
+									{
+										"key": "X-Nordea-Mock-Authorizer-Id",
+										"value": "70311198",
+										"type": "text",
+										"disabled": true
+									},
+									{
+										"key": "X-Response-Scenarios",
+										"value": "paymentVerificationRequired",
+										"type": "text",
+										"disabled": true
 									}
 								],
 								"body": {
@@ -1106,7 +1127,8 @@
 									"script": {
 										"exec": [
 											"var jsonData = pm.response.json();",
-											"pm.environment.set(\"payment_id\", jsonData.response._id);"
+											"pm.environment.set(\"payment_id\", jsonData.response._id);",
+											"pm.environment.set(\"authentication_id\", jsonData.response.authentication_id);"
 										],
 										"type": "text/javascript"
 									}
@@ -1117,35 +1139,55 @@
 								"header": [
 									{
 										"key": "Content-Type",
-										"value": "application/json"
+										"value": "application/json",
+										"type": "text"
 									},
 									{
 										"key": "Authorization",
-										"value": "Bearer {{access_token}}"
+										"value": "Bearer {{access_token}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Id",
-										"value": "{{X-IBM-Client-ID}}"
+										"value": "{{X-IBM-Client-ID}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Secret",
-										"value": "{{X-IBM-Client-Secret}}"
+										"value": "{{X-IBM-Client-Secret}}",
+										"type": "text"
 									},
 									{
 										"key": "Signature",
-										"value": "{{Signature}}"
+										"value": "{{Signature}}",
+										"type": "text"
 									},
 									{
 										"key": "Digest",
-										"value": "{{Digest}}"
+										"value": "{{Digest}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Date",
-										"value": "{{X-Nordea-Originating-Date}}"
+										"value": "{{X-Nordea-Originating-Date}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Host",
-										"value": "{{X-Nordea-Originating-Host}}"
+										"value": "{{X-Nordea-Originating-Host}}",
+										"type": "text"
+									},
+									{
+										"key": "X-Nordea-Mock-Authorizer-Id",
+										"value": "70311198",
+										"type": "text",
+										"disabled": true
+									},
+									{
+										"key": "X-Response-Scenarios",
+										"value": "paymentVerificationRequired",
+										"type": "text",
+										"disabled": true
 									}
 								],
 								"body": {
@@ -1177,7 +1219,8 @@
 									"script": {
 										"exec": [
 											"var jsonData = pm.response.json();",
-											"pm.environment.set(\"payment_id\", jsonData.response._id);"
+											"pm.environment.set(\"payment_id\", jsonData.response._id);",
+											"pm.environment.set(\"authentication_id\", jsonData.response.authentication_id);"
 										],
 										"type": "text/javascript"
 									}
@@ -1188,35 +1231,55 @@
 								"header": [
 									{
 										"key": "Content-Type",
-										"value": "application/json"
+										"value": "application/json",
+										"type": "text"
 									},
 									{
 										"key": "Authorization",
-										"value": "Bearer {{access_token}}"
+										"value": "Bearer {{access_token}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Id",
-										"value": "{{X-IBM-Client-ID}}"
+										"value": "{{X-IBM-Client-ID}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Secret",
-										"value": "{{X-IBM-Client-Secret}}"
+										"value": "{{X-IBM-Client-Secret}}",
+										"type": "text"
 									},
 									{
 										"key": "Signature",
-										"value": "{{Signature}}"
+										"value": "{{Signature}}",
+										"type": "text"
 									},
 									{
 										"key": "Digest",
-										"value": "{{Digest}}"
+										"value": "{{Digest}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Date",
-										"value": "{{X-Nordea-Originating-Date}}"
+										"value": "{{X-Nordea-Originating-Date}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Host",
-										"value": "{{X-Nordea-Originating-Host}}"
+										"value": "{{X-Nordea-Originating-Host}}",
+										"type": "text"
+									},
+									{
+										"key": "X-Nordea-Mock-Authorizer-Id",
+										"value": "70311198",
+										"type": "text",
+										"disabled": true
+									},
+									{
+										"key": "X-Response-Scenarios",
+										"value": "paymentVerificationRequired",
+										"type": "text",
+										"disabled": true
 									}
 								],
 								"body": {
@@ -1248,7 +1311,8 @@
 									"script": {
 										"exec": [
 											"var jsonData = pm.response.json();",
-											"pm.environment.set(\"payment_id\", jsonData.response._id);"
+											"pm.environment.set(\"payment_id\", jsonData.response._id);",
+											"pm.environment.set(\"authentication_id\", jsonData.response.authentication_id);"
 										],
 										"type": "text/javascript"
 									}
@@ -1259,35 +1323,55 @@
 								"header": [
 									{
 										"key": "Content-Type",
-										"value": "application/json"
+										"value": "application/json",
+										"type": "text"
 									},
 									{
 										"key": "Authorization",
-										"value": "Bearer {{access_token}}"
+										"value": "Bearer {{access_token}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Id",
-										"value": "{{X-IBM-Client-ID}}"
+										"value": "{{X-IBM-Client-ID}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Secret",
-										"value": "{{X-IBM-Client-Secret}}"
+										"value": "{{X-IBM-Client-Secret}}",
+										"type": "text"
 									},
 									{
 										"key": "Signature",
-										"value": "{{Signature}}"
+										"value": "{{Signature}}",
+										"type": "text"
 									},
 									{
 										"key": "Digest",
-										"value": "{{Digest}}"
+										"value": "{{Digest}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Date",
-										"value": "{{X-Nordea-Originating-Date}}"
+										"value": "{{X-Nordea-Originating-Date}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Host",
-										"value": "{{X-Nordea-Originating-Host}}"
+										"value": "{{X-Nordea-Originating-Host}}",
+										"type": "text"
+									},
+									{
+										"key": "X-Nordea-Mock-Authorizer-Id",
+										"value": "70311198",
+										"type": "text",
+										"disabled": true
+									},
+									{
+										"key": "X-Response-Scenarios",
+										"value": "paymentVerificationRequired",
+										"type": "text",
+										"disabled": true
 									}
 								],
 								"body": {
@@ -1319,7 +1403,8 @@
 									"script": {
 										"exec": [
 											"var jsonData = pm.response.json();",
-											"pm.environment.set(\"payment_id\", jsonData.response._id);"
+											"pm.environment.set(\"payment_id\", jsonData.response._id);",
+											"pm.environment.set(\"authentication_id\", jsonData.response.authentication_id);"
 										],
 										"type": "text/javascript"
 									}
@@ -1330,35 +1415,55 @@
 								"header": [
 									{
 										"key": "Content-Type",
-										"value": "application/json"
+										"value": "application/json",
+										"type": "text"
 									},
 									{
 										"key": "Authorization",
-										"value": "Bearer {{access_token}}"
+										"value": "Bearer {{access_token}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Id",
-										"value": "{{X-IBM-Client-ID}}"
+										"value": "{{X-IBM-Client-ID}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Secret",
-										"value": "{{X-IBM-Client-Secret}}"
+										"value": "{{X-IBM-Client-Secret}}",
+										"type": "text"
 									},
 									{
 										"key": "Signature",
-										"value": "{{Signature}}"
+										"value": "{{Signature}}",
+										"type": "text"
 									},
 									{
 										"key": "Digest",
-										"value": "{{Digest}}"
+										"value": "{{Digest}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Date",
-										"value": "{{X-Nordea-Originating-Date}}"
+										"value": "{{X-Nordea-Originating-Date}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Host",
-										"value": "{{X-Nordea-Originating-Host}}"
+										"value": "{{X-Nordea-Originating-Host}}",
+										"type": "text"
+									},
+									{
+										"key": "X-Nordea-Mock-Authorizer-Id",
+										"value": "70311198",
+										"type": "text",
+										"disabled": true
+									},
+									{
+										"key": "X-Response-Scenarios",
+										"value": "paymentVerificationRequired",
+										"type": "text",
+										"disabled": true
 									}
 								],
 								"body": {
@@ -1390,7 +1495,8 @@
 									"script": {
 										"exec": [
 											"var jsonData = pm.response.json();",
-											"pm.environment.set(\"payment_id\", jsonData.response._id);"
+											"pm.environment.set(\"payment_id\", jsonData.response._id);",
+											"pm.environment.set(\"authentication_id\", jsonData.response.authentication_id);"
 										],
 										"type": "text/javascript"
 									}
@@ -1401,35 +1507,55 @@
 								"header": [
 									{
 										"key": "Content-Type",
-										"value": "application/json"
+										"value": "application/json",
+										"type": "text"
 									},
 									{
 										"key": "Authorization",
-										"value": "Bearer {{access_token}}"
+										"value": "Bearer {{access_token}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Id",
-										"value": "{{X-IBM-Client-ID}}"
+										"value": "{{X-IBM-Client-ID}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Secret",
-										"value": "{{X-IBM-Client-Secret}}"
+										"value": "{{X-IBM-Client-Secret}}",
+										"type": "text"
 									},
 									{
 										"key": "Signature",
-										"value": "{{Signature}}"
+										"value": "{{Signature}}",
+										"type": "text"
 									},
 									{
 										"key": "Digest",
-										"value": "{{Digest}}"
+										"value": "{{Digest}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Date",
-										"value": "{{X-Nordea-Originating-Date}}"
+										"value": "{{X-Nordea-Originating-Date}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Host",
-										"value": "{{X-Nordea-Originating-Host}}"
+										"value": "{{X-Nordea-Originating-Host}}",
+										"type": "text"
+									},
+									{
+										"key": "X-Nordea-Mock-Authorizer-Id",
+										"value": "70311198",
+										"type": "text",
+										"disabled": true
+									},
+									{
+										"key": "X-Response-Scenarios",
+										"value": "paymentVerificationRequired",
+										"type": "text",
+										"disabled": true
 									}
 								],
 								"body": {
@@ -1461,7 +1587,8 @@
 									"script": {
 										"exec": [
 											"var jsonData = pm.response.json();",
-											"pm.environment.set(\"payment_id\", jsonData.response._id);"
+											"pm.environment.set(\"payment_id\", jsonData.response._id);",
+											"pm.environment.set(\"authentication_id\", jsonData.response.authentication_id);"
 										],
 										"type": "text/javascript"
 									}
@@ -1472,35 +1599,55 @@
 								"header": [
 									{
 										"key": "Content-Type",
-										"value": "application/json"
+										"value": "application/json",
+										"type": "text"
 									},
 									{
 										"key": "Authorization",
-										"value": "Bearer {{access_token}}"
+										"value": "Bearer {{access_token}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Id",
-										"value": "{{X-IBM-Client-ID}}"
+										"value": "{{X-IBM-Client-ID}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Secret",
-										"value": "{{X-IBM-Client-Secret}}"
+										"value": "{{X-IBM-Client-Secret}}",
+										"type": "text"
 									},
 									{
 										"key": "Signature",
-										"value": "{{Signature}}"
+										"value": "{{Signature}}",
+										"type": "text"
 									},
 									{
 										"key": "Digest",
-										"value": "{{Digest}}"
+										"value": "{{Digest}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Date",
-										"value": "{{X-Nordea-Originating-Date}}"
+										"value": "{{X-Nordea-Originating-Date}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Host",
-										"value": "{{X-Nordea-Originating-Host}}"
+										"value": "{{X-Nordea-Originating-Host}}",
+										"type": "text"
+									},
+									{
+										"key": "X-Nordea-Mock-Authorizer-Id",
+										"value": "70311198",
+										"type": "text",
+										"disabled": true
+									},
+									{
+										"key": "X-Response-Scenarios",
+										"value": "paymentVerificationRequired",
+										"type": "text",
+										"disabled": true
 									}
 								],
 								"body": {
@@ -1532,7 +1679,8 @@
 									"script": {
 										"exec": [
 											"var jsonData = pm.response.json();",
-											"pm.environment.set(\"payment_id\", jsonData.response._id);"
+											"pm.environment.set(\"payment_id\", jsonData.response._id);",
+											"pm.environment.set(\"authentication_id\", jsonData.response.authentication_id);"
 										],
 										"type": "text/javascript"
 									}
@@ -1543,35 +1691,55 @@
 								"header": [
 									{
 										"key": "Content-Type",
-										"value": "application/json"
+										"value": "application/json",
+										"type": "text"
 									},
 									{
 										"key": "Authorization",
-										"value": "Bearer {{access_token}}"
+										"value": "Bearer {{access_token}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Id",
-										"value": "{{X-IBM-Client-ID}}"
+										"value": "{{X-IBM-Client-ID}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Secret",
-										"value": "{{X-IBM-Client-Secret}}"
+										"value": "{{X-IBM-Client-Secret}}",
+										"type": "text"
 									},
 									{
 										"key": "Signature",
-										"value": "{{Signature}}"
+										"value": "{{Signature}}",
+										"type": "text"
 									},
 									{
 										"key": "Digest",
-										"value": "{{Digest}}"
+										"value": "{{Digest}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Date",
-										"value": "{{X-Nordea-Originating-Date}}"
+										"value": "{{X-Nordea-Originating-Date}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Host",
-										"value": "{{X-Nordea-Originating-Host}}"
+										"value": "{{X-Nordea-Originating-Host}}",
+										"type": "text"
+									},
+									{
+										"key": "X-Nordea-Mock-Authorizer-Id",
+										"value": "70311198",
+										"type": "text",
+										"disabled": true
+									},
+									{
+										"key": "X-Response-Scenarios",
+										"value": "paymentVerificationRequired",
+										"type": "text",
+										"disabled": true
 									}
 								],
 								"body": {
@@ -1603,7 +1771,8 @@
 									"script": {
 										"exec": [
 											"var jsonData = pm.response.json();",
-											"pm.environment.set(\"payment_id\", jsonData.response._id);"
+											"pm.environment.set(\"payment_id\", jsonData.response._id);",
+											"pm.environment.set(\"authentication_id\", jsonData.response.authentication_id);"
 										],
 										"type": "text/javascript"
 									}
@@ -1614,40 +1783,55 @@
 								"header": [
 									{
 										"key": "Content-Type",
-										"value": "application/json"
+										"value": "application/json",
+										"type": "text"
 									},
 									{
 										"key": "Authorization",
-										"value": "Bearer {{access_token}}"
+										"value": "Bearer {{access_token}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Id",
-										"value": "{{X-IBM-Client-ID}}"
+										"value": "{{X-IBM-Client-ID}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Secret",
-										"value": "{{X-IBM-Client-Secret}}"
+										"value": "{{X-IBM-Client-Secret}}",
+										"type": "text"
 									},
 									{
 										"key": "Signature",
-										"value": "{{Signature}}"
+										"value": "{{Signature}}",
+										"type": "text"
 									},
 									{
 										"key": "Digest",
-										"value": "{{Digest}}"
+										"value": "{{Digest}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Date",
-										"value": "{{X-Nordea-Originating-Date}}"
+										"value": "{{X-Nordea-Originating-Date}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Host",
-										"value": "{{X-Nordea-Originating-Host}}"
+										"value": "{{X-Nordea-Originating-Host}}",
+										"type": "text"
 									},
 									{
-										"key": "X-Mocked-Components",
-										"value": "mocked-mta",
-										"type": "text"
+										"key": "X-Nordea-Mock-Authorizer-Id",
+										"value": "70311198",
+										"type": "text",
+										"disabled": true
+									},
+									{
+										"key": "X-Response-Scenarios",
+										"value": "paymentVerificationRequired",
+										"type": "text",
+										"disabled": true
 									}
 								],
 								"body": {
@@ -1684,7 +1868,8 @@
 									"script": {
 										"exec": [
 											"var jsonData = pm.response.json();",
-											"pm.environment.set(\"payment_id\", jsonData.response._id);"
+											"pm.environment.set(\"payment_id\", jsonData.response._id);",
+											"pm.environment.set(\"authentication_id\", jsonData.response.authentication_id);"
 										],
 										"type": "text/javascript"
 									}
@@ -1695,35 +1880,55 @@
 								"header": [
 									{
 										"key": "Content-Type",
-										"value": "application/json"
+										"value": "application/json",
+										"type": "text"
 									},
 									{
 										"key": "Authorization",
-										"value": "Bearer {{access_token}}"
+										"value": "Bearer {{access_token}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Id",
-										"value": "{{X-IBM-Client-ID}}"
+										"value": "{{X-IBM-Client-ID}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Secret",
-										"value": "{{X-IBM-Client-Secret}}"
+										"value": "{{X-IBM-Client-Secret}}",
+										"type": "text"
 									},
 									{
 										"key": "Signature",
-										"value": "{{Signature}}"
+										"value": "{{Signature}}",
+										"type": "text"
 									},
 									{
 										"key": "Digest",
-										"value": "{{Digest}}"
+										"value": "{{Digest}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Date",
-										"value": "{{X-Nordea-Originating-Date}}"
+										"value": "{{X-Nordea-Originating-Date}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Host",
-										"value": "{{X-Nordea-Originating-Host}}"
+										"value": "{{X-Nordea-Originating-Host}}",
+										"type": "text"
+									},
+									{
+										"key": "X-Nordea-Mock-Authorizer-Id",
+										"value": "70311198",
+										"type": "text",
+										"disabled": true
+									},
+									{
+										"key": "X-Response-Scenarios",
+										"value": "paymentVerificationRequired",
+										"type": "text",
+										"disabled": true
 									}
 								],
 								"body": {
@@ -1755,7 +1960,8 @@
 									"script": {
 										"exec": [
 											"var jsonData = pm.response.json();",
-											"pm.environment.set(\"payment_id\", jsonData.response._id);"
+											"pm.environment.set(\"payment_id\", jsonData.response._id);",
+											"pm.environment.set(\"authentication_id\", jsonData.response.authentication_id);"
 										],
 										"type": "text/javascript"
 									}
@@ -1766,35 +1972,55 @@
 								"header": [
 									{
 										"key": "Content-Type",
-										"value": "application/json"
+										"value": "application/json",
+										"type": "text"
 									},
 									{
 										"key": "Authorization",
-										"value": "Bearer {{access_token}}"
+										"value": "Bearer {{access_token}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Id",
-										"value": "{{X-IBM-Client-ID}}"
+										"value": "{{X-IBM-Client-ID}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Secret",
-										"value": "{{X-IBM-Client-Secret}}"
+										"value": "{{X-IBM-Client-Secret}}",
+										"type": "text"
 									},
 									{
 										"key": "Signature",
-										"value": "{{Signature}}"
+										"value": "{{Signature}}",
+										"type": "text"
 									},
 									{
 										"key": "Digest",
-										"value": "{{Digest}}"
+										"value": "{{Digest}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Date",
-										"value": "{{X-Nordea-Originating-Date}}"
+										"value": "{{X-Nordea-Originating-Date}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Host",
-										"value": "{{X-Nordea-Originating-Host}}"
+										"value": "{{X-Nordea-Originating-Host}}",
+										"type": "text"
+									},
+									{
+										"key": "X-Nordea-Mock-Authorizer-Id",
+										"value": "70311198",
+										"type": "text",
+										"disabled": true
+									},
+									{
+										"key": "X-Response-Scenarios",
+										"value": "paymentVerificationRequired",
+										"type": "text",
+										"disabled": true
 									}
 								],
 								"body": {
@@ -1826,7 +2052,8 @@
 									"script": {
 										"exec": [
 											"var jsonData = pm.response.json();",
-											"pm.environment.set(\"payment_id\", jsonData.response._id);"
+											"pm.environment.set(\"payment_id\", jsonData.response._id);",
+											"pm.environment.set(\"authentication_id\", jsonData.response.authentication_id);"
 										],
 										"type": "text/javascript"
 									}
@@ -1837,35 +2064,55 @@
 								"header": [
 									{
 										"key": "Content-Type",
-										"value": "application/json"
+										"value": "application/json",
+										"type": "text"
 									},
 									{
 										"key": "Authorization",
-										"value": "Bearer {{access_token}}"
+										"value": "Bearer {{access_token}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Id",
-										"value": "{{X-IBM-Client-ID}}"
+										"value": "{{X-IBM-Client-ID}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Secret",
-										"value": "{{X-IBM-Client-Secret}}"
+										"value": "{{X-IBM-Client-Secret}}",
+										"type": "text"
 									},
 									{
 										"key": "Signature",
-										"value": "{{Signature}}"
+										"value": "{{Signature}}",
+										"type": "text"
 									},
 									{
 										"key": "Digest",
-										"value": "{{Digest}}"
+										"value": "{{Digest}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Date",
-										"value": "{{X-Nordea-Originating-Date}}"
+										"value": "{{X-Nordea-Originating-Date}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Host",
-										"value": "{{X-Nordea-Originating-Host}}"
+										"value": "{{X-Nordea-Originating-Host}}",
+										"type": "text"
+									},
+									{
+										"key": "X-Nordea-Mock-Authorizer-Id",
+										"value": "70311198",
+										"type": "text",
+										"disabled": true
+									},
+									{
+										"key": "X-Response-Scenarios",
+										"value": "paymentVerificationRequired",
+										"type": "text",
+										"disabled": true
 									}
 								],
 								"body": {
@@ -1897,7 +2144,8 @@
 									"script": {
 										"exec": [
 											"var jsonData = pm.response.json();",
-											"pm.environment.set(\"payment_id\", jsonData.response._id);"
+											"pm.environment.set(\"payment_id\", jsonData.response._id);",
+											"pm.environment.set(\"authentication_id\", jsonData.response.authentication_id);"
 										],
 										"type": "text/javascript"
 									}
@@ -1908,35 +2156,55 @@
 								"header": [
 									{
 										"key": "Content-Type",
-										"value": "application/json"
+										"value": "application/json",
+										"type": "text"
 									},
 									{
 										"key": "Authorization",
-										"value": "Bearer {{access_token}}"
+										"value": "Bearer {{access_token}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Id",
-										"value": "{{X-IBM-Client-ID}}"
+										"value": "{{X-IBM-Client-ID}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Secret",
-										"value": "{{X-IBM-Client-Secret}}"
+										"value": "{{X-IBM-Client-Secret}}",
+										"type": "text"
 									},
 									{
 										"key": "Signature",
-										"value": "{{Signature}}"
+										"value": "{{Signature}}",
+										"type": "text"
 									},
 									{
 										"key": "Digest",
-										"value": "{{Digest}}"
+										"value": "{{Digest}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Date",
-										"value": "{{X-Nordea-Originating-Date}}"
+										"value": "{{X-Nordea-Originating-Date}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Host",
-										"value": "{{X-Nordea-Originating-Host}}"
+										"value": "{{X-Nordea-Originating-Host}}",
+										"type": "text"
+									},
+									{
+										"key": "X-Nordea-Mock-Authorizer-Id",
+										"value": "70311198",
+										"type": "text",
+										"disabled": true
+									},
+									{
+										"key": "X-Response-Scenarios",
+										"value": "paymentVerificationRequired",
+										"type": "text",
+										"disabled": true
 									}
 								],
 								"body": {
@@ -1968,7 +2236,8 @@
 									"script": {
 										"exec": [
 											"var jsonData = pm.response.json();",
-											"pm.environment.set(\"payment_id\", jsonData.response._id);"
+											"pm.environment.set(\"payment_id\", jsonData.response._id);",
+											"pm.environment.set(\"authentication_id\", jsonData.response.authentication_id);"
 										],
 										"type": "text/javascript"
 									}
@@ -1979,35 +2248,55 @@
 								"header": [
 									{
 										"key": "Content-Type",
-										"value": "application/json"
+										"value": "application/json",
+										"type": "text"
 									},
 									{
 										"key": "Authorization",
-										"value": "Bearer {{access_token}}"
+										"value": "Bearer {{access_token}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Id",
-										"value": "{{X-IBM-Client-ID}}"
+										"value": "{{X-IBM-Client-ID}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Secret",
-										"value": "{{X-IBM-Client-Secret}}"
+										"value": "{{X-IBM-Client-Secret}}",
+										"type": "text"
 									},
 									{
 										"key": "Signature",
-										"value": "{{Signature}}"
+										"value": "{{Signature}}",
+										"type": "text"
 									},
 									{
 										"key": "Digest",
-										"value": "{{Digest}}"
+										"value": "{{Digest}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Date",
-										"value": "{{X-Nordea-Originating-Date}}"
+										"value": "{{X-Nordea-Originating-Date}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Host",
-										"value": "{{X-Nordea-Originating-Host}}"
+										"value": "{{X-Nordea-Originating-Host}}",
+										"type": "text"
+									},
+									{
+										"key": "X-Nordea-Mock-Authorizer-Id",
+										"value": "70311198",
+										"type": "text",
+										"disabled": true
+									},
+									{
+										"key": "X-Response-Scenarios",
+										"value": "paymentVerificationRequired",
+										"type": "text",
+										"disabled": true
 									}
 								],
 								"body": {
@@ -2039,7 +2328,8 @@
 									"script": {
 										"exec": [
 											"var jsonData = pm.response.json();",
-											"pm.environment.set(\"payment_id\", jsonData.response._id);"
+											"pm.environment.set(\"payment_id\", jsonData.response._id);",
+											"pm.environment.set(\"authentication_id\", jsonData.response.authentication_id);"
 										],
 										"type": "text/javascript"
 									}
@@ -2050,35 +2340,55 @@
 								"header": [
 									{
 										"key": "Content-Type",
-										"value": "application/json"
+										"value": "application/json",
+										"type": "text"
 									},
 									{
 										"key": "Authorization",
-										"value": "Bearer {{access_token}}"
+										"value": "Bearer {{access_token}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Id",
-										"value": "{{X-IBM-Client-ID}}"
+										"value": "{{X-IBM-Client-ID}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Secret",
-										"value": "{{X-IBM-Client-Secret}}"
+										"value": "{{X-IBM-Client-Secret}}",
+										"type": "text"
 									},
 									{
 										"key": "Signature",
-										"value": "{{Signature}}"
+										"value": "{{Signature}}",
+										"type": "text"
 									},
 									{
 										"key": "Digest",
-										"value": "{{Digest}}"
+										"value": "{{Digest}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Date",
-										"value": "{{X-Nordea-Originating-Date}}"
+										"value": "{{X-Nordea-Originating-Date}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Host",
-										"value": "{{X-Nordea-Originating-Host}}"
+										"value": "{{X-Nordea-Originating-Host}}",
+										"type": "text"
+									},
+									{
+										"key": "X-Nordea-Mock-Authorizer-Id",
+										"value": "70311198",
+										"type": "text",
+										"disabled": true
+									},
+									{
+										"key": "X-Response-Scenarios",
+										"value": "paymentVerificationRequired",
+										"type": "text",
+										"disabled": true
 									}
 								],
 								"body": {
@@ -2110,7 +2420,8 @@
 									"script": {
 										"exec": [
 											"var jsonData = pm.response.json();",
-											"pm.environment.set(\"payment_id\", jsonData.response._id);"
+											"pm.environment.set(\"payment_id\", jsonData.response._id);",
+											"pm.environment.set(\"authentication_id\", jsonData.response.authentication_id);"
 										],
 										"type": "text/javascript"
 									}
@@ -2121,35 +2432,55 @@
 								"header": [
 									{
 										"key": "Content-Type",
-										"value": "application/json"
+										"value": "application/json",
+										"type": "text"
 									},
 									{
 										"key": "Authorization",
-										"value": "Bearer {{access_token}}"
+										"value": "Bearer {{access_token}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Id",
-										"value": "{{X-IBM-Client-ID}}"
+										"value": "{{X-IBM-Client-ID}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Secret",
-										"value": "{{X-IBM-Client-Secret}}"
+										"value": "{{X-IBM-Client-Secret}}",
+										"type": "text"
 									},
 									{
 										"key": "Signature",
-										"value": "{{Signature}}"
+										"value": "{{Signature}}",
+										"type": "text"
 									},
 									{
 										"key": "Digest",
-										"value": "{{Digest}}"
+										"value": "{{Digest}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Date",
-										"value": "{{X-Nordea-Originating-Date}}"
+										"value": "{{X-Nordea-Originating-Date}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Host",
-										"value": "{{X-Nordea-Originating-Host}}"
+										"value": "{{X-Nordea-Originating-Host}}",
+										"type": "text"
+									},
+									{
+										"key": "X-Nordea-Mock-Authorizer-Id",
+										"value": "70311198",
+										"type": "text",
+										"disabled": true
+									},
+									{
+										"key": "X-Response-Scenarios",
+										"value": "paymentVerificationRequired",
+										"type": "text",
+										"disabled": true
 									}
 								],
 								"body": {
@@ -2181,7 +2512,8 @@
 									"script": {
 										"exec": [
 											"var jsonData = pm.response.json();",
-											"pm.environment.set(\"payment_id\", jsonData.response._id);"
+											"pm.environment.set(\"payment_id\", jsonData.response._id);",
+											"pm.environment.set(\"authentication_id\", jsonData.response.authentication_id);"
 										],
 										"type": "text/javascript"
 									}
@@ -2192,40 +2524,55 @@
 								"header": [
 									{
 										"key": "Content-Type",
-										"value": "application/json"
+										"value": "application/json",
+										"type": "text"
 									},
 									{
 										"key": "Authorization",
-										"value": "Bearer {{access_token}}"
+										"value": "Bearer {{access_token}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Id",
-										"value": "{{X-IBM-Client-ID}}"
+										"value": "{{X-IBM-Client-ID}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Secret",
-										"value": "{{X-IBM-Client-Secret}}"
+										"value": "{{X-IBM-Client-Secret}}",
+										"type": "text"
 									},
 									{
 										"key": "Signature",
-										"value": "{{Signature}}"
+										"value": "{{Signature}}",
+										"type": "text"
 									},
 									{
 										"key": "Digest",
-										"value": "{{Digest}}"
+										"value": "{{Digest}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Date",
-										"value": "{{X-Nordea-Originating-Date}}"
+										"value": "{{X-Nordea-Originating-Date}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Host",
-										"value": "{{X-Nordea-Originating-Host}}"
+										"value": "{{X-Nordea-Originating-Host}}",
+										"type": "text"
 									},
 									{
-										"key": "X-Mocked-Components",
-										"value": "mocked-mta",
-										"type": "text"
+										"key": "X-Nordea-Mock-Authorizer-Id",
+										"value": "70311198",
+										"type": "text",
+										"disabled": true
+									},
+									{
+										"key": "X-Response-Scenarios",
+										"value": "paymentVerificationRequired",
+										"type": "text",
+										"disabled": true
 									}
 								],
 								"body": {
@@ -2262,7 +2609,8 @@
 									"script": {
 										"exec": [
 											"var jsonData = pm.response.json();",
-											"pm.environment.set(\"payment_id\", jsonData.response._id);"
+											"pm.environment.set(\"payment_id\", jsonData.response._id);",
+											"pm.environment.set(\"authentication_id\", jsonData.response.authentication_id);"
 										],
 										"type": "text/javascript"
 									}
@@ -2273,35 +2621,55 @@
 								"header": [
 									{
 										"key": "Content-Type",
-										"value": "application/json"
+										"value": "application/json",
+										"type": "text"
 									},
 									{
 										"key": "Authorization",
-										"value": "Bearer {{access_token}}"
+										"value": "Bearer {{access_token}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Id",
-										"value": "{{X-IBM-Client-ID}}"
+										"value": "{{X-IBM-Client-ID}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Secret",
-										"value": "{{X-IBM-Client-Secret}}"
+										"value": "{{X-IBM-Client-Secret}}",
+										"type": "text"
 									},
 									{
 										"key": "Signature",
-										"value": "{{Signature}}"
+										"value": "{{Signature}}",
+										"type": "text"
 									},
 									{
 										"key": "Digest",
-										"value": "{{Digest}}"
+										"value": "{{Digest}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Date",
-										"value": "{{X-Nordea-Originating-Date}}"
+										"value": "{{X-Nordea-Originating-Date}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Host",
-										"value": "{{X-Nordea-Originating-Host}}"
+										"value": "{{X-Nordea-Originating-Host}}",
+										"type": "text"
+									},
+									{
+										"key": "X-Nordea-Mock-Authorizer-Id",
+										"value": "70311198",
+										"type": "text",
+										"disabled": true
+									},
+									{
+										"key": "X-Response-Scenarios",
+										"value": "paymentVerificationRequired",
+										"type": "text",
+										"disabled": true
 									}
 								],
 								"body": {
@@ -2333,96 +2701,8 @@
 									"script": {
 										"exec": [
 											"var jsonData = pm.response.json();",
-											"pm.environment.set(\"payment_id\", jsonData.response._id);"
-										],
-										"type": "text/javascript"
-									}
-								},
-								{
-									"listen": "prerequest",
-									"script": {
-										"exec": [
-											"var moment = require('moment')\r",
-											"pm.environment.set(\"today\", moment().format(\"YYYY-MM-DD\"))"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"type": "text",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"type": "text",
-										"value": "Bearer {{access_token}}"
-									},
-									{
-										"key": "X-IBM-Client-Id",
-										"type": "text",
-										"value": "{{X-IBM-Client-ID}}"
-									},
-									{
-										"key": "X-IBM-Client-Secret",
-										"type": "text",
-										"value": "{{X-IBM-Client-Secret}}"
-									},
-									{
-										"key": "Signature",
-										"type": "text",
-										"value": "{{Signature}}"
-									},
-									{
-										"key": "Digest",
-										"type": "text",
-										"value": "{{Digest}}"
-									},
-									{
-										"key": "X-Nordea-Originating-Date",
-										"type": "text",
-										"value": "{{X-Nordea-Originating-Date}}"
-									},
-									{
-										"key": "X-Nordea-Originating-Host",
-										"type": "text",
-										"value": "{{X-Nordea-Originating-Host}}"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"payment_instruction\": {\n        \"template_id\": \"DOMESTIC_TRANSFER_FORM_DK\",\n        \"amount\": \"123.45\",\n        \"currency\": \"DKK\",\n        \"external_id\": \"{{randomUUID}}\",\n        \"requested_execution_date\": \"{{today}}\",\n        \"transfer_form\": \"01\",\n        \"debtor\": {\n            \"account\": {\n                \"currency\": \"DKK\",\n                \"type\": \"BBAN\",\n                \"value\": \"20000270491715\"\n            },\n            \"own_reference\": \"Own message\"\n        },\n        \"creditor\": {\n            \"account\": {\n                \"type\": \"GIRO_DK\",\n                \"value\": \"19523179\"\n            },\n            \"message\": \"Invoice 5071\",\n            \"name\": \"Screws and Nuts Ltd\"\n        },\n        \"ultimate_debtor\": {\n            \"name\": \"Screws and Nuts Subsidiary\",\n            \"address\": {\n                \"line1\": \"Strandgade 1\",\n                \"line2\": \"0900 Copenhagen C Denmark\"\n            }\n        }\n    },\n    \"authorization_details\": {\n        \"authentication_type\": \"DECOUPLED\",\n        \"authentication_method\": \"MTA\",\n        \"authorizer_id\": \"70311198\"\n    }\n}"
-								},
-								"url": {
-									"raw": "https://api.nordeaopenbanking.com/corporate/v2/payments",
-									"protocol": "https",
-									"host": [
-										"api",
-										"nordeaopenbanking",
-										"com"
-									],
-									"path": [
-										"corporate",
-										"v2",
-										"payments"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Domestic Transfer Form With OCR DK",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"var jsonData = pm.response.json();",
-											"pm.environment.set(\"payment_id\", jsonData.response._id);"
+											"pm.environment.set(\"payment_id\", jsonData.response._id);",
+											"pm.environment.set(\"authentication_id\", jsonData.response.authentication_id);"
 										],
 										"type": "text/javascript"
 									}
@@ -2480,6 +2760,120 @@
 										"key": "X-Nordea-Originating-Host",
 										"value": "{{X-Nordea-Originating-Host}}",
 										"type": "text"
+									},
+									{
+										"key": "X-Nordea-Mock-Authorizer-Id",
+										"value": "70311198",
+										"type": "text",
+										"disabled": true
+									},
+									{
+										"key": "X-Response-Scenarios",
+										"value": "paymentVerificationRequired",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"payment_instruction\": {\n        \"template_id\": \"DOMESTIC_TRANSFER_FORM_DK\",\n        \"amount\": \"123.45\",\n        \"currency\": \"DKK\",\n        \"external_id\": \"{{randomUUID}}\",\n        \"requested_execution_date\": \"{{today}}\",\n        \"transfer_form\": \"01\",\n        \"debtor\": {\n            \"account\": {\n                \"currency\": \"DKK\",\n                \"type\": \"BBAN\",\n                \"value\": \"20000270491715\"\n            },\n            \"own_reference\": \"Own message\"\n        },\n        \"creditor\": {\n            \"account\": {\n                \"type\": \"GIRO_DK\",\n                \"value\": \"19523179\"\n            },\n            \"message\": \"Invoice 5071\",\n            \"name\": \"Screws and Nuts Ltd\"\n        },\n        \"ultimate_debtor\": {\n            \"name\": \"Screws and Nuts Subsidiary\",\n            \"address\": {\n                \"line1\": \"Strandgade 1\",\n                \"line2\": \"0900 Copenhagen C Denmark\"\n            }\n        }\n    },\n    \"authorization_details\": {\n        \"authentication_type\": \"DECOUPLED\",\n        \"authentication_method\": \"MTA\",\n        \"authorizer_id\": \"70311198\"\n    }\n}"
+								},
+								"url": {
+									"raw": "https://api.nordeaopenbanking.com/corporate/v2/payments",
+									"protocol": "https",
+									"host": [
+										"api",
+										"nordeaopenbanking",
+										"com"
+									],
+									"path": [
+										"corporate",
+										"v2",
+										"payments"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Domestic Transfer Form With OCR DK",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData = pm.response.json();",
+											"pm.environment.set(\"payment_id\", jsonData.response._id);",
+											"pm.environment.set(\"authentication_id\", jsonData.response.authentication_id);"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"var moment = require('moment')\r",
+											"pm.environment.set(\"today\", moment().format(\"YYYY-MM-DD\"))"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}",
+										"type": "text"
+									},
+									{
+										"key": "X-IBM-Client-Id",
+										"value": "{{X-IBM-Client-ID}}",
+										"type": "text"
+									},
+									{
+										"key": "X-IBM-Client-Secret",
+										"value": "{{X-IBM-Client-Secret}}",
+										"type": "text"
+									},
+									{
+										"key": "Signature",
+										"value": "{{Signature}}",
+										"type": "text"
+									},
+									{
+										"key": "Digest",
+										"value": "{{Digest}}",
+										"type": "text"
+									},
+									{
+										"key": "X-Nordea-Originating-Date",
+										"value": "{{X-Nordea-Originating-Date}}",
+										"type": "text"
+									},
+									{
+										"key": "X-Nordea-Originating-Host",
+										"value": "{{X-Nordea-Originating-Host}}",
+										"type": "text"
+									},
+									{
+										"key": "X-Nordea-Mock-Authorizer-Id",
+										"value": "70311198",
+										"type": "text",
+										"disabled": true
+									},
+									{
+										"key": "X-Response-Scenarios",
+										"value": "paymentVerificationRequired",
+										"type": "text",
+										"disabled": true
 									}
 								],
 								"body": {
@@ -2511,7 +2905,8 @@
 									"script": {
 										"exec": [
 											"var jsonData = pm.response.json();",
-											"pm.environment.set(\"payment_id\", jsonData.response._id);"
+											"pm.environment.set(\"payment_id\", jsonData.response._id);",
+											"pm.environment.set(\"authentication_id\", jsonData.response.authentication_id);"
 										],
 										"type": "text/javascript"
 									}
@@ -2522,35 +2917,55 @@
 								"header": [
 									{
 										"key": "Content-Type",
-										"value": "application/json"
+										"value": "application/json",
+										"type": "text"
 									},
 									{
 										"key": "Authorization",
-										"value": "Bearer {{access_token}}"
+										"value": "Bearer {{access_token}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Id",
-										"value": "{{X-IBM-Client-ID}}"
+										"value": "{{X-IBM-Client-ID}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Secret",
-										"value": "{{X-IBM-Client-Secret}}"
+										"value": "{{X-IBM-Client-Secret}}",
+										"type": "text"
 									},
 									{
 										"key": "Signature",
-										"value": "{{Signature}}"
+										"value": "{{Signature}}",
+										"type": "text"
 									},
 									{
 										"key": "Digest",
-										"value": "{{Digest}}"
+										"value": "{{Digest}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Date",
-										"value": "{{X-Nordea-Originating-Date}}"
+										"value": "{{X-Nordea-Originating-Date}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Host",
-										"value": "{{X-Nordea-Originating-Host}}"
+										"value": "{{X-Nordea-Originating-Host}}",
+										"type": "text"
+									},
+									{
+										"key": "X-Nordea-Mock-Authorizer-Id",
+										"value": "70311198",
+										"type": "text",
+										"disabled": true
+									},
+									{
+										"key": "X-Response-Scenarios",
+										"value": "paymentVerificationRequired",
+										"type": "text",
+										"disabled": true
 									}
 								],
 								"body": {
@@ -2582,7 +2997,8 @@
 									"script": {
 										"exec": [
 											"var jsonData = pm.response.json();",
-											"pm.environment.set(\"payment_id\", jsonData.response._id);"
+											"pm.environment.set(\"payment_id\", jsonData.response._id);",
+											"pm.environment.set(\"authentication_id\", jsonData.response.authentication_id);"
 										],
 										"type": "text/javascript"
 									}
@@ -2593,35 +3009,55 @@
 								"header": [
 									{
 										"key": "Content-Type",
-										"value": "application/json"
+										"value": "application/json",
+										"type": "text"
 									},
 									{
 										"key": "Authorization",
-										"value": "Bearer {{access_token}}"
+										"value": "Bearer {{access_token}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Id",
-										"value": "{{X-IBM-Client-ID}}"
+										"value": "{{X-IBM-Client-ID}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Secret",
-										"value": "{{X-IBM-Client-Secret}}"
+										"value": "{{X-IBM-Client-Secret}}",
+										"type": "text"
 									},
 									{
 										"key": "Signature",
-										"value": "{{Signature}}"
+										"value": "{{Signature}}",
+										"type": "text"
 									},
 									{
 										"key": "Digest",
-										"value": "{{Digest}}"
+										"value": "{{Digest}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Date",
-										"value": "{{X-Nordea-Originating-Date}}"
+										"value": "{{X-Nordea-Originating-Date}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Host",
-										"value": "{{X-Nordea-Originating-Host}}"
+										"value": "{{X-Nordea-Originating-Host}}",
+										"type": "text"
+									},
+									{
+										"key": "X-Nordea-Mock-Authorizer-Id",
+										"value": "70311198",
+										"type": "text",
+										"disabled": true
+									},
+									{
+										"key": "X-Response-Scenarios",
+										"value": "paymentVerificationRequired",
+										"type": "text",
+										"disabled": true
 									}
 								],
 								"body": {
@@ -2653,7 +3089,8 @@
 									"script": {
 										"exec": [
 											"var jsonData = pm.response.json();",
-											"pm.environment.set(\"payment_id\", jsonData.response._id);"
+											"pm.environment.set(\"payment_id\", jsonData.response._id);",
+											"pm.environment.set(\"authentication_id\", jsonData.response.authentication_id);"
 										],
 										"type": "text/javascript"
 									}
@@ -2664,35 +3101,55 @@
 								"header": [
 									{
 										"key": "Content-Type",
-										"value": "application/json"
+										"value": "application/json",
+										"type": "text"
 									},
 									{
 										"key": "Authorization",
-										"value": "Bearer {{access_token}}"
+										"value": "Bearer {{access_token}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Id",
-										"value": "{{X-IBM-Client-ID}}"
+										"value": "{{X-IBM-Client-ID}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Secret",
-										"value": "{{X-IBM-Client-Secret}}"
+										"value": "{{X-IBM-Client-Secret}}",
+										"type": "text"
 									},
 									{
 										"key": "Signature",
-										"value": "{{Signature}}"
+										"value": "{{Signature}}",
+										"type": "text"
 									},
 									{
 										"key": "Digest",
-										"value": "{{Digest}}"
+										"value": "{{Digest}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Date",
-										"value": "{{X-Nordea-Originating-Date}}"
+										"value": "{{X-Nordea-Originating-Date}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Host",
-										"value": "{{X-Nordea-Originating-Host}}"
+										"value": "{{X-Nordea-Originating-Host}}",
+										"type": "text"
+									},
+									{
+										"key": "X-Nordea-Mock-Authorizer-Id",
+										"value": "70311198",
+										"type": "text",
+										"disabled": true
+									},
+									{
+										"key": "X-Response-Scenarios",
+										"value": "paymentVerificationRequired",
+										"type": "text",
+										"disabled": true
 									}
 								],
 								"body": {
@@ -2724,7 +3181,8 @@
 									"script": {
 										"exec": [
 											"var jsonData = pm.response.json();",
-											"pm.environment.set(\"payment_id\", jsonData.response._id);"
+											"pm.environment.set(\"payment_id\", jsonData.response._id);",
+											"pm.environment.set(\"authentication_id\", jsonData.response.authentication_id);"
 										],
 										"type": "text/javascript"
 									}
@@ -2735,35 +3193,55 @@
 								"header": [
 									{
 										"key": "Content-Type",
-										"value": "application/json"
+										"value": "application/json",
+										"type": "text"
 									},
 									{
 										"key": "Authorization",
-										"value": "Bearer {{access_token}}"
+										"value": "Bearer {{access_token}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Id",
-										"value": "{{X-IBM-Client-ID}}"
+										"value": "{{X-IBM-Client-ID}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Secret",
-										"value": "{{X-IBM-Client-Secret}}"
+										"value": "{{X-IBM-Client-Secret}}",
+										"type": "text"
 									},
 									{
 										"key": "Signature",
-										"value": "{{Signature}}"
+										"value": "{{Signature}}",
+										"type": "text"
 									},
 									{
 										"key": "Digest",
-										"value": "{{Digest}}"
+										"value": "{{Digest}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Date",
-										"value": "{{X-Nordea-Originating-Date}}"
+										"value": "{{X-Nordea-Originating-Date}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Host",
-										"value": "{{X-Nordea-Originating-Host}}"
+										"value": "{{X-Nordea-Originating-Host}}",
+										"type": "text"
+									},
+									{
+										"key": "X-Nordea-Mock-Authorizer-Id",
+										"value": "70311198",
+										"type": "text",
+										"disabled": true
+									},
+									{
+										"key": "X-Response-Scenarios",
+										"value": "paymentVerificationRequired",
+										"type": "text",
+										"disabled": true
 									}
 								],
 								"body": {
@@ -2795,7 +3273,8 @@
 									"script": {
 										"exec": [
 											"var jsonData = pm.response.json();",
-											"pm.environment.set(\"payment_id\", jsonData.response._id);"
+											"pm.environment.set(\"payment_id\", jsonData.response._id);",
+											"pm.environment.set(\"authentication_id\", jsonData.response.authentication_id);"
 										],
 										"type": "text/javascript"
 									}
@@ -2806,35 +3285,55 @@
 								"header": [
 									{
 										"key": "Content-Type",
-										"value": "application/json"
+										"value": "application/json",
+										"type": "text"
 									},
 									{
 										"key": "Authorization",
-										"value": "Bearer {{access_token}}"
+										"value": "Bearer {{access_token}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Id",
-										"value": "{{X-IBM-Client-ID}}"
+										"value": "{{X-IBM-Client-ID}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Secret",
-										"value": "{{X-IBM-Client-Secret}}"
+										"value": "{{X-IBM-Client-Secret}}",
+										"type": "text"
 									},
 									{
 										"key": "Signature",
-										"value": "{{Signature}}"
+										"value": "{{Signature}}",
+										"type": "text"
 									},
 									{
 										"key": "Digest",
-										"value": "{{Digest}}"
+										"value": "{{Digest}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Date",
-										"value": "{{X-Nordea-Originating-Date}}"
+										"value": "{{X-Nordea-Originating-Date}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Host",
-										"value": "{{X-Nordea-Originating-Host}}"
+										"value": "{{X-Nordea-Originating-Host}}",
+										"type": "text"
+									},
+									{
+										"key": "X-Nordea-Mock-Authorizer-Id",
+										"value": "70311198",
+										"type": "text",
+										"disabled": true
+									},
+									{
+										"key": "X-Response-Scenarios",
+										"value": "paymentVerificationRequired",
+										"type": "text",
+										"disabled": true
 									}
 								],
 								"body": {
@@ -2866,7 +3365,8 @@
 									"script": {
 										"exec": [
 											"var jsonData = pm.response.json();",
-											"pm.environment.set(\"payment_id\", jsonData.response._id);"
+											"pm.environment.set(\"payment_id\", jsonData.response._id);",
+											"pm.environment.set(\"authentication_id\", jsonData.response.authentication_id);"
 										],
 										"type": "text/javascript"
 									}
@@ -2877,35 +3377,55 @@
 								"header": [
 									{
 										"key": "Content-Type",
-										"value": "application/json"
+										"value": "application/json",
+										"type": "text"
 									},
 									{
 										"key": "Authorization",
-										"value": "Bearer {{access_token}}"
+										"value": "Bearer {{access_token}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Id",
-										"value": "{{X-IBM-Client-ID}}"
+										"value": "{{X-IBM-Client-ID}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Secret",
-										"value": "{{X-IBM-Client-Secret}}"
+										"value": "{{X-IBM-Client-Secret}}",
+										"type": "text"
 									},
 									{
 										"key": "Signature",
-										"value": "{{Signature}}"
+										"value": "{{Signature}}",
+										"type": "text"
 									},
 									{
 										"key": "Digest",
-										"value": "{{Digest}}"
+										"value": "{{Digest}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Date",
-										"value": "{{X-Nordea-Originating-Date}}"
+										"value": "{{X-Nordea-Originating-Date}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Host",
-										"value": "{{X-Nordea-Originating-Host}}"
+										"value": "{{X-Nordea-Originating-Host}}",
+										"type": "text"
+									},
+									{
+										"key": "X-Nordea-Mock-Authorizer-Id",
+										"value": "70311198",
+										"type": "text",
+										"disabled": true
+									},
+									{
+										"key": "X-Response-Scenarios",
+										"value": "paymentVerificationRequired",
+										"type": "text",
+										"disabled": true
 									}
 								],
 								"body": {
@@ -2937,7 +3457,8 @@
 									"script": {
 										"exec": [
 											"var jsonData = pm.response.json();",
-											"pm.environment.set(\"payment_id\", jsonData.response._id);"
+											"pm.environment.set(\"payment_id\", jsonData.response._id);",
+											"pm.environment.set(\"authentication_id\", jsonData.response.authentication_id);"
 										],
 										"type": "text/javascript"
 									}
@@ -2948,40 +3469,55 @@
 								"header": [
 									{
 										"key": "Content-Type",
-										"value": "application/json"
+										"value": "application/json",
+										"type": "text"
 									},
 									{
 										"key": "Authorization",
-										"value": "Bearer {{access_token}}"
+										"value": "Bearer {{access_token}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Id",
-										"value": "{{X-IBM-Client-ID}}"
+										"value": "{{X-IBM-Client-ID}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Secret",
-										"value": "{{X-IBM-Client-Secret}}"
+										"value": "{{X-IBM-Client-Secret}}",
+										"type": "text"
 									},
 									{
 										"key": "Signature",
-										"value": "{{Signature}}"
+										"value": "{{Signature}}",
+										"type": "text"
 									},
 									{
 										"key": "Digest",
-										"value": "{{Digest}}"
+										"value": "{{Digest}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Date",
-										"value": "{{X-Nordea-Originating-Date}}"
+										"value": "{{X-Nordea-Originating-Date}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Host",
-										"value": "{{X-Nordea-Originating-Host}}"
+										"value": "{{X-Nordea-Originating-Host}}",
+										"type": "text"
 									},
 									{
-										"key": "X-Mocked-Components",
-										"value": "mocked-mta",
-										"type": "text"
+										"key": "X-Nordea-Mock-Authorizer-Id",
+										"value": "70311198",
+										"type": "text",
+										"disabled": true
+									},
+									{
+										"key": "X-Response-Scenarios",
+										"value": "paymentVerificationRequired",
+										"type": "text",
+										"disabled": true
 									}
 								],
 								"body": {
@@ -3018,7 +3554,8 @@
 									"script": {
 										"exec": [
 											"var jsonData = pm.response.json();",
-											"pm.environment.set(\"payment_id\", jsonData.response._id);"
+											"pm.environment.set(\"payment_id\", jsonData.response._id);",
+											"pm.environment.set(\"authentication_id\", jsonData.response.authentication_id);"
 										],
 										"type": "text/javascript"
 									}
@@ -3029,35 +3566,55 @@
 								"header": [
 									{
 										"key": "Content-Type",
-										"value": "application/json"
+										"value": "application/json",
+										"type": "text"
 									},
 									{
 										"key": "Authorization",
-										"value": "Bearer {{access_token}}"
+										"value": "Bearer {{access_token}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Id",
-										"value": "{{X-IBM-Client-ID}}"
+										"value": "{{X-IBM-Client-ID}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Secret",
-										"value": "{{X-IBM-Client-Secret}}"
+										"value": "{{X-IBM-Client-Secret}}",
+										"type": "text"
 									},
 									{
 										"key": "Signature",
-										"value": "{{Signature}}"
+										"value": "{{Signature}}",
+										"type": "text"
 									},
 									{
 										"key": "Digest",
-										"value": "{{Digest}}"
+										"value": "{{Digest}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Date",
-										"value": "{{X-Nordea-Originating-Date}}"
+										"value": "{{X-Nordea-Originating-Date}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Host",
-										"value": "{{X-Nordea-Originating-Host}}"
+										"value": "{{X-Nordea-Originating-Host}}",
+										"type": "text"
+									},
+									{
+										"key": "X-Nordea-Mock-Authorizer-Id",
+										"value": "70311198",
+										"type": "text",
+										"disabled": true
+									},
+									{
+										"key": "X-Response-Scenarios",
+										"value": "paymentVerificationRequired",
+										"type": "text",
+										"disabled": true
 									}
 								],
 								"body": {
@@ -3089,7 +3646,8 @@
 									"script": {
 										"exec": [
 											"var jsonData = pm.response.json();",
-											"pm.environment.set(\"payment_id\", jsonData.response._id);"
+											"pm.environment.set(\"payment_id\", jsonData.response._id);",
+											"pm.environment.set(\"authentication_id\", jsonData.response.authentication_id);"
 										],
 										"type": "text/javascript"
 									}
@@ -3110,43 +3668,55 @@
 								"header": [
 									{
 										"key": "Content-Type",
-										"type": "text",
-										"value": "application/json"
+										"value": "application/json",
+										"type": "text"
 									},
 									{
 										"key": "Authorization",
-										"type": "text",
-										"value": "Bearer {{access_token}}"
+										"value": "Bearer {{access_token}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Id",
-										"type": "text",
-										"value": "{{X-IBM-Client-ID}}"
+										"value": "{{X-IBM-Client-ID}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Secret",
-										"type": "text",
-										"value": "{{X-IBM-Client-Secret}}"
+										"value": "{{X-IBM-Client-Secret}}",
+										"type": "text"
 									},
 									{
 										"key": "Signature",
-										"type": "text",
-										"value": "{{Signature}}"
+										"value": "{{Signature}}",
+										"type": "text"
 									},
 									{
 										"key": "Digest",
-										"type": "text",
-										"value": "{{Digest}}"
+										"value": "{{Digest}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Date",
-										"type": "text",
-										"value": "{{X-Nordea-Originating-Date}}"
+										"value": "{{X-Nordea-Originating-Date}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Host",
+										"value": "{{X-Nordea-Originating-Host}}",
+										"type": "text"
+									},
+									{
+										"key": "X-Nordea-Mock-Authorizer-Id",
+										"value": "70311198",
 										"type": "text",
-										"value": "{{X-Nordea-Originating-Host}}"
+										"disabled": true
+									},
+									{
+										"key": "X-Response-Scenarios",
+										"value": "paymentVerificationRequired",
+										"type": "text",
+										"disabled": true
 									}
 								],
 								"body": {
@@ -3178,7 +3748,8 @@
 									"script": {
 										"exec": [
 											"var jsonData = pm.response.json();",
-											"pm.environment.set(\"payment_id\", jsonData.response._id);"
+											"pm.environment.set(\"payment_id\", jsonData.response._id);",
+											"pm.environment.set(\"authentication_id\", jsonData.response.authentication_id);"
 										],
 										"type": "text/javascript"
 									}
@@ -3189,35 +3760,55 @@
 								"header": [
 									{
 										"key": "Content-Type",
-										"value": "application/json"
+										"value": "application/json",
+										"type": "text"
 									},
 									{
 										"key": "Authorization",
-										"value": "Bearer {{access_token}}"
+										"value": "Bearer {{access_token}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Id",
-										"value": "{{X-IBM-Client-ID}}"
+										"value": "{{X-IBM-Client-ID}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Secret",
-										"value": "{{X-IBM-Client-Secret}}"
+										"value": "{{X-IBM-Client-Secret}}",
+										"type": "text"
 									},
 									{
 										"key": "Signature",
-										"value": "{{Signature}}"
+										"value": "{{Signature}}",
+										"type": "text"
 									},
 									{
 										"key": "Digest",
-										"value": "{{Digest}}"
+										"value": "{{Digest}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Date",
-										"value": "{{X-Nordea-Originating-Date}}"
+										"value": "{{X-Nordea-Originating-Date}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Host",
-										"value": "{{X-Nordea-Originating-Host}}"
+										"value": "{{X-Nordea-Originating-Host}}",
+										"type": "text"
+									},
+									{
+										"key": "X-Nordea-Mock-Authorizer-Id",
+										"value": "70311198",
+										"type": "text",
+										"disabled": true
+									},
+									{
+										"key": "X-Response-Scenarios",
+										"value": "paymentVerificationRequired",
+										"type": "text",
+										"disabled": true
 									}
 								],
 								"body": {
@@ -3249,7 +3840,8 @@
 									"script": {
 										"exec": [
 											"var jsonData = pm.response.json();",
-											"pm.environment.set(\"payment_id\", jsonData.response._id);"
+											"pm.environment.set(\"payment_id\", jsonData.response._id);",
+											"pm.environment.set(\"authentication_id\", jsonData.response.authentication_id);"
 										],
 										"type": "text/javascript"
 									}
@@ -3260,35 +3852,55 @@
 								"header": [
 									{
 										"key": "Content-Type",
-										"value": "application/json"
+										"value": "application/json",
+										"type": "text"
 									},
 									{
 										"key": "Authorization",
-										"value": "Bearer {{access_token}}"
+										"value": "Bearer {{access_token}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Id",
-										"value": "{{X-IBM-Client-ID}}"
+										"value": "{{X-IBM-Client-ID}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Secret",
-										"value": "{{X-IBM-Client-Secret}}"
+										"value": "{{X-IBM-Client-Secret}}",
+										"type": "text"
 									},
 									{
 										"key": "Signature",
-										"value": "{{Signature}}"
+										"value": "{{Signature}}",
+										"type": "text"
 									},
 									{
 										"key": "Digest",
-										"value": "{{Digest}}"
+										"value": "{{Digest}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Date",
-										"value": "{{X-Nordea-Originating-Date}}"
+										"value": "{{X-Nordea-Originating-Date}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Host",
-										"value": "{{X-Nordea-Originating-Host}}"
+										"value": "{{X-Nordea-Originating-Host}}",
+										"type": "text"
+									},
+									{
+										"key": "X-Nordea-Mock-Authorizer-Id",
+										"value": "70311198",
+										"type": "text",
+										"disabled": true
+									},
+									{
+										"key": "X-Response-Scenarios",
+										"value": "paymentVerificationRequired",
+										"type": "text",
+										"disabled": true
 									}
 								],
 								"body": {
@@ -3320,7 +3932,8 @@
 									"script": {
 										"exec": [
 											"var jsonData = pm.response.json();",
-											"pm.environment.set(\"payment_id\", jsonData.response._id);"
+											"pm.environment.set(\"payment_id\", jsonData.response._id);",
+											"pm.environment.set(\"authentication_id\", jsonData.response.authentication_id);"
 										],
 										"type": "text/javascript"
 									}
@@ -3331,40 +3944,55 @@
 								"header": [
 									{
 										"key": "Content-Type",
-										"value": "application/json"
+										"value": "application/json",
+										"type": "text"
 									},
 									{
 										"key": "Authorization",
-										"value": "Bearer {{access_token}}"
+										"value": "Bearer {{access_token}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Id",
-										"value": "{{X-IBM-Client-ID}}"
+										"value": "{{X-IBM-Client-ID}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Secret",
-										"value": "{{X-IBM-Client-Secret}}"
+										"value": "{{X-IBM-Client-Secret}}",
+										"type": "text"
 									},
 									{
 										"key": "Signature",
-										"value": "{{Signature}}"
+										"value": "{{Signature}}",
+										"type": "text"
 									},
 									{
 										"key": "Digest",
-										"value": "{{Digest}}"
+										"value": "{{Digest}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Date",
-										"value": "{{X-Nordea-Originating-Date}}"
+										"value": "{{X-Nordea-Originating-Date}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Host",
-										"value": "{{X-Nordea-Originating-Host}}"
+										"value": "{{X-Nordea-Originating-Host}}",
+										"type": "text"
 									},
 									{
-										"key": "X-Mocked-Components",
-										"value": "mocked-mta",
-										"type": "text"
+										"key": "X-Nordea-Mock-Authorizer-Id",
+										"value": "70311198",
+										"type": "text",
+										"disabled": true
+									},
+									{
+										"key": "X-Response-Scenarios",
+										"value": "paymentVerificationRequired",
+										"type": "text",
+										"disabled": true
 									}
 								],
 								"body": {
@@ -3401,7 +4029,8 @@
 									"script": {
 										"exec": [
 											"var jsonData = pm.response.json();",
-											"pm.environment.set(\"payment_id\", jsonData.response._id);"
+											"pm.environment.set(\"payment_id\", jsonData.response._id);",
+											"pm.environment.set(\"authentication_id\", jsonData.response.authentication_id);"
 										],
 										"type": "text/javascript"
 									}
@@ -3412,40 +4041,55 @@
 								"header": [
 									{
 										"key": "Content-Type",
-										"value": "application/json"
+										"value": "application/json",
+										"type": "text"
 									},
 									{
 										"key": "Authorization",
-										"value": "Bearer {{access_token}}"
+										"value": "Bearer {{access_token}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Id",
-										"value": "{{X-IBM-Client-ID}}"
+										"value": "{{X-IBM-Client-ID}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Secret",
-										"value": "{{X-IBM-Client-Secret}}"
+										"value": "{{X-IBM-Client-Secret}}",
+										"type": "text"
 									},
 									{
 										"key": "Signature",
-										"value": "{{Signature}}"
+										"value": "{{Signature}}",
+										"type": "text"
 									},
 									{
 										"key": "Digest",
-										"value": "{{Digest}}"
+										"value": "{{Digest}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Date",
-										"value": "{{X-Nordea-Originating-Date}}"
+										"value": "{{X-Nordea-Originating-Date}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Host",
-										"value": "{{X-Nordea-Originating-Host}}"
+										"value": "{{X-Nordea-Originating-Host}}",
+										"type": "text"
 									},
 									{
-										"key": "X-Mocked-Components",
-										"value": "mocked-mta",
-										"type": "text"
+										"key": "X-Nordea-Mock-Authorizer-Id",
+										"value": "70311198",
+										"type": "text",
+										"disabled": true
+									},
+									{
+										"key": "X-Response-Scenarios",
+										"value": "paymentVerificationRequired",
+										"type": "text",
+										"disabled": true
 									}
 								],
 								"body": {
@@ -3473,6 +4117,18 @@
 				},
 				{
 					"name": "Confirm Payment DECOUPLED",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"pm.environment.set(\"authentication_id\", jsonData.response.authentication_id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "PUT",
 						"header": [
@@ -3600,40 +4256,66 @@
 				},
 				{
 					"name": "Cancel Payment DECOUPLED",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"pm.environment.set(\"authentication_id\", jsonData.response.authentication_id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "PUT",
 						"header": [
 							{
 								"key": "Content-Type",
-								"value": "application/json"
+								"value": "application/json",
+								"type": "text"
 							},
 							{
 								"key": "Authorization",
-								"value": "Bearer {{access_token}}"
+								"value": "Bearer {{access_token}}",
+								"type": "text"
 							},
 							{
 								"key": "X-IBM-Client-Id",
-								"value": "{{X-IBM-Client-ID}}"
+								"value": "{{X-IBM-Client-ID}}",
+								"type": "text"
 							},
 							{
 								"key": "X-IBM-Client-Secret",
-								"value": "{{X-IBM-Client-Secret}}"
+								"value": "{{X-IBM-Client-Secret}}",
+								"type": "text"
 							},
 							{
 								"key": "Signature",
-								"value": "{{Signature}}"
+								"value": "{{Signature}}",
+								"type": "text"
 							},
 							{
 								"key": "Digest",
-								"value": "{{Digest}}"
+								"value": "{{Digest}}",
+								"type": "text"
 							},
 							{
 								"key": "X-Nordea-Originating-Date",
-								"value": "{{X-Nordea-Originating-Date}}"
+								"value": "{{X-Nordea-Originating-Date}}",
+								"type": "text"
 							},
 							{
 								"key": "X-Nordea-Originating-Host",
-								"value": "{{X-Nordea-Originating-Host}}"
+								"value": "{{X-Nordea-Originating-Host}}",
+								"type": "text"
+							},
+							{
+								"key": "X-Nordea-Mock-Authorizer-Id",
+								"value": "70311198",
+								"type": "text",
+								"disabled": true
 							}
 						],
 						"body": {
@@ -3800,6 +4482,18 @@
 				},
 				{
 					"name": "Confirm Multiple Payments DECOUPLED",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"pm.environment.set(\"authentication_id\", jsonData.response.payments[0].authentication_id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [
@@ -3846,7 +4540,8 @@
 							{
 								"key": "X-Nordea-Mock-Authorizer-Id",
 								"value": "70311198",
-								"type": "text"
+								"type": "text",
+								"disabled": true
 							}
 						],
 						"body": {
@@ -3946,6 +4641,18 @@
 				},
 				{
 					"name": "Cancel Multiple Payments DECOUPLED",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"pm.environment.set(\"authentication_id\", jsonData.response.payments[0].authentication_id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [
@@ -3992,7 +4699,8 @@
 							{
 								"key": "X-Nordea-Mock-Authorizer-Id",
 								"value": "70311198",
-								"type": "text"
+								"type": "text",
+								"disabled": true
 							}
 						],
 						"body": {
@@ -4287,6 +4995,56 @@
 								"v2",
 								"payments",
 								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Authentications",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-IBM-Client-Id",
+								"value": "{{X-IBM-Client-ID}}",
+								"type": "text"
+							},
+							{
+								"key": "X-IBM-Client-Secret",
+								"value": "{{X-IBM-Client-Secret}}",
+								"type": "text"
+							},
+							{
+								"key": "Signature",
+								"value": "{{Signature}}",
+								"type": "text"
+							},
+							{
+								"key": "X-Nordea-Originating-Date",
+								"value": "{{X-Nordea-Originating-Date}}",
+								"type": "text"
+							},
+							{
+								"key": "X-Nordea-Originating-Host",
+								"value": "{{X-Nordea-Originating-Host}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://api.nordeaopenbanking.com/corporate/v1/authentications/bankid_se/{{authentication_id}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"nordeaopenbanking",
+								"com"
+							],
+							"path": [
+								"corporate",
+								"v1",
+								"authentications",
+								"bankid_se",
+								"{{authentication_id}}"
 							]
 						}
 					},
