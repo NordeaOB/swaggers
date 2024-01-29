@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "3fbaafca-a5a4-4072-ac8c-46b1a7f81ea1",
+		"_postman_id": "bd9fd7b7-7a82-4164-af00-742c1bacf57f",
 		"name": "Premium Corporate Access Authorization API with Accounts API and Payments API",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -1137,7 +1137,8 @@
 									"script": {
 										"exec": [
 											"var jsonData = pm.response.json();",
-											"pm.environment.set(\"key_id\", jsonData.response.key_id);"
+											"pm.environment.set(\"key_id\", jsonData.response.key_id);",
+											"pm.environment.set(\"authentication_id\", jsonData.response.authentication_id);"
 										],
 										"type": "text/javascript"
 									}
@@ -1194,6 +1195,12 @@
 										"key": "Authorization",
 										"value": "Bearer {{access_token}}",
 										"type": "text"
+									},
+									{
+										"key": "X-Nordea-Mock-Authorizer-Id",
+										"value": "70311198",
+										"type": "text",
+										"disabled": true
 									}
 								],
 								"body": {
@@ -1396,35 +1403,43 @@
 								"header": [
 									{
 										"key": "Content-Type",
-										"value": "application/json"
+										"value": "application/json",
+										"type": "text"
 									},
 									{
 										"key": "Authorization",
-										"value": "Bearer {{access_token}}"
+										"value": "Bearer {{access_token}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Id",
-										"value": "{{X-IBM-Client-ID}}"
+										"value": "{{X-IBM-Client-ID}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Secret",
-										"value": "{{X-IBM-Client-Secret}}"
+										"value": "{{X-IBM-Client-Secret}}",
+										"type": "text"
 									},
 									{
 										"key": "Signature",
-										"value": "{{Signature}}"
+										"value": "{{Signature}}",
+										"type": "text"
 									},
 									{
 										"key": "Digest",
-										"value": "{{Digest}}"
+										"value": "{{Digest}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Date",
-										"value": "{{X-Nordea-Originating-Date}}"
+										"value": "{{X-Nordea-Originating-Date}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Host",
-										"value": "{{X-Nordea-Originating-Host}}"
+										"value": "{{X-Nordea-Originating-Host}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Signing-Key",
@@ -1434,7 +1449,14 @@
 									{
 										"key": "X-Response-Scenarios",
 										"value": "paymentVerificationRequired",
-										"type": "text"
+										"type": "text",
+										"disabled": true
+									},
+									{
+										"key": "X-Nordea-Mock-Authorizer-Id",
+										"value": "70311198",
+										"type": "text",
+										"disabled": true
 									}
 								],
 								"body": {
@@ -1478,40 +1500,54 @@
 								"header": [
 									{
 										"key": "Content-Type",
-										"value": "application/json"
+										"value": "application/json",
+										"type": "text"
 									},
 									{
 										"key": "Authorization",
-										"value": "Bearer {{access_token}}"
+										"value": "Bearer {{access_token}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Id",
-										"value": "{{X-IBM-Client-ID}}"
+										"value": "{{X-IBM-Client-ID}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Secret",
-										"value": "{{X-IBM-Client-Secret}}"
+										"value": "{{X-IBM-Client-Secret}}",
+										"type": "text"
 									},
 									{
 										"key": "Signature",
-										"value": "{{Signature}}"
+										"value": "{{Signature}}",
+										"type": "text"
 									},
 									{
 										"key": "Digest",
-										"value": "{{Digest}}"
+										"value": "{{Digest}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Date",
-										"value": "{{X-Nordea-Originating-Date}}"
+										"value": "{{X-Nordea-Originating-Date}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Host",
-										"value": "{{X-Nordea-Originating-Host}}"
+										"value": "{{X-Nordea-Originating-Host}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Signing-Key",
 										"value": "{{key}}",
 										"type": "text"
+									},
+									{
+										"key": "X-Response-Scenarios",
+										"value": "paymentVerificationRequired",
+										"type": "text",
+										"disabled": true
 									}
 								],
 								"body": {
@@ -1555,40 +1591,54 @@
 								"header": [
 									{
 										"key": "Content-Type",
-										"value": "application/json"
+										"value": "application/json",
+										"type": "text"
 									},
 									{
 										"key": "Authorization",
-										"value": "Bearer {{access_token}}"
+										"value": "Bearer {{access_token}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Id",
-										"value": "{{X-IBM-Client-ID}}"
+										"value": "{{X-IBM-Client-ID}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Secret",
-										"value": "{{X-IBM-Client-Secret}}"
+										"value": "{{X-IBM-Client-Secret}}",
+										"type": "text"
 									},
 									{
 										"key": "Signature",
-										"value": "{{Signature}}"
+										"value": "{{Signature}}",
+										"type": "text"
 									},
 									{
 										"key": "Digest",
-										"value": "{{Digest}}"
+										"value": "{{Digest}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Date",
-										"value": "{{X-Nordea-Originating-Date}}"
+										"value": "{{X-Nordea-Originating-Date}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Host",
-										"value": "{{X-Nordea-Originating-Host}}"
+										"value": "{{X-Nordea-Originating-Host}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Signing-Key",
 										"value": "{{key}}",
 										"type": "text"
+									},
+									{
+										"key": "X-Response-Scenarios",
+										"value": "paymentVerificationRequired",
+										"type": "text",
+										"disabled": true
 									}
 								],
 								"body": {
@@ -1632,40 +1682,54 @@
 								"header": [
 									{
 										"key": "Content-Type",
-										"value": "application/json"
+										"value": "application/json",
+										"type": "text"
 									},
 									{
 										"key": "Authorization",
-										"value": "Bearer {{access_token}}"
+										"value": "Bearer {{access_token}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Id",
-										"value": "{{X-IBM-Client-ID}}"
+										"value": "{{X-IBM-Client-ID}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Secret",
-										"value": "{{X-IBM-Client-Secret}}"
+										"value": "{{X-IBM-Client-Secret}}",
+										"type": "text"
 									},
 									{
 										"key": "Signature",
-										"value": "{{Signature}}"
+										"value": "{{Signature}}",
+										"type": "text"
 									},
 									{
 										"key": "Digest",
-										"value": "{{Digest}}"
+										"value": "{{Digest}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Date",
-										"value": "{{X-Nordea-Originating-Date}}"
+										"value": "{{X-Nordea-Originating-Date}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Host",
-										"value": "{{X-Nordea-Originating-Host}}"
+										"value": "{{X-Nordea-Originating-Host}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Signing-Key",
 										"value": "{{key}}",
 										"type": "text"
+									},
+									{
+										"key": "X-Response-Scenarios",
+										"value": "paymentVerificationRequired",
+										"type": "text",
+										"disabled": true
 									}
 								],
 								"body": {
@@ -1709,40 +1773,54 @@
 								"header": [
 									{
 										"key": "Content-Type",
-										"value": "application/json"
+										"value": "application/json",
+										"type": "text"
 									},
 									{
 										"key": "Authorization",
-										"value": "Bearer {{access_token}}"
+										"value": "Bearer {{access_token}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Id",
-										"value": "{{X-IBM-Client-ID}}"
+										"value": "{{X-IBM-Client-ID}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Secret",
-										"value": "{{X-IBM-Client-Secret}}"
+										"value": "{{X-IBM-Client-Secret}}",
+										"type": "text"
 									},
 									{
 										"key": "Signature",
-										"value": "{{Signature}}"
+										"value": "{{Signature}}",
+										"type": "text"
 									},
 									{
 										"key": "Digest",
-										"value": "{{Digest}}"
+										"value": "{{Digest}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Date",
-										"value": "{{X-Nordea-Originating-Date}}"
+										"value": "{{X-Nordea-Originating-Date}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Host",
-										"value": "{{X-Nordea-Originating-Host}}"
+										"value": "{{X-Nordea-Originating-Host}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Signing-Key",
 										"value": "{{key}}",
 										"type": "text"
+									},
+									{
+										"key": "X-Response-Scenarios",
+										"value": "paymentVerificationRequired",
+										"type": "text",
+										"disabled": true
 									}
 								],
 								"body": {
@@ -1786,40 +1864,54 @@
 								"header": [
 									{
 										"key": "Content-Type",
-										"value": "application/json"
+										"value": "application/json",
+										"type": "text"
 									},
 									{
 										"key": "Authorization",
-										"value": "Bearer {{access_token}}"
+										"value": "Bearer {{access_token}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Id",
-										"value": "{{X-IBM-Client-ID}}"
+										"value": "{{X-IBM-Client-ID}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Secret",
-										"value": "{{X-IBM-Client-Secret}}"
+										"value": "{{X-IBM-Client-Secret}}",
+										"type": "text"
 									},
 									{
 										"key": "Signature",
-										"value": "{{Signature}}"
+										"value": "{{Signature}}",
+										"type": "text"
 									},
 									{
 										"key": "Digest",
-										"value": "{{Digest}}"
+										"value": "{{Digest}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Date",
-										"value": "{{X-Nordea-Originating-Date}}"
+										"value": "{{X-Nordea-Originating-Date}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Host",
-										"value": "{{X-Nordea-Originating-Host}}"
+										"value": "{{X-Nordea-Originating-Host}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Signing-Key",
 										"value": "{{key}}",
 										"type": "text"
+									},
+									{
+										"key": "X-Response-Scenarios",
+										"value": "paymentVerificationRequired",
+										"type": "text",
+										"disabled": true
 									}
 								],
 								"body": {
@@ -1863,40 +1955,54 @@
 								"header": [
 									{
 										"key": "Content-Type",
-										"value": "application/json"
+										"value": "application/json",
+										"type": "text"
 									},
 									{
 										"key": "Authorization",
-										"value": "Bearer {{access_token}}"
+										"value": "Bearer {{access_token}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Id",
-										"value": "{{X-IBM-Client-ID}}"
+										"value": "{{X-IBM-Client-ID}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Secret",
-										"value": "{{X-IBM-Client-Secret}}"
+										"value": "{{X-IBM-Client-Secret}}",
+										"type": "text"
 									},
 									{
 										"key": "Signature",
-										"value": "{{Signature}}"
+										"value": "{{Signature}}",
+										"type": "text"
 									},
 									{
 										"key": "Digest",
-										"value": "{{Digest}}"
+										"value": "{{Digest}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Date",
-										"value": "{{X-Nordea-Originating-Date}}"
+										"value": "{{X-Nordea-Originating-Date}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Host",
-										"value": "{{X-Nordea-Originating-Host}}"
+										"value": "{{X-Nordea-Originating-Host}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Signing-Key",
 										"value": "{{key}}",
 										"type": "text"
+									},
+									{
+										"key": "X-Response-Scenarios",
+										"value": "paymentVerificationRequired",
+										"type": "text",
+										"disabled": true
 									}
 								],
 								"body": {
@@ -1940,40 +2046,54 @@
 								"header": [
 									{
 										"key": "Content-Type",
-										"value": "application/json"
+										"value": "application/json",
+										"type": "text"
 									},
 									{
 										"key": "Authorization",
-										"value": "Bearer {{access_token}}"
+										"value": "Bearer {{access_token}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Id",
-										"value": "{{X-IBM-Client-ID}}"
+										"value": "{{X-IBM-Client-ID}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Secret",
-										"value": "{{X-IBM-Client-Secret}}"
+										"value": "{{X-IBM-Client-Secret}}",
+										"type": "text"
 									},
 									{
 										"key": "Signature",
-										"value": "{{Signature}}"
+										"value": "{{Signature}}",
+										"type": "text"
 									},
 									{
 										"key": "Digest",
-										"value": "{{Digest}}"
+										"value": "{{Digest}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Date",
-										"value": "{{X-Nordea-Originating-Date}}"
+										"value": "{{X-Nordea-Originating-Date}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Host",
-										"value": "{{X-Nordea-Originating-Host}}"
+										"value": "{{X-Nordea-Originating-Host}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Signing-Key",
 										"value": "{{key}}",
 										"type": "text"
+									},
+									{
+										"key": "X-Response-Scenarios",
+										"value": "paymentVerificationRequired",
+										"type": "text",
+										"disabled": true
 									}
 								],
 								"body": {
@@ -2017,40 +2137,54 @@
 								"header": [
 									{
 										"key": "Content-Type",
-										"value": "application/json"
+										"value": "application/json",
+										"type": "text"
 									},
 									{
 										"key": "Authorization",
-										"value": "Bearer {{access_token}}"
+										"value": "Bearer {{access_token}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Id",
-										"value": "{{X-IBM-Client-ID}}"
+										"value": "{{X-IBM-Client-ID}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Secret",
-										"value": "{{X-IBM-Client-Secret}}"
+										"value": "{{X-IBM-Client-Secret}}",
+										"type": "text"
 									},
 									{
 										"key": "Signature",
-										"value": "{{Signature}}"
+										"value": "{{Signature}}",
+										"type": "text"
 									},
 									{
 										"key": "Digest",
-										"value": "{{Digest}}"
+										"value": "{{Digest}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Date",
-										"value": "{{X-Nordea-Originating-Date}}"
+										"value": "{{X-Nordea-Originating-Date}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Host",
-										"value": "{{X-Nordea-Originating-Host}}"
+										"value": "{{X-Nordea-Originating-Host}}",
+										"type": "text"
 									},
 									{
-										"key": "X-Mocked-Components",
-										"value": "mocked-mta",
+										"key": "X-Nordea-Signing-Key",
+										"value": "{{key}}",
 										"type": "text"
+									},
+									{
+										"key": "X-Response-Scenarios",
+										"value": "paymentVerificationRequired",
+										"type": "text",
+										"disabled": true
 									}
 								],
 								"body": {
@@ -2099,40 +2233,54 @@
 								"header": [
 									{
 										"key": "Content-Type",
-										"value": "application/json"
+										"value": "application/json",
+										"type": "text"
 									},
 									{
 										"key": "Authorization",
-										"value": "Bearer {{access_token}}"
+										"value": "Bearer {{access_token}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Id",
-										"value": "{{X-IBM-Client-ID}}"
+										"value": "{{X-IBM-Client-ID}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Secret",
-										"value": "{{X-IBM-Client-Secret}}"
+										"value": "{{X-IBM-Client-Secret}}",
+										"type": "text"
 									},
 									{
 										"key": "Signature",
-										"value": "{{Signature}}"
+										"value": "{{Signature}}",
+										"type": "text"
 									},
 									{
 										"key": "Digest",
-										"value": "{{Digest}}"
+										"value": "{{Digest}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Date",
-										"value": "{{X-Nordea-Originating-Date}}"
+										"value": "{{X-Nordea-Originating-Date}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Host",
-										"value": "{{X-Nordea-Originating-Host}}"
+										"value": "{{X-Nordea-Originating-Host}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Signing-Key",
 										"value": "{{key}}",
 										"type": "text"
+									},
+									{
+										"key": "X-Response-Scenarios",
+										"value": "paymentVerificationRequired",
+										"type": "text",
+										"disabled": true
 									}
 								],
 								"body": {
@@ -2176,40 +2324,54 @@
 								"header": [
 									{
 										"key": "Content-Type",
-										"value": "application/json"
+										"value": "application/json",
+										"type": "text"
 									},
 									{
 										"key": "Authorization",
-										"value": "Bearer {{access_token}}"
+										"value": "Bearer {{access_token}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Id",
-										"value": "{{X-IBM-Client-ID}}"
+										"value": "{{X-IBM-Client-ID}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Secret",
-										"value": "{{X-IBM-Client-Secret}}"
+										"value": "{{X-IBM-Client-Secret}}",
+										"type": "text"
 									},
 									{
 										"key": "Signature",
-										"value": "{{Signature}}"
+										"value": "{{Signature}}",
+										"type": "text"
 									},
 									{
 										"key": "Digest",
-										"value": "{{Digest}}"
+										"value": "{{Digest}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Date",
-										"value": "{{X-Nordea-Originating-Date}}"
+										"value": "{{X-Nordea-Originating-Date}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Host",
-										"value": "{{X-Nordea-Originating-Host}}"
+										"value": "{{X-Nordea-Originating-Host}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Signing-Key",
 										"value": "{{key}}",
 										"type": "text"
+									},
+									{
+										"key": "X-Response-Scenarios",
+										"value": "paymentVerificationRequired",
+										"type": "text",
+										"disabled": true
 									}
 								],
 								"body": {
@@ -2253,40 +2415,54 @@
 								"header": [
 									{
 										"key": "Content-Type",
-										"value": "application/json"
+										"value": "application/json",
+										"type": "text"
 									},
 									{
 										"key": "Authorization",
-										"value": "Bearer {{access_token}}"
+										"value": "Bearer {{access_token}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Id",
-										"value": "{{X-IBM-Client-ID}}"
+										"value": "{{X-IBM-Client-ID}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Secret",
-										"value": "{{X-IBM-Client-Secret}}"
+										"value": "{{X-IBM-Client-Secret}}",
+										"type": "text"
 									},
 									{
 										"key": "Signature",
-										"value": "{{Signature}}"
+										"value": "{{Signature}}",
+										"type": "text"
 									},
 									{
 										"key": "Digest",
-										"value": "{{Digest}}"
+										"value": "{{Digest}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Date",
-										"value": "{{X-Nordea-Originating-Date}}"
+										"value": "{{X-Nordea-Originating-Date}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Host",
-										"value": "{{X-Nordea-Originating-Host}}"
+										"value": "{{X-Nordea-Originating-Host}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Signing-Key",
 										"value": "{{key}}",
 										"type": "text"
+									},
+									{
+										"key": "X-Response-Scenarios",
+										"value": "paymentVerificationRequired",
+										"type": "text",
+										"disabled": true
 									}
 								],
 								"body": {
@@ -2330,40 +2506,54 @@
 								"header": [
 									{
 										"key": "Content-Type",
-										"value": "application/json"
+										"value": "application/json",
+										"type": "text"
 									},
 									{
 										"key": "Authorization",
-										"value": "Bearer {{access_token}}"
+										"value": "Bearer {{access_token}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Id",
-										"value": "{{X-IBM-Client-ID}}"
+										"value": "{{X-IBM-Client-ID}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Secret",
-										"value": "{{X-IBM-Client-Secret}}"
+										"value": "{{X-IBM-Client-Secret}}",
+										"type": "text"
 									},
 									{
 										"key": "Signature",
-										"value": "{{Signature}}"
+										"value": "{{Signature}}",
+										"type": "text"
 									},
 									{
 										"key": "Digest",
-										"value": "{{Digest}}"
+										"value": "{{Digest}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Date",
-										"value": "{{X-Nordea-Originating-Date}}"
+										"value": "{{X-Nordea-Originating-Date}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Host",
-										"value": "{{X-Nordea-Originating-Host}}"
+										"value": "{{X-Nordea-Originating-Host}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Signing-Key",
 										"value": "{{key}}",
 										"type": "text"
+									},
+									{
+										"key": "X-Response-Scenarios",
+										"value": "paymentVerificationRequired",
+										"type": "text",
+										"disabled": true
 									}
 								],
 								"body": {
@@ -2407,40 +2597,54 @@
 								"header": [
 									{
 										"key": "Content-Type",
-										"value": "application/json"
+										"value": "application/json",
+										"type": "text"
 									},
 									{
 										"key": "Authorization",
-										"value": "Bearer {{access_token}}"
+										"value": "Bearer {{access_token}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Id",
-										"value": "{{X-IBM-Client-ID}}"
+										"value": "{{X-IBM-Client-ID}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Secret",
-										"value": "{{X-IBM-Client-Secret}}"
+										"value": "{{X-IBM-Client-Secret}}",
+										"type": "text"
 									},
 									{
 										"key": "Signature",
-										"value": "{{Signature}}"
+										"value": "{{Signature}}",
+										"type": "text"
 									},
 									{
 										"key": "Digest",
-										"value": "{{Digest}}"
+										"value": "{{Digest}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Date",
-										"value": "{{X-Nordea-Originating-Date}}"
+										"value": "{{X-Nordea-Originating-Date}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Host",
-										"value": "{{X-Nordea-Originating-Host}}"
+										"value": "{{X-Nordea-Originating-Host}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Signing-Key",
 										"value": "{{key}}",
 										"type": "text"
+									},
+									{
+										"key": "X-Response-Scenarios",
+										"value": "paymentVerificationRequired",
+										"type": "text",
+										"disabled": true
 									}
 								],
 								"body": {
@@ -2484,40 +2688,54 @@
 								"header": [
 									{
 										"key": "Content-Type",
-										"value": "application/json"
+										"value": "application/json",
+										"type": "text"
 									},
 									{
 										"key": "Authorization",
-										"value": "Bearer {{access_token}}"
+										"value": "Bearer {{access_token}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Id",
-										"value": "{{X-IBM-Client-ID}}"
+										"value": "{{X-IBM-Client-ID}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Secret",
-										"value": "{{X-IBM-Client-Secret}}"
+										"value": "{{X-IBM-Client-Secret}}",
+										"type": "text"
 									},
 									{
 										"key": "Signature",
-										"value": "{{Signature}}"
+										"value": "{{Signature}}",
+										"type": "text"
 									},
 									{
 										"key": "Digest",
-										"value": "{{Digest}}"
+										"value": "{{Digest}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Date",
-										"value": "{{X-Nordea-Originating-Date}}"
+										"value": "{{X-Nordea-Originating-Date}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Host",
-										"value": "{{X-Nordea-Originating-Host}}"
+										"value": "{{X-Nordea-Originating-Host}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Signing-Key",
 										"value": "{{key}}",
 										"type": "text"
+									},
+									{
+										"key": "X-Response-Scenarios",
+										"value": "paymentVerificationRequired",
+										"type": "text",
+										"disabled": true
 									}
 								],
 								"body": {
@@ -2561,40 +2779,54 @@
 								"header": [
 									{
 										"key": "Content-Type",
-										"value": "application/json"
+										"value": "application/json",
+										"type": "text"
 									},
 									{
 										"key": "Authorization",
-										"value": "Bearer {{access_token}}"
+										"value": "Bearer {{access_token}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Id",
-										"value": "{{X-IBM-Client-ID}}"
+										"value": "{{X-IBM-Client-ID}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Secret",
-										"value": "{{X-IBM-Client-Secret}}"
+										"value": "{{X-IBM-Client-Secret}}",
+										"type": "text"
 									},
 									{
 										"key": "Signature",
-										"value": "{{Signature}}"
+										"value": "{{Signature}}",
+										"type": "text"
 									},
 									{
 										"key": "Digest",
-										"value": "{{Digest}}"
+										"value": "{{Digest}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Date",
-										"value": "{{X-Nordea-Originating-Date}}"
+										"value": "{{X-Nordea-Originating-Date}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Host",
-										"value": "{{X-Nordea-Originating-Host}}"
+										"value": "{{X-Nordea-Originating-Host}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Signing-Key",
 										"value": "{{key}}",
 										"type": "text"
+									},
+									{
+										"key": "X-Response-Scenarios",
+										"value": "paymentVerificationRequired",
+										"type": "text",
+										"disabled": true
 									}
 								],
 								"body": {
@@ -2638,40 +2870,54 @@
 								"header": [
 									{
 										"key": "Content-Type",
-										"value": "application/json"
+										"value": "application/json",
+										"type": "text"
 									},
 									{
 										"key": "Authorization",
-										"value": "Bearer {{access_token}}"
+										"value": "Bearer {{access_token}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Id",
-										"value": "{{X-IBM-Client-ID}}"
+										"value": "{{X-IBM-Client-ID}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Secret",
-										"value": "{{X-IBM-Client-Secret}}"
+										"value": "{{X-IBM-Client-Secret}}",
+										"type": "text"
 									},
 									{
 										"key": "Signature",
-										"value": "{{Signature}}"
+										"value": "{{Signature}}",
+										"type": "text"
 									},
 									{
 										"key": "Digest",
-										"value": "{{Digest}}"
+										"value": "{{Digest}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Date",
-										"value": "{{X-Nordea-Originating-Date}}"
+										"value": "{{X-Nordea-Originating-Date}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Host",
-										"value": "{{X-Nordea-Originating-Host}}"
+										"value": "{{X-Nordea-Originating-Host}}",
+										"type": "text"
 									},
 									{
-										"key": "X-Mocked-Components",
-										"value": "mocked-mta",
+										"key": "X-Nordea-Signing-Key",
+										"value": "{{key}}",
 										"type": "text"
+									},
+									{
+										"key": "X-Response-Scenarios",
+										"value": "paymentVerificationRequired",
+										"type": "text",
+										"disabled": true
 									}
 								],
 								"body": {
@@ -2720,40 +2966,54 @@
 								"header": [
 									{
 										"key": "Content-Type",
-										"value": "application/json"
+										"value": "application/json",
+										"type": "text"
 									},
 									{
 										"key": "Authorization",
-										"value": "Bearer {{access_token}}"
+										"value": "Bearer {{access_token}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Id",
-										"value": "{{X-IBM-Client-ID}}"
+										"value": "{{X-IBM-Client-ID}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Secret",
-										"value": "{{X-IBM-Client-Secret}}"
+										"value": "{{X-IBM-Client-Secret}}",
+										"type": "text"
 									},
 									{
 										"key": "Signature",
-										"value": "{{Signature}}"
+										"value": "{{Signature}}",
+										"type": "text"
 									},
 									{
 										"key": "Digest",
-										"value": "{{Digest}}"
+										"value": "{{Digest}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Date",
-										"value": "{{X-Nordea-Originating-Date}}"
+										"value": "{{X-Nordea-Originating-Date}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Host",
-										"value": "{{X-Nordea-Originating-Host}}"
+										"value": "{{X-Nordea-Originating-Host}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Signing-Key",
 										"value": "{{key}}",
 										"type": "text"
+									},
+									{
+										"key": "X-Response-Scenarios",
+										"value": "paymentVerificationRequired",
+										"type": "text",
+										"disabled": true
 									}
 								],
 								"body": {
@@ -2807,48 +3067,54 @@
 								"header": [
 									{
 										"key": "Content-Type",
-										"type": "text",
-										"value": "application/json"
+										"value": "application/json",
+										"type": "text"
 									},
 									{
 										"key": "Authorization",
-										"type": "text",
-										"value": "Bearer {{access_token}}"
+										"value": "Bearer {{access_token}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Id",
-										"type": "text",
-										"value": "{{X-IBM-Client-ID}}"
+										"value": "{{X-IBM-Client-ID}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Secret",
-										"type": "text",
-										"value": "{{X-IBM-Client-Secret}}"
+										"value": "{{X-IBM-Client-Secret}}",
+										"type": "text"
 									},
 									{
 										"key": "Signature",
-										"type": "text",
-										"value": "{{Signature}}"
+										"value": "{{Signature}}",
+										"type": "text"
 									},
 									{
 										"key": "Digest",
-										"type": "text",
-										"value": "{{Digest}}"
+										"value": "{{Digest}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Date",
-										"type": "text",
-										"value": "{{X-Nordea-Originating-Date}}"
+										"value": "{{X-Nordea-Originating-Date}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Host",
-										"type": "text",
-										"value": "{{X-Nordea-Originating-Host}}"
+										"value": "{{X-Nordea-Originating-Host}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Signing-Key",
 										"value": "{{key}}",
 										"type": "text"
+									},
+									{
+										"key": "X-Response-Scenarios",
+										"value": "paymentVerificationRequired",
+										"type": "text",
+										"disabled": true
 									}
 								],
 								"body": {
@@ -2944,6 +3210,12 @@
 										"key": "X-Nordea-Signing-Key",
 										"value": "{{key}}",
 										"type": "text"
+									},
+									{
+										"key": "X-Response-Scenarios",
+										"value": "paymentVerificationRequired",
+										"type": "text",
+										"disabled": true
 									}
 								],
 								"body": {
@@ -2987,40 +3259,54 @@
 								"header": [
 									{
 										"key": "Content-Type",
-										"value": "application/json"
+										"value": "application/json",
+										"type": "text"
 									},
 									{
 										"key": "Authorization",
-										"value": "Bearer {{access_token}}"
+										"value": "Bearer {{access_token}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Id",
-										"value": "{{X-IBM-Client-ID}}"
+										"value": "{{X-IBM-Client-ID}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Secret",
-										"value": "{{X-IBM-Client-Secret}}"
+										"value": "{{X-IBM-Client-Secret}}",
+										"type": "text"
 									},
 									{
 										"key": "Signature",
-										"value": "{{Signature}}"
+										"value": "{{Signature}}",
+										"type": "text"
 									},
 									{
 										"key": "Digest",
-										"value": "{{Digest}}"
+										"value": "{{Digest}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Date",
-										"value": "{{X-Nordea-Originating-Date}}"
+										"value": "{{X-Nordea-Originating-Date}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Host",
-										"value": "{{X-Nordea-Originating-Host}}"
+										"value": "{{X-Nordea-Originating-Host}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Signing-Key",
 										"value": "{{key}}",
 										"type": "text"
+									},
+									{
+										"key": "X-Response-Scenarios",
+										"value": "paymentVerificationRequired",
+										"type": "text",
+										"disabled": true
 									}
 								],
 								"body": {
@@ -3064,40 +3350,54 @@
 								"header": [
 									{
 										"key": "Content-Type",
-										"value": "application/json"
+										"value": "application/json",
+										"type": "text"
 									},
 									{
 										"key": "Authorization",
-										"value": "Bearer {{access_token}}"
+										"value": "Bearer {{access_token}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Id",
-										"value": "{{X-IBM-Client-ID}}"
+										"value": "{{X-IBM-Client-ID}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Secret",
-										"value": "{{X-IBM-Client-Secret}}"
+										"value": "{{X-IBM-Client-Secret}}",
+										"type": "text"
 									},
 									{
 										"key": "Signature",
-										"value": "{{Signature}}"
+										"value": "{{Signature}}",
+										"type": "text"
 									},
 									{
 										"key": "Digest",
-										"value": "{{Digest}}"
+										"value": "{{Digest}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Date",
-										"value": "{{X-Nordea-Originating-Date}}"
+										"value": "{{X-Nordea-Originating-Date}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Host",
-										"value": "{{X-Nordea-Originating-Host}}"
+										"value": "{{X-Nordea-Originating-Host}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Signing-Key",
 										"value": "{{key}}",
 										"type": "text"
+									},
+									{
+										"key": "X-Response-Scenarios",
+										"value": "paymentVerificationRequired",
+										"type": "text",
+										"disabled": true
 									}
 								],
 								"body": {
@@ -3141,40 +3441,54 @@
 								"header": [
 									{
 										"key": "Content-Type",
-										"value": "application/json"
+										"value": "application/json",
+										"type": "text"
 									},
 									{
 										"key": "Authorization",
-										"value": "Bearer {{access_token}}"
+										"value": "Bearer {{access_token}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Id",
-										"value": "{{X-IBM-Client-ID}}"
+										"value": "{{X-IBM-Client-ID}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Secret",
-										"value": "{{X-IBM-Client-Secret}}"
+										"value": "{{X-IBM-Client-Secret}}",
+										"type": "text"
 									},
 									{
 										"key": "Signature",
-										"value": "{{Signature}}"
+										"value": "{{Signature}}",
+										"type": "text"
 									},
 									{
 										"key": "Digest",
-										"value": "{{Digest}}"
+										"value": "{{Digest}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Date",
-										"value": "{{X-Nordea-Originating-Date}}"
+										"value": "{{X-Nordea-Originating-Date}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Host",
-										"value": "{{X-Nordea-Originating-Host}}"
+										"value": "{{X-Nordea-Originating-Host}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Signing-Key",
 										"value": "{{key}}",
 										"type": "text"
+									},
+									{
+										"key": "X-Response-Scenarios",
+										"value": "paymentVerificationRequired",
+										"type": "text",
+										"disabled": true
 									}
 								],
 								"body": {
@@ -3260,6 +3574,12 @@
 										"key": "X-Nordea-Signing-Key",
 										"value": "{{key}}",
 										"type": "text"
+									},
+									{
+										"key": "X-Response-Scenarios",
+										"value": "paymentVerificationRequired",
+										"type": "text",
+										"disabled": true
 									}
 								],
 								"body": {
@@ -3345,6 +3665,12 @@
 										"key": "X-Nordea-Signing-Key",
 										"value": "{{key}}",
 										"type": "text"
+									},
+									{
+										"key": "X-Response-Scenarios",
+										"value": "paymentVerificationRequired",
+										"type": "text",
+										"disabled": true
 									}
 								],
 								"body": {
@@ -3430,6 +3756,12 @@
 										"key": "X-Nordea-Signing-Key",
 										"value": "{{key}}",
 										"type": "text"
+									},
+									{
+										"key": "X-Response-Scenarios",
+										"value": "paymentVerificationRequired",
+										"type": "text",
+										"disabled": true
 									}
 								],
 								"body": {
@@ -3473,40 +3805,54 @@
 								"header": [
 									{
 										"key": "Content-Type",
-										"value": "application/json"
+										"value": "application/json",
+										"type": "text"
 									},
 									{
 										"key": "Authorization",
-										"value": "Bearer {{access_token}}"
+										"value": "Bearer {{access_token}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Id",
-										"value": "{{X-IBM-Client-ID}}"
+										"value": "{{X-IBM-Client-ID}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Secret",
-										"value": "{{X-IBM-Client-Secret}}"
+										"value": "{{X-IBM-Client-Secret}}",
+										"type": "text"
 									},
 									{
 										"key": "Signature",
-										"value": "{{Signature}}"
+										"value": "{{Signature}}",
+										"type": "text"
 									},
 									{
 										"key": "Digest",
-										"value": "{{Digest}}"
+										"value": "{{Digest}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Date",
-										"value": "{{X-Nordea-Originating-Date}}"
+										"value": "{{X-Nordea-Originating-Date}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Host",
-										"value": "{{X-Nordea-Originating-Host}}"
+										"value": "{{X-Nordea-Originating-Host}}",
+										"type": "text"
 									},
 									{
-										"key": "X-Mocked-Components",
-										"value": "mocked-mta",
+										"key": "X-Nordea-Signing-Key",
+										"value": "{{key}}",
 										"type": "text"
+									},
+									{
+										"key": "X-Response-Scenarios",
+										"value": "paymentVerificationRequired",
+										"type": "text",
+										"disabled": true
 									}
 								],
 								"body": {
@@ -3555,40 +3901,54 @@
 								"header": [
 									{
 										"key": "Content-Type",
-										"value": "application/json"
+										"value": "application/json",
+										"type": "text"
 									},
 									{
 										"key": "Authorization",
-										"value": "Bearer {{access_token}}"
+										"value": "Bearer {{access_token}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Id",
-										"value": "{{X-IBM-Client-ID}}"
+										"value": "{{X-IBM-Client-ID}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Secret",
-										"value": "{{X-IBM-Client-Secret}}"
+										"value": "{{X-IBM-Client-Secret}}",
+										"type": "text"
 									},
 									{
 										"key": "Signature",
-										"value": "{{Signature}}"
+										"value": "{{Signature}}",
+										"type": "text"
 									},
 									{
 										"key": "Digest",
-										"value": "{{Digest}}"
+										"value": "{{Digest}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Date",
-										"value": "{{X-Nordea-Originating-Date}}"
+										"value": "{{X-Nordea-Originating-Date}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Host",
-										"value": "{{X-Nordea-Originating-Host}}"
+										"value": "{{X-Nordea-Originating-Host}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Signing-Key",
 										"value": "{{key}}",
 										"type": "text"
+									},
+									{
+										"key": "X-Response-Scenarios",
+										"value": "paymentVerificationRequired",
+										"type": "text",
+										"disabled": true
 									}
 								],
 								"body": {
@@ -3642,48 +4002,54 @@
 								"header": [
 									{
 										"key": "Content-Type",
-										"type": "text",
-										"value": "application/json"
+										"value": "application/json",
+										"type": "text"
 									},
 									{
 										"key": "Authorization",
-										"type": "text",
-										"value": "Bearer {{access_token}}"
+										"value": "Bearer {{access_token}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Id",
-										"type": "text",
-										"value": "{{X-IBM-Client-ID}}"
+										"value": "{{X-IBM-Client-ID}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Secret",
-										"type": "text",
-										"value": "{{X-IBM-Client-Secret}}"
+										"value": "{{X-IBM-Client-Secret}}",
+										"type": "text"
 									},
 									{
 										"key": "Signature",
-										"type": "text",
-										"value": "{{Signature}}"
+										"value": "{{Signature}}",
+										"type": "text"
 									},
 									{
 										"key": "Digest",
-										"type": "text",
-										"value": "{{Digest}}"
+										"value": "{{Digest}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Date",
-										"type": "text",
-										"value": "{{X-Nordea-Originating-Date}}"
+										"value": "{{X-Nordea-Originating-Date}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Host",
-										"type": "text",
-										"value": "{{X-Nordea-Originating-Host}}"
+										"value": "{{X-Nordea-Originating-Host}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Signing-Key",
 										"value": "{{key}}",
 										"type": "text"
+									},
+									{
+										"key": "X-Response-Scenarios",
+										"value": "paymentVerificationRequired",
+										"type": "text",
+										"disabled": true
 									}
 								],
 								"body": {
@@ -3727,40 +4093,54 @@
 								"header": [
 									{
 										"key": "Content-Type",
-										"value": "application/json"
+										"value": "application/json",
+										"type": "text"
 									},
 									{
 										"key": "Authorization",
-										"value": "Bearer {{access_token}}"
+										"value": "Bearer {{access_token}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Id",
-										"value": "{{X-IBM-Client-ID}}"
+										"value": "{{X-IBM-Client-ID}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Secret",
-										"value": "{{X-IBM-Client-Secret}}"
+										"value": "{{X-IBM-Client-Secret}}",
+										"type": "text"
 									},
 									{
 										"key": "Signature",
-										"value": "{{Signature}}"
+										"value": "{{Signature}}",
+										"type": "text"
 									},
 									{
 										"key": "Digest",
-										"value": "{{Digest}}"
+										"value": "{{Digest}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Date",
-										"value": "{{X-Nordea-Originating-Date}}"
+										"value": "{{X-Nordea-Originating-Date}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Host",
-										"value": "{{X-Nordea-Originating-Host}}"
+										"value": "{{X-Nordea-Originating-Host}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Signing-Key",
 										"value": "{{key}}",
 										"type": "text"
+									},
+									{
+										"key": "X-Response-Scenarios",
+										"value": "paymentVerificationRequired",
+										"type": "text",
+										"disabled": true
 									}
 								],
 								"body": {
@@ -3846,6 +4226,12 @@
 										"key": "X-Nordea-Signing-Key",
 										"value": "{{key}}",
 										"type": "text"
+									},
+									{
+										"key": "X-Response-Scenarios",
+										"value": "paymentVerificationRequired",
+										"type": "text",
+										"disabled": true
 									}
 								],
 								"body": {
@@ -3889,40 +4275,54 @@
 								"header": [
 									{
 										"key": "Content-Type",
-										"value": "application/json"
+										"value": "application/json",
+										"type": "text"
 									},
 									{
 										"key": "Authorization",
-										"value": "Bearer {{access_token}}"
+										"value": "Bearer {{access_token}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Id",
-										"value": "{{X-IBM-Client-ID}}"
+										"value": "{{X-IBM-Client-ID}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Secret",
-										"value": "{{X-IBM-Client-Secret}}"
+										"value": "{{X-IBM-Client-Secret}}",
+										"type": "text"
 									},
 									{
 										"key": "Signature",
-										"value": "{{Signature}}"
+										"value": "{{Signature}}",
+										"type": "text"
 									},
 									{
 										"key": "Digest",
-										"value": "{{Digest}}"
+										"value": "{{Digest}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Date",
-										"value": "{{X-Nordea-Originating-Date}}"
+										"value": "{{X-Nordea-Originating-Date}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Host",
-										"value": "{{X-Nordea-Originating-Host}}"
+										"value": "{{X-Nordea-Originating-Host}}",
+										"type": "text"
 									},
 									{
-										"key": "X-Mocked-Components",
-										"value": "mocked-mta",
+										"key": "X-Nordea-Signing-Key",
+										"value": "{{key}}",
 										"type": "text"
+									},
+									{
+										"key": "X-Response-Scenarios",
+										"value": "paymentVerificationRequired",
+										"type": "text",
+										"disabled": true
 									}
 								],
 								"body": {
@@ -3971,40 +4371,54 @@
 								"header": [
 									{
 										"key": "Content-Type",
-										"value": "application/json"
+										"value": "application/json",
+										"type": "text"
 									},
 									{
 										"key": "Authorization",
-										"value": "Bearer {{access_token}}"
+										"value": "Bearer {{access_token}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Id",
-										"value": "{{X-IBM-Client-ID}}"
+										"value": "{{X-IBM-Client-ID}}",
+										"type": "text"
 									},
 									{
 										"key": "X-IBM-Client-Secret",
-										"value": "{{X-IBM-Client-Secret}}"
+										"value": "{{X-IBM-Client-Secret}}",
+										"type": "text"
 									},
 									{
 										"key": "Signature",
-										"value": "{{Signature}}"
+										"value": "{{Signature}}",
+										"type": "text"
 									},
 									{
 										"key": "Digest",
-										"value": "{{Digest}}"
+										"value": "{{Digest}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Date",
-										"value": "{{X-Nordea-Originating-Date}}"
+										"value": "{{X-Nordea-Originating-Date}}",
+										"type": "text"
 									},
 									{
 										"key": "X-Nordea-Originating-Host",
-										"value": "{{X-Nordea-Originating-Host}}"
+										"value": "{{X-Nordea-Originating-Host}}",
+										"type": "text"
 									},
 									{
-										"key": "X-Mocked-Components",
-										"value": "mocked-mta",
+										"key": "X-Nordea-Signing-Key",
+										"value": "{{key}}",
 										"type": "text"
+									},
+									{
+										"key": "X-Response-Scenarios",
+										"value": "paymentVerificationRequired",
+										"type": "text",
+										"disabled": true
 									}
 								],
 								"body": {
@@ -4101,40 +4515,47 @@
 						"header": [
 							{
 								"key": "Content-Type",
-								"value": "application/json"
+								"value": "application/json",
+								"type": "text"
 							},
 							{
 								"key": "Authorization",
-								"value": "Bearer {{access_token}}"
+								"value": "Bearer {{access_token}}",
+								"type": "text"
 							},
 							{
 								"key": "X-IBM-Client-Id",
-								"value": "{{X-IBM-Client-ID}}"
+								"value": "{{X-IBM-Client-ID}}",
+								"type": "text"
 							},
 							{
 								"key": "X-IBM-Client-Secret",
-								"value": "{{X-IBM-Client-Secret}}"
+								"value": "{{X-IBM-Client-Secret}}",
+								"type": "text"
 							},
 							{
 								"key": "Signature",
-								"value": "{{Signature}}"
-							},
-							{
-								"key": "X-Nordea-Originating-Date",
-								"value": "{{X-Nordea-Originating-Date}}"
-							},
-							{
-								"key": "X-Nordea-Originating-Host",
-								"value": "{{X-Nordea-Originating-Host}}"
-							},
-							{
-								"key": "X-Nordea-Signing-Key",
-								"value": "{{key}}",
+								"value": "{{Signature}}",
 								"type": "text"
 							},
 							{
 								"key": "Digest",
 								"value": "{{Digest}}",
+								"type": "text"
+							},
+							{
+								"key": "X-Nordea-Originating-Date",
+								"value": "{{X-Nordea-Originating-Date}}",
+								"type": "text"
+							},
+							{
+								"key": "X-Nordea-Originating-Host",
+								"value": "{{X-Nordea-Originating-Host}}",
+								"type": "text"
+							},
+							{
+								"key": "X-Nordea-Signing-Key",
+								"value": "{{key}}",
 								"type": "text"
 							}
 						],
@@ -4231,31 +4652,43 @@
 						"header": [
 							{
 								"key": "Content-Type",
-								"value": "application/json"
+								"value": "application/json",
+								"type": "text"
 							},
 							{
 								"key": "Authorization",
-								"value": "Bearer {{access_token}}"
+								"value": "Bearer {{access_token}}",
+								"type": "text"
 							},
 							{
 								"key": "X-IBM-Client-Id",
-								"value": "{{X-IBM-Client-ID}}"
+								"value": "{{X-IBM-Client-ID}}",
+								"type": "text"
 							},
 							{
 								"key": "X-IBM-Client-Secret",
-								"value": "{{X-IBM-Client-Secret}}"
+								"value": "{{X-IBM-Client-Secret}}",
+								"type": "text"
 							},
 							{
 								"key": "Signature",
-								"value": "{{Signature}}"
+								"value": "{{Signature}}",
+								"type": "text"
+							},
+							{
+								"key": "Digest",
+								"value": "{{Digest}}",
+								"type": "text"
 							},
 							{
 								"key": "X-Nordea-Originating-Date",
-								"value": "{{X-Nordea-Originating-Date}}"
+								"value": "{{X-Nordea-Originating-Date}}",
+								"type": "text"
 							},
 							{
 								"key": "X-Nordea-Originating-Host",
-								"value": "{{X-Nordea-Originating-Host}}"
+								"value": "{{X-Nordea-Originating-Host}}",
+								"type": "text"
 							},
 							{
 								"key": "X-Nordea-Signing-Key",
@@ -4368,6 +4801,18 @@
 				},
 				{
 					"name": "Verify Payment DECOUPLED",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"pm.environment.set(\"authentication_id\", jsonData.response.authentication_id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [
@@ -4415,6 +4860,12 @@
 								"key": "X-Nordea-Signing-Key",
 								"value": "{{key}}",
 								"type": "text"
+							},
+							{
+								"key": "X-Nordea-Mock-Authorizer-Id",
+								"value": "70311198",
+								"type": "text",
+								"disabled": true
 							}
 						],
 						"body": {
@@ -4572,12 +5023,12 @@
 							],
 							"query": [
 								{
-									"key": "creation_from_timestamp",
+									"key": "creation_from_date",
 									"value": "2020-01-01T00:00:00Z",
 									"disabled": true
 								},
 								{
-									"key": "creation_to_timestamp",
+									"key": "creation_to_date",
 									"value": "2021-04-30T23:59:59",
 									"disabled": true
 								},
@@ -4593,17 +5044,17 @@
 								},
 								{
 									"key": "execution_to_date",
-									"value": "2021-04-30",
+									"value": "2024-01-26",
 									"disabled": true
 								},
 								{
 									"key": "requested_execution_from_date",
-									"value": "2021-01-01",
+									"value": "2020-01-01",
 									"disabled": true
 								},
 								{
 									"key": "requested_execution_to_date",
-									"value": "2021-12-31",
+									"value": "2024-01-26",
 									"disabled": true
 								},
 								{
@@ -4710,6 +5161,56 @@
 								"v2",
 								"payments",
 								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Authentications",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-IBM-Client-Id",
+								"value": "{{X-IBM-Client-ID}}",
+								"type": "text"
+							},
+							{
+								"key": "X-IBM-Client-Secret",
+								"value": "{{X-IBM-Client-Secret}}",
+								"type": "text"
+							},
+							{
+								"key": "Signature",
+								"value": "{{Signature}}",
+								"type": "text"
+							},
+							{
+								"key": "X-Nordea-Originating-Date",
+								"value": "{{X-Nordea-Originating-Date}}",
+								"type": "text"
+							},
+							{
+								"key": "X-Nordea-Originating-Host",
+								"value": "{{X-Nordea-Originating-Host}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://api.nordeaopenbanking.com/corporate/v1/authentications/bankid_se/{{authentication_id}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"nordeaopenbanking",
+								"com"
+							],
+							"path": [
+								"corporate",
+								"v1",
+								"authentications",
+								"bankid_se",
+								"{{authentication_id}}"
 							]
 						}
 					},
