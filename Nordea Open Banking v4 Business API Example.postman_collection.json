@@ -1,8 +1,9 @@
 {
 	"info": {
-		"_postman_id": "67916a24-8df2-409b-a0b6-4e9c8351a143",
+		"_postman_id": "242c28fa-dcf1-464e-993d-3bcb1e4bd778",
 		"name": "Business Internal Nordea Open Banking v4 API Example",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25658097"
 	},
 	"item": [
 		{
@@ -1304,6 +1305,87 @@
 						"body": {
 							"mode": "raw",
 							"raw": "{\n  \"amount\": 1.02,\n  \"creditor\": {\n    \"account\": {\n      \"_type\": \"BBAN_NO\",\n      \"currency\": \"NOK\",\n      \"value\": \"60010503178\"\n    },\n    \"name\": \"Beneficiary name\"\n  },\n  \"currency\": \"NOK\",\n  \"debtor\": {\n    \"account\": {\n      \"_type\": \"BBAN_NO\",\n      \"currency\": \"NOK\",\n      \"value\": \"61735686908\"\n    },\n    \"message\": \"Message for debtor\"\n  },\n  \"external_id\": \"some id\",\n  \"urgency\": \"standard\"\n}"
+						},
+						"url": {
+							"raw": "{{host}}/v4/payments/domestic",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"v4",
+								"payments",
+								"domestic"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "V4 Initiate Payment Domestic with recurrency - NO",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"\r",
+									"postman.setEnvironmentVariable(\"payment_id\", jsonData.response._id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"description": "Json body",
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"description": "Bearer Token",
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"description": "Client ID issued to the TPP via Developer Portal",
+								"key": "X-IBM-Client-ID",
+								"value": "{{X-IBM-Client-ID}}"
+							},
+							{
+								"description": "Client Secret issued to the TPP via Developer Portal",
+								"key": "X-IBM-Client-Secret",
+								"value": "{{X-IBM-Client-Secret}}"
+							},
+							{
+								"description": "Current date represented as RFC 7231 Full Date",
+								"key": "X-Nordea-Originating-Date",
+								"type": "text",
+								"value": "{{X-Nordea-Originating-Date}}"
+							},
+							{
+								"description": "Domain name of the server",
+								"key": "X-Nordea-Originating-Host",
+								"type": "text",
+								"value": "{{X-Nordea-Originating-Host}}"
+							},
+							{
+								"description": "Calculated signature",
+								"key": "Signature",
+								"type": "text",
+								"value": "{{Signature}}"
+							},
+							{
+								"description": "Digest calculated for body",
+								"key": "Digest",
+								"type": "text",
+								"value": "{{Digest}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"amount\": 1.02,\n  \"creditor\": {\n    \"account\": {\n      \"_type\": \"BBAN_NO\",\n      \"currency\": \"NOK\",\n      \"value\": \"60010503178\"\n    },\n    \"name\": \"Beneficiary name\"\n  },\n  \"currency\": \"NOK\",\n  \"debtor\": {\n    \"account\": {\n      \"_type\": \"BBAN_NO\",\n      \"currency\": \"NOK\",\n      \"value\": \"61735686908\"\n    },\n    \"message\": \"Message for debtor\"\n  },\n  \"external_id\": \"some id\",\n  \"urgency\": \"standard\", \n  \"recurring\": {\n      \"end_date\": \"2024-05-01\",\n      \"recurrence_type\": \"WEEKLY\"\n    }\n}"
 						},
 						"url": {
 							"raw": "{{host}}/v4/payments/domestic",
