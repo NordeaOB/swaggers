@@ -1,0 +1,894 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Refund Payment API",
+    "description": "Refund Payment API service can be used to automatically return/refund payment based on given payment archive id.",
+    "contact": {
+      "url": "https://overview.tools.ndinfra.oneadr.net/teams"
+    },
+    "license": {
+      "name": "Nordea © 2024"
+    },
+    "version": "0.0.1-SNAPSHOT"
+  },
+  "servers": [
+    {
+      "url": "https://refund-payment-broker-ccapi.esp.rs.dev01.qaoneadr.local",
+      "description": "Generated server url"
+    }
+  ],
+  "tags": [
+    {
+      "name": "ccapi-payment-refunds-contract"
+    }
+  ],
+  "paths": {
+    "/corporate/payment-refunds/v1/refunds": {
+      "post": {
+        "tags": [
+          "ccapi-payment-refunds-contract"
+        ],
+        "summary": "Send a refund payment using archive id of the original payment.",
+        "description": "Creates a new refund payment based on the original payment's archive id. Refund payment's debtor account, amount and description can be modified.",
+        "operationId": "createPaymentRefund",
+        "parameters": [
+          {
+            "name": "Digest",
+            "in": "header",
+            "description": "The Digest Header header as defined in RFC3230 contains a Hash of the description body. The only hash algorithms that may be used to calculate the Digest within the context of this specification are SHA-256 and SHA-512 as defined in RFC5843. For POST with 'application/x-www-form-urlencoded' content type Digest should be calculated for normalized string created from request parameters like this: 'param1&#61;value1&#38;param2&#61;value2'. It is important that parameters should be placed in alphabetic order",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Signature",
+            "in": "header",
+            "description": "A signature of request by the sender on application level. The process of signing a request is described in 'Signing HTTP Messages' RFC draft version 10 (https://tools.ietf.org/html/draft-cavage-http-signatures-10). The request signature needs to be sent in the 'Signature' HTTP header as described in the RFC. Additional requirements from Nordea\n\nThe only allowed algorithm is RSA-SHA256\nThe key size for the used RSA key pair has to be at least 2048 bit\nThe keyId is the clientId of your application originating from the Nordea Developer Portal\nWe require the following headers to be used in the signature\nRequest without body: (request-target) X-Nordea-Originating-Host X-Nordea-Originating-Date\nRequest with body: (request-target) X-Nordea-Originating-Host X-Nordea-Originating-Date Content-type Digest\nThe request-target is a combination of the HTTP action verb and the request URI path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Technical-user-id",
+            "in": "header",
+            "description": "Technical user. Used for payment authorizations. It should be positive number, with maximum length 22 characters.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Nordea-Originating-Date",
+            "in": "header",
+            "description": "HTTP header element for date and time represented as RFC 7231 Full Dates (GMT). Example date: Wed, 24 Apr 2019 14:00:37 GMT. It is similar to standard HTTP 'Date' expect that it allows to set it under JavaScript in browser while standard 'Date' is forbidden",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Nordea-Originating-Host",
+            "in": "header",
+            "description": "HTTP header element for specification of the domain name of the server. It is similar to standard HTTP 'Host' header but it won't be overridden by proxies. It also allows to set it under JavaScript in browser while standard 'Host' is forbidden",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-IBM-Client-Id",
+            "in": "header",
+            "description": "Id of the client.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "description": "Content type request header.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RefundPaymentRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "415": {
+            "description": "Unsupported media type.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefaultClientError"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaymentResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "InternalServerError",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalServerError"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "InvalidRequest",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvalidRequest"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "UnauthorizedAccess",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedAccess"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Forbidden"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "ResourceNotFound",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResourceNotFound"
+                }
+              }
+            }
+          },
+          "501": {
+            "description": "NotImplemented",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotImplemented"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "ServiceUnavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServiceUnavailable"
+                }
+              }
+            }
+          }
+        },
+        "x-visibility": "external"
+      }
+    },
+    "/corporate/payment-refunds/v1/refunds/{id}": {
+      "get": {
+        "tags": [
+          "ccapi-payment-refunds-contract"
+        ],
+        "summary": "Get status update for a refund payment using payment id.",
+        "description": "Returns payment status information for a given refund payment identified by payment id.",
+        "operationId": "getPaymentRefundById",
+        "parameters": [
+          {
+            "name": "Signature",
+            "in": "header",
+            "description": "A signature of request by the sender on application level. The process of signing a request is described in 'Signing HTTP Messages' RFC draft version 10 (https://tools.ietf.org/html/draft-cavage-http-signatures-10). The request signature needs to be sent in the 'Signature' HTTP header as described in the RFC. Additional requirements from Nordea\n\nThe only allowed algorithm is RSA-SHA256\nThe key size for the used RSA key pair has to be at least 2048 bit\nThe keyId is the clientId of your application originating from the Nordea Developer Portal\nWe require the following headers to be used in the signature\nRequest without body: (request-target) X-Nordea-Originating-Host X-Nordea-Originating-Date\nRequest with body: (request-target) X-Nordea-Originating-Host X-Nordea-Originating-Date Content-type Digest\nThe request-target is a combination of the HTTP action verb and the request URI path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Technical-user-id",
+            "in": "header",
+            "description": "Technical user. Used for payment authorizations. It should be positive number, with maximum length 22 characters.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Nordea-Originating-Date",
+            "in": "header",
+            "description": "HTTP header element for date and time represented as RFC 7231 Full Dates (GMT). Example date: Wed, 24 Apr 2019 14:00:37 GMT. It is similar to standard HTTP 'Date' expect that it allows to set it under JavaScript in browser while standard 'Date' is forbidden",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Nordea-Originating-Host",
+            "in": "header",
+            "description": "HTTP header element for specification of the domain name of the server. It is similar to standard HTTP 'Host' header but it won't be overridden by proxies. It also allows to set it under JavaScript in browser while standard 'Host' is forbidden",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-IBM-Client-Id",
+            "in": "header",
+            "description": "Id of the Client.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The ID of the Refund payment.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "ResourceNotFound",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResourceNotFound"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaymentResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "InternalServerError",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalServerError"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "InvalidRequest",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvalidRequest"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "UnauthorizedAccess",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedAccess"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Forbidden"
+                }
+              }
+            }
+          },
+          "501": {
+            "description": "NotImplemented",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotImplemented"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "ServiceUnavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServiceUnavailable"
+                }
+              }
+            }
+          }
+        },
+        "x-visibility": "external"
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "RefundPaymentRequest": {
+        "required": [
+          "amount",
+          "original_payment_date",
+          "payment_account",
+          "payment_archive_id"
+        ],
+        "type": "object",
+        "properties": {
+          "payment_archive_id": {
+            "type": "string",
+            "description": "Archive ID of the original payment.",
+            "example": "202103152588CEP10001"
+          },
+          "payment_account": {
+            "type": "string",
+            "description": "Account number from which the refund payment will been sent.",
+            "example": "FI1350001520000081"
+          },
+          "currency": {
+            "type": "string"
+          },
+          "amount": {
+            "type": "string",
+            "description": "Amount of the payment in case of the party initiating refund doesn't wish to send back the full amount.",
+            "example": "200.2"
+          },
+          "original_payment_date": {
+            "type": "string",
+            "description": "The date when amount was credited to the creditor account, exact time is not relevant."
+          },
+          "message": {
+            "type": "string",
+            "description": "Additional message to beneficiary.",
+            "example": "Example refund message."
+          }
+        },
+        "description": "The Refund payment request."
+      },
+      "DefaultClientError": {
+        "required": [
+          "error",
+          "error_description",
+          "http_status"
+        ],
+        "type": "object",
+        "properties": {
+          "error_reason": {
+            "type": "string",
+            "description": "The detailed reason that can be used for the logging and problem solving purposes."
+          },
+          "http_status": {
+            "type": "integer",
+            "description": "HTTP status",
+            "format": "int32",
+            "enum": [
+              405,
+              408,
+              409,
+              413
+            ]
+          },
+          "error_description": {
+            "type": "string",
+            "description": "The human readable description of the error.",
+            "example": "Something was wrong with the client request."
+          },
+          "error": {
+            "type": "string",
+            "description": "Error code",
+            "example": "client_error",
+            "enum": [
+              "client_error"
+            ]
+          }
+        }
+      },
+      "Account": {
+        "required": [
+          "currency",
+          "type",
+          "value"
+        ],
+        "type": "object",
+        "properties": {
+          "currency": {
+            "type": "string",
+            "description": "Account currency",
+            "example": "EUR",
+            "enum": [
+              "DKK",
+              "NOK",
+              "SEK",
+              "EUR"
+            ]
+          },
+          "type": {
+            "type": "string",
+            "description": "Account type",
+            "example": "IBAN",
+            "enum": [
+              "IBAN",
+              "BBAN",
+              "PGNR"
+            ]
+          },
+          "value": {
+            "type": "string",
+            "description": "Account number.",
+            "example": "FI1350001520000081"
+          }
+        },
+        "description": "The Account object."
+      },
+      "Debtor": {
+        "required": [
+          "account",
+          "debtor_name"
+        ],
+        "type": "object",
+        "properties": {
+          "debtor_name": {
+            "type": "string",
+            "description": "Name of the debtor."
+          },
+          "account": {
+            "$ref": "#/components/schemas/Account"
+          }
+        },
+        "description": "The Debtor object.",
+        "example": {
+          "debtorName": "John Debtor",
+          "account": {
+            "currency": "EUR",
+            "type": "IBAN",
+            "value": "FI1350001520000081"
+          }
+        }
+      },
+      "GroupHeader": {
+        "required": [
+          "creation_date_time",
+          "http_code",
+          "message_identification"
+        ],
+        "type": "object",
+        "properties": {
+          "message_identification": {
+            "type": "string",
+            "description": "Original request id for correlation purposes.",
+            "example": "7ddc011e-6f4a-4e"
+          },
+          "creation_date_time": {
+            "type": "string",
+            "description": "Response creation time - Format:date-time.",
+            "example": "2021-03-30T08:32:38.343Z"
+          },
+          "http_code": {
+            "type": "integer",
+            "description": "Http code of the response - Format:int32.",
+            "format": "int32",
+            "example": 200
+          }
+        },
+        "description": "The Group header object."
+      },
+      "OriginalPayment": {
+        "required": [
+          "amount",
+          "archive_id",
+          "currency",
+          "debtor_name",
+          "reference"
+        ],
+        "type": "object",
+        "properties": {
+          "archive_id": {
+            "type": "string",
+            "description": "Original payment's archive id.",
+            "example": "202103152588CEP10001"
+          },
+          "amount": {
+            "type": "number",
+            "description": "Original payment's amount.",
+            "example": 200.2
+          },
+          "currency": {
+            "type": "string",
+            "description": "Original payment's currency.",
+            "example": "EUR"
+          },
+          "reference": {
+            "type": "string",
+            "description": "Original payment's reference.",
+            "example": "Original payment's reference."
+          },
+          "debtor_name": {
+            "type": "string",
+            "description": "Original payment's sender.",
+            "example": "Jack Creditor"
+          }
+        },
+        "description": "The Original payment object."
+      },
+      "PaymentResponse": {
+        "required": [
+          "group_header",
+          "original_payment",
+          "refund_payment"
+        ],
+        "type": "object",
+        "properties": {
+          "group_header": {
+            "$ref": "#/components/schemas/GroupHeader"
+          },
+          "refund_payment": {
+            "$ref": "#/components/schemas/RefundPayment"
+          },
+          "original_payment": {
+            "$ref": "#/components/schemas/OriginalPayment"
+          }
+        },
+        "description": "The Payment response object, containing Group header, Refund payment and Original payment objects."
+      },
+      "RefundPayment": {
+        "required": [
+          "amount",
+          "creditor_name",
+          "currency",
+          "debtor",
+          "id",
+          "message",
+          "payment_status",
+          "payment_status_reason",
+          "status_timestamp"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique payment identifier assigned for new payment.",
+            "example": "04e3f312-614f-4436-bf49-27095c6096"
+          },
+          "amount": {
+            "type": "number",
+            "description": "Amount of the payment.",
+            "example": 200.2
+          },
+          "currency": {
+            "type": "string",
+            "description": "Currency code of the payment. Only ISO 4217 three-letter code is accepted.",
+            "example": "EUR"
+          },
+          "message": {
+            "type": "string",
+            "description": "Message to beneficiary.",
+            "example": "Example refund message."
+          },
+          "creditor_name": {
+            "type": "string",
+            "description": "Name of the creditor.",
+            "example": "Jack Creditor"
+          },
+          "debtor": {
+            "$ref": "#/components/schemas/Debtor"
+          },
+          "payment_status": {
+            "type": "string",
+            "description": "Refund payment status",
+            "example": "payment_accepted",
+            "enum": [
+              "authorization_partial",
+              "authorization_failed",
+              "payment_accepted",
+              "payment_executed",
+              "payment_rejected"
+            ]
+          },
+          "payment_status_reason": {
+            "type": "string",
+            "description": "Reason behind payment status where applicable.",
+            "example": "Payment was accepted"
+          },
+          "status_timestamp": {
+            "type": "string",
+            "description": "Timestamp when the payment status was last updated. ISO 8601 format yyyy-mm-ddThh:mm:ss.fffZ.",
+            "example": "2021-03-30T08:32:38.248Z"
+          }
+        },
+        "description": "The Refund payment object."
+      },
+      "InternalServerError": {
+        "required": [
+          "error",
+          "error_description",
+          "http_status"
+        ],
+        "type": "object",
+        "properties": {
+          "error_reason": {
+            "type": "string",
+            "description": "The detailed reason that can be used for the logging and problem solving purposes."
+          },
+          "error_description": {
+            "type": "string",
+            "description": "The human readable description of the error.",
+            "example": "Something went wrong. Please try again later."
+          },
+          "http_status": {
+            "type": "integer",
+            "description": "HTTP status",
+            "format": "int32",
+            "enum": [
+              500
+            ]
+          },
+          "error": {
+            "type": "string",
+            "description": "Error code",
+            "example": "internal_server_error",
+            "enum": [
+              "internal_server_error"
+            ]
+          }
+        }
+      },
+      "InvalidRequest": {
+        "required": [
+          "error",
+          "error_description",
+          "http_status"
+        ],
+        "type": "object",
+        "properties": {
+          "error_reason": {
+            "type": "string",
+            "description": "The detailed reason that can be used for the logging and problem solving purposes."
+          },
+          "error_description": {
+            "type": "string",
+            "description": "The human readable description of the error.",
+            "example": "The client request was invalid."
+          },
+          "http_status": {
+            "type": "integer",
+            "description": "HTTP status",
+            "format": "int32",
+            "enum": [
+              400
+            ]
+          },
+          "error": {
+            "type": "string",
+            "description": "Error code",
+            "example": "invalid_request",
+            "enum": [
+              "invalid_request"
+            ]
+          }
+        }
+      },
+      "ResourceNotFound": {
+        "required": [
+          "error",
+          "error_description",
+          "http_status"
+        ],
+        "type": "object",
+        "properties": {
+          "error_reason": {
+            "type": "string",
+            "description": "The detailed reason that can be used for the logging and problem solving purposes."
+          },
+          "error_description": {
+            "type": "string",
+            "description": "The human readable description of the error.",
+            "example": "The requested resource was not found."
+          },
+          "http_status": {
+            "type": "integer",
+            "description": "HTTP status",
+            "format": "int32",
+            "enum": [
+              404
+            ]
+          },
+          "error": {
+            "type": "string",
+            "description": "Error code",
+            "example": "resource_not_found",
+            "enum": [
+              "resource_not_found"
+            ]
+          }
+        }
+      },
+      "UnauthorizedAccess": {
+        "required": [
+          "error",
+          "error_description",
+          "http_status"
+        ],
+        "type": "object",
+        "properties": {
+          "error_reason": {
+            "type": "string",
+            "description": "The detailed reason that can be used for the logging and problem solving purposes."
+          },
+          "error": {
+            "type": "string",
+            "description": "Error code",
+            "example": "invalid_token",
+            "enum": [
+              "invalid_token,unauthorized"
+            ]
+          },
+          "error_description": {
+            "type": "string",
+            "description": "The human readable description of the error.",
+            "example": "The access to the requested resource was unauthorized."
+          },
+          "http_status": {
+            "type": "integer",
+            "description": "HTTP status",
+            "format": "int32",
+            "enum": [
+              401
+            ]
+          }
+        }
+      },
+      "Forbidden": {
+        "required": [
+          "error",
+          "error_description",
+          "http_status"
+        ],
+        "type": "object",
+        "properties": {
+          "error_reason": {
+            "type": "string",
+            "description": "The detailed reason that can be used for the logging and problem solving purposes."
+          },
+          "error": {
+            "type": "string",
+            "description": "Error code",
+            "example": "insufficient_scope",
+            "enum": [
+              "insufficient_scope,access_denied"
+            ]
+          },
+          "error_description": {
+            "type": "string",
+            "description": "The human readable description of the error.",
+            "example": "The access to request resource was denied. Current access token does not contain the required privileges."
+          },
+          "http_status": {
+            "type": "integer",
+            "description": "HTTP status",
+            "format": "int32",
+            "enum": [
+              403
+            ]
+          }
+        }
+      },
+      "NotImplemented": {
+        "required": [
+          "error",
+          "error_description",
+          "http_status"
+        ],
+        "type": "object",
+        "properties": {
+          "error_reason": {
+            "type": "string",
+            "description": "The detailed reason that can be used for the logging and problem solving purposes."
+          },
+          "error_description": {
+            "type": "string",
+            "description": "The human readable description of the error.",
+            "example": "The request is not supported."
+          },
+          "http_status": {
+            "type": "integer",
+            "description": "HTTP status",
+            "format": "int32",
+            "enum": [
+              501
+            ]
+          },
+          "error": {
+            "type": "string",
+            "description": "Error code",
+            "example": "not_implemented",
+            "enum": [
+              "not_implemented"
+            ]
+          }
+        }
+      },
+      "ServiceUnavailable": {
+        "required": [
+          "error",
+          "error_description",
+          "http_status"
+        ],
+        "type": "object",
+        "properties": {
+          "error_reason": {
+            "type": "string",
+            "description": "The detailed reason that can be used for the logging and problem solving purposes."
+          },
+          "error_description": {
+            "type": "string",
+            "description": "The human readable description of the error.",
+            "example": "Something went wrong. Please try again later."
+          },
+          "http_status": {
+            "type": "integer",
+            "description": "HTTP status",
+            "format": "int32",
+            "enum": [
+              503
+            ]
+          },
+          "error": {
+            "type": "string",
+            "description": "Error code",
+            "example": "service_unavailable",
+            "enum": [
+              "service_unavailable"
+            ]
+          }
+        }
+      }
+    }
+  }
+}
