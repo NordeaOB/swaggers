@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "be105e35-0132-4e6c-80c2-6574d5c49826",
+		"_postman_id": "9bee4d57-6a82-4716-a97d-d31644f6a193",
 		"name": "Corporate Access Authorization API with Accounts API and Payments API",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -8182,6 +8182,70 @@
 								"type": "text"
 							}
 						],
+						"url": {
+							"raw": "https://api.nordeaopenbanking.com/corporate/v1/authentications/bankid_se/{{authentication_id}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"nordeaopenbanking",
+								"com"
+							],
+							"path": [
+								"corporate",
+								"v1",
+								"authentications",
+								"bankid_se",
+								"{{authentication_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update agreeement in authentication",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "X-IBM-Client-Id",
+								"type": "text",
+								"value": "{{X-IBM-Client-ID}}"
+							},
+							{
+								"key": "X-IBM-Client-Secret",
+								"type": "text",
+								"value": "{{X-IBM-Client-Secret}}"
+							},
+							{
+								"key": "Signature",
+								"value": "{{Signature}}",
+								"type": "text"
+							},
+							{
+								"key": "X-Nordea-Originating-Host",
+								"value": "{{X-Nordea-Originating-Host}}",
+								"type": "text"
+							},
+							{
+								"key": "X-Nordea-Originating-Date",
+								"value": "{{X-Nordea-Originating-Date}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Digest",
+								"value": "{{Digest}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"agreement_number\": \"130474822427\"\r\n}"
+						},
 						"url": {
 							"raw": "https://api.nordeaopenbanking.com/corporate/v1/authentications/bankid_se/{{authentication_id}}",
 							"protocol": "https",
