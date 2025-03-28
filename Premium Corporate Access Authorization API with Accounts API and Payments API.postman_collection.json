@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "f43ea698-30cf-4e32-94c0-05e53df47426",
+		"_postman_id": "1879659b-f3ff-4133-9bcb-76e10c0a738d",
 		"name": "Premium Corporate Access Authorization API with Accounts API and Payments API",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -4929,6 +4929,148 @@
 							""
 						]
 					}
+				}
+			]
+		},
+		{
+			"name": "Payment Track And Trace",
+			"item": [
+				{
+					"name": "Get incoming/outgoing payment status by UETR",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							},
+							{
+								"key": "X-IBM-Client-Id",
+								"value": "{{X-IBM-Client-ID}}",
+								"type": "text"
+							},
+							{
+								"key": "X-IBM-Client-Secret",
+								"value": "{{X-IBM-Client-Secret}}",
+								"type": "text"
+							},
+							{
+								"key": "Signature",
+								"value": "{{Signature}}",
+								"type": "text"
+							},
+							{
+								"key": "X-Nordea-Originating-Date",
+								"value": "{{X-Nordea-Originating-Date}}",
+								"type": "text"
+							},
+							{
+								"key": "X-Nordea-Originating-Host",
+								"value": "{{X-Nordea-Originating-Host}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://api.nordeaopenbanking.com/corporate/premium/v1/gpi-tracker/payments/incoming/c92c1017-6985-451a-a8f1-ba06ebb3dfda",
+							"protocol": "https",
+							"host": [
+								"api",
+								"nordeaopenbanking",
+								"com"
+							],
+							"path": [
+								"corporate",
+								"premium",
+								"v1",
+								"gpi-tracker",
+								"payments",
+								"incoming",
+								"c92c1017-6985-451a-a8f1-ba06ebb3dfda"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get incoming/outgoing payment status by UETR Copy",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							},
+							{
+								"key": "X-IBM-Client-Id",
+								"value": "{{X-IBM-Client-ID}}",
+								"type": "text"
+							},
+							{
+								"key": "X-IBM-Client-Secret",
+								"value": "{{X-IBM-Client-Secret}}",
+								"type": "text"
+							},
+							{
+								"key": "Signature",
+								"value": "{{Signature}}",
+								"type": "text"
+							},
+							{
+								"key": "X-Nordea-Originating-Date",
+								"value": "{{X-Nordea-Originating-Date}}",
+								"type": "text"
+							},
+							{
+								"key": "X-Nordea-Originating-Host",
+								"value": "{{X-Nordea-Originating-Host}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://api.nordeaopenbanking.com/corporate/premium/v1/gpi-tracker/payments/outgoing?iban_account=SE9195000099602614054381&start_date=&end_date=",
+							"protocol": "https",
+							"host": [
+								"api",
+								"nordeaopenbanking",
+								"com"
+							],
+							"path": [
+								"corporate",
+								"premium",
+								"v1",
+								"gpi-tracker",
+								"payments",
+								"outgoing"
+							],
+							"query": [
+								{
+									"key": "iban_account",
+									"value": "SE9195000099602614054381"
+								},
+								{
+									"key": "start_date",
+									"value": ""
+								},
+								{
+									"key": "end_date",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		}
