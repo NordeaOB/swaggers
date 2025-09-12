@@ -629,7 +629,7 @@
 							}
 						],
 						"url": {
-							"raw": "https://api.nordeaopenbanking.com/corporate/v1/iu/accounts/GB61NDEA40487847582804-GBP/transactions?to_date=2025-03-28&continuation_key=1808232584LV360020--2&from_date=2025-03-28",
+							"raw": "https://api.nordeaopenbanking.com/corporate/v1/iu/accounts/GB61NDEA40487847582804-GBP/transactions?to_date=2025-03-28&from_date=2025-03-28",
 							"protocol": "https",
 							"host": [
 								"api",
@@ -656,7 +656,8 @@
 								},
 								{
 									"key": "continuation_key",
-									"value": "1808232584LV360020--2"
+									"value": "P2505080385OP08--2",
+									"disabled": true
 								},
 								{
 									"key": "from_date",
