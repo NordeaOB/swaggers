@@ -1,0 +1,112 @@
+{
+	"info": {
+		"_postman_id": "812acf70-a065-4ed2-84e5-7815ec3b5cec",
+		"name": "Bulk VoP Sandbox",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "POST Bulk Verification Of Payee Sandbox",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-IBM-Client-Id",
+						"value": "client_id",
+						"type": "default"
+					},
+					{
+						"key": "X-IBM-Client-Secret",
+						"value": "client_secret",
+						"type": "default"
+					},
+					{
+						"key": "document-version",
+						"value": "pain.001.03",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<Document xmlns=\"urn:iso:std:iso:20022:tech:xsd:pain.001.001.03\">\r\n  <CstmrCdtTrfInitn>\r\n    <GrpHdr>\r\n      <MsgId>1_Payment_2_Trs</MsgId>\r\n      <CreDtTm>2025-06-02T11:16:33.815523</CreDtTm>\r\n      <NbOfTxs>2</NbOfTxs>\r\n      <CtrlSum>10.0</CtrlSum>\r\n      <InitgPty>\r\n        <Id>\r\n          <OrgId>\r\n            <Othr>\r\n              <Id>123456789101</Id>\r\n              <SchmeNm>\r\n                <Cd>CUST</Cd>\r\n              </SchmeNm>\r\n            </Othr>\r\n          </OrgId>\r\n        </Id>\r\n      </InitgPty>\r\n    </GrpHdr>\r\n    <PmtInf>\r\n      <PmtInfId>Payment_1</PmtInfId>\r\n      <PmtMtd>TRF</PmtMtd>\r\n      <CtrlSum>10.0</CtrlSum>\r\n      <PmtTpInf>\r\n        <SvcLvl>\r\n          <Cd>SEPA</Cd>\r\n        </SvcLvl>\r\n        <LclInstrm>\r\n          <Cd>INST</Cd>\r\n        </LclInstrm>\r\n      </PmtTpInf>\r\n      <ReqdExctnDt>2025-06-02</ReqdExctnDt>\r\n      <Dbtr>\r\n        <Nm>John Doe</Nm>\r\n        <PstlAdr>\r\n          <StrtNm>Nekalantie</StrtNm>\r\n          <BldgNb>99860</BldgNb>\r\n          <TwnNm>Morottaja</TwnNm>\r\n          <Ctry>FI</Ctry>\r\n        </PstlAdr>\r\n        <Id>\r\n          <OrgId>\r\n            <Othr>\r\n              <Id>196608221074</Id>\r\n              <SchmeNm>\r\n                <Cd>BANK</Cd>\r\n              </SchmeNm>\r\n            </Othr>\r\n          </OrgId>\r\n        </Id>\r\n      </Dbtr>\r\n      <DbtrAcct>\r\n        <Id>\r\n          <IBAN>FI5615723000310649</IBAN>\r\n        </Id>\r\n        <Ccy>EUR</Ccy>\r\n        <Nm>John Doe</Nm>\r\n      </DbtrAcct>\r\n      <DbtrAgt>\r\n        <FinInstnId>\r\n          <BIC>NDEAFIHH</BIC>\r\n          <PstlAdr>\r\n            <StrtNm>Hippoksenkatu</StrtNm>\r\n            <BldgNb>99950</BldgNb>\r\n            <TwnNm>Kaamasmukka</TwnNm>\r\n            <Ctry>FI</Ctry>\r\n          </PstlAdr>\r\n        </FinInstnId>\r\n      </DbtrAgt>\r\n      <CdtTrfTxInf>\r\n        <PmtId>\r\n          <InstrId>26aa14ec46c8610f91e4</InstrId>\r\n          <EndToEndId>Transaction 1</EndToEndId>\r\n        </PmtId>\r\n        <Amt>\r\n          <InstdAmt Ccy=\"EUR\">5.00</InstdAmt>\r\n        </Amt>\r\n        <Cdtr>\r\n          <Nm>Fast Logistic Ltd</Nm>\r\n          <PstlAdr>\r\n            <StrtNm>Loutunkatu</StrtNm>\r\n            <BldgNb>99980</BldgNb>\r\n            <TwnNm>Skalluvaara</TwnNm>\r\n            <Ctry>FI</Ctry>\r\n          </PstlAdr>\r\n        </Cdtr>\r\n        <CdtrAcct>\r\n          <Id>\r\n            <IBAN>FI8915723000332171</IBAN>\r\n          </Id>\r\n          <Ccy>EUR</Ccy>\r\n        </CdtrAcct>\r\n      </CdtTrfTxInf>\r\n      <CdtTrfTxInf>\r\n        <PmtId>\r\n          <InstrId>6a8ab1925af85347a921</InstrId>\r\n          <EndToEndId>Transaction 2</EndToEndId>\r\n        </PmtId>\r\n        <Amt>\r\n          <InstdAmt Ccy=\"EUR\">5.00</InstdAmt>\r\n        </Amt>\r\n        <Cdtr>\r\n          <Nm>Fast Logistic Ltd</Nm>\r\n          <PstlAdr>\r\n            <StrtNm>Loutunkatu</StrtNm>\r\n            <BldgNb>99980</BldgNb>\r\n            <TwnNm>Skalluvaara</TwnNm>\r\n            <Ctry>FI</Ctry>\r\n          </PstlAdr>\r\n        </Cdtr>\r\n        <CdtrAcct>\r\n          <Id>\r\n            <IBAN>FI0716603000004385</IBAN>\r\n          </Id>\r\n          <Ccy>EUR</Ccy>\r\n        </CdtrAcct>\r\n      </CdtTrfTxInf>\r\n    </PmtInf>\r\n  </CstmrCdtTrfInitn>\r\n</Document>",
+					"options": {
+						"raw": {
+							"language": "xml"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://api.nordeaopenbanking.com/corporate/premium/v1/bulk-verification-of-payee",
+					"protocol": "https",
+					"host": [
+						"api",
+						"nordeaopenbanking",
+						"com"
+					],
+					"path": [
+						"corporate",
+						"premium",
+						"v1",
+						"bulk-verification-of-payee"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET  Bulk Verification Of Payee Sandbox",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-IBM-Client-Id",
+						"value": "client_id",
+						"type": "default"
+					},
+					{
+						"key": "X-IBM-Client-Secret",
+						"value": "client_secret",
+						"type": "default"
+					},
+					{
+						"key": "vop-return-status",
+						"value": "match",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "xml"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://api.nordeaopenbanking.com/corporate/premium/v1/bulk-verification-of-payee/{msg_id}",
+					"protocol": "https",
+					"host": [
+						"api",
+						"nordeaopenbanking",
+						"com"
+					],
+					"path": [
+						"corporate",
+						"premium",
+						"v1",
+						"bulk-verification-of-payee",
+						"{msg_id}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
