@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "7d645eb0-0c34-4cf2-bd6c-991210a7671f",
+		"_postman_id": "0eebf250-85db-4c28-affe-de1a8c538a35",
 		"name": "Multi-Payout Instant API",
 		"description": "Multi-Payout Instant API",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
@@ -20,7 +20,7 @@
 									"name": "multi-payout-initiation",
 									"event": [
 										{
-											"listen": "test",
+											"listen": "prerequest",
 											"script": {
 												"exec": [
 													""
@@ -29,6 +29,9 @@
 											}
 										}
 									],
+									"protocolProfileBehavior": {
+										"followRedirects": false
+									},
 									"request": {
 										"auth": {
 											"type": "noauth"
@@ -38,44 +41,68 @@
 											{
 												"key": "X-Nordea-Originating-Host",
 												"value": "{{X-Nordea-Originating-Host}}",
-												"description": "(Required) "
+												"type": "default"
 											},
 											{
 												"key": "X-Nordea-Originating-Date",
 												"value": "{{X-Nordea-Originating-Date}}",
-												"description": "(Required) "
+												"type": "default"
 											},
 											{
 												"key": "X-IBM-Client-Id",
 												"value": "{{X-IBM-Client-Id}}",
-												"description": "(Required) "
+												"type": "default"
 											},
 											{
 												"key": "X-IBM-Client-Secret",
 												"value": "{{X-IBM-Client-Secret}}",
-												"description": "(Required) "
+												"type": "default"
 											},
 											{
 												"key": "Digest",
 												"value": "{{Digest}}",
-												"description": "(Required) "
+												"type": "default"
 											},
 											{
 												"key": "Content-Type",
-												"value": "application/xml"
+												"value": "application/xml",
+												"type": "default"
 											},
 											{
 												"key": "Signature",
 												"value": "SKIP_SIGNATURE_VALIDATION_FOR_SANDBOX",
-												"type": "text"
+												"type": "default"
+											},
+											{
+												"key": "Agreement-Number",
+												"value": "123456894",
+												"type": "default",
+												"disabled": true
+											},
+											{
+												"key": "Confirmation-Method",
+												"value": "manual_confirmation",
+												"type": "default",
+												"disabled": true
+											},
+											{
+												"key": "Agreement-Type",
+												"value": "CCM",
+												"type": "default",
+												"disabled": true
+											},
+											{
+												"key": "Logon-Id",
+												"value": "123456891",
+												"type": "default",
+												"disabled": true
 											}
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Document xmlns=\"urn:iso:std:iso:20022:tech:xsd:pain.001.001.09\">\n  <CstmrCdtTrfInitn>\n    <GrpHdr>\n      <MsgId>c9b3c42a1dfac6134f03</MsgId>\n      <CreDtTm>2025-03-31T08:35:51.833274</CreDtTm>\n      <NbOfTxs>4</NbOfTxs>\n      <CtrlSum>20.0</CtrlSum>\n      <InitgPty>\n        <Id>\n          <OrgId>\n            <Othr>\n              <Id>123456894</Id>\n              <SchmeNm>\n                <Cd>CUST</Cd>\n              </SchmeNm>\n            </Othr>\n          </OrgId>\n        </Id>\n      </InitgPty>\n    </GrpHdr>\n    <PmtInf>\n      <PmtInfId>0cd98fd7b9703a68467d</PmtInfId>\n      <PmtMtd>TRF</PmtMtd>\n      <CtrlSum>13.0</CtrlSum>\n      <PmtTpInf>\n        <SvcLvl>\n          <Cd>SEPA</Cd>\n        </SvcLvl>\n        <LclInstrm>\n          <Cd>INST</Cd>\n        </LclInstrm>\n      </PmtTpInf>\n      <ReqdExctnDt>\n        <Dt>2025-04-02</Dt>\n      </ReqdExctnDt>\n      <Dbtr>\n        <Nm>Debtor Name</Nm>\n        <PstlAdr>\n          <StrtNm>Street Name</StrtNm>\n          <BldgNb>99860</BldgNb>\n          <TwnNm>Town Name</TwnNm>\n          <Ctry>FI</Ctry>\n        </PstlAdr>\n        <Id>\n          <OrgId>\n            <Othr>\n              <Id>12345678910</Id>\n              <SchmeNm>\n                <Cd>BANK</Cd>\n              </SchmeNm>\n            </Othr>\n          </OrgId>\n        </Id>\n      </Dbtr>\n      <DbtrAcct>\n        <Id>\n          <IBAN>FI9820401800063766</IBAN>\n        </Id>\n        <Ccy>EUR</Ccy>\n      </DbtrAcct>\n      <DbtrAgt>\n        <FinInstnId>\n          <BICFI>NDEAFIHH</BICFI>\n          <PstlAdr>\n            <StrtNm>Street Name</StrtNm>\n            <BldgNb>999</BldgNb>\n            <TwnNm>Town Name</TwnNm>\n            <Ctry>FI</Ctry>\n          </PstlAdr>\n        </FinInstnId>\n      </DbtrAgt>\n      <CdtTrfTxInf>\n        <PmtId>\n          <InstrId>764b8fe430253b2c1a28</InstrId>\n          <EndToEndId>o9i767ed88eae2482323</EndToEndId>\n        </PmtId>\n        <Amt>\n          <InstdAmt Ccy=\"EUR\">7.00</InstdAmt>\n        </Amt>\n        <Cdtr>\n          <Nm>Creditor Name</Nm>\n          <PstlAdr>\n            <StrtNm>Loutunkatu</StrtNm>\n            <BldgNb>999</BldgNb>\n            <TwnNm>Skalluvaara</TwnNm>\n            <Ctry>FI</Ctry>\n          </PstlAdr>\n        </Cdtr>\n        <CdtrAcct>\n          <Id>\n            <IBAN>FI9820006008007885</IBAN>\n          </Id>\n        </CdtrAcct>\n      </CdtTrfTxInf>\n      <CdtTrfTxInf>\n        <PmtId>\n          <InstrId>764b8fe430253b2c1a28</InstrId>\n          <EndToEndId>1be667ed88eae248gagi</EndToEndId>\n        </PmtId>\n        <Amt>\n          <InstdAmt Ccy=\"EUR\">6.00</InstdAmt>\n        </Amt>\n        <Cdtr>\n          <Nm>Creditor Name 2</Nm>\n          <PstlAdr>\n            <StrtNm>Loutunkatu</StrtNm>\n            <BldgNb>999</BldgNb>\n            <TwnNm>Skalluvaara</TwnNm>\n            <Ctry>FI</Ctry>\n          </PstlAdr>\n        </Cdtr>\n        <CdtrAcct>\n          <Id>\n            <IBAN>FI1410093000123458</IBAN>\n          </Id>\n        </CdtrAcct>\n      </CdtTrfTxInf>\n    </PmtInf>\n    <PmtInf>\n      <PmtInfId>9cd98fd7b9712a68465a</PmtInfId>\n      <PmtMtd>TRF</PmtMtd>\n      <CtrlSum>7.0</CtrlSum>\n      <PmtTpInf>\n        <SvcLvl>\n          <Cd>SEPA</Cd>\n        </SvcLvl>\n        <LclInstrm>\n          <Cd>INST</Cd>\n        </LclInstrm>\n      </PmtTpInf>\n      <ReqdExctnDt>\n        <Dt>2025-04-02</Dt>\n      </ReqdExctnDt>\n      <Dbtr>\n        <Nm>Debtor Name</Nm>\n        <PstlAdr>\n          <StrtNm>Street Name</StrtNm>\n          <BldgNb>99860</BldgNb>\n          <TwnNm>Town Name</TwnNm>\n          <Ctry>FI</Ctry>\n        </PstlAdr>\n        <Id>\n          <OrgId>\n            <Othr>\n              <Id>12345678910</Id>\n              <SchmeNm>\n                <Cd>BANK</Cd>\n              </SchmeNm>\n            </Othr>\n          </OrgId>\n        </Id>\n      </Dbtr>\n      <DbtrAcct>\n        <Id>\n          <IBAN>FI2112345600000785</IBAN>\n        </Id>\n        <Ccy>EUR</Ccy>\n      </DbtrAcct>\n      <DbtrAgt>\n        <FinInstnId>\n          <BICFI>NDEAFIHH</BICFI>\n          <PstlAdr>\n            <StrtNm>Street Name</StrtNm>\n            <BldgNb>999</BldgNb>\n            <TwnNm>Town Name</TwnNm>\n            <Ctry>FI</Ctry>\n          </PstlAdr>\n        </FinInstnId>\n      </DbtrAgt>\n      <CdtTrfTxInf>\n        <PmtId>\n          <InstrId>764b8fe430253b2c1a28</InstrId>\n          <EndToEndId>4ra667ed88eae248lala</EndToEndId>\n        </PmtId>\n        <Amt>\n          <InstdAmt Ccy=\"EUR\">2.00</InstdAmt>\n        </Amt>\n        <Cdtr>\n          <Nm>Creditor Name 3</Nm>\n          <PstlAdr>\n            <StrtNm>Loutunkatu</StrtNm>\n            <BldgNb>999</BldgNb>\n            <TwnNm>Skalluvaara</TwnNm>\n            <Ctry>FI</Ctry>\n          </PstlAdr>\n        </Cdtr>\n        <CdtrAcct>\n          <Id>\n            <IBAN>FI9819513119469790</IBAN>\n          </Id>\n        </CdtrAcct>\n      </CdtTrfTxInf>\n      <CdtTrfTxInf>\n        <PmtId>\n          <InstrId>764b8fe430253b2c1a28</InstrId>\n          <EndToEndId>5ty551ed22eae248fafa</EndToEndId>\n        </PmtId>\n        <Amt>\n          <InstdAmt Ccy=\"EUR\">5.00</InstdAmt>\n        </Amt>\n        <Cdtr>\n          <Nm>Creditor Name 4</Nm>\n          <PstlAdr>\n            <StrtNm>Loutunkatu</StrtNm>\n            <BldgNb>999</BldgNb>\n            <TwnNm>Skalluvaara</TwnNm>\n            <Ctry>FI</Ctry>\n          </PstlAdr>\n        </Cdtr>\n        <CdtrAcct>\n          <Id>\n            <IBAN>FI9819112952913632</IBAN>\n          </Id>\n        </CdtrAcct>\n      </CdtTrfTxInf>\n    </PmtInf>\n  </CstmrCdtTrfInitn>\n</Document>",
+											"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Document xmlns=\"urn:iso:std:iso:20022:tech:xsd:pain.001.001.09\">\n    <CstmrCdtTrfInitn>\n        <GrpHdr>\n            <MsgId>c9b3c42a1dfac6134f03</MsgId>\n            <CreDtTm>2026-01-29T08:35:51.833274</CreDtTm>\n            <NbOfTxs>4</NbOfTxs>\n            <CtrlSum>20.0</CtrlSum>\n            <InitgPty>\n                <Id>\n                    <OrgId>\n                        <Othr>\n                            <Id>123456894</Id>\n                            <SchmeNm>\n                                <Cd>CUST</Cd>\n                            </SchmeNm>\n                        </Othr>\n                    </OrgId>\n                </Id>\n            </InitgPty>\n        </GrpHdr>\n        <PmtInf>\n            <PmtInfId>0cd98fd7b9703a68467d</PmtInfId>\n            <PmtMtd>TRF</PmtMtd>\n            <CtrlSum>13.0</CtrlSum>\n            <PmtTpInf>\n                <SvcLvl>\n                    <Cd>SEPA</Cd>\n                </SvcLvl>\n                <LclInstrm>\n                    <Cd>INST</Cd>\n                </LclInstrm>\n            </PmtTpInf>\n            <ReqdExctnDt>\n                <Dt>2026-01-29</Dt>\n            </ReqdExctnDt>\n            <Dbtr>\n                <Nm>Debtor Name</Nm>\n                <PstlAdr>\n                    <Ctry>FI</Ctry>\n                </PstlAdr>\n                <Id>\n                    <OrgId>\n                        <Othr>\n                            <Id>12345678910</Id>\n                            <SchmeNm>\n                                <Cd>BANK</Cd>\n                            </SchmeNm>\n                        </Othr>\n                    </OrgId>\n                </Id>\n            </Dbtr>\n            <DbtrAcct>\n                <Id>\n                    <IBAN>FI9820401800063766</IBAN>\n                </Id>\n                <Ccy>EUR</Ccy>\n            </DbtrAcct>\n            <DbtrAgt>\n                <FinInstnId>\n                    <BICFI>NDEAFIHH</BICFI>\n                    <PstlAdr>\n                        <Ctry>FI</Ctry>\n                    </PstlAdr>\n                </FinInstnId>\n            </DbtrAgt>\n            <CdtTrfTxInf>\n                <PmtId>\n                    <InstrId>764b8fe430253b2c1a28</InstrId>\n                    <EndToEndId>o9i767ed88eae2482323</EndToEndId>\n                </PmtId>\n                <Amt>\n                    <InstdAmt Ccy=\"EUR\">7.00</InstdAmt>\n                </Amt>\n                <Cdtr>\n                    <Nm>Creditor Name</Nm>\n                    <PstlAdr>\n                        <Ctry>FI</Ctry>\n                    </PstlAdr>\n                </Cdtr>\n                <CdtrAcct>\n                    <Id>\n                        <IBAN>FI9820006008007885</IBAN>\n                    </Id>\n                </CdtrAcct>\n                <RmtInf>\n                    <Ustrd>Unstructured information</Ustrd>\n                </RmtInf>\n            </CdtTrfTxInf>\n            <CdtTrfTxInf>\n                <PmtId>\n                    <InstrId>764b8fe430253b2c1a28</InstrId>\n                    <EndToEndId>1be667ed88eae248gagi</EndToEndId>\n                </PmtId>\n                <Amt>\n                    <InstdAmt Ccy=\"EUR\">6.00</InstdAmt>\n                </Amt>\n                <Cdtr>\n                    <Nm>Creditor Name 2</Nm>\n                    <PstlAdr>\n                        <Ctry>FI</Ctry>\n                    </PstlAdr>\n                </Cdtr>\n                <CdtrAcct>\n                    <Id>\n                        <IBAN>FI1410093000123458</IBAN>\n                    </Id>\n                </CdtrAcct>\n                <RmtInf>\n                    <Ustrd>Unstructured information</Ustrd>\n                </RmtInf>\n            </CdtTrfTxInf>\n        </PmtInf>\n        <PmtInf>\n            <PmtInfId>9cd98fd7b9712a68465a</PmtInfId>\n            <PmtMtd>TRF</PmtMtd>\n            <CtrlSum>7.0</CtrlSum>\n            <PmtTpInf>\n                <SvcLvl>\n                    <Cd>SEPA</Cd>\n                </SvcLvl>\n                <LclInstrm>\n                    <Cd>INST</Cd>\n                </LclInstrm>\n            </PmtTpInf>\n            <ReqdExctnDt>\n                <Dt>2026-01-29</Dt>\n            </ReqdExctnDt>\n            <Dbtr>\n                <Nm>Debtor Name</Nm>\n                <PstlAdr>\n                    <Ctry>FI</Ctry>\n                </PstlAdr>\n                <Id>\n                    <OrgId>\n                        <Othr>\n                            <Id>12345678910</Id>\n                            <SchmeNm>\n                                <Cd>BANK</Cd>\n                            </SchmeNm>\n                        </Othr>\n                    </OrgId>\n                </Id>\n            </Dbtr>\n            <DbtrAcct>\n                <Id>\n                    <IBAN>FI2112345600000785</IBAN>\n                </Id>\n                <Ccy>EUR</Ccy>\n            </DbtrAcct>\n            <DbtrAgt>\n                <FinInstnId>\n                    <BICFI>NDEAFIHH</BICFI>\n                    <PstlAdr>\n                        <Ctry>FI</Ctry>\n                    </PstlAdr>\n                </FinInstnId>\n            </DbtrAgt>\n            <CdtTrfTxInf>\n                <PmtId>\n                    <InstrId>764b8fe430253b2c1a28</InstrId>\n                    <EndToEndId>4ra667ed88eae248lala</EndToEndId>\n                </PmtId>\n                <Amt>\n                    <InstdAmt Ccy=\"EUR\">2.00</InstdAmt>\n                </Amt>\n                <Cdtr>\n                    <Nm>Creditor Name 3</Nm>\n                    <PstlAdr>\n                        <Ctry>FI</Ctry>\n                    </PstlAdr>\n                </Cdtr>\n                <CdtrAcct>\n                    <Id>\n                        <IBAN>FI9819513119469790</IBAN>\n                    </Id>\n                </CdtrAcct>\n                <RmtInf>\n                    <Ustrd>Unstructured information</Ustrd>\n                </RmtInf>\n            </CdtTrfTxInf>\n            <CdtTrfTxInf>\n                <PmtId>\n                    <InstrId>764b8fe430253b2c1a28</InstrId>\n                    <EndToEndId>5ty551ed22eae248fafa</EndToEndId>\n                </PmtId>\n                <Amt>\n                    <InstdAmt Ccy=\"EUR\">5.00</InstdAmt>\n                </Amt>\n                <Cdtr>\n                    <Nm>Creditor Name 4</Nm>\n                    <PstlAdr>\n                        <Ctry>FI</Ctry>\n                    </PstlAdr>\n                </Cdtr>\n                <CdtrAcct>\n                    <Id>\n                        <IBAN>FI9819112952913632</IBAN>\n                    </Id>\n                </CdtrAcct>\n                <RmtInf>\n                    <Ustrd>Unstructured information</Ustrd>\n                </RmtInf>\n            </CdtTrfTxInf>\n        </PmtInf>\n    </CstmrCdtTrfInitn>\n</Document>",
 											"options": {
 												"raw": {
-													"headerFamily": "xml",
 													"language": "xml"
 												}
 											}
@@ -106,35 +133,36 @@
 											{
 												"key": "X-Nordea-Originating-Host",
 												"value": "{{X-Nordea-Originating-Host}}",
-												"description": "(Required) "
+												"type": "default"
 											},
 											{
 												"key": "X-Nordea-Originating-Date",
 												"value": "{{X-Nordea-Originating-Date}}",
-												"description": "(Required) "
+												"type": "default"
 											},
 											{
 												"key": "X-IBM-Client-Id",
 												"value": "{{X-IBM-Client-Id}}",
-												"description": "(Required) "
+												"type": "default"
 											},
 											{
 												"key": "X-IBM-Client-Secret",
 												"value": "{{X-IBM-Client-Secret}}",
-												"description": "(Required) "
+												"type": "default"
 											},
 											{
 												"key": "Content-Type",
-												"value": "application/xml"
+												"value": "application/xml",
+												"type": "default"
 											},
 											{
 												"key": "Signature",
 												"value": "SKIP_SIGNATURE_VALIDATION_FOR_SANDBOX",
-												"type": "text"
+												"type": "default"
 											}
 										],
 										"url": {
-											"raw": "{{baseUrl}}/premium/v1/multi-payout-instant/report/:batch_identification ",
+											"raw": "{{baseUrl}}/premium/v1/multi-payout-instant/report/:batch_identification",
 											"host": [
 												"{{baseUrl}}"
 											],
@@ -143,12 +171,12 @@
 												"v1",
 												"multi-payout-instant",
 												"report",
-												":batch_identification "
+												":batch_identification"
 											],
 											"variable": [
 												{
-													"key": "batch_identification ",
-													"value": "",
+													"key": "batch_identification",
+													"value": "9077c80efd3d40689dada82cff85c2fb",
 													"description": "message_identification from Group Header provided in Pain002 response"
 												}
 											]
@@ -168,35 +196,36 @@
 											{
 												"key": "X-Nordea-Originating-Host",
 												"value": "{{X-Nordea-Originating-Host}}",
-												"description": "(Required) "
+												"type": "default"
 											},
 											{
 												"key": "X-Nordea-Originating-Date",
 												"value": "{{X-Nordea-Originating-Date}}",
-												"description": "(Required) "
+												"type": "default"
 											},
 											{
 												"key": "X-IBM-Client-Id",
 												"value": "{{X-IBM-Client-Id}}",
-												"description": "(Required) "
+												"type": "default"
 											},
 											{
 												"key": "X-IBM-Client-Secret",
 												"value": "{{X-IBM-Client-Secret}}",
-												"description": "(Required) "
+												"type": "default"
 											},
 											{
 												"key": "Content-Type",
-												"value": "application/xml"
+												"value": "application/xml",
+												"type": "default"
 											},
 											{
 												"key": "Signature",
 												"value": "SKIP_SIGNATURE_VALIDATION_FOR_SANDBOX",
-												"type": "text"
+												"type": "default"
 											}
 										],
 										"url": {
-											"raw": "{{baseUrl}}/premium/v1/multi-payout-instant/report/:batch_identification ?payment_information_identification=",
+											"raw": "{{baseUrl}}/premium/v1/multi-payout-instant/report/:batch_identification ?payment_information_identification=0cd98fd7b9703a68467d",
 											"host": [
 												"{{baseUrl}}"
 											],
@@ -210,14 +239,14 @@
 											"query": [
 												{
 													"key": "payment_information_identification",
-													"value": "",
+													"value": "0cd98fd7b9703a68467d",
 													"description": "Optional. Provide if only specific payment identification and its transactions are to be returned"
 												}
 											],
 											"variable": [
 												{
 													"key": "batch_identification ",
-													"value": "",
+													"value": "9077c80efd3d40689dada82cff85c2fb",
 													"description": "message_identification from Group Header provided in Pain002 response"
 												}
 											]
@@ -237,35 +266,36 @@
 											{
 												"key": "X-Nordea-Originating-Host",
 												"value": "{{X-Nordea-Originating-Host}}",
-												"description": "(Required) "
+												"type": "default"
 											},
 											{
 												"key": "X-Nordea-Originating-Date",
 												"value": "{{X-Nordea-Originating-Date}}",
-												"description": "(Required) "
+												"type": "default"
 											},
 											{
 												"key": "X-IBM-Client-Id",
 												"value": "{{X-IBM-Client-Id}}",
-												"description": "(Required) "
+												"type": "default"
 											},
 											{
 												"key": "X-IBM-Client-Secret",
 												"value": "{{X-IBM-Client-Secret}}",
-												"description": "(Required) "
+												"type": "default"
 											},
 											{
 												"key": "Content-Type",
-												"value": "application/xml"
+												"value": "application/xml",
+												"type": "default"
 											},
 											{
 												"key": "Signature",
 												"value": "SKIP_SIGNATURE_VALIDATION_FOR_SANDBOX",
-												"type": "text"
+												"type": "default"
 											}
 										],
 										"url": {
-											"raw": "{{baseUrl}}/premium/v1/multi-payout-instant/report/:batch_identification ?payment_information_identification=&end_to_end_identification=",
+											"raw": "{{baseUrl}}/premium/v1/multi-payout-instant/report/:batch_identification ?payment_information_identification=0cd98fd7b9703a68467d&end_to_end_identification=o9i767ed88eae2482323",
 											"host": [
 												"{{baseUrl}}"
 											],
@@ -279,19 +309,101 @@
 											"query": [
 												{
 													"key": "payment_information_identification",
-													"value": "",
+													"value": "0cd98fd7b9703a68467d",
 													"description": "Optional. Provide if only specific payment identification and its transactions are to be returned"
 												},
 												{
 													"key": "end_to_end_identification",
-													"value": "",
+													"value": "o9i767ed88eae2482323",
 													"description": "Optional. Provide if only specific transaction from specific payment identification is to be returned. payment_information_identification must be provided"
 												}
 											],
 											"variable": [
 												{
 													"key": "batch_identification ",
-													"value": "",
+													"value": "9077c80efd3d40689dada82cff85c2fb",
+													"description": "message_identification from Group Header provided in Pain002 response"
+												}
+											]
+										},
+										"description": "Initiate instant batch payments"
+									},
+									"response": []
+								},
+								{
+									"name": "multi-payout-confirmation",
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "PUT",
+										"header": [
+											{
+												"key": "X-Nordea-Originating-Host",
+												"value": "{{X-Nordea-Originating-Host}}",
+												"type": "default"
+											},
+											{
+												"key": "X-Nordea-Originating-Date",
+												"value": "{{X-Nordea-Originating-Date}}",
+												"type": "default"
+											},
+											{
+												"key": "X-IBM-Client-Id",
+												"value": "{{X-IBM-Client-Id}}",
+												"type": "default"
+											},
+											{
+												"key": "X-IBM-Client-Secret",
+												"value": "{{X-IBM-Client-Secret}}",
+												"type": "default"
+											},
+											{
+												"key": "Digest",
+												"value": "{{Digest}}",
+												"type": "default"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/xml",
+												"type": "default"
+											},
+											{
+												"key": "Signature",
+												"value": "SKIP_SIGNATURE_VALIDATION_FOR_SANDBOX",
+												"type": "default"
+											},
+											{
+												"key": "Confirmation-Rights",
+												"value": "two_together",
+												"type": "default"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<ConfirmationDocument xmlns=\"urn:com:nordea:openbanking:mpi:xsd:confirmation.001\">\n    <AgreementNumber>12345678910</AgreementNumber>\n    <AuthorizerId>123456894</AuthorizerId>\n    <PaymentInformationId>\n        <PaymentInformationId>0cd98fd7b9703a68467d</PaymentInformationId>\n        <PaymentInformationId>9cd98fd7b9712a68465a</PaymentInformationId>\n    </PaymentInformationId>\n</ConfirmationDocument>",
+											"options": {
+												"raw": {
+													"language": "xml"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/premium/v1/multi-payout-instant/:batch_identification/confirm",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"premium",
+												"v1",
+												"multi-payout-instant",
+												":batch_identification",
+												"confirm"
+											],
+											"variable": [
+												{
+													"key": "batch_identification",
+													"value": "9077c80efd3d40689dada82cff85c2fb",
 													"description": "message_identification from Group Header provided in Pain002 response"
 												}
 											]
