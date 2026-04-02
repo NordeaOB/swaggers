@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "0eebf250-85db-4c28-affe-de1a8c538a35",
+		"_postman_id": "d667dd17-0fdf-4a6f-a5df-4fc2f263b291",
 		"name": "Multi-Payout Instant API",
 		"description": "Multi-Payout Instant API",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
@@ -41,27 +41,32 @@
 											{
 												"key": "X-Nordea-Originating-Host",
 												"value": "{{X-Nordea-Originating-Host}}",
-												"type": "default"
+												"type": "default",
+												"description": "HTTP header element for specification of the domain name of the server. It is similar to standard HTTP 'Host' header but it won't be overridden by proxies. It also allows to set it under JavaScript in browser while standard 'Host' is forbidden"
 											},
 											{
 												"key": "X-Nordea-Originating-Date",
 												"value": "{{X-Nordea-Originating-Date}}",
-												"type": "default"
+												"type": "default",
+												"description": "HTTP header element for date and time represented as RFC 7231 Full Dates (GMT). Example date: {}Wed, 24 Apr 2019 14:00:37 GMT{}. It is similar to standard HTTP 'Date' expect that it allows to set it under JavaScript in browser while standard 'Date' is forbidden"
 											},
 											{
 												"key": "X-IBM-Client-Id",
 												"value": "{{X-IBM-Client-Id}}",
-												"type": "default"
+												"type": "default",
+												"description": "Id of the Client"
 											},
 											{
 												"key": "X-IBM-Client-Secret",
 												"value": "{{X-IBM-Client-Secret}}",
-												"type": "default"
+												"type": "default",
+												"description": "Secret password generated for the Client"
 											},
 											{
 												"key": "Digest",
 												"value": "{{Digest}}",
-												"type": "default"
+												"type": "default",
+												"description": "The Digest Header header as defined in [RFC3230] contains a Hash of the message body. The only hash algorithms that may be used to calculate the Digest within the context of this specification are SHA-256 and SHA-512 as defined in [RFC5843]. For POST with ‘application/x-www-form-urlencoded’ content type Digest should be calculated for normalized string created from request parameters like this: 'param1=value1&param2=value2’. It is important that parameters should be placed in alphabetic order"
 											},
 											{
 												"key": "Content-Type",
@@ -71,30 +76,42 @@
 											{
 												"key": "Signature",
 												"value": "SKIP_SIGNATURE_VALIDATION_FOR_SANDBOX",
-												"type": "default"
+												"type": "default",
+												"description": "A signature of request by the API Consumer on application level. The process of signing a request is described in 'Signing HTTP Messages' RFC draft version 10 (https://tools.ietf.org/html/draft-cavage-http-signatures-10). The request signature needs to be sent in the 'Signature' HTTP header as described in the RFC."
 											},
 											{
 												"key": "Agreement-Number",
 												"value": "123456894",
 												"type": "default",
+												"description": "Web Service agreement number. To be used only when 'Agreement-Type' is defined as 'WS'",
 												"disabled": true
 											},
 											{
 												"key": "Confirmation-Method",
 												"value": "manual_confirmation",
 												"type": "default",
+												"description": "Only for Sandbox! Special header to define if transactions in batch should be preconfirmed or if they require manual confirmation. Available values are: 'preconfirmed', 'manual_confirmation'. If not defined, transactions will be processed as 'preconfirmed'",
 												"disabled": true
 											},
 											{
 												"key": "Agreement-Type",
 												"value": "CCM",
 												"type": "default",
+												"description": "Specify agreement type against which access authorizations should be performed. Available values are: 'CCM' (for Corporate Cash Management agreement) and 'WS' (for Web Service Company or User based agreement). If not specified, service will process request against 'CCM' agreement",
 												"disabled": true
 											},
 											{
 												"key": "Logon-Id",
 												"value": "123456891",
 												"type": "default",
+												"description": "User 'Logon ID' from Web Service agreement. To be used only when 'Agreement-Type' is defined as 'WS'",
+												"disabled": true
+											},
+											{
+												"key": "File-Type-Set-Number",
+												"value": "1234",
+												"description": "'File Type Set Number' defined in File Transfer setup. Specified value will be used when validating payments permissions. To be used only when 'Agreement-Type' is defined as 'WS'",
+												"type": "text",
 												"disabled": true
 											}
 										],
@@ -133,22 +150,26 @@
 											{
 												"key": "X-Nordea-Originating-Host",
 												"value": "{{X-Nordea-Originating-Host}}",
-												"type": "default"
+												"type": "default",
+												"description": "HTTP header element for specification of the domain name of the server. It is similar to standard HTTP 'Host' header but it won't be overridden by proxies. It also allows to set it under JavaScript in browser while standard 'Host' is forbidden"
 											},
 											{
 												"key": "X-Nordea-Originating-Date",
 												"value": "{{X-Nordea-Originating-Date}}",
-												"type": "default"
+												"type": "default",
+												"description": "HTTP header element for date and time represented as RFC 7231 Full Dates (GMT). Example date: {}Wed, 24 Apr 2019 14:00:37 GMT{}. It is similar to standard HTTP 'Date' expect that it allows to set it under JavaScript in browser while standard 'Date' is forbidden"
 											},
 											{
 												"key": "X-IBM-Client-Id",
 												"value": "{{X-IBM-Client-Id}}",
-												"type": "default"
+												"type": "default",
+												"description": "Id of the Client"
 											},
 											{
 												"key": "X-IBM-Client-Secret",
 												"value": "{{X-IBM-Client-Secret}}",
-												"type": "default"
+												"type": "default",
+												"description": "Secret password generated for the Client"
 											},
 											{
 												"key": "Content-Type",
@@ -158,7 +179,8 @@
 											{
 												"key": "Signature",
 												"value": "SKIP_SIGNATURE_VALIDATION_FOR_SANDBOX",
-												"type": "default"
+												"type": "default",
+												"description": "A signature of request by the API Consumer on application level. The process of signing a request is described in 'Signing HTTP Messages' RFC draft version 10 (https://tools.ietf.org/html/draft-cavage-http-signatures-10). The request signature needs to be sent in the 'Signature' HTTP header as described in the RFC."
 											}
 										],
 										"url": {
@@ -196,22 +218,26 @@
 											{
 												"key": "X-Nordea-Originating-Host",
 												"value": "{{X-Nordea-Originating-Host}}",
-												"type": "default"
+												"type": "default",
+												"description": "HTTP header element for specification of the domain name of the server. It is similar to standard HTTP 'Host' header but it won't be overridden by proxies. It also allows to set it under JavaScript in browser while standard 'Host' is forbidden"
 											},
 											{
 												"key": "X-Nordea-Originating-Date",
 												"value": "{{X-Nordea-Originating-Date}}",
-												"type": "default"
+												"type": "default",
+												"description": "HTTP header element for date and time represented as RFC 7231 Full Dates (GMT). Example date: {}Wed, 24 Apr 2019 14:00:37 GMT{}. It is similar to standard HTTP 'Date' expect that it allows to set it under JavaScript in browser while standard 'Date' is forbidden"
 											},
 											{
 												"key": "X-IBM-Client-Id",
 												"value": "{{X-IBM-Client-Id}}",
-												"type": "default"
+												"type": "default",
+												"description": "Id of the Client"
 											},
 											{
 												"key": "X-IBM-Client-Secret",
 												"value": "{{X-IBM-Client-Secret}}",
-												"type": "default"
+												"type": "default",
+												"description": "Secret password generated for the Client"
 											},
 											{
 												"key": "Content-Type",
@@ -221,7 +247,8 @@
 											{
 												"key": "Signature",
 												"value": "SKIP_SIGNATURE_VALIDATION_FOR_SANDBOX",
-												"type": "default"
+												"type": "default",
+												"description": "A signature of request by the API Consumer on application level. The process of signing a request is described in 'Signing HTTP Messages' RFC draft version 10 (https://tools.ietf.org/html/draft-cavage-http-signatures-10). The request signature needs to be sent in the 'Signature' HTTP header as described in the RFC."
 											}
 										],
 										"url": {
@@ -266,22 +293,26 @@
 											{
 												"key": "X-Nordea-Originating-Host",
 												"value": "{{X-Nordea-Originating-Host}}",
-												"type": "default"
+												"type": "default",
+												"description": "HTTP header element for specification of the domain name of the server. It is similar to standard HTTP 'Host' header but it won't be overridden by proxies. It also allows to set it under JavaScript in browser while standard 'Host' is forbidden"
 											},
 											{
 												"key": "X-Nordea-Originating-Date",
 												"value": "{{X-Nordea-Originating-Date}}",
-												"type": "default"
+												"type": "default",
+												"description": "HTTP header element for date and time represented as RFC 7231 Full Dates (GMT). Example date: {}Wed, 24 Apr 2019 14:00:37 GMT{}. It is similar to standard HTTP 'Date' expect that it allows to set it under JavaScript in browser while standard 'Date' is forbidden"
 											},
 											{
 												"key": "X-IBM-Client-Id",
 												"value": "{{X-IBM-Client-Id}}",
-												"type": "default"
+												"type": "default",
+												"description": "Id of the Client"
 											},
 											{
 												"key": "X-IBM-Client-Secret",
 												"value": "{{X-IBM-Client-Secret}}",
-												"type": "default"
+												"type": "default",
+												"description": "Secret password generated for the Client"
 											},
 											{
 												"key": "Content-Type",
@@ -291,7 +322,8 @@
 											{
 												"key": "Signature",
 												"value": "SKIP_SIGNATURE_VALIDATION_FOR_SANDBOX",
-												"type": "default"
+												"type": "default",
+												"description": "A signature of request by the API Consumer on application level. The process of signing a request is described in 'Signing HTTP Messages' RFC draft version 10 (https://tools.ietf.org/html/draft-cavage-http-signatures-10). The request signature needs to be sent in the 'Signature' HTTP header as described in the RFC."
 											}
 										],
 										"url": {
@@ -341,27 +373,32 @@
 											{
 												"key": "X-Nordea-Originating-Host",
 												"value": "{{X-Nordea-Originating-Host}}",
-												"type": "default"
+												"type": "default",
+												"description": "HTTP header element for specification of the domain name of the server. It is similar to standard HTTP 'Host' header but it won't be overridden by proxies. It also allows to set it under JavaScript in browser while standard 'Host' is forbidden"
 											},
 											{
 												"key": "X-Nordea-Originating-Date",
 												"value": "{{X-Nordea-Originating-Date}}",
-												"type": "default"
+												"type": "default",
+												"description": "HTTP header element for date and time represented as RFC 7231 Full Dates (GMT). Example date: {}Wed, 24 Apr 2019 14:00:37 GMT{}. It is similar to standard HTTP 'Date' expect that it allows to set it under JavaScript in browser while standard 'Date' is forbidden"
 											},
 											{
 												"key": "X-IBM-Client-Id",
 												"value": "{{X-IBM-Client-Id}}",
-												"type": "default"
+												"type": "default",
+												"description": "Id of the Client"
 											},
 											{
 												"key": "X-IBM-Client-Secret",
 												"value": "{{X-IBM-Client-Secret}}",
-												"type": "default"
+												"type": "default",
+												"description": "Secret password generated for the Client"
 											},
 											{
 												"key": "Digest",
 												"value": "{{Digest}}",
-												"type": "default"
+												"type": "default",
+												"description": "The Digest Header header as defined in [RFC3230] contains a Hash of the message body. The only hash algorithms that may be used to calculate the Digest within the context of this specification are SHA-256 and SHA-512 as defined in [RFC5843]. For POST with ‘application/x-www-form-urlencoded’ content type Digest should be calculated for normalized string created from request parameters like this: 'param1=value1&param2=value2’. It is important that parameters should be placed in alphabetic order"
 											},
 											{
 												"key": "Content-Type",
@@ -371,12 +408,14 @@
 											{
 												"key": "Signature",
 												"value": "SKIP_SIGNATURE_VALIDATION_FOR_SANDBOX",
-												"type": "default"
+												"type": "default",
+												"description": "A signature of request by the API Consumer on application level. The process of signing a request is described in 'Signing HTTP Messages' RFC draft version 10 (https://tools.ietf.org/html/draft-cavage-http-signatures-10). The request signature needs to be sent in the 'Signature' HTTP header as described in the RFC."
 											},
 											{
 												"key": "Confirmation-Rights",
 												"value": "two_together",
-												"type": "default"
+												"type": "default",
+												"description": "Only for Sandbox! Special header to mimic users confirmation rights. Available values are: 'confirm_alone', 'two_together', 'two_groups_together'"
 											}
 										],
 										"body": {
