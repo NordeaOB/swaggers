@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "d667dd17-0fdf-4a6f-a5df-4fc2f263b291",
+		"_postman_id": "e069498a-f38b-4ebe-bf06-1e0e08abb319",
 		"name": "Multi-Payout Instant API",
 		"description": "Multi-Payout Instant API",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
@@ -111,6 +111,20 @@
 												"key": "File-Type-Set-Number",
 												"value": "1234",
 												"description": "'File Type Set Number' defined in File Transfer setup. Specified value will be used when validating payments permissions. To be used only when 'Agreement-Type' is defined as 'WS'",
+												"type": "text",
+												"disabled": true
+											},
+											{
+												"key": "EGW-Serial-Number",
+												"value": "123456891",
+												"description": "Subject Serial Number correlated to EGW certificate identity",
+												"type": "text",
+												"disabled": true
+											},
+											{
+												"key": "Signer-Id",
+												"value": "123456891",
+												"description": "Signer-Id defined in Corporate Cash Management (CCM) agreement",
 												"type": "text",
 												"disabled": true
 											}
